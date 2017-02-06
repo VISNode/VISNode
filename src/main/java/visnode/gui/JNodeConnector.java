@@ -40,17 +40,6 @@ public class JNodeConnector extends JComponent {
         leftConnector.setVisible(configuration == Configuration.LEFT || configuration == Configuration.LEFT_AND_RIGHT);
         rightConnector.setVisible(configuration == Configuration.RIGHT || configuration == Configuration.LEFT_AND_RIGHT);
     }
-    
-    /**
-     * Connect this connector to another connector
-     * 
-     * @param another 
-     */
-    public void connectTo(JNodeConnector another) {
-        
-        getParentNodeContainer().add(new JNodeConnection(getRightConnector(), another.getLeftConnector()));
-        
-    }
 
     /**
      * Returns the left connector point

@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import javax.swing.BorderFactory;
+import java.awt.Point;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 
 /**
  * Connector point
  */
-public class JConnectorPoint extends JComponent {
+public class JConnectorPoint extends JComponent implements PositionSupplier {
 
     /**
      * Creates a new connector point
@@ -27,6 +32,16 @@ public class JConnectorPoint extends JComponent {
         setPreferredSize(new Dimension(10, 10));
         setMaximumSize(new Dimension(10, 10));
         setMinimumSize(new Dimension(10, 10));
+        
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                getParentNodeContainer().startConnection(JConnectorPoint.this, e);
+            }
+           
+        });
+        
+        
     }
 
     /**
@@ -40,6 +55,16 @@ public class JConnectorPoint extends JComponent {
         } else {
             throw new IllegalStateException("JNodeConnector must be inside a JNode!");
         }
+    }
+    
+    
+    /**
+     * Connect this connector to another connector
+     * 
+     * @param another 
+     */
+    public void connectTo(JConnectorPoint another) {
+        getParentNodeContainer().add(new JNodeConnection(this, another));
     }
 
     /**
@@ -58,6 +83,31 @@ public class JConnectorPoint extends JComponent {
      */
     public JNodeContainer getParentNodeContainer() {
         return getParentNodeConnector().getParentNodeContainer();
+    }
+    
+
+    @Override
+    public Point getPosition() {
+        return new Point(getParentNode().getX() + getX(), getParentNode().getY() + getY());
+    }
+
+    @Override
+    public void addPositionListener(PositionListener listener) {
+        getParentNode().addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                listener.positionChanged(getPosition());
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+                listener.positionChanged(getPosition());
+            }
+
+        });
+        getParentNode().addHierarchyListener((HierarchyEvent e) -> {
+            listener.positionChanged(getPosition());
+        });
     }
     
     @Override

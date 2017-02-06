@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.function.Predicate;
 import javax.swing.JComponent;
 
 /**
@@ -18,6 +19,8 @@ public class DragSupport implements MouseListener, MouseMotionListener {
     private Component dragged;
     /** Relative position in the dragged component */
     private Point relativePosition;
+    /** Predicate for allowing the drag */
+    private Predicate<Component> allowDragPredicate;
 
     /**
      * Creates a new drag support for a container
@@ -44,7 +47,7 @@ public class DragSupport implements MouseListener, MouseMotionListener {
     @Override
     public void mousePressed(MouseEvent e) {
         dragged = container.getComponentAt(e.getPoint());
-        if (dragged == container) {
+        if (dragged == container || !allowDragPredicate.test(dragged)) {
             dragged = null;
             return;
         }
@@ -74,6 +77,24 @@ public class DragSupport implements MouseListener, MouseMotionListener {
     @Override
     public void mouseMoved(MouseEvent e) {
         
+    }
+
+    /**
+     * Returns the predicate for allowing the drag of components
+     * 
+     * @return {@code Predicate<Component>}
+     */
+    public Predicate<Component> getAllowDragPredicate() {
+        return allowDragPredicate;
+    }
+
+    /**
+     * Sets the predicate for allowing the drag of components
+     * 
+     * @param allowDragPredicate 
+     */
+    public void setAllowDragPredicate(Predicate<Component> allowDragPredicate) {
+        this.allowDragPredicate = allowDragPredicate;
     }
     
 }

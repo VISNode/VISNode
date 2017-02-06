@@ -62,10 +62,10 @@ public class TestNodeContainer extends JFrame {
         cut.add(new JNodeConnector(JNodeConnector.Configuration.RIGHT));
         container.add(cut);
         
-        image1c1.connectTo(blurc1);
+        image1c1.getRightConnector().connectTo(blurc1.getLeftConnector());
         
-        image1c1.connectTo(cutc1);
-        maskc1.connectTo(cutc2);
+        image1c1.getRightConnector().connectTo(cutc1.getLeftConnector());
+        maskc1.getRightConnector().connectTo(cutc2.getLeftConnector());
         
     }
     

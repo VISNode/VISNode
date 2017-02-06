@@ -3,11 +3,6 @@ package visnode.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 /**
@@ -16,9 +11,9 @@ import javax.swing.JComponent;
 public class JNodeConnection extends JComponent {
 
     /** First connected node */
-    private final JConnectorPoint first;
+    private final PositionSupplier first;
     /** Second connected node */
-    private final JConnectorPoint second;
+    private final PositionSupplier second;
 
     /**
      * Creates a new connection between two nodes
@@ -26,56 +21,24 @@ public class JNodeConnection extends JComponent {
      * @param first
      * @param second
      */
-    public JNodeConnection(JConnectorPoint first, JConnectorPoint second) {
+    public JNodeConnection(PositionSupplier first, PositionSupplier second) {
         super();
         this.first = first;
         this.second = second;
-
-        first.getParentNode().addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                update();
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-                update();
-            }
-
+        first.addPositionListener((newPosition) -> {
+            update();
         });
-
-        second.getParentNode().addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentMoved(ComponentEvent e) {
-                update();
-            }
-            @Override
-            public void componentShown(ComponentEvent e) {
-                update();
-            }
-
-        });
-        first.getParentNode().addHierarchyListener(new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent e) {
-                update();
-            }
-        });
-
-        second.getParentNode().addHierarchyListener(new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent e) {
-                update();
-            }
+        second.addPositionListener((newPosition) -> {
+            update();
         });
         update();
     }
 
     private void update() {
-        int fx = first.getParentNode().getX() + first.getX();
-        int fy = first.getParentNode().getY() + first.getY();
-        int sx = second.getParentNode().getX() + second.getX();
-        int sy = second.getParentNode().getY() + second.getY();
+        int fx = first.getPosition().x;
+        int fy = first.getPosition().y;
+        int sx = second.getPosition().x;
+        int sy = second.getPosition().y;
         if (fx > sx) {
             int ax = fx;
             fx = sx;
@@ -99,10 +62,10 @@ public class JNodeConnection extends JComponent {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(Color.BLUE);
         
-        int fx = first.getParentNode().getX() + first.getX();
-        int fy = first.getParentNode().getY() + first.getY();
-        int sx = second.getParentNode().getX() + second.getX();
-        int sy = second.getParentNode().getY() + second.getY();
+        int fx = first.getPosition().x;
+        int fy = first.getPosition().y;
+        int sx = second.getPosition().x;
+        int sy = second.getPosition().y;
         
         int x1, x2, y1, y2;
         
