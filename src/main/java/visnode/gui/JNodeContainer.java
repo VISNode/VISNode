@@ -3,6 +3,7 @@ package visnode.gui;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 /**
  * Node container
@@ -41,7 +42,32 @@ public class JNodeContainer extends JComponent {
      */
     public void startConnection(JConnectorPoint connectorPoint, MouseEvent e) {
 //        add(new JNodeConnection(connectorPoint, new MousePositionSupplier(connectorPoint, (ev) -> ev.getID() == MouseEvent.MOUSE_MOVED && e.getButton() == MouseEvent.BUTTON1)));
-        add(new JNodeConnection(connectorPoint, new MousePositionSupplier(connectorPoint, (ev) -> true)));
+        MousePositionSupplier supplier = new MousePositionSupplier(this);
+        JNodeConnection connection = new JNodeConnection(connectorPoint, supplier);
+        MouseInterceptor.get().addDragListener(new DragListener() {
+
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                supplier.redirectEvent(e);
+            }
+
+            @Override
+            public void dragStarted(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void dragFinished(MouseEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    remove(connection);
+                    repaint();
+                });
+            }
+
+        });
+
+        
+        add(connection);
         
         
         System.out.println("wow");

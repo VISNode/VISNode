@@ -17,11 +17,8 @@ public class TestNodeContainer extends JFrame {
         JNodeContainer container = new JNodeContainer();
         buildContainer(container);
         container.setBorder(BorderFactory.createEtchedBorder());
-        
-        
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(container);
-        
     }
     
     public static void main(String[] args) {

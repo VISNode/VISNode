@@ -35,6 +35,9 @@ public class JNodeConnection extends JComponent {
     }
 
     private void update() {
+        if (first == null || second == null || first.getPosition() == null || second.getPosition() == null) {
+            return;
+        }
         int fx = first.getPosition().x;
         int fy = first.getPosition().y;
         int sx = second.getPosition().x;
