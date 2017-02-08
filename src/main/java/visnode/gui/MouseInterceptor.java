@@ -54,6 +54,15 @@ public class MouseInterceptor implements AWTEventListener {
     public void addDragListener(DragListener listener) {
         listenerList.add(DragListener.class, listener);
     }
+    
+    /**
+     * Removes a listener
+     * 
+     * @param listener 
+     */
+    public void removeDragListener(DragListener listener) {
+        listenerList.remove(DragListener.class, listener);
+    }
 
     /**
      * Fires a drag event

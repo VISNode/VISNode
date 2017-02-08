@@ -1,6 +1,7 @@
 package visnode.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -88,7 +89,26 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
 
     @Override
     public Point getPosition() {
-        return new Point(getParentNode().getX() + getX(), getParentNode().getY() + getY());
+        try {
+            return getPosition(new Point(), this);
+        } catch (Exception e) {
+            return new Point();
+        }
+    }
+    
+    /**
+     * Returns the position of a component in the topmost parent
+     * 
+     * @param point
+     * @param component
+     * @return Point
+     */
+    public Point getPosition(Point point, Component component) {
+        point.translate(component.getX(), component.getY());
+        if (component.getParent() != null && !(component.getParent() instanceof JNodeContainer)) {
+            return getPosition(point, component.getParent());
+        }
+        return point;
     }
 
     @Override

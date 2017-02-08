@@ -90,4 +90,22 @@ public class JNodeConnection extends JComponent {
         g2d.dispose();
     }
 
+    /**
+     * Return the first position supplier for the connection
+     * 
+     * @return PositionSupplier
+     */
+    public PositionSupplier getFirst() {
+        return first;
+    }
+
+    /**
+     * Return the second position supplier for the connection
+     * 
+     * @return PositionSupplier
+     */
+    public PositionSupplier getSecond() {
+        return second;
+    }
+
 }
