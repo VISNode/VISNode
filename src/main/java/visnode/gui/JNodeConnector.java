@@ -100,7 +100,7 @@ public class JNodeConnector extends JComponent {
     }
     
     /**
-     * Configuration for the conector
+     * Configuration for the connector
      */
     public static enum Configuration {
         
