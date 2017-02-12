@@ -2,6 +2,7 @@ package visnode.pdi.process;
 
 import visnode.commons.Image;
 import visnode.commons.Input;
+import visnode.commons.Output;
 import visnode.pdi.PixelProcess;
 
 /**
@@ -47,6 +48,12 @@ public class ThresholdProcess extends PixelProcess<Image> {
         } else {
             return image.getPixelValueRange().getHigher();
         }
+    }
+    
+    @Override
+    @Output("image")
+    public Image getOutput() {
+        return super.getOutput();
     }
 
 }

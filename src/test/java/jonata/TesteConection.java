@@ -17,6 +17,7 @@ import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
 import visnode.executor.ProcessNode;
 import visnode.pdi.process.GrayscaleProcess;
+import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.ThresholdProcess;
 
 /**
@@ -37,10 +38,13 @@ public class TesteConection {
         
         ProcessNode grayScale = new ProcessNode(GrayscaleProcess.class);
         grayScale.addConnection("image", input, "image");
+
+        ProcessNode information = new ProcessNode(InformationProcess.class);
+        information.addConnection("image", grayScale, "image");
         
         ProcessNode threshold = new ProcessNode(ThresholdProcess.class);
-        threshold.addParameter("threshold", 50);
-        threshold.addConnection("image", input, "image");
+        threshold.addConnection("threshold", information, "average");
+        threshold.addConnection("image", grayScale, "image");
 
         OutputNode out = new OutputNode();
         out.addConnection("image", threshold, "image");
