@@ -61,5 +61,14 @@ public class VISNode {
         window.setDefaultCloseOperation(MainWindow.EXIT_ON_CLOSE);
         return window;
     }
+
+    /**
+     * Handles an exception
+     * 
+     * @param e 
+     */
+    public void handle(Exception e) {
+        e.printStackTrace();
+    }
     
 }
