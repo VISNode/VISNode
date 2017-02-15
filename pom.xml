@@ -23,6 +23,12 @@
             <artifactId>assertj-core</artifactId>
             <version>3.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.insubstantial</groupId>
+            <artifactId>substance</artifactId>
+            <version>7.3</version>
+            <classifier>lite</classifier>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

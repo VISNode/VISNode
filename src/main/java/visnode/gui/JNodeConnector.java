@@ -1,6 +1,7 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
@@ -31,14 +32,32 @@ public class JNodeConnector extends JComponent {
      * Initializes the interface
      */
     private void initGui() {
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(5, 0));
         add(new JLabel("Connector"));
+        add(buildLeftConnector(), BorderLayout.WEST);
+        add(buildRightConnector(), BorderLayout.EAST);
+    }
+
+    /**
+     * Builds the left connector
+     * 
+     * @return Component
+     */
+    private Component buildLeftConnector() {
         leftConnector = new JConnectorPoint();
-        add(leftConnector, BorderLayout.WEST);
+        leftConnector.setEnabled(configuration == Configuration.LEFT || configuration == Configuration.LEFT_AND_RIGHT);
+        return leftConnector;
+    }
+
+    /**
+     * Builds the right connector
+     * 
+     * @return Component
+     */
+    private Component buildRightConnector() {
         rightConnector = new JConnectorPoint();
-        add(rightConnector, BorderLayout.EAST);
-        leftConnector.setVisible(configuration == Configuration.LEFT || configuration == Configuration.LEFT_AND_RIGHT);
-        rightConnector.setVisible(configuration == Configuration.RIGHT || configuration == Configuration.LEFT_AND_RIGHT);
+        rightConnector.setEnabled(configuration == Configuration.RIGHT || configuration == Configuration.LEFT_AND_RIGHT);
+        return rightConnector;
     }
 
     /**

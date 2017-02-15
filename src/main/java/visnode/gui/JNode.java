@@ -1,6 +1,5 @@
 package visnode.gui;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 
@@ -21,7 +20,7 @@ public class JNode extends JComponent {
      * Initializes the interface
      */
     private void initGui() {
-        setBorder(BorderFactory.createEtchedBorder());
+        setBorder(new JNodeBorder(this));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
