@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.Icon;
-import visnode.application.VISNode;
+import visnode.application.ExceptionHandler;
 
 /**
  * Icon factory
@@ -35,7 +35,7 @@ public class IconFactory {
         try {
             fontAwesome = Font.createFont(Font.TRUETYPE_FONT, IconFactory.class.getResourceAsStream("/fontawesome-webfont.ttf"));
         } catch (Exception e) {
-            VISNode.get().handle(e);
+            ExceptionHandler.get().handle(e);
         }
         mapping = loadMapings();
     }

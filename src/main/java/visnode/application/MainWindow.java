@@ -1,5 +1,7 @@
 package visnode.application;
 
+import java.awt.BorderLayout;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 
@@ -8,11 +10,17 @@ import javax.swing.JFrame;
  */
 public class MainWindow extends JFrame {
 
+    /** Model */
+    private final VISNodeModel model;
+    
     /**
      * Creates the main window
+     * 
+     * @param model
      */
-    public MainWindow() {
+    public MainWindow(VISNodeModel model) {
         super();
+        this.model = model;
         initGui();
     }
 
@@ -22,6 +30,17 @@ public class MainWindow extends JFrame {
     private void initGui() {
         setSize(1024, 768);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(buildNetworkEditor());
+    }
+    
+    /**
+     * Builds the network editor component
+     * 
+     * @return JComponent
+     */
+    private JComponent buildNetworkEditor() {
+        return new NetworkEditor(model.getNetwork());
     }
     
 }
