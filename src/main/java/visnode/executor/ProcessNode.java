@@ -152,4 +152,13 @@ public class ProcessNode implements Node, AttacherNode {
         return new ArrayList(processOutput.keySet());
     }
 
+    /**
+     * Returns the connector
+     * 
+     * @return NodeConnector
+     */
+    public NodeConnector getConnector() {
+        return connector;
+    }
+
 }

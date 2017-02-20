@@ -39,4 +39,13 @@ public class NodeConnector {
         return connections.get(attribute);
     }
 
+    /**
+     * Returns the connections
+     * 
+     * @return {@code Map<String, NodeConnection>}
+     */
+    public Map<String, NodeConnection> getConnections() {
+        return new HashMap<>(connections);
+    }
+
 }
