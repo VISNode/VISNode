@@ -16,6 +16,8 @@ public class JNodeConnector extends JComponent {
     private JConnectorPoint leftConnector;
     /** Right connector point */
     private JConnectorPoint rightConnector;
+    /** Component */
+    private JComponent component;
     
     /**
      * Creates a new node connector
@@ -23,7 +25,18 @@ public class JNodeConnector extends JComponent {
      * @param configuration
      */
     public JNodeConnector(Configuration configuration) {
+        this(null, configuration);
+    }
+
+    /**
+     * Creates a new node connector
+     * 
+     * @param component
+     * @param configuration
+     */
+    public JNodeConnector(JComponent component, Configuration configuration) {
         super();
+        this.component = component;
         this.configuration = configuration;
         initGui();
     }
@@ -33,9 +46,9 @@ public class JNodeConnector extends JComponent {
      */
     private void initGui() {
         setLayout(new BorderLayout(5, 0));
-        add(new JLabel("Connector"));
         add(buildLeftConnector(), BorderLayout.WEST);
         add(buildRightConnector(), BorderLayout.EAST);
+        updateComponent(null);
     }
 
     /**
@@ -101,6 +114,38 @@ public class JNodeConnector extends JComponent {
     }
 
     /**
+     * Updates the component
+     */
+    private void updateComponent(Component oldComponent) {
+        if (oldComponent != null) {
+            remove(oldComponent);
+        }
+        if (component != null) {
+            add(component);
+        }
+    }
+
+    /**
+     * Returns the connector component
+     * 
+     * @return JComponent
+     */
+    public JComponent getComponent() {
+        return component;
+    }
+
+    /**
+     * Sets the connector component
+     * 
+     * @param component 
+     */
+    public void setComponent(JComponent component) {
+        JComponent oldValue = this.component;
+        this.component = component;
+        updateComponent(oldValue);
+    }
+    
+    /**
      * Returns the configuration
      * 
      * @return Configuration
@@ -117,7 +162,7 @@ public class JNodeConnector extends JComponent {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
-    
+
     /**
      * Configuration for the connector
      */

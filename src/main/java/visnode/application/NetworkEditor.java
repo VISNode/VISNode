@@ -62,9 +62,7 @@ public class NetworkEditor extends JComponent {
      * @return JComponent
      */
     private JComponent buildNodeFor(EditNodeDecorator node) {
-        JNode jNode = new JNode();
-        jNode.setBounds(node.getPosition().x, node.getPosition().y, 100, 150);
-        return jNode;
+        return new NodeView(node);
     }
     
 }
