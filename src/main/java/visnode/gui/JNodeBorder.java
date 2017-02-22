@@ -1,5 +1,6 @@
 package visnode.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -49,7 +50,6 @@ public class JNodeBorder implements Border {
     private void paintHeader(Graphics2D g, int x, int y, int width, int height) {
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.setClip(new Rectangle(x, y, width, HEADER_HEIGHT));
-//        g2d.setColor(UIHelper.getColor("Node.Header.background"));
         g2d.setPaint(new GradientPaint(new Point(0, 0), UIHelper.getColor("Node.Header.background1"), new Point(0, HEADER_HEIGHT), UIHelper.getColor("Node.Header.background2")));
         g2d.fillRoundRect(x + 5, y + 5, width - 11, height - 11, 10, 10);
         g2d.dispose();
@@ -57,7 +57,7 @@ public class JNodeBorder implements Border {
     
     @Override
     public Insets getBorderInsets(Component c) {
-        return new Insets(HEADER_HEIGHT, 0, 0, 0);
+        return new Insets(HEADER_HEIGHT, 0, 10, 0);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package visnode.executor;
 
 import java.awt.Point;
+import java.util.List;
 
 /**
  * Node decorator that add editing capabilities
@@ -62,6 +63,21 @@ public class EditNodeDecorator implements Node {
     @Override
     public Object getAttribute(String attribute) {
         return decorated.getAttribute(attribute);
+    }
+
+    @Override
+    public List<String> getInputParameters() {
+        return decorated.getInputParameters();
+    }
+
+    @Override
+    public List<String> getOutputParameters() {
+        return decorated.getOutputParameters();
+    }
+
+    @Override
+    public NodeConnector getConnector() {
+        return decorated.getConnector();
     }
 
 }

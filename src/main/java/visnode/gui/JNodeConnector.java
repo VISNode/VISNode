@@ -2,6 +2,7 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 
@@ -48,6 +49,7 @@ public class JNodeConnector extends JComponent {
         setLayout(new BorderLayout(5, 0));
         add(buildLeftConnector(), BorderLayout.WEST);
         add(buildRightConnector(), BorderLayout.EAST);
+        setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
         updateComponent(null);
     }
 

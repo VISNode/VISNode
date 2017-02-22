@@ -7,8 +7,6 @@ import javax.swing.JComponent;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeConnection;
-import visnode.executor.ProcessNode;
-import visnode.gui.JNodeConnection;
 import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
 
@@ -74,11 +72,8 @@ public class NetworkEditor extends JComponent {
      */
     private void createConnections() {
         for (EditNodeDecorator node : model.getNodes()) {
-            if (node.getDecorated() instanceof ProcessNode) {
-                ProcessNode processNode = (ProcessNode) node.getDecorated();
-                for (Map.Entry<String, NodeConnection> entry : processNode.getConnector().getConnections().entrySet()) {
-                    buildConnection(node, entry.getKey(), entry.getValue().getNode(), entry.getValue().getAttribute());
-                }
+            for (Map.Entry<String, NodeConnection> entry : node.getConnector().getConnections().entrySet()) {
+                buildConnection(node, entry.getKey(), entry.getValue().getNode(), entry.getValue().getAttribute());
             }
         }
     }
@@ -102,8 +97,8 @@ public class NetworkEditor extends JComponent {
      * @param attribute2
      */    
     private void buildConnection(Node node1, String attribute1, Node node2, String attribute2) {
-        JNodeConnector connector1 = getNodeFor(node1).getConnectorFor(attribute1);
-        JNodeConnector connector2 = getNodeFor(node2).getConnectorFor(attribute2);
+        JNodeConnector connector1 = getNodeFor(node1).getConnectorFor(attribute1, ConnectionType.INPUT);
+        JNodeConnector connector2 = getNodeFor(node2).getConnectorFor(attribute2, ConnectionType.OUTPUT);
         if (connector1 == null || connector2 == null) {
             return;
         }        

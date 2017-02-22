@@ -1,9 +1,13 @@
 package visnode.application;
 
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.ProcessNode;
+import visnode.executor.Node;
 import visnode.gui.JNode;
 import visnode.gui.JNodeConnector;
 
@@ -30,17 +34,25 @@ public class NodeView extends JNode {
      * Initializes the interface
      */
     private void initGui() {
-        setBounds(model.getPosition().x, model.getPosition().y, 100, 150);
+        setBounds(model.getPosition().x, model.getPosition().y, 50, 50);
+        addHierarchyListener((HierarchyEvent e) -> {
+            updateSize();
+        });
         createConnectors();
+    }
+
+    /**
+     * Updates the size of the node
+     */
+    private void updateSize() {
+        setSize(getLayout().preferredLayoutSize(NodeView.this));
     }
 
     /**
      * Creates the connector
      */
     private void createConnectors() {
-        if (model.getDecorated() instanceof ProcessNode) {
-            createConnectors((ProcessNode)model.getDecorated());
-        }
+        createConnectors(model);
     }
 
     /**
@@ -48,12 +60,12 @@ public class NodeView extends JNode {
      * 
      * @param node 
      */
-    private void createConnectors(ProcessNode node) {
+    private void createConnectors(Node node) {
         for (String inputParameter : node.getInputParameters()) {
-            add(new JNodeConnector(new JLabel(inputParameter), JNodeConnector.Configuration.LEFT));
+            add(new NodeConnectorView(inputParameter, ConnectionType.INPUT));
         }
         for (String inputParameter : node.getOutputParameters()) {
-            add(new JNodeConnector(new JLabel(inputParameter), JNodeConnector.Configuration.RIGHT));
+            add(new NodeConnectorView(inputParameter, ConnectionType.OUTPUT));
         }
     }
 
@@ -70,19 +82,16 @@ public class NodeView extends JNode {
      * Returns a connector for the attribute
      * 
      * @param attribute
-     * @return JNodeConnector
+     * @param type
+     * @return NodeConnectorView
      */
-    public JNodeConnector getConnectorFor(String attribute) {
+    public NodeConnectorView getConnectorFor(String attribute, ConnectionType type) {
         for (int i = 0; i < getComponentCount(); i++) {
             Component component = getComponent(i);
-            if (component instanceof JNodeConnector) {
-                JNodeConnector connector = (JNodeConnector) component;
-                Component comp1 = connector.getComponent();
-                if (comp1 instanceof JLabel) {
-                    JLabel label = (JLabel) comp1;
-                    if (label.getText().equals(attribute)) {
-                        return connector;
-                    }
+            if (component instanceof NodeConnectorView) {
+                NodeConnectorView connector = (NodeConnectorView) component;
+                if (connector.getAttribute().equals(attribute) && connector.getType() == type) {
+                    return connector;
                 }
             }
         }

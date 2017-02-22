@@ -1,5 +1,7 @@
 package visnode.executor;
 
+import java.util.ArrayList;
+import java.util.List;
 import visnode.commons.Image;
 
 /**
@@ -9,6 +11,8 @@ public class InputNode implements Node {
 
     /** Input image */
     private final Image imagem;
+    /** Node connector */
+    private final NodeConnector connector;
 
     /**
      * Creates a new input node
@@ -17,6 +21,7 @@ public class InputNode implements Node {
      */
     public InputNode(Image imagem) {
         this.imagem = imagem;
+        this.connector = new NodeConnector();
     }
 
     @Override
@@ -25,6 +30,23 @@ public class InputNode implements Node {
             return imagem;
         }
         return null;
+    }
+
+    @Override
+    public List<String> getInputParameters() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<String> getOutputParameters() {
+        List<String> list = new ArrayList<>();
+        list.add("image");
+        return list;
+    }
+
+    @Override
+    public NodeConnector getConnector() {
+        return connector;
     }
 
 }

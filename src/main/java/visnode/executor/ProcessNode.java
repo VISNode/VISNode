@@ -134,29 +134,17 @@ public class ProcessNode implements Node, AttacherNode {
         connector.addConnection(attribute, node, attributeNode);
     }
 
-    /**
-     * Returns inputs parameters
-     *
-     * @return List
-     */
+    @Override
     public List<String> getInputParameters() {
         return Collections.unmodifiableList(processInput);
     }
 
-    /**
-     * Returns outputs parameters
-     *
-     * @return List
-     */
+    @Override
     public List<String> getOutputParameters() {
         return new ArrayList(processOutput.keySet());
     }
 
-    /**
-     * Returns the connector
-     * 
-     * @return NodeConnector
-     */
+    @Override
     public NodeConnector getConnector() {
         return connector;
     }

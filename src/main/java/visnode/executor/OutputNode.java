@@ -1,5 +1,7 @@
 package visnode.executor;
 
+import java.util.ArrayList;
+import java.util.List;
 import visnode.commons.Image;
 
 /**
@@ -38,5 +40,23 @@ public class OutputNode implements Node, AttacherNode {
     private Image execute() {
         return (Image) connector.getConnection("image").getNode().getAttribute("image");
     }
+    
 
+    @Override
+    public List<String> getInputParameters() {
+        List<String> list = new ArrayList<>();
+        list.add("image");
+        return list;
+    }
+
+    @Override
+    public List<String> getOutputParameters() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public NodeConnector getConnector() {
+        return connector;
+    }
+    
 }
