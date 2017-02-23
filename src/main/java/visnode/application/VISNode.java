@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GraphiteSkin;
+import visnode.application.fw.Actions;
 
 /**
  * Main class application
@@ -14,12 +15,15 @@ public class VISNode {
     private static VISNode instance;
     /** Application model */
     private final VISNodeModel model;
+    /** Actions */
+    private final Actions actions;
 
     /**
      * Creates a new application
      */
     public VISNode() {
         this.model = new VISNodeModel();
+        this.actions = new Actions();
     }
     
     /**
@@ -90,6 +94,15 @@ public class VISNode {
      */
     public VISNodeModel getModel() {
         return model;
+    }
+
+    /**
+     * Returns the actions for the application
+     * 
+     * @return Actions
+     */
+    public Actions getActions() {
+        return actions;
     }
     
 }

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.util.Map;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeConnection;
@@ -16,7 +17,7 @@ import visnode.gui.JNodeContainer;
 public class NetworkEditor extends JComponent {
 
     /** Model */
-    private final NodeNetwork model;
+    private NodeNetwork model;
     /** Node container */
     private JNodeContainer nodeContainer;
 
@@ -53,9 +54,12 @@ public class NetworkEditor extends JComponent {
      * Fully updates the view based on the model
      */
     private void fullUpdate() {
-        nodeContainer.removeAll();
-        createNodes();
-        createConnections();
+        SwingUtilities.invokeLater(() -> {
+            nodeContainer.removeAll();
+            createNodes();
+            createConnections();
+            repaint();
+        });
     }
     
     /**
@@ -122,6 +126,25 @@ public class NetworkEditor extends JComponent {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns the model
+     * 
+     * @return NodeNetwork
+     */
+    public NodeNetwork getModel() {
+        return model;
+    }
+
+    /**
+     * Sets the model
+     * 
+     * @param model 
+     */
+    public void setModel(NodeNetwork model) {
+        this.model = model;
+        fullUpdate();
     }
 
 }

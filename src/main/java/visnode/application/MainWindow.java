@@ -3,6 +3,8 @@ package visnode.application;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import visnode.application.mvc.EventListener;
+import visnode.application.mvc.PropertyEvent;
 
 
 /**
@@ -12,6 +14,8 @@ public class MainWindow extends JFrame {
 
     /** Model */
     private final VISNodeModel model;
+    /** Network editor */
+    private NetworkEditor networkEditor;
     
     /**
      * Creates the main window
@@ -32,6 +36,7 @@ public class MainWindow extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(buildNetworkEditor());
+        setJMenuBar(VISNode.get().getActions().buildMenuBar());
     }
     
     /**
@@ -40,7 +45,13 @@ public class MainWindow extends JFrame {
      * @return JComponent
      */
     private JComponent buildNetworkEditor() {
-        return new NetworkEditor(model.getNetwork());
+        networkEditor = new NetworkEditor(model.getNetwork());
+        model.addEventListener((PropertyEvent event) -> {
+            if (event.getPropertyName().equals("network")) {
+                networkEditor.setModel(model.getNetwork());
+            }
+        });
+        return networkEditor;
     }
     
 }
