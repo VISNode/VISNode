@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import visnode.commons.Output;
 import visnode.pdi.Process;
 import visnode.pdi.ImageProcess;
@@ -22,7 +23,7 @@ public class ProcessNode implements Node, AttacherNode {
     /** Process class */
     private final Class<ImageProcess> process;
     /** Process input */
-    private final List<String> processInput;
+    private final List<NodeParameter> processInput;
     /** Process output */
     private final Map<String, Method> processOutput;
     /** Node connector */
@@ -48,15 +49,13 @@ public class ProcessNode implements Node, AttacherNode {
      *
      * @return List
      */
-    private List buildProcessInput() {
+    private List<NodeParameter> buildProcessInput() {
         Constructor constructor = process.getConstructors()[0];
-        List<String> inputs = new ArrayList<>();
-        for (Annotation[] t : constructor.getParameterAnnotations()) {
-            if (t.length != 0 && t[0] instanceof Input) {
-                inputs.add(((Input) t[0]).value());
-            }
-        }
-        return inputs;
+        return Arrays.stream(constructor.getParameters()).filter((p) -> {
+            return p.isAnnotationPresent(Input.class);
+        }).map((p) -> {
+            return new NodeParameter(p.getAnnotation(Input.class).value(), p.getType());
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -121,7 +120,7 @@ public class ProcessNode implements Node, AttacherNode {
             Constructor constructor = process.getConstructors()[0];
             List<Object> list = new ArrayList<>();
             processInput.forEach((input) -> {
-                list.add(getProperty(input));
+                list.add(getProperty(input.getName()));
             });
             return (Process) constructor.newInstance(list.toArray());
         } catch (IllegalArgumentException | ReflectiveOperationException ex) {
@@ -135,13 +134,15 @@ public class ProcessNode implements Node, AttacherNode {
     }
 
     @Override
-    public List<String> getInputParameters() {
+    public List<NodeParameter> getInputParameters() {
         return Collections.unmodifiableList(processInput);
     }
 
     @Override
-    public List<String> getOutputParameters() {
-        return new ArrayList(processOutput.keySet());
+    public List<NodeParameter> getOutputParameters() {
+        return processOutput.entrySet().stream().map((p) -> {
+            return new NodeParameter(p.getKey(), p.getValue().getReturnType());
+        }).collect(Collectors.toList());
     }
 
     @Override

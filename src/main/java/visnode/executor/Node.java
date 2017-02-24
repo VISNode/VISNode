@@ -1,7 +1,5 @@
 package visnode.executor;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,14 +20,14 @@ public interface Node {
      *
      * @return List
      */
-    public List<String> getInputParameters();
+    public List<NodeParameter> getInputParameters();
 
     /**
      * Returns outputs parameters
      *
      * @return List
      */
-    public List<String> getOutputParameters();
+    public List<NodeParameter> getOutputParameters();
     
     /**
      * Returns the connector

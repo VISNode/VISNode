@@ -66,12 +66,12 @@ public class EditNodeDecorator implements Node {
     }
 
     @Override
-    public List<String> getInputParameters() {
+    public List<NodeParameter> getInputParameters() {
         return decorated.getInputParameters();
     }
 
     @Override
-    public List<String> getOutputParameters() {
+    public List<NodeParameter> getOutputParameters() {
         return decorated.getOutputParameters();
     }
 

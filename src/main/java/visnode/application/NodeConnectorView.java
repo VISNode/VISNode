@@ -1,7 +1,9 @@
-
 package visnode.application;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import visnode.executor.Node;
+import visnode.executor.NodeParameter;
 import visnode.gui.JNodeConnector;
 
 /**
@@ -10,39 +12,57 @@ import visnode.gui.JNodeConnector;
  */
 public class NodeConnectorView extends JNodeConnector {
 
-    /** Attribute */
-    private final String attribute;
+    private final Node node;
+    private final NodeParameter parameter;
+
     /** Connection type */
     private final ConnectionType type;
-    
+
     /**
      * Creates a new connector view
-     * 
-     * @param attribute
-     * @param type 
+     *
+     * @param node
+     * @param parameter
+     * @param type
      */
-    public NodeConnectorView(String attribute, ConnectionType type) {
-        super(new JLabel(attribute), type == ConnectionType.INPUT ? Configuration.LEFT : Configuration.RIGHT);
-        this.attribute = attribute;
+    public NodeConnectorView(Node node, NodeParameter parameter, ConnectionType type) {
+        super(type == ConnectionType.INPUT ? Configuration.LEFT : Configuration.RIGHT);
+        this.node = node;
+        this.parameter = parameter;
         this.type = type;
+        initGui();
+    }
+
+    /**
+     * Initializes the interface
+     */
+    private void initGui() {
+        setComponent(buildComponent());
+    }
+
+    private JComponent buildComponent() {
+        if (parameter.getName().equals("image") && type == ConnectionType.OUTPUT) {
+            return new ImageNodeComponent(node);
+        }
+        return new JLabel(parameter.getName());
     }
 
     /**
      * Returns the attribute
-     * 
+     *
      * @return String
      */
     public String getAttribute() {
-        return attribute;
+        return parameter.getName();
     }
 
     /**
      * Returns the type
-     * 
+     *
      * @return ConnectionType
      */
     public ConnectionType getType() {
         return type;
     }
-    
+
 }

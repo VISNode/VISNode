@@ -1,15 +1,11 @@
 package visnode.application;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
+import visnode.executor.NodeParameter;
 import visnode.gui.JNode;
-import visnode.gui.JNodeConnector;
 
 /**
  * View for the node
@@ -61,11 +57,11 @@ public class NodeView extends JNode {
      * @param node 
      */
     private void createConnectors(Node node) {
-        for (String inputParameter : node.getInputParameters()) {
-            add(new NodeConnectorView(inputParameter, ConnectionType.INPUT));
+        for (NodeParameter inputParameter : node.getInputParameters()) {
+            add(new NodeConnectorView(node, inputParameter, ConnectionType.INPUT));
         }
-        for (String inputParameter : node.getOutputParameters()) {
-            add(new NodeConnectorView(inputParameter, ConnectionType.OUTPUT));
+        for (NodeParameter inputParameter : node.getOutputParameters()) {
+            add(new NodeConnectorView(node, inputParameter, ConnectionType.OUTPUT));
         }
     }
 

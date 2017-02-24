@@ -17,7 +17,9 @@ public class ProcessNodeTest {
     @Test
     public void testGetInputParameters() {
         ProcessNode process = new ProcessNode(TestProcess.class);
-        Assert.assertEquals(Arrays.asList("image"), process.getInputParameters());
+        Assert.assertEquals(Arrays.
+                asList(new NodeParameter("image", String.class)), 
+                process.getInputParameters());
     }
 
     /**
@@ -26,7 +28,8 @@ public class ProcessNodeTest {
     @Test
     public void testGetOutputParameters() {
         ProcessNode process = new ProcessNode(TestProcess.class);
-        Assert.assertEquals(Arrays.asList("output", "image"),
+        Assert.assertEquals(Arrays.asList(new NodeParameter("output", String.class),
+                new NodeParameter("image", String.class)),
                 process.getOutputParameters());
     }
 

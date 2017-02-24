@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 /**
  * Node connector

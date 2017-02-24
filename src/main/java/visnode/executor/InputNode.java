@@ -33,14 +33,14 @@ public class InputNode implements Node {
     }
 
     @Override
-    public List<String> getInputParameters() {
+    public List<NodeParameter> getInputParameters() {
         return new ArrayList<>();
     }
 
     @Override
-    public List<String> getOutputParameters() {
-        List<String> list = new ArrayList<>();
-        list.add("image");
+    public List<NodeParameter> getOutputParameters() {
+        List<NodeParameter> list = new ArrayList<>();
+        list.add(new NodeParameter("image", Image.class));
         return list;
     }
 

@@ -43,14 +43,14 @@ public class OutputNode implements Node, AttacherNode {
     
 
     @Override
-    public List<String> getInputParameters() {
-        List<String> list = new ArrayList<>();
-        list.add("image");
+    public List<NodeParameter> getInputParameters() {
+        List<NodeParameter> list = new ArrayList<>();
+        list.add(new NodeParameter("image", Image.class));
         return list;
     }
 
     @Override
-    public List<String> getOutputParameters() {
+    public List<NodeParameter> getOutputParameters() {
         return new ArrayList<>();
     }
 

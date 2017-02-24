@@ -81,7 +81,8 @@ public class TesteConection {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
         JPanel pLeft = new JPanel();
-        ImageIcon ico = new ImageIcon(getBuffered(image));
+        ImageIcon ico = new ImageIcon();
+        ico.setImage(getBuffered(image));
         JLabel l = new JLabel();
         l.setIcon(ico);
         pLeft.add(l);
