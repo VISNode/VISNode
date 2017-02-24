@@ -96,6 +96,7 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
             Point center = getCenter();
             Point positionInParent = getPosition(new Point(), this);
             center.translate(positionInParent.x, positionInParent.y);
+            System.out.println(center);
             return center;
         } catch (Exception e) {
             return new Point();
@@ -124,12 +125,16 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
             public void componentMoved(ComponentEvent e) {
                 listener.positionChanged(getPosition());
             }
+            
+            @Override
+            public void componentResized(ComponentEvent e) {
+                listener.positionChanged(getPosition());
+            }
 
             @Override
             public void componentShown(ComponentEvent e) {
                 listener.positionChanged(getPosition());
             }
-
         });
         getParentNode().addHierarchyListener((HierarchyEvent e) -> {
             listener.positionChanged(getPosition());

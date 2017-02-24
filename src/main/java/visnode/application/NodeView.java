@@ -1,10 +1,12 @@
 package visnode.application;
 
 import java.awt.Component;
+import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeParameter;
+import visnode.gui.EventHelper;
 import visnode.gui.JNode;
 
 /**
@@ -33,6 +35,9 @@ public class NodeView extends JNode {
         setBounds(model.getPosition().x, model.getPosition().y, 50, 50);
         addHierarchyListener((HierarchyEvent e) -> {
             updateSize();
+        });
+        EventHelper.addMoveListener(this, (ComponentEvent e) -> {
+            model.setPosition(getLocation());
         });
         createConnectors();
     }
