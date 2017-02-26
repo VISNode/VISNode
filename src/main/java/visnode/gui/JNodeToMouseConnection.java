@@ -61,7 +61,12 @@ public class JNodeToMouseConnection extends JNodeConnection implements DragListe
     private void createConnectionIfDroppedOnConnector() {
         JConnectorPoint endPoint = container.getConnectorPointAt(container.getMousePosition(true));
         if (endPoint != null) {
-            container.add(new JNodeConnection(connectorPoint, endPoint));
+            JNodeConnection connection = container.getConnection(connectorPoint, endPoint);
+            if (connection == null) {
+                container.add(new JNodeConnection(connectorPoint, endPoint));
+            } else {
+                container.removeConnection(connection);
+            }
         }
     }
 
