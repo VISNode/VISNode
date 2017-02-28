@@ -40,7 +40,6 @@ public class OutputNode implements Node, AttacherNode {
     private Image execute() {
         return (Image) connector.getConnection("image").getNode().getAttribute("image");
     }
-    
 
     @Override
     public List<NodeParameter> getInputParameters() {
@@ -58,5 +57,10 @@ public class OutputNode implements Node, AttacherNode {
     public NodeConnector getConnector() {
         return connector;
     }
-    
+
+    @Override
+    public String getName() {
+        return "Output";
+    }
+
 }

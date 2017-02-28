@@ -35,5 +35,12 @@ public interface Node {
      * @return NodeConnector
      */
     public NodeConnector getConnector();
+
+    /**
+     * Returns the name
+     * 
+     * @return String
+     */
+    public String getName();
     
 }

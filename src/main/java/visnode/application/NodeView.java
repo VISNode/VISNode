@@ -23,7 +23,7 @@ public class NodeView extends JNode {
      * @param model 
      */
     public NodeView(EditNodeDecorator model) {
-        super();
+        super(model.getName());
         this.model = model;
         initGui();
     }

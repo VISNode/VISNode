@@ -29,7 +29,7 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
      */
     public JConnectorPoint() {
         super();
-        color = Color.RED;
+        color = UIHelper.getColor("NodeConnection.point");
         initGui();
     }
 

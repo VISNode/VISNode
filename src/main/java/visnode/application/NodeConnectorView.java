@@ -7,14 +7,14 @@ import visnode.executor.NodeParameter;
 import visnode.gui.JNodeConnector;
 
 /**
- *
- * @author Nícolas Pohren
+ * Node connector view
  */
 public class NodeConnectorView extends JNodeConnector {
 
+    /** Node */
     private final Node node;
+    /** Node parameter */
     private final NodeParameter parameter;
-
     /** Connection type */
     private final ConnectionType type;
 
@@ -40,6 +40,11 @@ public class NodeConnectorView extends JNodeConnector {
         setComponent(buildComponent());
     }
 
+    /**
+     * Builds the components
+     * 
+     * @return JComponent
+     */
     private JComponent buildComponent() {
         if (parameter.getName().equals("image") && type == ConnectionType.OUTPUT) {
             return new ImageNodeComponent(node);

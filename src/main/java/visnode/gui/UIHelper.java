@@ -37,10 +37,12 @@ public class UIHelper {
         colors.put("Node.border", scheme.getUltraDarkColor().darker());
         colors.put("Node.Header.background1", scheme.getBackgroundFillColor());
         colors.put("Node.Header.background2", scheme.getBackgroundFillColor().darker());
+        colors.put("Node.Header.title", scheme.getUltraLightColor().brighter());
         colors.put("ConnectorPoint.border", scheme.getUltraDarkColor().darker());
         colors.put("NodeConnection.border", scheme.getUltraDarkColor().darker().darker());
         colors.put("NodeConnection.color1", scheme.getBackgroundFillColor());
         colors.put("NodeConnection.color2", scheme.getBackgroundFillColor().brighter());
+        colors.put("NodeConnection.point", scheme.getMidColor());
         return colors;
     }
     

@@ -49,4 +49,9 @@ public class InputNode implements Node {
         return connector;
     }
 
+    @Override
+    public String getName() {
+        return "Input";
+    }
+
 }

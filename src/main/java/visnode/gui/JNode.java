@@ -8,11 +8,24 @@ import javax.swing.JComponent;
  */
 public class JNode extends JComponent {
 
+    /** Title */
+    private final String title;
+    
     /**
      * Node
      */
     public JNode() {
+        this("");
+    }
+    
+    /**
+     * Node
+     * 
+     * @param title Title
+     */
+    public JNode(String title) {
         super();
+        this.title = title;
         initGui();
     }
 
@@ -20,7 +33,7 @@ public class JNode extends JComponent {
      * Initializes the interface
      */
     private void initGui() {
-        setBorder(new JNodeBorder(this));
+        setBorder(new JNodeBorder(this, title));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 

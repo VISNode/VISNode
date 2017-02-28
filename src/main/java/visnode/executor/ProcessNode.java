@@ -1,7 +1,6 @@
 package visnode.executor;
 
 import visnode.commons.Input;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -150,4 +149,9 @@ public class ProcessNode implements Node, AttacherNode {
         return connector;
     }
 
+    @Override
+    public String getName() {
+        return process.getSimpleName();
+    }
+   
 }

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class EditNodeDecorator implements Node {
 
-    /** Decrated node */
+    /** Decorated node */
     private final Node decorated;
     /** Node position */
     private Point position;
@@ -80,4 +80,9 @@ public class EditNodeDecorator implements Node {
         return decorated.getConnector();
     }
 
+    @Override
+    public String getName() {
+        return decorated.getName();
+    }
+    
 }
