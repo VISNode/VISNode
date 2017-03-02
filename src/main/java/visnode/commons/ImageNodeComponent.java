@@ -1,4 +1,4 @@
-package visnode.application;
+package visnode.commons;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -7,25 +7,25 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import visnode.commons.Image;
-import visnode.executor.Node;
+import visnode.commons.ImageFactory;
+import visnode.gui.ParameterComponent;
+import visnode.gui.ValueListener;
 
 /**
  * Image component
  */
-public class ImageNodeComponent extends JComponent {
+public class ImageNodeComponent extends JComponent implements ParameterComponent<Image> {
 
-    /** Model */
-    private final Node node;
+    /** Image */
+    private Image value;
     /** Image */
     private ImageIcon ico;
 
     /**
      * Creates a new image component
-     *
-     * @param node
      */
-    public ImageNodeComponent(Node node) {
-        this.node = node;
+    public ImageNodeComponent() {
+        this.value = ImageFactory.buildEmptyImage();
         initGui();
     }
 
@@ -72,7 +72,24 @@ public class ImageNodeComponent extends JComponent {
      * Updates the image
      */
     private void updateImage() {
-        ico.setImage(getBuffered((Image) node.getAttribute("image")).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        ico.setImage(getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        repaint();
+    }
+    
+    @Override
+    public JComponent getComponent() {
+        return this;
+    }
+
+    @Override
+    public void setValue(Image value) {
+        this.value = value;
+        updateImage();
+    }
+
+    @Override
+    public void addValueListener(ValueListener valueListener) {
+        // This component is read only
     }
 
 }

@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import visnode.commons.Image;
@@ -25,6 +26,10 @@ public class OutputNode implements Node, AttacherNode {
             return execute();
         }
         return null;
+    }
+    
+    @Override
+    public void addParameter(String parameter, Object value) {
     }
 
     @Override
@@ -56,6 +61,11 @@ public class OutputNode implements Node, AttacherNode {
     @Override
     public NodeConnector getConnector() {
         return connector;
+    }
+    
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    
     }
 
     @Override

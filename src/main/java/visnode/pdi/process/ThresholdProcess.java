@@ -3,6 +3,7 @@ package visnode.pdi.process;
 import visnode.commons.Image;
 import visnode.commons.Input;
 import visnode.commons.Output;
+import visnode.commons.Threshold;
 import visnode.pdi.PixelProcess;
 
 /**
@@ -15,7 +16,7 @@ import visnode.pdi.PixelProcess;
 public class ThresholdProcess extends PixelProcess<Image> {
 
     /** Threshold */
-    private final int threshold;
+    private final Threshold threshold;
 
     /**
      * Creates a new threshold process
@@ -23,7 +24,7 @@ public class ThresholdProcess extends PixelProcess<Image> {
      * @param image
      * @param threshold 
      */
-    public ThresholdProcess(@Input("image") Image image, @Input("threshold") int threshold) {
+    public ThresholdProcess(@Input("image") Image image, @Input("threshold") Threshold threshold) {
         super(image);
         this.threshold = threshold;
         setFinisher(() -> {
@@ -43,16 +44,20 @@ public class ThresholdProcess extends PixelProcess<Image> {
      * @return 
      */
     private int applyThreshold(int value) {
-        if (value < threshold) {
+        if (value < threshold.intValue()) {
             return image.getPixelValueRange().getLower();
         } else {
             return image.getPixelValueRange().getHigher();
         }
     }
-    
-    @Override
+
+    /**    
+     * Returns the output image
+     * 
+     * @return Image
+     */
     @Output("image")
-    public Image getOutput() {
+    public Image getImage() {
         return super.getOutput();
     }
 

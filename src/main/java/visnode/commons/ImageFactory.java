@@ -42,6 +42,15 @@ public class ImageFactory {
 
     /**
      * Creates a new empty image
+     * 
+     * @return Image
+     */
+    public static Image buildEmptyImage() {
+        return buildEmptyImage(1, 1, 1, new Range<>(0, 1));
+    }
+
+    /**
+     * Creates a new empty image
      *
      * @param channels
      * @param width

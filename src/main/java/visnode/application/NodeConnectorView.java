@@ -1,10 +1,11 @@
 package visnode.application;
 
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import visnode.executor.Node;
 import visnode.executor.NodeParameter;
 import visnode.gui.JNodeConnector;
+import visnode.gui.ParameterComponent;
+import visnode.gui.ParameterComponentWrapper;
 
 /**
  * Node connector view
@@ -13,10 +14,12 @@ public class NodeConnectorView extends JNodeConnector {
 
     /** Node */
     private final Node node;
-    /** Node parameter */
+    /** Parameter */
     private final NodeParameter parameter;
     /** Connection type */
     private final ConnectionType type;
+    /** Parameter component factory */
+    private final ParameterComponentFactory parameterComponentFactory;
 
     /**
      * Creates a new connector view
@@ -30,6 +33,7 @@ public class NodeConnectorView extends JNodeConnector {
         this.node = node;
         this.parameter = parameter;
         this.type = type;
+        this.parameterComponentFactory = new ParameterComponentFactory();
         initGui();
     }
 
@@ -46,10 +50,8 @@ public class NodeConnectorView extends JNodeConnector {
      * @return JComponent
      */
     private JComponent buildComponent() {
-        if (parameter.getName().equals("image") && type == ConnectionType.OUTPUT) {
-            return new ImageNodeComponent(node);
-        }
-        return new JLabel(parameter.getName());
+        ParameterComponent component = parameterComponentFactory.create(node, parameter, type);
+        return new ParameterComponentWrapper(component, node, parameter, type);
     }
 
     /**

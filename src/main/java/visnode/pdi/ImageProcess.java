@@ -48,7 +48,7 @@ public abstract class ImageProcess<O> implements Process {
      * 
      * @return O
      */
-    public O getOutput() {
+    protected O getOutput() {
         return output;
     }
 

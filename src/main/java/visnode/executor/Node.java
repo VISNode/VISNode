@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -15,6 +16,14 @@ public interface Node {
      */
     public Object getAttribute(String attribute);
 
+    /**
+     * Adds a new parameter
+     *
+     * @param parameter
+     * @param value
+     */
+    public void addParameter(String parameter, Object value);
+    
     /**
      * Returns inputs parameters
      *
@@ -42,5 +51,12 @@ public interface Node {
      * @return String
      */
     public String getName();
+    
+    /**
+     * Adds a property change listener
+     * 
+     * @param listener 
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener);
     
 }
