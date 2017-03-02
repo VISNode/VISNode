@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import visnode.commons.Image;
@@ -31,7 +32,11 @@ public class InputNode implements Node {
         }
         return null;
     }
-
+    
+    @Override
+    public void addParameter(String parameter, Object value) {
+    }
+    
     @Override
     public List<NodeParameter> getInputParameters() {
         return new ArrayList<>();
@@ -49,4 +54,8 @@ public class InputNode implements Node {
         return connector;
     }
 
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    }
+    
 }

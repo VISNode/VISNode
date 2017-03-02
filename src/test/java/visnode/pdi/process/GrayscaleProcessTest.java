@@ -29,7 +29,7 @@ public class GrayscaleProcessTest {
         
         GrayscaleProcess process = new GrayscaleProcess(image);
         process.process();
-        Image output = process.getOutput();
+        Image output = process.getImage();
         ImageAssert.assertImage(new Image(new int[][][]{
             {
                 {0, 9, 7, 21, 27, 34, 20, 51, 37, 36, 50, 71, 41, 90, 69}

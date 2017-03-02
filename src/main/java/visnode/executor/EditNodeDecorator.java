@@ -1,6 +1,7 @@
 package visnode.executor;
 
 import java.awt.Point;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -64,7 +65,12 @@ public class EditNodeDecorator implements Node {
     public Object getAttribute(String attribute) {
         return decorated.getAttribute(attribute);
     }
-
+    
+    @Override
+    public void addParameter(String parameter, Object value) {
+        decorated.addParameter(parameter, value);
+    }
+    
     @Override
     public List<NodeParameter> getInputParameters() {
         return decorated.getInputParameters();
@@ -78,6 +84,11 @@ public class EditNodeDecorator implements Node {
     @Override
     public NodeConnector getConnector() {
         return decorated.getConnector();
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        decorated.addPropertyChangeListener(listener);
     }
 
 }

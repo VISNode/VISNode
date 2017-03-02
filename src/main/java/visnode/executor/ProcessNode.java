@@ -1,7 +1,8 @@
 package visnode.executor;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import visnode.commons.Input;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class ProcessNode implements Node, AttacherNode {
     private final NodeConnector connector;
     /** Node parameter */
     private final Map<String, Object> parameters;
+    /** Property change support */
+    private final PropertyChangeSupport propertyChangeSupport;
 
     /**
      * Creates a new process node
@@ -42,6 +45,7 @@ public class ProcessNode implements Node, AttacherNode {
         this.processOutput = buildProcessOutput();
         this.connector = new NodeConnector();
         this.parameters = new HashMap<>();
+        this.propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
     /**
@@ -65,7 +69,7 @@ public class ProcessNode implements Node, AttacherNode {
      */
     private Map buildProcessOutput() {
         Map outputs = new HashMap<>();
-        Method[] methods = process.getDeclaredMethods();
+        Method[] methods = process.getMethods();
         Arrays.stream(methods).filter((method) -> {
             return method.getAnnotation(Output.class) != null;
         }).forEach((method) -> {
@@ -77,23 +81,26 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public Object getAttribute(String attribute) {
-        try {
-            Process prc = buildProcess();
-            prc.process();
-            return processOutput.get(attribute).invoke(prc);
-        } catch (IllegalArgumentException | ReflectiveOperationException ex) {
-            throw new RuntimeException(ex);
+        if (parameters.containsKey(attribute)) {
+            return parameters.get(attribute);
         }
+        if (processOutput.containsKey(attribute)) {
+            try {
+                Process prc = buildProcess();
+                prc.process();
+                return processOutput.get(attribute).invoke(prc);
+            } catch (IllegalArgumentException | ReflectiveOperationException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return null;
     }
 
-    /**
-     * Adds a new parameter
-     *
-     * @param parameter
-     * @param value
-     */
+    @Override
     public void addParameter(String parameter, Object value) {
+        Object oldValue = parameters.get(parameter);
         parameters.put(parameter, value);
+        propertyChangeSupport.firePropertyChange(parameter, oldValue, value);
     }
 
     /**
@@ -149,5 +156,11 @@ public class ProcessNode implements Node, AttacherNode {
     public NodeConnector getConnector() {
         return connector;
     }
+    
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
 
 }

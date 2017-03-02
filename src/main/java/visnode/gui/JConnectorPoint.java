@@ -96,7 +96,6 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
             Point center = getCenter();
             Point positionInParent = getPosition(new Point(), this);
             center.translate(positionInParent.x, positionInParent.y);
-            System.out.println(center);
             return center;
         } catch (Exception e) {
             return new Point();

@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import visnode.application.mvc.Model;
 import visnode.application.mvc.PropertyEvent;
 import visnode.commons.ImageFactory;
+import visnode.commons.Threshold;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
@@ -43,17 +44,18 @@ public class VISNodeModel implements Model {
             information.addConnection("image", grayScale, "image");
 
             ProcessNode threshold = new ProcessNode(ThresholdProcess.class);
-            threshold.addConnection("threshold", information, "average");
+//            threshold.addConnection("threshold", information, "average");
+            threshold.addParameter("threshold", new Threshold(128));
             threshold.addConnection("image", grayScale, "image");
 
             OutputNode out = new OutputNode();
             out.addConnection("image", threshold, "image");
             
-            network.add(new EditNodeDecorator(input, new Point(50, 125)));
-            network.add(new EditNodeDecorator(grayScale, new Point(200, 50)));
-            network.add(new EditNodeDecorator(information, new Point(200, 200)));
-            network.add(new EditNodeDecorator(threshold, new Point(350, 125)));
-            network.add(new EditNodeDecorator(out, new Point(500, 125)));
+            network.add(new EditNodeDecorator(input, new Point(25, 12)));
+            network.add(new EditNodeDecorator(grayScale, new Point(285, 12)));
+            network.add(new EditNodeDecorator(threshold, new Point(700, 95)));
+            network.add(new EditNodeDecorator(information, new Point(700, 381)));
+            network.add(new EditNodeDecorator(out, new Point(1050, 155)));
             
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);

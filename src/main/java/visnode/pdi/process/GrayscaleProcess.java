@@ -4,6 +4,7 @@ import visnode.commons.Image;
 import visnode.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
+import visnode.commons.Range;
 import visnode.pdi.PixelProcess;
 
 /**
@@ -37,9 +38,13 @@ public class GrayscaleProcess extends PixelProcess<Image> {
         grayImage.set(Image.CHANNEL_GRAY, x, y, grayValue + (value / 3));
     }
 
-    @Override
+    /**
+     * Returns the output image
+     * 
+     * @return Image
+     */
     @Output("image")
-    public Image getOutput() {
+    public Image getImage() {
         return super.getOutput();
     }
     
