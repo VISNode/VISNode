@@ -73,4 +73,35 @@ public class JNodeContainer extends JComponent {
         return null;
     }
 
+    /**
+     * Returns the connection between two connector points, or {@code null} if
+     * none.
+     * 
+     * @param start
+     * @param end
+     * @return JNodeConnection
+     */
+    public JNodeConnection getConnection(JConnectorPoint start, JConnectorPoint end) {
+        for (int i = 0; i < getComponentCount(); i++) {
+            Component child = getComponent(i);
+            if (child instanceof JNodeConnection) {
+                JNodeConnection connection = (JNodeConnection) child;
+                if ((connection.getFirst() == start || connection.getSecond() == start) && 
+                    (connection.getFirst() == end || connection.getSecond() == end)) {
+                    return connection;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Removes a connection
+     * 
+     * @param connection 
+     */
+    public void removeConnection(JNodeConnection connection) {
+        remove(connection);
+    }
+
 }
