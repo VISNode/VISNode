@@ -3,6 +3,7 @@ package visnode.executor;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import visnode.pdi.Process;
 
 /**
  * Node decorator that add editing capabilities
@@ -62,6 +63,11 @@ public class EditNodeDecorator implements Node {
     }
     
     @Override
+    public Object getParameter(String attribute) {
+        return decorated.getParameter(attribute);
+    }
+    
+    @Override
     public Object getAttribute(String attribute) {
         return decorated.getAttribute(attribute);
     }
@@ -85,6 +91,13 @@ public class EditNodeDecorator implements Node {
     public NodeConnector getConnector() {
         return decorated.getConnector();
     }
+
+    @Override
+    public Process executeProcess(String attribute) throws Exception {
+        return null;
+    }
+    
+    
 
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {

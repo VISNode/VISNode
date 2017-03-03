@@ -77,7 +77,7 @@ public class NetworkEditor extends JComponent {
     private void createConnections() {
         for (EditNodeDecorator node : model.getNodes()) {
             for (Map.Entry<String, NodeConnection> entry : node.getConnector().getConnections().entrySet()) {
-                buildConnection(node, entry.getKey(), entry.getValue().getNode(), entry.getValue().getAttribute());
+                buildConnection(node, entry.getKey(), entry.getValue().getLeftNode(), entry.getValue().getLeftAttribute());
             }
         }
     }

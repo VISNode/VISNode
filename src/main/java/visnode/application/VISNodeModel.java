@@ -48,12 +48,18 @@ public class VISNodeModel implements Model {
             threshold.addParameter("threshold", new Threshold(128));
             threshold.addConnection("image", grayScale, "image");
 
+            ProcessNode threshold2 = new ProcessNode(ThresholdProcess.class);
+//            threshold.addConnection("threshold", information, "average");
+            threshold2.addParameter("threshold", new Threshold(128));
+            threshold2.addConnection("image", threshold, "image");
+
             OutputNode out = new OutputNode();
-            out.addConnection("image", threshold, "image");
+            out.addConnection("image", threshold2, "image");
             
             network.add(new EditNodeDecorator(input, new Point(25, 12)));
             network.add(new EditNodeDecorator(grayScale, new Point(285, 12)));
             network.add(new EditNodeDecorator(threshold, new Point(700, 95)));
+            network.add(new EditNodeDecorator(threshold2, new Point(700, 95)));
             network.add(new EditNodeDecorator(information, new Point(700, 381)));
             network.add(new EditNodeDecorator(out, new Point(1050, 155)));
             

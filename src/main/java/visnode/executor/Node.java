@@ -2,12 +2,21 @@ package visnode.executor;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import visnode.pdi.Process;
 
 /**
  * Node representation
  */
 public interface Node {
 
+    /**
+     * Returns the parameter value
+     *
+     * @param attribute
+     * @return Object
+     */
+    public Object getParameter(String attribute);
+    
     /**
      * Returns the attribute value
      *
@@ -58,5 +67,7 @@ public interface Node {
      * @param listener 
      */
     public void addPropertyChangeListener(PropertyChangeListener listener);
+    
+    public Process executeProcess(String attribute) throws Exception;
     
 }

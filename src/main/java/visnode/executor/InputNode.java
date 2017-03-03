@@ -22,7 +22,12 @@ public class InputNode implements Node {
      */
     public InputNode(Image imagem) {
         this.imagem = imagem;
-        this.connector = new NodeConnector();
+        this.connector = new NodeConnector(this);
+    }
+
+    @Override
+    public Object getParameter(String attribute) {
+        return null;
     }
 
     @Override
@@ -52,6 +57,11 @@ public class InputNode implements Node {
     @Override
     public NodeConnector getConnector() {
         return connector;
+    }
+    
+    @Override
+    public visnode.pdi.Process executeProcess(String attribute) throws Exception {
+        return null;
     }
 
     @Override

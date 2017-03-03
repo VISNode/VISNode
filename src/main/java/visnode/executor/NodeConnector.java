@@ -8,13 +8,16 @@ import java.util.Map;
  */
 public class NodeConnector {
 
+    /** Output node */
+    private final Node output;
     /** Node connections */
     private final Map<String, NodeConnection> connections;
 
     /**
      * Create a new node connector
      */
-    public NodeConnector() {
+    public NodeConnector(Node output) {
+        this.output = output;
         this.connections = new HashMap<>();
     }
 
@@ -26,7 +29,7 @@ public class NodeConnector {
      * @param attributeNode
      */
     public void addConnection(String attribute, Node node, String attributeNode) {
-        connections.put(attribute, new NodeConnection(node, attributeNode));
+        connections.put(attribute, new NodeConnection(node, attributeNode, output, attribute));
     }
 
     /**

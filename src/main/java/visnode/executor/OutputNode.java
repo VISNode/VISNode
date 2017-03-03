@@ -1,6 +1,8 @@
 package visnode.executor;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 import visnode.commons.Image;
@@ -12,14 +14,30 @@ public class OutputNode implements Node, AttacherNode {
 
     /** Node connector */
     private final NodeConnector connector;
+    /** Property change support */
+    private final PropertyChangeSupport propertyChangeSupport;
 
+    private Image img;
+    
     /**
      * Creates a new output node
      */
     public OutputNode() {
-        this.connector = new NodeConnector();
+        this.connector = new NodeConnector(this);
+        propertyChangeSupport = new PropertyChangeSupport(this);
+        
+        img = null;
+        
     }
 
+    @Override
+    public Object getParameter(String attribute) {
+        if (attribute.equals("image")) {
+            return execute();
+        }
+        return null;
+    }
+    
     @Override
     public Object getAttribute(String attribute) {
         if (attribute.equals("image")) {
@@ -30,10 +48,12 @@ public class OutputNode implements Node, AttacherNode {
     
     @Override
     public void addParameter(String parameter, Object value) {
+        execute();
+        propertyChangeSupport.firePropertyChange(parameter, null, value);
     }
 
     @Override
-    public void addConnection(String attribute, Node node, String attributeNode) {
+    public void addConnection(final String attribute, Node node, String attributeNode) {
         connector.addConnection(attribute, node, attributeNode);
     }
 
@@ -43,7 +63,11 @@ public class OutputNode implements Node, AttacherNode {
      * @return Image
      */
     private Image execute() {
-        return (Image) connector.getConnection("image").getNode().getAttribute("image");
+        if (img == null) {
+            img = (Image) connector.getConnection("image").getLeftNode().getAttribute("image");
+            propertyChangeSupport.firePropertyChange("image", null, img);
+        }
+        return img;
     }
 
     @Override
@@ -65,7 +89,14 @@ public class OutputNode implements Node, AttacherNode {
     
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
     
+    @Override
+    public visnode.pdi.Process executeProcess(String attribute) throws Exception {
+        img = null;
+        execute();
+        return null;
     }
 
     @Override

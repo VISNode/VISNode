@@ -58,7 +58,11 @@ public class ParameterComponentWrapper extends JComponent {
      * Updates the component value
      */
     private void updateComponentValue() {
-        component.setValue(node.getAttribute(parameter.getName()));
+        if (type == ConnectionType.INPUT) {
+            component.setValue(node.getParameter(parameter.getName()));
+        } else {
+            component.setValue(node.getAttribute(parameter.getName()));
+        }
     }
     
 }

@@ -33,6 +33,7 @@ public class ProcessNode implements Node, AttacherNode {
     private final Map<String, Object> parameters;
     /** Property change support */
     private final PropertyChangeSupport propertyChangeSupport;
+    private boolean invalidated;
 
     /**
      * Creates a new process node
@@ -43,9 +44,10 @@ public class ProcessNode implements Node, AttacherNode {
         this.process = process;
         this.processInput = buildProcessInput();
         this.processOutput = buildProcessOutput();
-        this.connector = new NodeConnector();
+        this.connector = new NodeConnector(this);
         this.parameters = new HashMap<>();
         this.propertyChangeSupport = new PropertyChangeSupport(this);
+        invalidated = true;
     }
 
     /**
@@ -80,27 +82,48 @@ public class ProcessNode implements Node, AttacherNode {
     }
 
     @Override
+    public Object getParameter(String attribute) {
+        return parameters.get(attribute);
+    }
+
+    @Override
     public Object getAttribute(String attribute) {
-        if (parameters.containsKey(attribute)) {
-            return parameters.get(attribute);
-        }
         if (processOutput.containsKey(attribute)) {
             try {
                 Process prc = buildProcess();
                 prc.process();
+                if (invalidated) {
+                    invalidated = false;
+                    propertyChangeSupport.firePropertyChange("image", null, processOutput.get(attribute).invoke(prc));
+                } 
                 return processOutput.get(attribute).invoke(prc);
-            } catch (IllegalArgumentException | ReflectiveOperationException ex) {
+            } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }
         }
         return null;
     }
+    
+    @Override
+    public Process executeProcess(String attribute) throws Exception {
+        if (processOutput.containsKey(attribute)) {
+            Process prc = buildProcess();
+            prc.process();
+            propertyChangeSupport.firePropertyChange("image", null, processOutput.get(attribute).invoke(prc));
+            return prc;
+        } 
+        System.out.println(this + " " + attribute);
+        return null;
+    }
+
 
     @Override
     public void addParameter(String parameter, Object value) {
         Object oldValue = parameters.get(parameter);
         parameters.put(parameter, value);
         propertyChangeSupport.firePropertyChange(parameter, oldValue, value);
+        
+        invalidated = true;
     }
 
     /**
@@ -114,7 +137,7 @@ public class ProcessNode implements Node, AttacherNode {
             return parameters.get(parameter);
         }
         NodeConnection connection = connector.getConnection(parameter);
-        return connection.getNode().getAttribute(connection.getAttribute());
+        return connection.getLeftNode().getAttribute(connection.getLeftAttribute());
     }
 
     /**
@@ -167,5 +190,5 @@ public class ProcessNode implements Node, AttacherNode {
     public String getName() {
         return process.getSimpleName();
     }
-   
+
 }
