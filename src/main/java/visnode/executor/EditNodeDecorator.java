@@ -61,20 +61,25 @@ public class EditNodeDecorator implements Node {
     public Node getDecorated() {
         return decorated;
     }
-    
+
     @Override
-    public Object getParameter(String attribute) {
-        return decorated.getParameter(attribute);
+    public Object getInput(String attribute) {
+        return decorated.getInput(attribute);
     }
-    
+
     @Override
-    public Object getAttribute(String attribute) {
-        return decorated.getAttribute(attribute);
+    public void setInput(String attribute, Object value) {
+        decorated.setInput(attribute, value);
     }
-    
+
     @Override
-    public void addParameter(String parameter, Object value) {
-        decorated.addParameter(parameter, value);
+    public Object getOutput(String attribute) {
+        return decorated.getOutput(attribute);
+    }
+
+    @Override
+    public void setOutput(String attribute, Object value) {
+        decorated.setOutput(attribute, value);
     }
     
     @Override
@@ -93,17 +98,16 @@ public class EditNodeDecorator implements Node {
     }
 
     @Override
-    public Process executeProcess(String attribute) throws Exception {
-        return null;
+    public void addInputChangeListener(PropertyChangeListener listener) {
+        decorated.addInputChangeListener(listener);
     }
-    
-    
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        decorated.addPropertyChangeListener(listener);
+    public void addOutputChangeListener(PropertyChangeListener listener) {
+        decorated.addOutputChangeListener(listener);
     }
 
+    @Override
     public String getName() {
         return decorated.getName();
     }

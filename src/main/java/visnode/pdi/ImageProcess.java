@@ -1,6 +1,7 @@
 package visnode.pdi;
 
 import visnode.commons.Image;
+import visnode.commons.ImageFactory;
 
 /**
  * Process that works on top of a image
@@ -24,7 +25,11 @@ public abstract class ImageProcess<O> implements Process {
      * @param image 
      */
     public ImageProcess(Image image) {
-        this.image = image;
+        if (image == null) {
+            this.image = ImageFactory.buildEmptyImage();
+        } else {
+            this.image = image;
+        }
     }
 
     @Override

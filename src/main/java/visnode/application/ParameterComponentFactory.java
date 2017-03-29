@@ -1,7 +1,7 @@
 
 package visnode.application;
 
-import visnode.commons.ImageNodeComponent;
+import visnode.gui.ImageNodeComponent;
 import visnode.commons.Image;
 import visnode.commons.Threshold;
 import visnode.executor.EditNodeDecorator;

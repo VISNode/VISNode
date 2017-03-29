@@ -1,6 +1,7 @@
 package visnode.pdi.process;
 
 import visnode.commons.Image;
+import visnode.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.commons.Threshold;
@@ -17,6 +18,9 @@ public class ThresholdProcess extends PixelProcess<Image> {
 
     /** Threshold */
     private final Threshold threshold;
+    /** Gray scale image */
+    private final Image grayImage;
+
 
     /**
      * Creates a new threshold process
@@ -27,14 +31,26 @@ public class ThresholdProcess extends PixelProcess<Image> {
     public ThresholdProcess(@Input("image") Image image, @Input("threshold") Threshold threshold) {
         super(image);
         this.threshold = threshold;
+        Image resultImage;
+        if (image == null) {
+            resultImage = ImageFactory.buildEmptyImage();
+        } else {
+            resultImage = ImageFactory.
+                buildEmptyImage(Image.CHANNELS_GRAYSCALE,
+                        image.getWidth(),
+                        image.getHeight(),
+                        image.getPixelValueRange());
+        }
+        this.grayImage = resultImage;
         setFinisher(() -> {
-            setOutput(image);
+            setOutput(grayImage);
         });
     }
+    
 
     @Override
     protected void process(int channel, int x, int y, int value) {
-        image.set(channel, x, y, applyThreshold(value));
+        grayImage.set(channel, x, y, applyThreshold(value));
     }
 
     /**

@@ -22,17 +22,22 @@ import visnode.pdi.ImageProcess;
 public class ProcessNode implements Node, AttacherNode {
 
     /** Process class */
-    private final Class<ImageProcess> process;
+    private final Class<ImageProcess> processType;
     /** Process input */
     private final List<NodeParameter> processInput;
     /** Process output */
     private final Map<String, Method> processOutput;
     /** Node connector */
     private final NodeConnector connector;
-    /** Node parameter */
-    private final Map<String, Object> parameters;
-    /** Property change support */
-    private final PropertyChangeSupport propertyChangeSupport;
+    /** Node input */
+    private final Map<String, Object> input;
+    /** Input change support */
+    private final PropertyChangeSupport inputChangeSupport;
+    /** Output change support */
+    private final PropertyChangeSupport outputChangeSupport;
+    /** The f instance to run */
+    private Process process;    
+    /** If the process has been invalidated */
     private boolean invalidated;
 
     /**
@@ -41,12 +46,13 @@ public class ProcessNode implements Node, AttacherNode {
      * @param process
      */
     public ProcessNode(Class process) {
-        this.process = process;
+        this.processType = process;
         this.processInput = buildProcessInput();
         this.processOutput = buildProcessOutput();
         this.connector = new NodeConnector(this);
-        this.parameters = new HashMap<>();
-        this.propertyChangeSupport = new PropertyChangeSupport(this);
+        this.input = new HashMap<>();
+        this.inputChangeSupport = new PropertyChangeSupport(this);
+        this.outputChangeSupport = new PropertyChangeSupport(this);
         invalidated = true;
     }
 
@@ -56,7 +62,7 @@ public class ProcessNode implements Node, AttacherNode {
      * @return List
      */
     private List<NodeParameter> buildProcessInput() {
-        Constructor constructor = process.getConstructors()[0];
+        Constructor constructor = processType.getConstructors()[0];
         return Arrays.stream(constructor.getParameters()).filter((p) -> {
             return p.isAnnotationPresent(Input.class);
         }).map((p) -> {
@@ -71,7 +77,7 @@ public class ProcessNode implements Node, AttacherNode {
      */
     private Map buildProcessOutput() {
         Map outputs = new HashMap<>();
-        Method[] methods = process.getMethods();
+        Method[] methods = processType.getMethods();
         Arrays.stream(methods).filter((method) -> {
             return method.getAnnotation(Output.class) != null;
         }).forEach((method) -> {
@@ -80,64 +86,47 @@ public class ProcessNode implements Node, AttacherNode {
         });
         return outputs;
     }
-
-    @Override
-    public Object getParameter(String attribute) {
-        return parameters.get(attribute);
-    }
-
-    @Override
-    public Object getAttribute(String attribute) {
-        if (processOutput.containsKey(attribute)) {
-            try {
-                Process prc = buildProcess();
-                prc.process();
-                if (invalidated) {
-                    invalidated = false;
-                    propertyChangeSupport.firePropertyChange("image", null, processOutput.get(attribute).invoke(prc));
-                } 
-                return processOutput.get(attribute).invoke(prc);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        return null;
-    }
     
     @Override
-    public Process executeProcess(String attribute) throws Exception {
-        if (processOutput.containsKey(attribute)) {
-            Process prc = buildProcess();
-            prc.process();
-            propertyChangeSupport.firePropertyChange("image", null, processOutput.get(attribute).invoke(prc));
-            return prc;
-        } 
-        System.out.println(this + " " + attribute);
-        return null;
+    public Object getInput(String attribute) {
+        return input.get(attribute);
     }
 
-
     @Override
-    public void addParameter(String parameter, Object value) {
-        Object oldValue = parameters.get(parameter);
-        parameters.put(parameter, value);
-        propertyChangeSupport.firePropertyChange(parameter, oldValue, value);
-        
+    public void setInput(String attribute, Object value) {
+        Object oldValue = input.get(attribute);
+        input.put(attribute, value);
+        inputChangeSupport.firePropertyChange(attribute, oldValue, value);
         invalidated = true;
     }
 
-    /**
-     * Returns a node property
-     *
-     * @param parameter
-     * @return Object
-     */
-    private Object getProperty(String parameter) {
-        if (parameters.containsKey(parameter)) {
-            return parameters.get(parameter);
+    @Override
+    public Object getOutput(String attribute) {
+        if (invalidated) {
+            process();
         }
-        NodeConnection connection = connector.getConnection(parameter);
-        return connection.getLeftNode().getAttribute(connection.getLeftAttribute());
+        try {
+            return processOutput.get(attribute).invoke(process);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void setOutput(String attribute, Object value) {
+    }
+
+    /**
+     * Runs the process
+     */
+    public void process() {
+        process = buildProcess();
+        process.process();
+        invalidated = false;
+        for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
+            outputChangeSupport.firePropertyChange(entry.getKey(), null, getOutput(entry.getKey()));
+        }
     }
 
     /**
@@ -147,10 +136,10 @@ public class ProcessNode implements Node, AttacherNode {
      */
     private Process buildProcess() {
         try {
-            Constructor constructor = process.getConstructors()[0];
+            Constructor constructor = processType.getConstructors()[0];
             List<Object> list = new ArrayList<>();
             processInput.forEach((input) -> {
-                list.add(getProperty(input.getName()));
+                list.add(getInput(input.getName()));
             });
             return (Process) constructor.newInstance(list.toArray());
         } catch (IllegalArgumentException | ReflectiveOperationException ex) {
@@ -181,14 +170,19 @@ public class ProcessNode implements Node, AttacherNode {
     }
     
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    public void addInputChangeListener(PropertyChangeListener listener) {
+        inputChangeSupport.addPropertyChangeListener(listener);
+    }
+    
+    @Override
+    public void addOutputChangeListener(PropertyChangeListener listener) {
+        outputChangeSupport.addPropertyChangeListener(listener);
     }
 
 
     @Override
     public String getName() {
-        return process.getSimpleName();
+        return processType.getSimpleName();
     }
 
 }

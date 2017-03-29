@@ -10,28 +10,36 @@ import visnode.pdi.Process;
 public interface Node {
 
     /**
-     * Returns the parameter value
-     *
+     * Returns a input value
+     * 
      * @param attribute
      * @return Object
      */
-    public Object getParameter(String attribute);
+    public Object getInput(String attribute);
     
     /**
-     * Returns the attribute value
-     *
+     * Sets a input value
+     * 
+     * @param attribute
+     * @param value 
+     */
+    public void setInput(String attribute, Object value);
+
+    /**
+     * Returns a output value
+     * 
      * @param attribute
      * @return Object
      */
-    public Object getAttribute(String attribute);
-
+    public Object getOutput(String attribute);
+    
     /**
-     * Adds a new parameter
-     *
-     * @param parameter
-     * @param value
+     * Sets a output value
+     * 
+     * @param attribute
+     * @param value 
      */
-    public void addParameter(String parameter, Object value);
+    public void setOutput(String attribute, Object value);
     
     /**
      * Returns inputs parameters
@@ -62,12 +70,17 @@ public interface Node {
     public String getName();
     
     /**
-     * Adds a property change listener
+     * Adds a input change listener
      * 
      * @param listener 
      */
-    public void addPropertyChangeListener(PropertyChangeListener listener);
-    
-    public Process executeProcess(String attribute) throws Exception;
+    public void addInputChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Adds a input change listener
+     * 
+     * @param listener 
+     */
+    public void addOutputChangeListener(PropertyChangeListener listener);
     
 }

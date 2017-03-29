@@ -1,15 +1,17 @@
-package visnode.commons;
+package visnode.gui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import visnode.commons.Image;
 import visnode.commons.ImageFactory;
-import visnode.gui.ParameterComponent;
-import visnode.gui.ValueListener;
 
 /**
  * Image component
@@ -48,7 +50,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
         return new JLabel(ico);
     }
 
-    private BufferedImage getBuffered(Image image) {
+    public static BufferedImage getBuffered(Image image) {
         BufferedImage buff = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
@@ -75,6 +77,13 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
         ico.setImage(getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
         repaint();
     }
+
+    @Override
+    public void paint(Graphics g) {
+        g.drawImage(ico.getImage(), 0, 0, this);
+    }
+    
+    
     
     @Override
     public JComponent getComponent() {

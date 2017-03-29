@@ -26,22 +26,31 @@ public class InputNode implements Node {
     }
 
     @Override
-    public Object getParameter(String attribute) {
-        return null;
+    public Object getInput(String attribute) {
+        throw new InvalidAttributeException(attribute);
     }
 
     @Override
-    public Object getAttribute(String attribute) {
+    public void setInput(String attribute, Object value) {
+        throw new InvalidAttributeException(attribute);
+    }
+
+    @Override
+    public Object getOutput(String attribute) {
         if (attribute.equals("image")) {
             return imagem;
         }
-        return null;
+        throw new InvalidAttributeException(attribute);
     }
-    
+
     @Override
-    public void addParameter(String parameter, Object value) {
+    public void setOutput(String attribute, Object value) {
+        if (attribute.equals("image")) {
+            throw new IllegalStateException("Image is final and cannot be modified");
+        }
+        throw new InvalidAttributeException(attribute);
     }
-    
+
     @Override
     public List<NodeParameter> getInputParameters() {
         return new ArrayList<>();
@@ -60,14 +69,14 @@ public class InputNode implements Node {
     }
     
     @Override
-    public visnode.pdi.Process executeProcess(String attribute) throws Exception {
-        return null;
+    public void addInputChangeListener(PropertyChangeListener listener) {
     }
 
     @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
+    public void addOutputChangeListener(PropertyChangeListener listener) {
     }
-    
+
+    @Override
     public String getName() {
         return "Input";
     }

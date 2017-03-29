@@ -3,7 +3,6 @@ package visnode.gui;
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import visnode.commons.Threshold;
 
 /**

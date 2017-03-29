@@ -28,22 +28,20 @@ public class NodeConnection {
         this.leftAttribute = leftAttribute;
         this.rightNode = rightNode;
         this.rightAttribute = rightAttribute;
-        
-        System.out.println("conectei " + leftNode + ":" + leftAttribute + " com " + rightNode + ":" + rightAttribute);
-        leftNode.addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals(leftAttribute)) {
-                    try {
-                        rightNode.executeProcess(rightAttribute);
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+        leftNode.addOutputChangeListener((PropertyChangeEvent evt) -> {
+            if (evt.getPropertyName().equals(leftAttribute)) {
+                try {
+                    rightNode.setInput(rightAttribute, evt.getNewValue());
+                } catch(Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
-        
-        
+        try {
+            rightNode.setInput(rightAttribute, leftNode.getOutput(leftAttribute));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }   
     }
 
     /**
