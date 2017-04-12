@@ -5,11 +5,14 @@ import java.awt.Component;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import visnode.executor.AttacherNode;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeConnection;
 import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
+import visnode.gui.NodeConnectionEvent;
+import visnode.gui.NodeConnectionListener;
 
 /**
  * Network editor
@@ -47,6 +50,7 @@ public class NetworkEditor extends JComponent {
      */
     private JComponent buildNodeContainer() {
         nodeContainer = new JNodeContainer();
+        nodeContainer.addNodeConnectionListener(new NodeConnectionSynchronizer());
         return nodeContainer;
     }
 
@@ -145,6 +149,28 @@ public class NetworkEditor extends JComponent {
     public void setModel(NodeNetwork model) {
         this.model = model;
         fullUpdate();
+    }
+
+    /**
+     * Node connection synchronizer
+     */
+    private static class NodeConnectionSynchronizer implements NodeConnectionListener {
+
+        @Override
+        public void connectionCreated(NodeConnectionEvent evt) {
+            NodeView leftView = (NodeView) evt.getLeft().getParentNode();
+            NodeConnectorView leftConnector = (NodeConnectorView) evt.getLeft().getParentNodeConnector();
+            Node leftNode = leftView.getModel();
+            String leftAttr = leftConnector.getAttribute();
+            //
+            NodeView rightView = (NodeView) evt.getRight().getParentNode();
+            EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
+            AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
+            NodeConnectorView rightConnector = (NodeConnectorView) evt.getRight().getParentNodeConnector();
+            String rightAttr = rightConnector.getAttribute();
+            //
+            rightNode.addConnection(rightAttr, leftNode, leftAttr);
+        }
     }
 
 }

@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.event.EventListenerList;
 import visnode.commons.Output;
+import visnode.commons.TypeConverter;
 import visnode.pdi.Process;
 import visnode.pdi.ImageProcess;
 
@@ -35,7 +37,9 @@ public class ProcessNode implements Node, AttacherNode {
     private final PropertyChangeSupport inputChangeSupport;
     /** Output change support */
     private final PropertyChangeSupport outputChangeSupport;
-    /** The f instance to run */
+    /** Listeners list */
+    private final EventListenerList listenerList;
+    /** The instance to run */
     private Process process;    
     /** If the process has been invalidated */
     private boolean invalidated;
@@ -53,6 +57,7 @@ public class ProcessNode implements Node, AttacherNode {
         this.input = new HashMap<>();
         this.inputChangeSupport = new PropertyChangeSupport(this);
         this.outputChangeSupport = new PropertyChangeSupport(this);
+        listenerList = new EventListenerList();
         invalidated = true;
     }
 
@@ -137,10 +142,12 @@ public class ProcessNode implements Node, AttacherNode {
     private Process buildProcess() {
         try {
             Constructor constructor = processType.getConstructors()[0];
+            TypeConverter converter = new TypeConverter();
             List<Object> list = new ArrayList<>();
-            processInput.forEach((input) -> {
-                list.add(getInput(input.getName()));
-            });
+            for (int i = 0; i < constructor.getParameterCount(); i++) {
+                Object input = getInput(processInput.get(i).getName());
+                list.add(converter.convert(input, constructor.getParameterTypes()[i]));
+            }
             return (Process) constructor.newInstance(list.toArray());
         } catch (IllegalArgumentException | ReflectiveOperationException ex) {
             throw new RuntimeException("Process build fail", ex);
@@ -150,6 +157,9 @@ public class ProcessNode implements Node, AttacherNode {
     @Override
     public void addConnection(String attribute, Node node, String attributeNode) {
         connector.addConnection(attribute, node, attributeNode);
+        for (ConnectionChangeListener listener : listenerList.getListeners(ConnectionChangeListener.class)) {
+            listener.connectionChanged(new ConnectionChangeEvent(new NodeParameter(attribute, null), ConnectionChangeEvent.EventType.CREATE, node));
+        }
     }
 
     @Override
@@ -183,6 +193,11 @@ public class ProcessNode implements Node, AttacherNode {
     @Override
     public String getName() {
         return processType.getSimpleName();
+    }
+
+    @Override
+    public void addConnectionChangeListener(ConnectionChangeListener listener) {
+        listenerList.add(ConnectionChangeListener.class, listener);
     }
 
 }

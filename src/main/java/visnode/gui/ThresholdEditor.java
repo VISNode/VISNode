@@ -31,6 +31,7 @@ public class ThresholdEditor extends JSlider implements ParameterComponent<Thres
     @Override
     public void setValue(Threshold value) {
         this.value = value;
+        super.setValue(value.intValue());
     }
 
     @Override

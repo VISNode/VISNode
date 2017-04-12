@@ -103,5 +103,27 @@ public class JNodeContainer extends JComponent {
     public void removeConnection(JNodeConnection connection) {
         remove(connection);
     }
+    
+    /**
+     * Adds a connection listener
+     * 
+     * @param listener 
+     */
+    public void addNodeConnectionListener(NodeConnectionListener listener) {
+       listenerList.add(NodeConnectionListener.class, listener);
+    }
+    
+    
+    /**
+     * Fires the event of a connection created
+     * 
+     * @param connectorPoint
+     * @param endPoint 
+     */
+    public void fireConnectionCreated(JConnectorPoint connectorPoint, JConnectorPoint endPoint) {
+        for (NodeConnectionListener listener : listenerList.getListeners(NodeConnectionListener.class)) {
+            listener.connectionCreated(new NodeConnectionEvent(connectorPoint, endPoint));
+        }
+    }
 
 }

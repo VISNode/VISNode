@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.event.EventListenerList;
 import visnode.commons.Image;
 
 /**
@@ -15,7 +16,9 @@ public class OutputNode implements Node, AttacherNode {
     private final NodeConnector connector;
     /** Property change support */
     private final PropertyChangeSupport propertyChangeSupport;
-
+    /** Listeners list */
+    private final EventListenerList listenerList;
+    /** Image */
     private Image img;
     
     /**
@@ -24,9 +27,8 @@ public class OutputNode implements Node, AttacherNode {
     public OutputNode() {
         this.connector = new NodeConnector(this);
         propertyChangeSupport = new PropertyChangeSupport(this);
-        
+        listenerList = new EventListenerList();
         img = null;
-        
     }
 
     @Override
@@ -91,6 +93,11 @@ public class OutputNode implements Node, AttacherNode {
     @Override
     public String getName() {
         return "Output";
+    }
+
+    @Override
+    public void addConnectionChangeListener(ConnectionChangeListener listener) {
+        listenerList.add(ConnectionChangeListener.class, listener);
     }
 
 }

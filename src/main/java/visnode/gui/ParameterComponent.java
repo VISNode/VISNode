@@ -23,6 +23,18 @@ public interface ParameterComponent<T> {
      */
     public void setValue(T value);
     
+    /**
+     * Adds the value listener
+     * 
+     * @param valueListener 
+     */
     public void addValueListener(ValueListener<T> valueListener);
+    
+    /**
+     * Sets if the editor is enabled
+     * 
+     * @param enabled 
+     */
+    public void setEnabled(boolean enabled);
     
 }

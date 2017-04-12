@@ -3,10 +3,12 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import visnode.application.ConnectionType;
+import visnode.commons.TypeConverter;
+import visnode.executor.AttacherNode;
+import visnode.executor.ConnectionChangeEvent;
 import visnode.executor.Node;
 import visnode.executor.NodeParameter;
 
@@ -42,6 +44,14 @@ public class ParameterComponentWrapper extends JComponent {
         component.addValueListener((Object oldValue, Object newValue) -> {
             node.setInput(parameter.getName(), newValue);
         });
+        if (node instanceof AttacherNode) {
+            AttacherNode attacherNode = (AttacherNode) node;
+            attacherNode.addConnectionChangeListener((ConnectionChangeEvent evt) -> {
+                if (evt.getParameter().getName().equals(parameter.getName())) {
+                    component.setEnabled(!evt.isCreating());
+                }
+            });
+        }
         node.addInputChangeListener((PropertyChangeEvent evt) -> {
             SwingUtilities.invokeLater(this::updateComponentValue);
         });
@@ -63,11 +73,14 @@ public class ParameterComponentWrapper extends JComponent {
      */
     private void updateComponentValue() {
         try {
+            TypeConverter converter = new TypeConverter();
+            Object value;
             if (type == ConnectionType.INPUT) {
-                component.setValue(node.getInput(parameter.getName()));
+                value = node.getInput(parameter.getName());
             } else {
-                component.setValue(node.getOutput(parameter.getName()));
+                value = node.getOutput(parameter.getName());
             }
+            component.setValue(converter.convert(value, parameter.getType()));
         } catch (Exception e) {
             e.printStackTrace();
         }

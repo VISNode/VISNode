@@ -3,12 +3,11 @@ package visnode.executor;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import visnode.pdi.Process;
 
 /**
  * Node decorator that add editing capabilities
  */
-public class EditNodeDecorator implements Node {
+public class EditNodeDecorator implements Node, AttacherNode {
 
     /** Decorated node */
     private final Node decorated;
@@ -110,6 +109,24 @@ public class EditNodeDecorator implements Node {
     @Override
     public String getName() {
         return decorated.getName();
+    }
+
+    @Override
+    public void addConnection(String attribute, Node node, String attributeNode) {
+        if (!(decorated instanceof AttacherNode)) {
+//            throw new IllegalStateException("Decorated node is not an Attacher node!");
+            return;
+        }
+        ((AttacherNode)decorated).addConnection(attribute, node, attributeNode);
+    }
+
+    @Override
+    public void addConnectionChangeListener(ConnectionChangeListener listener) {
+        if (!(decorated instanceof AttacherNode)) {
+//            throw new IllegalStateException("Decorated node is not an Attacher node!");
+            return;
+        }
+        ((AttacherNode)decorated).addConnectionChangeListener(listener);
     }
     
 }
