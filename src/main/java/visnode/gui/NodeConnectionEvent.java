@@ -8,38 +8,25 @@ import visnode.application.mvc.EventObject;
  */
 public class NodeConnectionEvent extends EventObject {
     
-    /** Left connector point */
-    private final JConnectorPoint left;
-    /** Right connector point */
-    private final JConnectorPoint right;
+    /** Connection */
+    private final JNodeConnection connection;
 
     /**
      * Creates a new connection event
      * 
-     * @param left
-     * @param right 
+     * @param connection
      */
-    public NodeConnectionEvent(JConnectorPoint left, JConnectorPoint right) {
-        this.left = left;
-        this.right = right;
+    public NodeConnectionEvent(JNodeConnection connection) {
+        this.connection = connection;
     }
 
     /**
-     * Returns the left connector point
+     * Returns the connection
      * 
-     * @return JConnectorPoint
+     * @return JNodeConnection
      */
-    public JConnectorPoint getLeft() {
-        return left;
-    }
-
-    /**
-     * Returns the right connector point
-     * 
-     * @return JConnectorPoint
-     */
-    public JConnectorPoint getRight() {
-        return right;
+    public JNodeConnection getConnection() {
+        return connection;
     }
     
 }

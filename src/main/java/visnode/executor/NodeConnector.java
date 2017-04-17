@@ -31,6 +31,15 @@ public class NodeConnector {
     public void addConnection(String attribute, Node node, String attributeNode) {
         connections.put(attribute, new NodeConnection(node, attributeNode, output, attribute));
     }
+    
+    /**
+     * Removes an connection 
+     * 
+     * @param attribute 
+     */
+    public void removeConnection(String attribute) {
+        connections.remove(attribute);
+    }
 
     /**
      * Gets connection

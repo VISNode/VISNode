@@ -121,6 +121,15 @@ public class EditNodeDecorator implements Node, AttacherNode {
     }
 
     @Override
+    public void removeConnection(String attribute) {
+        if (!(decorated instanceof AttacherNode)) {
+//            throw new IllegalStateException("Decorated node is not an Attacher node!");
+            return;
+        }
+        ((AttacherNode)decorated).removeConnection(attribute);
+    }
+    
+    @Override
     public void addConnectionChangeListener(ConnectionChangeListener listener) {
         if (!(decorated instanceof AttacherNode)) {
 //            throw new IllegalStateException("Decorated node is not an Attacher node!");

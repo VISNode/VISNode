@@ -9,6 +9,7 @@ import visnode.executor.AttacherNode;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeConnection;
+import visnode.gui.JConnectorPoint;
 import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
 import visnode.gui.NodeConnectionEvent;
@@ -158,18 +159,29 @@ public class NetworkEditor extends JComponent {
 
         @Override
         public void connectionCreated(NodeConnectionEvent evt) {
-            NodeView leftView = (NodeView) evt.getLeft().getParentNode();
-            NodeConnectorView leftConnector = (NodeConnectorView) evt.getLeft().getParentNodeConnector();
+            NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint)evt.getConnection().getFirst()).getParentNodeConnector();
+            NodeView leftView = (NodeView) leftConnector.getParentNode();
             Node leftNode = leftView.getModel();
             String leftAttr = leftConnector.getAttribute();
             //
-            NodeView rightView = (NodeView) evt.getRight().getParentNode();
+            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint)evt.getConnection().getSecond()).getParentNodeConnector();
+            NodeView rightView = (NodeView) rightConnector.getParentNode();
             EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
             AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
-            NodeConnectorView rightConnector = (NodeConnectorView) evt.getRight().getParentNodeConnector();
             String rightAttr = rightConnector.getAttribute();
             //
             rightNode.addConnection(rightAttr, leftNode, leftAttr);
+        }
+
+        @Override
+        public void connectionRemoved(NodeConnectionEvent evt) {
+            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint)evt.getConnection().getSecond()).getParentNodeConnector();
+            NodeView rightView = (NodeView) rightConnector.getParentNode();
+            EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
+            AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
+            String rightAttr = rightConnector.getAttribute();
+            //
+            rightNode.removeConnection(rightAttr);
         }
     }
 

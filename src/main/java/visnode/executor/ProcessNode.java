@@ -158,7 +158,15 @@ public class ProcessNode implements Node, AttacherNode {
     public void addConnection(String attribute, Node node, String attributeNode) {
         connector.addConnection(attribute, node, attributeNode);
         for (ConnectionChangeListener listener : listenerList.getListeners(ConnectionChangeListener.class)) {
-            listener.connectionChanged(new ConnectionChangeEvent(new NodeParameter(attribute, null), ConnectionChangeEvent.EventType.CREATE, node));
+            listener.connectionChanged(new ConnectionChangeEvent(new NodeParameter(attribute, null), ConnectionChangeEvent.EventType.CREATE, this));
+        }
+    }
+    
+    @Override
+    public void removeConnection(String attribute) {
+        connector.removeConnection(attribute);
+        for (ConnectionChangeListener listener : listenerList.getListeners(ConnectionChangeListener.class)) {
+            listener.connectionChanged(new ConnectionChangeEvent(new NodeParameter(attribute, null), ConnectionChangeEvent.EventType.REMOVE, this));
         }
     }
 

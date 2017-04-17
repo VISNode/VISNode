@@ -13,5 +13,12 @@ public interface NodeConnectionListener extends EventListener {
      * @param evt 
      */
     public void connectionCreated(NodeConnectionEvent evt);
+
+    /**
+     * Connection removed
+     * 
+     * @param evt 
+     */
+    public void connectionRemoved(NodeConnectionEvent evt);
     
 }

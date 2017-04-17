@@ -65,6 +65,11 @@ public class OutputNode implements Node, AttacherNode {
     }
 
     @Override
+    public void removeConnection(String attribute) {
+        connector.removeConnection(attribute);
+    }
+
+    @Override
     public List<NodeParameter> getInputParameters() {
         List<NodeParameter> list = new ArrayList<>();
         list.add(new NodeParameter("image", Image.class));

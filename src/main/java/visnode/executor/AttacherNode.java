@@ -15,6 +15,13 @@ public interface AttacherNode {
     public void addConnection(String attribute, Node node, String attributeNode);
 
     /**
+     * Removes connections
+     *
+     * @param attribute
+     */
+    public void removeConnection(String attribute);
+
+    /**
      * Adds a connection change listener
      * 
      * @param listener 

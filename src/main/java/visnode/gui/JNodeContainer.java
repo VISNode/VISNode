@@ -35,7 +35,7 @@ public class JNodeContainer extends JComponent {
     }
 
     /** 
-     * Inicia uma conexão
+     * Starts a connection
      * 
      * @param connectorPoint
      * @param e 
@@ -113,16 +113,25 @@ public class JNodeContainer extends JComponent {
        listenerList.add(NodeConnectionListener.class, listener);
     }
     
-    
     /**
      * Fires the event of a connection created
      * 
-     * @param connectorPoint
-     * @param endPoint 
+     * @param connection
      */
-    public void fireConnectionCreated(JConnectorPoint connectorPoint, JConnectorPoint endPoint) {
+    public void fireConnectionCreated(JNodeConnection connection) {
         for (NodeConnectionListener listener : listenerList.getListeners(NodeConnectionListener.class)) {
-            listener.connectionCreated(new NodeConnectionEvent(connectorPoint, endPoint));
+            listener.connectionCreated(new NodeConnectionEvent(connection));
+        }
+    }
+    
+    /**
+     * Fires the event of a connection removed
+     * 
+     * @param connection
+     */
+    public void fireConnectionRemoved(JNodeConnection connection) {
+        for (NodeConnectionListener listener : listenerList.getListeners(NodeConnectionListener.class)) {
+            listener.connectionRemoved(new NodeConnectionEvent(connection));
         }
     }
 

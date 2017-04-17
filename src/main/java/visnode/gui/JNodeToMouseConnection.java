@@ -9,13 +9,9 @@ import javax.swing.SwingUtilities;
  */
 public class JNodeToMouseConnection extends JNodeConnection implements DragListener {
 
-    /**
-     * Container to use for the connections
-     */
+    /** Container to use for the connections */
     private final JNodeContainer container;
-    /**
-     * Connector point that starts the connection
-     */
+    /** Connector point that starts the connection */
     private final JConnectorPoint connectorPoint;
 
     /**
@@ -63,10 +59,12 @@ public class JNodeToMouseConnection extends JNodeConnection implements DragListe
         if (endPoint != null) {
             JNodeConnection connection = container.getConnection(connectorPoint, endPoint);
             if (connection == null) {
-                container.add(new JNodeConnection(connectorPoint, endPoint));
-                container.fireConnectionCreated(connectorPoint, endPoint);
+                connection = new JNodeConnection(connectorPoint, endPoint);
+                container.add(connection);
+                container.fireConnectionCreated(connection);
             } else {
                 container.removeConnection(connection);
+                container.fireConnectionRemoved(connection);
             }
         }
     }
