@@ -1,0 +1,59 @@
+package visnode.application;
+
+import java.awt.BorderLayout;
+import javax.swing.DropMode;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import visnode.pdi.Process;
+import visnode.pdi.process.GrayscaleProcess;
+import visnode.pdi.process.InformationProcess;
+import visnode.pdi.process.ThresholdProcess;
+
+/**
+ * Process browser
+ */
+public class ProcessBrowser extends JComponent {
+
+    /**
+     * Creates the process browser
+     */
+    public ProcessBrowser() {
+        super();
+        initGui();
+    }
+
+    /**
+     * Initializes the interface
+     */
+    private void initGui() {
+        setLayout(new BorderLayout());
+        add(buildList());
+    }
+
+    /**
+     * Creates the process list
+     * 
+     * @return JComponent
+     */
+    private JComponent buildList() {
+        JList<Class<Process>> list = new JList<>(getProcesses());
+        list.setTransferHandler(new ProcessTransferHandler());
+        list.setDragEnabled(true);
+        list.setDropMode(DropMode.ON_OR_INSERT);
+        return list;
+    }
+    
+    /**
+     * Returns the processes
+     * 
+     * @return Process[]
+     */
+    private Class<Process>[] getProcesses() {
+        return new Class[] {
+            GrayscaleProcess.class,
+            InformationProcess.class,
+            ThresholdProcess.class
+        };
+    }
+    
+}

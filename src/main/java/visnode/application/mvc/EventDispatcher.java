@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import visnode.application.ExceptionHandler;
 
 /**
  * Event dispatcher
@@ -52,7 +53,7 @@ public class EventDispatcher implements GenericEventDispatcher {
                 listener.observed(event);
             }
         } catch(Exception e) {
-            e.printStackTrace();
+            ExceptionHandler.get().handle(e);
         }
     }
     

@@ -14,6 +14,9 @@ public class TypeConverter {
      * @return D
      */
     public <D> D convert(Object value, Class<D> destinyType) {
+        if (value == null) {
+            return null;
+        }
         return convert(value, value.getClass(), destinyType);
     }
 
@@ -27,6 +30,9 @@ public class TypeConverter {
      * @return D
      */
     public <D> D convert(Object value, Class sourceType, Class<D> destinyType) {
+        if (value == null) {
+            return null;
+        }
         if (sourceType.equals(destinyType)) {
             return (D) value;
         }

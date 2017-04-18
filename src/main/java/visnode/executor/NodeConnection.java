@@ -2,6 +2,7 @@ package visnode.executor;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import visnode.application.ExceptionHandler;
 
 /**
  * Node connection
@@ -33,14 +34,14 @@ public class NodeConnection {
                 try {
                     rightNode.setInput(rightAttribute, evt.getNewValue());
                 } catch(Exception e) {
-                    e.printStackTrace();
+                    ExceptionHandler.get().handle(e);
                 }
             }
         });
         try {
             rightNode.setInput(rightAttribute, leftNode.getOutput(leftAttribute));
         } catch(Exception e) {
-            e.printStackTrace();
+            ExceptionHandler.get().handle(e);
         }   
     }
 

@@ -3,8 +3,9 @@ package visnode.application;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import visnode.application.mvc.EventListener;
 import visnode.application.mvc.PropertyEvent;
+import visnode.gui.SplitPanel;
+import visnode.gui.ViewPanel;
 
 
 /**
@@ -14,8 +15,6 @@ public class MainWindow extends JFrame {
 
     /** Model */
     private final VISNodeModel model;
-    /** Network editor */
-    private NetworkEditor networkEditor;
     
     /**
      * Creates the main window
@@ -35,7 +34,7 @@ public class MainWindow extends JFrame {
         setSize(1024, 768);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(buildNetworkEditor());
+        getContentPane().add(buildDummyInterface());
         setJMenuBar(VISNode.get().getActions().buildMenuBar());
     }
     
@@ -44,14 +43,19 @@ public class MainWindow extends JFrame {
      * 
      * @return JComponent
      */
-    private JComponent buildNetworkEditor() {
-        networkEditor = new NetworkEditor(model.getNetwork());
+    private JComponent buildDummyInterface() {
+        NetworkEditor networkEditor = new NetworkEditor(model.getNetwork());
         model.addEventListener((PropertyEvent event) -> {
             if (event.getPropertyName().equals("network")) {
                 networkEditor.setModel(model.getNetwork());
             }
         });
-        return networkEditor;
+        
+        SplitPanel split = new SplitPanel(SplitPanel.HORIZONTAL_SPLIT);
+        split.setLeftComponent(new ViewPanel(networkEditor));
+        split.setRightComponent(new ViewPanel(new ProcessBrowser()));
+        split.setDividerLocation(1024);
+        return split;
     }
     
 }

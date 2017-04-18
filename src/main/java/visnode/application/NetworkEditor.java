@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import visnode.application.mvc.ListAddEvent;
 import visnode.executor.AttacherNode;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
@@ -33,6 +34,13 @@ public class NetworkEditor extends JComponent {
     public NetworkEditor(NodeNetwork model) {
         this.model = model;
         initGui();
+        model.addEventListener((ListAddEvent evt) -> {
+            if (evt.getListName().equals("nodes")) {
+                SwingUtilities.invokeLater(() -> {
+                    nodeContainer.add(buildNodeFor((EditNodeDecorator) evt.getAddedItem()));
+                });
+            }
+        });
     }
 
     /**
@@ -40,6 +48,7 @@ public class NetworkEditor extends JComponent {
      */
     private void initGui() {
         setLayout(new BorderLayout());
+        setTransferHandler(new ProcessTransferHandler());
         add(buildNodeContainer());
         fullUpdate();
     }
@@ -184,5 +193,5 @@ public class NetworkEditor extends JComponent {
             rightNode.removeConnection(rightAttr);
         }
     }
-
+    
 }

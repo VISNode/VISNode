@@ -2,11 +2,11 @@ package visnode.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.Model;
 import visnode.commons.Image;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
-import visnode.executor.Node;
 
 /**
  * Node network
@@ -30,6 +30,7 @@ public class NodeNetwork implements Model {
      */
     public void add(EditNodeDecorator node) {
         nodes.add(node);
+        fireEvent(new ListAddEvent("nodes", nodes));
     }
 
     /**

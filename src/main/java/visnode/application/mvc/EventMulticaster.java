@@ -6,6 +6,7 @@ import visnode.commons.reflection.ReflectionException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import visnode.application.ExceptionHandler;
 
 /**
  * Class for multicasting events form a models children
@@ -71,7 +72,7 @@ public class EventMulticaster implements EventListener<PropertyEvent> {
                 }
             }
         } catch (ReflectionException e) {
-            e.printStackTrace();
+            ExceptionHandler.get().handle(e);
         }
     }
 

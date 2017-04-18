@@ -6,6 +6,7 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import visnode.application.ConnectionType;
+import visnode.application.ExceptionHandler;
 import visnode.commons.TypeConverter;
 import visnode.executor.AttacherNode;
 import visnode.executor.ConnectionChangeEvent;
@@ -82,7 +83,7 @@ public class ParameterComponentWrapper extends JComponent {
             }
             component.setValue(converter.convert(value, parameter.getType()));
         } catch (Exception e) {
-            e.printStackTrace();
+            ExceptionHandler.get().handle(e);
         }
     }
     

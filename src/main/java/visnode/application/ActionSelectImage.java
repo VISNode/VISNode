@@ -29,7 +29,7 @@ public class ActionSelectImage extends AbstractAction {
                 BufferedImage r = ImageIO.read(chooser.getSelectedFile());
                 VISNode.get().getModel().getNetwork().setInput(ImageFactory.buildRGBImage(r));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                ExceptionHandler.get().handle(ex);
             }
         }
     }

@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
 import org.pushingpixels.substance.api.skin.*;
+import visnode.application.ExceptionHandler;
 import visnode.gui.JNode;
 import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
@@ -146,7 +147,7 @@ public class TestNodeContainer extends JFrame {
                     main(new String[] {});
                 
                 } catch(Exception ex) {
-                    ex.printStackTrace();
+                    ExceptionHandler.get().handle(ex);
                 }
             }
         });

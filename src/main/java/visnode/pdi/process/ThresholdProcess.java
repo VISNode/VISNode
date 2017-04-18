@@ -30,7 +30,13 @@ public class ThresholdProcess extends PixelProcess<Image> {
      */
     public ThresholdProcess(@Input("image") Image image, @Input("threshold") Threshold threshold) {
         super(image);
-        this.threshold = threshold;
+        Threshold resultThreshold;
+        if (threshold == null) {
+            resultThreshold = new Threshold(0);
+        } else {
+            resultThreshold = threshold;
+        }
+        this.threshold = resultThreshold;
         Image resultImage;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();

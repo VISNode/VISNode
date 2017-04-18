@@ -51,10 +51,10 @@ public class VISNodeModel implements Model {
             out.addConnection("image", threshold, "image");
             
             network.add(new EditNodeDecorator(input, new Point(25, 12)));
-            network.add(new EditNodeDecorator(grayScale, new Point(285, 12)));
-            network.add(new EditNodeDecorator(threshold, new Point(700, 95)));
-            network.add(new EditNodeDecorator(information, new Point(700, 381)));
-            network.add(new EditNodeDecorator(out, new Point(1050, 155)));
+            network.add(new EditNodeDecorator(grayScale, new Point(255, 12)));
+            network.add(new EditNodeDecorator(threshold, new Point(460, 95)));
+            network.add(new EditNodeDecorator(information, new Point(460, 381)));
+            network.add(new EditNodeDecorator(out, new Point(760, 155)));
             
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);

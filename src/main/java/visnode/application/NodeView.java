@@ -47,6 +47,7 @@ public class NodeView extends JNode {
      */
     private void updateSize() {
         setSize(getLayout().preferredLayoutSize(NodeView.this));
+        revalidate();
     }
 
     /**
