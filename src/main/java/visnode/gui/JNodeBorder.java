@@ -49,7 +49,11 @@ public class JNodeBorder implements Border {
         g2d.setColor(UIHelper.getColor("Node.background"));
         g2d.fillRoundRect(x + 5, y + 5, width - 11, height - 11, 10, 10);
         paintHeader(g2d, x, y, width, height);
-        g2d.setColor(UIHelper.getColor("Node.border"));
+        if (node.getParentNodeContainer().getSelection().contains(node)) {
+            g2d.setColor(UIHelper.getColor("Node.border:selected"));
+        } else {
+            g2d.setColor(UIHelper.getColor("Node.border"));
+        }
         g2d.drawRoundRect(x + 5, y + 5, width - 11, height - 11, 10, 10);
         g2d.setColor(UIHelper.getColor("Node.Header.title"));
         g2d.drawString(title, 19, 22);

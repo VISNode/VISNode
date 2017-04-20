@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
 import visnode.application.ActionSave;
@@ -38,8 +39,11 @@ public class Actions {
         file.add(get(ActionSave.class));
         JMenu input = new JMenu("Input");
         input.add(get(ActionSelectImage.class));
+        JMenu edit = new JMenu("Edit");
+        edit.add(get(ActionDeleteSelectedNodes.class));
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(file);
+        menuBar.add(edit);
         menuBar.add(input);
         return menuBar;
     }
@@ -52,6 +56,7 @@ public class Actions {
         actions.put(ActionOpen.class, new ActionOpen());
         actions.put(ActionSave.class, new ActionSave());
         actions.put(ActionSelectImage.class, new ActionSelectImage());
+        actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());
     }
     
     /**
