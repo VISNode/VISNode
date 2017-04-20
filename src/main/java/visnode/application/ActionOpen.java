@@ -19,7 +19,13 @@ public class ActionOpen extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        for (int i = 0; i < 10; i++) {
+            doThings();
+        }
+    }
+
+    private void doThings() {
+        System.out.println("I'm a thing!");
     }
 
 }
