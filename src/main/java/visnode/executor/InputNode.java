@@ -16,7 +16,7 @@ public class InputNode implements Node {
     /** Input image */
     private Image image;
     /** PropertyChangeSupport for outputs */
-    private PropertyChangeSupport outputChangeSupport;
+    private final PropertyChangeSupport outputChangeSupport;
 
     /**
      * Creates a new input node

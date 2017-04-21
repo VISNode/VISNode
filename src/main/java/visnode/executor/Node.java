@@ -2,7 +2,6 @@ package visnode.executor;
 
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import visnode.pdi.Process;
 
 /**
  * Node representation

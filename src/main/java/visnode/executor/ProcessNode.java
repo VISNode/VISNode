@@ -30,10 +30,10 @@ public class ProcessNode implements Node, AttacherNode {
     private final List<NodeParameter> processInput;
     /** Process output */
     private final Map<String, Method> processOutput;
-    /** Node connector */
-    private final NodeConnector connector;
     /** Node input */
     private final Map<String, Object> input;
+    /** Node connector */
+    private final NodeConnector connector;
     /** Input change support */
     private final PropertyChangeSupport inputChangeSupport;
     /** Output change support */
@@ -208,5 +208,8 @@ public class ProcessNode implements Node, AttacherNode {
     public void addConnectionChangeListener(ConnectionChangeListener listener) {
         listenerList.add(ConnectionChangeListener.class, listener);
     }
-
+    
+    public Class getProcessType() {
+        return processType;
+    }
 }

@@ -22,7 +22,7 @@ public class MainWindow extends JFrame {
      * @param model
      */
     public MainWindow(VISNodeModel model) {
-        super();
+        super("VISNode");
         this.model = model;
         initGui();
     }

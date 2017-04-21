@@ -9,12 +9,14 @@ import java.util.Map;
 public class NodeConnector {
 
     /** Output node */
-    private final Node output;
+    private transient final Node output;
     /** Node connections */
     private final Map<String, NodeConnection> connections;
 
     /**
      * Create a new node connector
+     * 
+     * @param output
      */
     public NodeConnector(Node output) {
         this.output = output;
