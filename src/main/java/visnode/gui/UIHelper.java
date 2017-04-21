@@ -35,6 +35,7 @@ public class UIHelper {
         Map<String, Color> colors = new HashMap<>();
         colors.put("Node.background", scheme.getBackgroundFillColor());
         colors.put("Node.border", scheme.getUltraDarkColor().darker());
+        colors.put("Node.border:selected", scheme.getSelectionBackgroundColor());
         colors.put("Node.Header.background1", scheme.getBackgroundFillColor());
         colors.put("Node.Header.background2", scheme.getBackgroundFillColor().darker());
         colors.put("Node.Header.title", scheme.getUltraLightColor().brighter());
