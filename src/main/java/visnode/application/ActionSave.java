@@ -27,6 +27,8 @@ public class ActionSave extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save");
+        chooser.setApproveButtonText("Save");
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try (PrintWriter writer = new PrintWriter(chooser.getSelectedFile(), "UTF-8");) {
                 writer.print(parser.toJson(VISNode.get().getModel().getNetwork()));
@@ -34,7 +36,6 @@ public class ActionSave extends AbstractAction {
                 ExceptionHandler.get().handle(ex);
             }
         }
-
     }
 
 }

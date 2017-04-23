@@ -31,7 +31,6 @@ public class NodeNetworkParser {
      */
     public String toJson(NodeNetwork network) {
         Map<String, Object> data = new HashMap<>();
-        
         List<Map> nodes = new ArrayList<>();
         network.getNodes().stream().filter((n) -> {
             return n.getDecorated() instanceof ProcessNode;
@@ -45,15 +44,26 @@ public class NodeNetworkParser {
                 inputParam.put("parameterName", t.getName());
                 inputParam.put("parameterType", t.getType().getName());
                 inputParam.put("value", node.getInput(t.getName()));
-
                 return inputParam;
+            }).collect(Collectors.toList());
+            List connections = node.getConnector().getConnections().values().stream().map((c) -> {
+                Map<String, Object> conn = new HashMap<>();
+                conn.put("leftNode", c.getLeftNode().hashCode());
+                conn.put("leftAttribute", c.getLeftAttribute());
+                conn.put("rightNode", c.getRightNode().hashCode());
+                conn.put("rightAttribute", c.getRightAttribute());
+                return conn;
             }).collect(Collectors.toList());
             param.put("position", node.getPosition());
             param.put("processType", processNode.getProcessType().getName());
             param.put("input", input);
+            param.put("connections", connections);
+            param.put("hasCode", node.getDecorated().hashCode());
             nodes.add(param);
         });
         data.put("nodes", nodes);
+        data.put("input", network.getNodes().get(network.getInputIndex()).getDecorated().hashCode());
+        data.put("output", network.getNodes().get(network.getOutputIndex()).getDecorated().hashCode());
         return gson.toJson(data);
     }
 
@@ -64,6 +74,7 @@ public class NodeNetworkParser {
      * @return NodeNetwork
      */
     public NodeNetwork fromJson(String json) {
+        Map data = gson.fromJson(json, Map.class);  
         return new NodeNetwork();
     }
 

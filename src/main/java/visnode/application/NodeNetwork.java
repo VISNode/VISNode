@@ -7,6 +7,7 @@ import visnode.application.mvc.Model;
 import visnode.commons.Image;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
+import visnode.executor.OutputNode;
 
 /**
  * Node network
@@ -60,6 +61,20 @@ public class NodeNetwork implements Model {
     public int getInputIndex() {
         for (int i = 0; i < nodes.size(); i++) {
             if (nodes.get(i).getDecorated() instanceof InputNode) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    /**
+     * Finds the index of the output node
+     * 
+     * @return int
+     */
+    public int getOutputIndex() {
+        for (int i = 0; i < nodes.size(); i++) {
+            if (nodes.get(i).getDecorated() instanceof OutputNode) {
                 return i;
             }
         }

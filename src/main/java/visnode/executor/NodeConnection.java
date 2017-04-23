@@ -1,7 +1,6 @@
 package visnode.executor;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import visnode.application.ExceptionHandler;
 
 /**
