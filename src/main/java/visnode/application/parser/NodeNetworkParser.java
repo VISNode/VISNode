@@ -58,12 +58,12 @@ public class NodeNetworkParser {
             param.put("processType", processNode.getProcessType().getName());
             param.put("input", input);
             param.put("connections", connections);
-            param.put("hasCode", node.getDecorated().hashCode());
+            param.put("hasCode", System.identityHashCode(node.getDecorated()));
             nodes.add(param);
         });
         data.put("nodes", nodes);
-        data.put("input", network.getNodes().get(network.getInputIndex()).getDecorated().hashCode());
-        data.put("output", network.getNodes().get(network.getOutputIndex()).getDecorated().hashCode());
+        data.put("input", System.identityHashCode(network.getNodes().get(network.getInputIndex()).getDecorated()));
+        data.put("output", System.identityHashCode(network.getNodes().get(network.getOutputIndex()).getDecorated()));
         return gson.toJson(data);
     }
 
