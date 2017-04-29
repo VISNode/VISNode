@@ -39,7 +39,7 @@ public class ActionOpen extends AbstractAction {
                         sb.append(s);
                         s = br.readLine();
                     }
-                    parser.fromJson(sb.toString());
+                    VISNode.get().getModel().setNetwork(parser.fromJson(sb.toString()));
                 }
             } catch (IOException ex) {
                 ExceptionHandler.get().handle(ex);

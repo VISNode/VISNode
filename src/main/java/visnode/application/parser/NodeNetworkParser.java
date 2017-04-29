@@ -2,12 +2,25 @@ package visnode.application.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
+import visnode.application.ExceptionHandler;
 import visnode.application.NodeNetwork;
+import visnode.commons.ImageFactory;
+import visnode.executor.EditNodeDecorator;
+import visnode.executor.InputNode;
+import visnode.executor.Node;
+import visnode.executor.OutputNode;
 import visnode.executor.ProcessNode;
 
 /**
@@ -22,7 +35,7 @@ public class NodeNetworkParser {
         this.gson = new GsonBuilder().
                 create();
     }
-    
+
     /**
      * Parser to JSON
      *
@@ -58,7 +71,7 @@ public class NodeNetworkParser {
             param.put("processType", processNode.getProcessType().getName());
             param.put("input", input);
             param.put("connections", connections);
-            param.put("hasCode", System.identityHashCode(node.getDecorated()));
+            param.put("hashCode", System.identityHashCode(node.getDecorated()));
             nodes.add(param);
         });
         data.put("nodes", nodes);
@@ -74,8 +87,46 @@ public class NodeNetworkParser {
      * @return NodeNetwork
      */
     public NodeNetwork fromJson(String json) {
-        Map data = gson.fromJson(json, Map.class);  
-        return new NodeNetwork();
+        NodeNetwork network = new NodeNetwork();
+        Map data = gson.fromJson(json, Map.class);
+        try {
+            Map<String, Node> mapHashCode = new HashMap<>();
+            BufferedImage r = ImageIO.read(new File(getClass().getResource("/lena.jpg").getFile()));
+            InputNode input = new InputNode(ImageFactory.buildRGBImage(r));
+            OutputNode out = new OutputNode();
+            mapHashCode.put(data.get("input").toString(), input);
+            mapHashCode.put(data.get("input").toString(), out);
+            // Define input/output node
+            network.add(new EditNodeDecorator(input, new Point(10, 50)));
+            network.add(new EditNodeDecorator(out, new Point(600, 50)));
+            // Define nodes hashCodes
+            List<Map> nodes = (List) data.get("nodes");
+            nodes.forEach((node) -> {
+                try {
+                    ProcessNode processNode = new ProcessNode(Class.forName(node.get("processType").toString()));
+                    mapHashCode.put(node.get("hashCode").toString(), processNode);
+                } catch (ClassNotFoundException ex) {
+                    ExceptionHandler.get().handle(ex);
+                }
+            });
+            // Define node connections/parameters
+            nodes.forEach((node) -> {
+                ProcessNode processNode = (ProcessNode) mapHashCode.get(node.get("hashCode").toString());
+//                List<Map> connections = (List) node.get("connections");
+//                connections.forEach((c) -> {
+//                    String attr = c.get("rightAttribute").toString();
+//                    processNode.addConnection(attr, mapHashCode.get(c.get("rightNode").toString()), attr);
+//                });
+                Point point = new Point();
+                Map position = (Map) node.get("position");
+                point.setLocation(Float.parseFloat(position.get("x").toString()), Float.parseFloat(position.get("y").toString()));                
+                network.add(new EditNodeDecorator(processNode, point));
+            });
+            
+        } catch (IOException e) {
+            ExceptionHandler.get().handle(e);
+        }
+        return network;
     }
 
 }
