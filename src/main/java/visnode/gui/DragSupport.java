@@ -2,6 +2,8 @@ package visnode.gui;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,6 +21,8 @@ public class DragSupport implements MouseListener, MouseMotionListener {
     private Component dragged;
     /** Relative position in the dragged component */
     private Point relativePosition;
+    /** Relative position in the dragged component on the screen */
+    private Point positionDifference;
     /** Predicate for allowing the drag */
     private Predicate<Component> allowDragPredicate;
 
@@ -36,8 +40,23 @@ public class DragSupport implements MouseListener, MouseMotionListener {
      * Register the listeners
      */
     private void registerListeners() {
-        container.addMouseListener(this);
-        container.addMouseMotionListener(this);
+        HierarchyMouseDispatcher.get().register(container, DragSupport.this);
+        container.addContainerListener(new ContainerListener() {
+            @Override
+            public void componentAdded(ContainerEvent e) {
+                if (allowDragPredicate.test(e.getChild())) {
+                    e.getChild().addMouseListener(DragSupport.this);
+                }
+            }
+
+            @Override
+            public void componentRemoved(ContainerEvent e) {
+                if (allowDragPredicate.test(e.getChild())) {
+                    e.getChild().removeMouseListener(DragSupport.this);
+                }
+            }
+        });
+        
     }
 
     @Override
@@ -46,13 +65,9 @@ public class DragSupport implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        dragged = container.getComponentAt(e.getPoint());
-        if (dragged == container || !allowDragPredicate.test(dragged)) {
-            dragged = null;
-            return;
-        }
-        relativePosition = new Point(e.getPoint());
-        relativePosition.translate(-dragged.getX(), -dragged.getY());
+        dragged = (Component) e.getSource();
+        relativePosition = new Point(dragged.getX(), dragged.getY());
+        relativePosition.translate(-e.getLocationOnScreen().x, -e.getLocationOnScreen().y);
     }
 
     @Override
@@ -70,7 +85,9 @@ public class DragSupport implements MouseListener, MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         if (dragged != null) {
-            dragged.setLocation(e.getPoint().x - relativePosition.x, e.getPoint().y - relativePosition.y);
+            Point position = e.getLocationOnScreen();
+            position.translate(relativePosition.x, relativePosition.y);
+            dragged.setLocation(position.x, position.y);
         }
     }
 
