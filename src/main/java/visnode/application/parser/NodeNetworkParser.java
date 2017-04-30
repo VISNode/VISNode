@@ -48,36 +48,47 @@ public class NodeNetworkParser {
         network.getNodes().stream().filter((n) -> {
             return n.getDecorated() instanceof ProcessNode;
         }).forEach((node) -> {
-            Map<String, Object> param = new HashMap<>();
-            ProcessNode processNode = (ProcessNode) node.getDecorated();
-            List input = node.getInputParameters().stream().filter((p) -> {
-                return processNode.getConnector().getConnection(p.getName()) == null;
-            }).map((t) -> {
-                Map<String, Object> inputParam = new HashMap<>();
-                inputParam.put("parameterName", t.getName());
-                inputParam.put("parameterType", t.getType().getName());
-                inputParam.put("value", node.getInput(t.getName()));
-                return inputParam;
-            }).collect(Collectors.toList());
-            List connections = node.getConnector().getConnections().values().stream().map((c) -> {
-                Map<String, Object> conn = new HashMap<>();
-                conn.put("leftNode", c.getLeftNode().hashCode());
-                conn.put("leftAttribute", c.getLeftAttribute());
-                conn.put("rightNode", c.getRightNode().hashCode());
-                conn.put("rightAttribute", c.getRightAttribute());
-                return conn;
-            }).collect(Collectors.toList());
-            param.put("position", node.getPosition());
-            param.put("processType", processNode.getProcessType().getName());
-            param.put("input", input);
-            param.put("connections", connections);
-            param.put("hashCode", System.identityHashCode(node.getDecorated()));
-            nodes.add(param);
+
+            nodes.add(toJson(node));
         });
         data.put("nodes", nodes);
-        data.put("input", System.identityHashCode(network.getNodes().get(network.getInputIndex()).getDecorated()));
-        data.put("output", System.identityHashCode(network.getNodes().get(network.getOutputIndex()).getDecorated()));
+        data.put("input", toJson(network.getNodes().get(network.getInputIndex())));
+        data.put("output", toJson(network.getNodes().get(network.getOutputIndex())));
         return gson.toJson(data);
+    }
+
+    /**
+     * Parser edit node
+     *
+     * @param node
+     * @return Map
+     */
+    private Map toJson(EditNodeDecorator node) {
+        Map<String, Object> param = new HashMap<>();
+        Node nodeDecorated = (Node) node.getDecorated();
+        List input = node.getInputParameters().stream().filter((p) -> {
+            return nodeDecorated.getConnector().getConnection(p.getName()) == null;
+        }).map((t) -> {
+            Map<String, Object> inputParam = new HashMap<>();
+            inputParam.put("parameterName", t.getName());
+            inputParam.put("parameterType", t.getType().getName());
+            inputParam.put("value", node.getInput(t.getName()));
+            return inputParam;
+        }).collect(Collectors.toList());
+        List connections = node.getConnector().getConnections().values().stream().map((c) -> {
+            Map<String, Object> conn = new HashMap<>();
+            conn.put("leftNode", System.identityHashCode(c.getLeftNode()));
+            conn.put("leftAttribute", c.getLeftAttribute());
+            return conn;
+        }).collect(Collectors.toList());
+        param.put("input", input);
+        param.put("position", node.getPosition());
+        param.put("connections", connections);
+        param.put("hashCode", System.identityHashCode(node.getDecorated()));
+        if (nodeDecorated instanceof ProcessNode) {
+            param.put("processType", ((ProcessNode) nodeDecorated).getProcessType().getName());
+        }
+        return param;
     }
 
     /**
@@ -94,11 +105,13 @@ public class NodeNetworkParser {
             BufferedImage r = ImageIO.read(new File(getClass().getResource("/lena.jpg").getFile()));
             InputNode input = new InputNode(ImageFactory.buildRGBImage(r));
             OutputNode out = new OutputNode();
-            mapHashCode.put(data.get("input").toString(), input);
-            mapHashCode.put(data.get("input").toString(), out);
+            Map inputMap = (Map) data.get("input");
+            Map outputMap = (Map) data.get("output");
+            mapHashCode.put(inputMap.get("hashCode").toString(), input);
+            mapHashCode.put(outputMap.get("hashCode").toString(), out);
             // Define input/output node
-            network.add(new EditNodeDecorator(input, new Point(10, 50)));
-            network.add(new EditNodeDecorator(out, new Point(600, 50)));
+            network.add(new EditNodeDecorator(input, fromJson(inputMap.get("position"))));
+            network.add(new EditNodeDecorator(out, fromJson(outputMap.get("position"))));
             // Define nodes hashCodes
             List<Map> nodes = (List) data.get("nodes");
             nodes.forEach((node) -> {
@@ -112,21 +125,46 @@ public class NodeNetworkParser {
             // Define node connections/parameters
             nodes.forEach((node) -> {
                 ProcessNode processNode = (ProcessNode) mapHashCode.get(node.get("hashCode").toString());
-//                List<Map> connections = (List) node.get("connections");
-//                connections.forEach((c) -> {
-//                    String attr = c.get("rightAttribute").toString();
-//                    processNode.addConnection(attr, mapHashCode.get(c.get("rightNode").toString()), attr);
-//                });
-                Point point = new Point();
-                Map position = (Map) node.get("position");
-                point.setLocation(Float.parseFloat(position.get("x").toString()), Float.parseFloat(position.get("y").toString()));                
-                network.add(new EditNodeDecorator(processNode, point));
+                List<Map> connections = (List) node.get("connections");
+                connections.forEach((c) -> {
+                    String attr = c.get("leftAttribute").toString();
+                    processNode.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
+                });
+                List<Map> inputList = (List) node.get("input");
+                inputList.forEach((c) -> {
+                    try {
+                        String attr = c.get("parameterName").toString();
+                        Object obj = gson.fromJson(c.get("value").toString(), Class.forName(c.get("parameterType").toString()));
+                        processNode.setInput(attr, obj);
+                    } catch (ClassNotFoundException ex) {
+                        ExceptionHandler.get().handle(ex);
+                    }
+                });
+                network.add(new EditNodeDecorator(processNode, fromJson(node.get("position"))));
             });
-            
+            // Define output connection
+            List<Map> connections = (List) outputMap.get("connections");
+            connections.forEach((c) -> {
+                String attr = c.get("leftAttribute").toString();
+                out.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
+            });
         } catch (IOException e) {
             ExceptionHandler.get().handle(e);
         }
         return network;
+    }
+
+    /**
+     * From json point
+     *
+     * @param objPosition
+     * @return Point
+     */
+    private Point fromJson(Object objPosition) {
+        Map position = (Map) objPosition;
+        Point point = new Point();
+        point.setLocation(Float.parseFloat(position.get("x").toString()), Float.parseFloat(position.get("y").toString()));
+        return point;
     }
 
 }
