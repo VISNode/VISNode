@@ -72,6 +72,7 @@ public class DragSupport implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        dragged = null;
     }
 
     @Override
