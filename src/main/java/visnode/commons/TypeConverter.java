@@ -42,6 +42,9 @@ public class TypeConverter {
         if (sourceType.equals(Integer.class) && destinyType.equals(int.class)) {
             return (D) value;
         }
+        if (sourceType.equals(Double.class) && destinyType.equals(double.class)) {
+            return (D) value;
+        }
         throw new UnsupportedOperationException("Unknown conversion from " + sourceType + " to " + destinyType);
     }
 

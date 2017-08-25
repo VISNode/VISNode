@@ -52,6 +52,22 @@ public class Range<T extends Number> {
         return higher;
     }
     
+    /**
+     * Limits the value in this range
+     * 
+     * @param value
+     * @return T
+     */
+    public T limit(T value) {
+        if (value.doubleValue() > higher.doubleValue()) {
+            return higher;
+        }
+        if (value.doubleValue() < lower.doubleValue()) {
+            return lower;
+        }
+        return value;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -89,7 +105,7 @@ public class Range<T extends Number> {
      * @return double
      */
     public double getLength() {
-        return higher.doubleValue() - lower.doubleValue() + 1;
+        return higher.doubleValue() - lower.doubleValue();
     }
     
 }

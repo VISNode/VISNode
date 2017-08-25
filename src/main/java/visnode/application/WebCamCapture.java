@@ -66,7 +66,7 @@ public class WebCamCapture {
                 try {
                     BufferedImage tmp = webCam.getImage();
                     if (tmp != null) {
-                        captureable.camptured(tmp);
+                        captureable.captured(tmp);
                     }
                 } catch (Exception e) {
                     ExceptionHandler.get().handle(e);
@@ -94,6 +94,6 @@ public class WebCamCapture {
      */
     public static interface Captureable {
 
-        public void camptured(BufferedImage image);
+        public void captured(BufferedImage image);
     }
 }
