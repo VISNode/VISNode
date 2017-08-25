@@ -5,6 +5,7 @@ import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import visnode.pdi.Process;
+import visnode.pdi.process.DynamicPixelProcess;
 import visnode.pdi.process.GrayscaleProcess;
 import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.ThresholdProcess;
@@ -50,6 +51,7 @@ public class ProcessBrowser extends JComponent {
      */
     private Class<Process>[] getProcesses() {
         return new Class[] {
+            DynamicPixelProcess.class,
             GrayscaleProcess.class,
             InformationProcess.class,
             ThresholdProcess.class
