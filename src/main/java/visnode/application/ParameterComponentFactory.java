@@ -9,7 +9,9 @@ import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeParameter;
 import visnode.executor.OutputNode;
+import visnode.gui.DoubleEditor;
 import visnode.gui.DynamicNodeValueEditor;
+import visnode.gui.IntegerEditor;
 import visnode.gui.NotImplementedParameterComponent;
 import visnode.gui.ParameterComponent;
 import visnode.gui.ThresholdEditor;
@@ -42,6 +44,12 @@ public class ParameterComponentFactory {
         }
         if (parameter.getType().equals(DynamicNodeValue.class) && type == ConnectionType.INPUT) {
             return new DynamicNodeValueEditor();
+        }
+        if (parameter.getType().equals(Double.class)) {
+            return new DoubleEditor();
+        }
+        if (parameter.getType().equals(Integer.class)) {
+            return new IntegerEditor();
         }
         return new NotImplementedParameterComponent(parameter);
     }
