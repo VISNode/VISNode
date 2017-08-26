@@ -2,10 +2,9 @@ package visnode.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -21,7 +20,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     /** Image */
     private Image value;
     /** Image */
-    private ImageIcon ico;
+    private ImageIcon icon;
 
     /**
      * Creates a new image component
@@ -38,6 +37,14 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(buildImage());
         updateImage();
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() % 2 == 0) {
+                    ImageViewerDialog.show(value);
+                }
+            }
+        });
     }
 
     /**
@@ -46,8 +53,8 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * @return JComponent
      */
     private JComponent buildImage() {
-        this.ico = new ImageIcon();
-        return new JLabel(ico);
+        this.icon = new ImageIcon();
+        return new JLabel(icon);
     }
 
     public static BufferedImage getBuffered(Image image) {
@@ -74,13 +81,13 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * Updates the image
      */
     private void updateImage() {
-        ico.setImage(getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        icon.setImage(getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
         repaint();
     }
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(ico.getImage(), 0, 0, this);
+        g.drawImage(icon.getImage(), 0, 0, this);
     }
     
     

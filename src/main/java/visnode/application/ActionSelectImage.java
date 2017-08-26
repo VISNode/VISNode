@@ -1,4 +1,3 @@
-
 package visnode.application;
 
 import java.awt.event.ActionEvent;
@@ -26,6 +25,7 @@ public class ActionSelectImage extends AbstractAction {
         JFileChooser chooser = new JFileChooser();
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
+                WebCamCapture.get().stop();
                 BufferedImage r = ImageIO.read(chooser.getSelectedFile());
                 VISNode.get().getModel().getNetwork().setInput(ImageFactory.buildRGBImage(r));
             } catch (Exception ex) {
@@ -33,5 +33,5 @@ public class ActionSelectImage extends AbstractAction {
             }
         }
     }
-    
+
 }

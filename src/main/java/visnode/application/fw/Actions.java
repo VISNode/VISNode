@@ -10,6 +10,7 @@ import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
 import visnode.application.ActionSave;
 import visnode.application.ActionSelectImage;
+import visnode.application.ActionSelectWebCam;
 
 /**
  * Application actions
@@ -39,6 +40,7 @@ public class Actions {
         file.add(get(ActionSave.class));
         JMenu input = new JMenu("Input");
         input.add(get(ActionSelectImage.class));
+        input.add(get(ActionSelectWebCam.class));
         JMenu edit = new JMenu("Edit");
         edit.add(get(ActionDeleteSelectedNodes.class));
         JMenuBar menuBar = new JMenuBar();
@@ -56,6 +58,7 @@ public class Actions {
         actions.put(ActionOpen.class, new ActionOpen());
         actions.put(ActionSave.class, new ActionSave());
         actions.put(ActionSelectImage.class, new ActionSelectImage());
+        actions.put(ActionSelectWebCam.class, new ActionSelectWebCam());
         actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());
     }
     

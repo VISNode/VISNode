@@ -5,8 +5,13 @@ import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import visnode.pdi.Process;
+import visnode.pdi.process.BrightnessProcess;
+import visnode.pdi.process.ContrastProcess;
+import visnode.pdi.process.DynamicPixelProcess;
+import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
 import visnode.pdi.process.InformationProcess;
+import visnode.pdi.process.InvertColorProcess;
 import visnode.pdi.process.ThresholdProcess;
 
 /**
@@ -50,8 +55,13 @@ public class ProcessBrowser extends JComponent {
      */
     private Class<Process>[] getProcesses() {
         return new Class[] {
+            DynamicPixelProcess.class,
+            BrightnessProcess.class,
+            ContrastProcess.class,
             GrayscaleProcess.class,
+            GaussianBlurProcess.class,
             InformationProcess.class,
+            InvertColorProcess.class,
             ThresholdProcess.class
         };
     }
