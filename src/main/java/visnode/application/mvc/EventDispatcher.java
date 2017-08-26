@@ -37,19 +37,19 @@ public class EventDispatcher implements GenericEventDispatcher {
     
     
     @Override
-    public <T extends EventObject> void addEventListener(Model model, EventListener<T> listener) {
-        listeners.add(model, listener);
+    public <T extends EventObject> void addEventListener(Class<T> eventType, Model model, EventListener<T> listener) {
+        listeners.add(model, eventType, listener);
     }
 
     @Override
-    public <T extends EventObject> void removeEventListener(Model model, EventListener<T> listener) {
+    public <T extends EventObject> void removeEventListener(Class<T> eventType, Model model, EventListener<T> listener) {
         
     }
 
     @Override
     public <T extends EventObject> void fireEvent(Model model, T event) {
         try {
-            for (EventListener listener : listeners.get(model, EventListener.class)) {
+            for (EventListener listener : listeners.get(model, event.getClass())) {
                 listener.observed(event);
             }
         } catch(Exception e) {
@@ -78,8 +78,8 @@ public class EventDispatcher implements GenericEventDispatcher {
          * @param model
          * @param listener 
          */
-        public void add(Model model, EventListener listener) {
-            getToAdd(model).add(model, listener);
+        public void add(Model model, Class<? extends EventObject> eventType, EventListener listener) {
+            getToAdd(model).add(model, eventType, listener);
         }
         
         /**
@@ -105,7 +105,7 @@ public class EventDispatcher implements GenericEventDispatcher {
          * @param type
          * @return 
          */
-        public List<EventListener> get(Model model, Class<? extends EventListener> type) {
+        public List<EventListener> get(Model model, Class<? extends EventObject> type) {
             Integer key = key(model);
             if (listeners.containsKey(key)) {
                 return listeners.get(key).get(type);
@@ -146,8 +146,8 @@ public class EventDispatcher implements GenericEventDispatcher {
          * @param model
          * @param listener 
          */
-        public void add(Model model, EventListener listener) {
-            list.add(new ListenerBean(model, listener));
+        public void add(Model model, Class eventType, EventListener listener) {
+            list.add(new ListenerBean(model, listener, eventType));
         }
         
         /**
@@ -156,10 +156,10 @@ public class EventDispatcher implements GenericEventDispatcher {
          * @param type
          * @return List<EventListener>
          */
-        public List<EventListener> get(Class<? extends EventListener> type) {
+        public List<EventListener> get(Class<? extends EventObject> type) {
             List<EventListener> ret = new ArrayList<>();
             for (ListenerBean bean : new ArrayList<>(list)) {
-                if (type.isAssignableFrom(bean.listener.getClass())) {
+                if (type.equals(bean.type)) {
                     ret.add(bean.listener);
                 }
             }
@@ -177,6 +177,8 @@ public class EventDispatcher implements GenericEventDispatcher {
         private final Model model;
         /** Listener */
         private final EventListener listener;
+        /** Type */
+        private final Class<? extends EventObject> type;
 
         /**
          * Crates a new ListenerBean
@@ -184,9 +186,10 @@ public class EventDispatcher implements GenericEventDispatcher {
          * @param model
          * @param listener 
          */
-        public ListenerBean(Model model, EventListener listener) {
+        public ListenerBean(Model model, EventListener listener, Class<? extends EventObject> type) {
             this.model = model;
             this.listener = listener;
+            this.type = type;
         }
         
         

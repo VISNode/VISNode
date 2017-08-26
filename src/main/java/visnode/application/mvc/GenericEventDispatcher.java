@@ -12,7 +12,7 @@ public interface GenericEventDispatcher {
      * @param model
      * @param listener 
      */
-    public <T extends EventObject> void addEventListener(Model model, EventListener<T> listener);
+    public <T extends EventObject> void addEventListener(Class<T> eventType, Model model, EventListener<T> listener);
     
     /**
      * Removes an event listener to the model
@@ -21,7 +21,7 @@ public interface GenericEventDispatcher {
      * @param model
      * @param listener 
      */
-    public <T extends EventObject> void removeEventListener(Model model, EventListener<T> listener);
+    public <T extends EventObject> void removeEventListener(Class<T> eventType, Model model, EventListener<T> listener);
     
     /**
      * Fires an event

@@ -2,19 +2,25 @@ package visnode.application;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import visnode.application.mvc.ListAddEvent;
+import visnode.application.mvc.ListRemoveEvent;
 import visnode.executor.AttacherNode;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeConnection;
 import visnode.gui.JConnectorPoint;
+import visnode.gui.JNode;
 import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
 import visnode.gui.NodeConnectionEvent;
 import visnode.gui.NodeConnectionListener;
+import visnode.gui.Selection;
 
 /**
  * Network editor
@@ -34,10 +40,18 @@ public class NetworkEditor extends JComponent {
     public NetworkEditor(NodeNetwork model) {
         this.model = model;
         initGui();
-        model.addEventListener((ListAddEvent evt) -> {
+        model.addEventListener(ListAddEvent.class, (ListAddEvent evt) -> {
             if (evt.getListName().equals("nodes")) {
                 SwingUtilities.invokeLater(() -> {
                     nodeContainer.add(buildNodeFor((EditNodeDecorator) evt.getAddedItem()));
+                });
+            }
+        });
+        model.addEventListener(ListRemoveEvent.class, (ListRemoveEvent evt) -> {
+            if (evt.getListName().equals("nodes")) {
+                SwingUtilities.invokeLater(() -> {
+                    nodeContainer.remove(getNodeFor((Node) evt.getRemovedBean()));
+                    nodeContainer.repaint();
                 });
             }
         });
@@ -159,6 +173,17 @@ public class NetworkEditor extends JComponent {
     public void setModel(NodeNetwork model) {
         this.model = model;
         fullUpdate();
+    }
+    
+    /**
+     * Returns the selection
+     * 
+     * @return Selection
+     */
+    public Selection<NodeView> getSelection() {
+        Stream<JNode> selection = nodeContainer.getSelection().stream();
+        List<NodeView> converted = selection.map((jnode) -> (NodeView) jnode).collect(Collectors.toList());
+        return new Selection<>(converted);
     }
 
     /**

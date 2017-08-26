@@ -59,16 +59,16 @@ public class EventMulticaster implements EventListener<PropertyEvent> {
      * @param <T>
      * @param listener
      */
-    public <T extends EventObject> void addEventListener(EventListener<T> listener) {
+    public <T extends EventObject> void addEventListener(Class eventType, EventListener<T> listener) {
         Model theModel = model.get();
-        theModel.addEventListener(this);
-        theModel.addEventListener(listener);
+        theModel.addEventListener(eventType, this);
+        theModel.addEventListener(eventType, listener);
         try {
             for (RProperty property : RClass.get(theModel).getProperties()) {
                 Object value = property.get(theModel);
                 if (value instanceof Model) {
                     Model child = (Model) value;
-                    child.addChildEventListener(listener);
+                    child.addChildEventListener(eventType, listener);
                 }
             }
         } catch (ReflectionException e) {

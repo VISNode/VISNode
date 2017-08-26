@@ -3,6 +3,7 @@ package visnode.application;
 import java.util.ArrayList;
 import java.util.List;
 import visnode.application.mvc.ListAddEvent;
+import visnode.application.mvc.ListRemoveEvent;
 import visnode.application.mvc.Model;
 import visnode.commons.Image;
 import visnode.executor.EditNodeDecorator;
@@ -32,6 +33,18 @@ public class NodeNetwork implements Model {
     public void add(EditNodeDecorator node) {
         nodes.add(node);
         fireEvent(new ListAddEvent("nodes", nodes));
+    }
+    
+    /**
+     * Removes a list of nodes from the network
+     * 
+     * @param list 
+     */
+    public void remove(List<EditNodeDecorator> list) {
+        nodes.removeAll(list);
+        for (EditNodeDecorator node : list) {
+            fireEvent(new ListRemoveEvent("nodes", nodes, node));
+        }
     }
 
     /**

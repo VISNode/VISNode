@@ -40,12 +40,12 @@ public class DragSupport implements MouseListener, MouseMotionListener {
      * Register the listeners
      */
     private void registerListeners() {
-        HierarchyMouseDispatcher.get().register(container, DragSupport.this);
         container.addContainerListener(new ContainerListener() {
             @Override
             public void componentAdded(ContainerEvent e) {
                 if (allowDragPredicate.test(e.getChild())) {
                     e.getChild().addMouseListener(DragSupport.this);
+                    e.getChild().addMouseMotionListener(DragSupport.this);
                 }
             }
 
@@ -53,6 +53,7 @@ public class DragSupport implements MouseListener, MouseMotionListener {
             public void componentRemoved(ContainerEvent e) {
                 if (allowDragPredicate.test(e.getChild())) {
                     e.getChild().removeMouseListener(DragSupport.this);
+                    e.getChild().removeMouseMotionListener(DragSupport.this);
                 }
             }
         });

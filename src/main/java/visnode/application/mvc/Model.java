@@ -11,8 +11,8 @@ public interface Model {
      * @param <T>
      * @param listener 
      */
-    public default <T extends EventObject> void addEventListener(EventListener<T> listener) {
-        EventDispatcher.get().addEventListener(this, listener);
+    public default <T extends EventObject> void addEventListener(Class<T> eventType, EventListener<T> listener) {
+        EventDispatcher.get().addEventListener(eventType, this, listener);
     }
         
     /**
@@ -21,8 +21,8 @@ public interface Model {
      * @param <T>
      * @param listener 
      */
-    public default <T extends EventObject> void removeEventListener(EventListener<T> listener) {
-        EventDispatcher.get().removeEventListener(this, listener);
+    public default <T extends EventObject> void removeEventListener(Class<T> eventType, EventListener<T> listener) {
+        EventDispatcher.get().removeEventListener(eventType, this, listener);
     }
     
     /**
@@ -41,8 +41,8 @@ public interface Model {
      * @param <T>
      * @param listener 
      */
-    public default <T extends EventObject> void addChildEventListener(EventListener<T> listener) {
-        EventMulticaster.get(this).addEventListener(listener);
+    public default <T extends EventObject> void addChildEventListener(Class<T> eventType, EventListener<T> listener) {
+        EventMulticaster.get(this).addEventListener(eventType, listener);
     }
         
     /**

@@ -15,6 +15,8 @@ public class MainWindow extends JFrame {
 
     /** Model */
     private final VISNodeModel model;
+    /** Network editor */
+    private NetworkEditor networkEditor;
     
     /**
      * Creates the main window
@@ -44,18 +46,26 @@ public class MainWindow extends JFrame {
      * @return JComponent
      */
     private JComponent buildDummyInterface() {
-        NetworkEditor networkEditor = new NetworkEditor(model.getNetwork());
-        model.addEventListener((PropertyEvent event) -> {
+        networkEditor = new NetworkEditor(model.getNetwork());
+        model.addEventListener(PropertyEvent.class, (PropertyEvent event) -> {
             if (event.getPropertyName().equals("network")) {
                 networkEditor.setModel(model.getNetwork());
             }
         });
-        
         SplitPanel split = new SplitPanel(SplitPanel.HORIZONTAL_SPLIT);
         split.setLeftComponent(new ViewPanel(networkEditor));
         split.setRightComponent(new ViewPanel(new ProcessBrowser()));
         split.setDividerLocation(1024);
         return split;
+    }
+
+    /**
+     * Returns the network editor
+     * 
+     * @return NetworkEditor
+     */
+    public NetworkEditor getNetworkEditor() {
+        return networkEditor;
     }
     
 }

@@ -8,7 +8,22 @@ import java.util.Collection;
  * Selection
  */
 public class Selection<T> extends ArrayList<T> {
-
+    
+    /**
+     * Creates an empty selection
+     */
+    public Selection() {
+    }
+    
+    /**
+     * Creates a new selection based on a object list
+     * 
+     * @param collection 
+     */
+    public Selection(Collection<T> collection) {
+        super(collection);
+    }
+    
     /**
      * Sets the selection
      * 

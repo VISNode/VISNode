@@ -17,6 +17,8 @@ public class VISNode {
     private final VISNodeModel model;
     /** Actions */
     private final Actions actions;
+    /** Main window */
+    private MainWindow window;
 
     /**
      * Creates a new application
@@ -82,7 +84,7 @@ public class VISNode {
      * Builds the main window
      */
     private MainWindow buildWindow() {
-        MainWindow window = new MainWindow(model);
+        window = new MainWindow(model);
         window.setDefaultCloseOperation(MainWindow.EXIT_ON_CLOSE);
         return window;
     }
@@ -94,6 +96,15 @@ public class VISNode {
      */
     public VISNodeModel getModel() {
         return model;
+    }
+    
+    /**
+     * Returns the current network editor
+     * 
+     * @return NetworkEditor
+     */
+    public NetworkEditor getNetworkEditor() {
+        return window.getNetworkEditor();
     }
 
     /**
