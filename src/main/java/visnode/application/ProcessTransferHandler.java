@@ -10,8 +10,6 @@ import static javax.swing.TransferHandler.COPY;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.ProcessNode;
-import visnode.pdi.Process;
-import visnode.pdi.process.GrayscaleProcess;
 
 /**
  * Process transfer handler
@@ -25,13 +23,10 @@ public class ProcessTransferHandler extends TransferHandler {
 
     }
 
+    @Override
     public boolean canImport(TransferHandler.TransferSupport info) {
         // we only import Strings
-        if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-            return false;
-        }
-
-        return true;
+        return info.isDataFlavorSupported(DataFlavor.stringFlavor);
     }
 
     public boolean importData(TransferHandler.TransferSupport info) {
@@ -39,12 +34,10 @@ public class ProcessTransferHandler extends TransferHandler {
             if (!info.isDrop()) {
                 return false;
             }
-
             // Check for String flavor
             if (!info.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 return false;
             }
-
             // Get the string that is being dropped.
             Transferable t = info.getTransferable();
             String data;
@@ -53,21 +46,13 @@ public class ProcessTransferHandler extends TransferHandler {
             } catch (Exception e) {
                 return false;
             }
-
             NetworkEditor editor = (NetworkEditor) info.getComponent();
-
             NodeNetwork network = editor.getModel();
-            
             Node node = new ProcessNode(Class.forName(data));
-            
             EditNodeDecorator dec = new EditNodeDecorator(node);
-            
             dec.setPosition(info.getDropLocation().getDropPoint());
-            
             network.add(dec);
-
             System.out.println(data);
-
             return true;
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
@@ -85,12 +70,11 @@ public class ProcessTransferHandler extends TransferHandler {
      * @param c
      * @return Transferable
      */
+    @Override
     protected Transferable createTransferable(JComponent c) {
         JList list = (JList) c;
         Object[] values = list.getSelectedValues();
-
         String buff = "";
-
         for (int i = 0; i < values.length; i++) {
             Class val = (Class) values[i];
             buff = val.getName();

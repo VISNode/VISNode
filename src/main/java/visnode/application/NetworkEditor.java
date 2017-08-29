@@ -34,12 +34,29 @@ public class NetworkEditor extends JComponent {
 
     /**
      * Creates a new Network Editor
-     * 
-     * @param model 
+     *
+     * @param model
      */
     public NetworkEditor(NodeNetwork model) {
         this.model = model;
         initGui();
+        initEvents();
+    }
+
+    /**
+     * Initializes the interface
+     */
+    private void initGui() {
+        setLayout(new BorderLayout());
+        setTransferHandler(new ProcessTransferHandler());
+        add(buildNodeContainer());
+        fullUpdate();
+    }
+
+    /**
+     * Initializes the events
+     */
+    private void initEvents() {
         model.addEventListener(ListAddEvent.class, (ListAddEvent evt) -> {
             if (evt.getListName().equals("nodes")) {
                 SwingUtilities.invokeLater(() -> {
@@ -58,18 +75,8 @@ public class NetworkEditor extends JComponent {
     }
 
     /**
-     * Initializes the interface
-     */
-    private void initGui() {
-        setLayout(new BorderLayout());
-        setTransferHandler(new ProcessTransferHandler());
-        add(buildNodeContainer());
-        fullUpdate();
-    }
-
-    /**
      * Builds the node container
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildNodeContainer() {
@@ -89,7 +96,7 @@ public class NetworkEditor extends JComponent {
             repaint();
         });
     }
-    
+
     /**
      * Creates the nodes
      */
@@ -98,7 +105,7 @@ public class NetworkEditor extends JComponent {
             nodeContainer.add(buildNodeFor(node));
         }
     }
-    
+
     /**
      * Creates all the connections
      */
@@ -112,7 +119,7 @@ public class NetworkEditor extends JComponent {
 
     /**
      * Creates a JNode for the model Node
-     * 
+     *
      * @param node
      * @return JComponent
      */
@@ -122,24 +129,24 @@ public class NetworkEditor extends JComponent {
 
     /**
      * Builds a connection
-     * 
+     *
      * @param node1
      * @param attribute1
      * @param node2
      * @param attribute2
-     */    
+     */
     private void buildConnection(Node node1, String attribute1, Node node2, String attribute2) {
         JNodeConnector connector1 = getNodeFor(node1).getConnectorFor(attribute1, ConnectionType.INPUT);
         JNodeConnector connector2 = getNodeFor(node2).getConnectorFor(attribute2, ConnectionType.OUTPUT);
         if (connector1 == null || connector2 == null) {
             return;
-        }        
+        }
         connector1.getLeftConnector().connectTo(connector2.getRightConnector());
     }
-    
+
     /**
      * Returns the view for a node
-     * 
+     *
      * @param node
      * @return NodeView
      */
@@ -158,7 +165,7 @@ public class NetworkEditor extends JComponent {
 
     /**
      * Returns the model
-     * 
+     *
      * @return NodeNetwork
      */
     public NodeNetwork getModel() {
@@ -167,17 +174,18 @@ public class NetworkEditor extends JComponent {
 
     /**
      * Sets the model
-     * 
-     * @param model 
+     *
+     * @param model
      */
     public void setModel(NodeNetwork model) {
         this.model = model;
         fullUpdate();
+        initEvents();
     }
-    
+
     /**
      * Returns the selection
-     * 
+     *
      * @return Selection
      */
     public Selection<NodeView> getSelection() {
@@ -193,12 +201,12 @@ public class NetworkEditor extends JComponent {
 
         @Override
         public void connectionCreated(NodeConnectionEvent evt) {
-            NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint)evt.getConnection().getFirst()).getParentNodeConnector();
+            NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getFirst()).getParentNodeConnector();
             NodeView leftView = (NodeView) leftConnector.getParentNode();
             Node leftNode = leftView.getModel();
             String leftAttr = leftConnector.getAttribute();
             //
-            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint)evt.getConnection().getSecond()).getParentNodeConnector();
+            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
             NodeView rightView = (NodeView) rightConnector.getParentNode();
             EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
             AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
@@ -209,7 +217,7 @@ public class NetworkEditor extends JComponent {
 
         @Override
         public void connectionRemoved(NodeConnectionEvent evt) {
-            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint)evt.getConnection().getSecond()).getParentNodeConnector();
+            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
             NodeView rightView = (NodeView) rightConnector.getParentNode();
             EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
             AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
@@ -218,5 +226,5 @@ public class NetworkEditor extends JComponent {
             rightNode.removeConnection(rightAttr);
         }
     }
-    
+
 }
