@@ -1,6 +1,6 @@
 package visnode.pdi;
 
-import visnode.commons.Image;
+import org.torax.commons.Image;
 
 /**
  * Process that iterates over a image pixels

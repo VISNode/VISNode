@@ -10,7 +10,7 @@ import java.awt.Window;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import visnode.commons.Image;
+import org.torax.commons.Image;
 import static visnode.gui.ImageNodeComponent.getBuffered;
 
 /**

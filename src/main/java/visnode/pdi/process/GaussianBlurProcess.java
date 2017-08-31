@@ -5,7 +5,7 @@
  */
 package visnode.pdi.process;
 
-import visnode.commons.Image;
+import org.torax.commons.Image;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.pdi.ConvolutionProcess;

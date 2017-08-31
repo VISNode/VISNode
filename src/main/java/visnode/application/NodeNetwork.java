@@ -2,10 +2,10 @@ package visnode.application;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.torax.commons.Image;
 import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.ListRemoveEvent;
 import visnode.application.mvc.Model;
-import visnode.commons.Image;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
 import visnode.executor.OutputNode;

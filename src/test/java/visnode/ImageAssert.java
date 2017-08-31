@@ -1,7 +1,7 @@
 package visnode;
 
 import static junit.framework.Assert.*;
-import visnode.commons.Image;
+import org.torax.commons.Image;
 
 /**
  * Class for asserting images
