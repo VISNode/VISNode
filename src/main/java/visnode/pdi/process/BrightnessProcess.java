@@ -1,10 +1,10 @@
 package visnode.pdi.process;
 
-import visnode.commons.Image;
-import visnode.commons.ImageFactory;
+import org.torax.commons.Image;
+import org.torax.commons.ImageFactory;
+import org.torax.commons.Range;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.commons.Range;
 import visnode.pdi.PixelProcess;
 
 /**

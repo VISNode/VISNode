@@ -1,9 +1,9 @@
 package visnode.pdi.process;
 
 import org.junit.Test;
+import org.torax.commons.Image;
+import org.torax.commons.Range;
 import visnode.ImageAssert;
-import visnode.commons.Image;
-import visnode.commons.Range;
 
 /**
  * Unit tests of class GrayscaleProcess

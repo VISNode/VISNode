@@ -1,7 +1,7 @@
 package visnode.pdi;
 
-import visnode.commons.Image;
-import visnode.commons.ImageFactory;
+import org.torax.commons.Image;
+import org.torax.commons.ImageFactory;
 
 /**
  * Process that works on top of a image

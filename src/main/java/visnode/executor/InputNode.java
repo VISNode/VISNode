@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import visnode.commons.Image;
+import org.torax.commons.Image;
 
 /**
  * Input node representation

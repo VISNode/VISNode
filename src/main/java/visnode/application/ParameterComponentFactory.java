@@ -1,9 +1,9 @@
 
 package visnode.application;
 
+import org.torax.commons.Image;
 import visnode.commons.DynamicNodeValue;
 import visnode.gui.ImageNodeComponent;
-import visnode.commons.Image;
 import visnode.commons.Threshold;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;

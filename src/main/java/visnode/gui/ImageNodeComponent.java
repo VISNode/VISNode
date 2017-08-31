@@ -9,8 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import visnode.commons.Image;
-import visnode.commons.ImageFactory;
+import org.torax.commons.Image;
+import org.torax.commons.ImageFactory;
 
 /**
  * Image component

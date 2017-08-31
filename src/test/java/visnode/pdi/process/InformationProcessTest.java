@@ -2,8 +2,8 @@ package visnode.pdi.process;
 
 import static junit.framework.Assert.assertEquals;
 import org.junit.Test;
-import visnode.commons.Image;
-import visnode.commons.Range;
+import org.torax.commons.Image;
+import org.torax.commons.Range;
 
 /**
  * Unit tests of class InformationsProcess
