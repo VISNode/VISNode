@@ -2,18 +2,12 @@ package visnode.application;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import org.torax.commons.Image;
-import visnode.commons.TypeConverter;
-import visnode.gui.ImageNodeComponent;
 import visnode.pdi.Process;
 import visnode.pdi.process.BrightnessProcess;
 import visnode.pdi.process.ContrastProcess;
