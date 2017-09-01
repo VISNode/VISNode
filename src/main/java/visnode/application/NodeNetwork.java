@@ -2,7 +2,7 @@ package visnode.application;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.torax.commons.Image;
+import org.paim.commons.Image;
 import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.ListRemoveEvent;
 import visnode.application.mvc.Model;

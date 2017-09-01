@@ -1,7 +1,7 @@
 package visnode.pdi.process;
 
-import org.torax.commons.Image;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.commons.Threshold;

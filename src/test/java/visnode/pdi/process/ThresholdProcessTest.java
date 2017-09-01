@@ -1,8 +1,8 @@
 package visnode.pdi.process;
 
 import org.junit.Test;
-import org.torax.commons.Image;
-import org.torax.commons.Range;
+import org.paim.commons.Image;
+import org.paim.commons.Range;
 import visnode.ImageAssert;
 import visnode.commons.Threshold;
 

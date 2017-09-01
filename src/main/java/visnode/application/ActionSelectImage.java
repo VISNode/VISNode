@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.ImageFactory;
 import visnode.gui.IconFactory;
 
 /**

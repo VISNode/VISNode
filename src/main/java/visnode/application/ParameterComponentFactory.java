@@ -1,7 +1,7 @@
 
 package visnode.application;
 
-import org.torax.commons.Image;
+import org.paim.commons.Image;
 import visnode.commons.DynamicNodeValue;
 import visnode.gui.ImageNodeComponent;
 import visnode.commons.Threshold;

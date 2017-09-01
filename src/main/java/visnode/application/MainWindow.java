@@ -7,7 +7,6 @@ import visnode.application.mvc.PropertyEvent;
 import visnode.gui.SplitPanel;
 import visnode.gui.ViewPanel;
 
-
 /**
  * Application main window
  */

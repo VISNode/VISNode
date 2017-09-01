@@ -3,7 +3,7 @@ package visnode.application;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.ImageFactory;
 import visnode.gui.IconFactory;
 
 /**

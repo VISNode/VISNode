@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.ImageFactory;
 import visnode.application.mvc.Model;
 import visnode.application.mvc.PropertyEvent;
 import visnode.commons.Threshold;
