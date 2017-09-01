@@ -25,7 +25,6 @@ public class ProcessTransferHandler extends TransferHandler {
 
     @Override
     public boolean canImport(TransferHandler.TransferSupport info) {
-        // we only import Strings
         return info.isDataFlavorSupported(DataFlavor.stringFlavor);
     }
 
@@ -52,7 +51,6 @@ public class ProcessTransferHandler extends TransferHandler {
             EditNodeDecorator dec = new EditNodeDecorator(node);
             dec.setPosition(info.getDropLocation().getDropPoint());
             network.add(dec);
-            System.out.println(data);
             return true;
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
