@@ -92,6 +92,15 @@ public class InputNode implements Node {
         outputChangeSupport.firePropertyChange("image", oldValue, image);
     }
 
+    /**
+     * Returns the image
+     * 
+     * @return Image
+     */
+    public Image getImage() {
+        return image;
+    }
+
     @Override
     public String getName() {
         return "Input";

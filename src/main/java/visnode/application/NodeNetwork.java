@@ -66,6 +66,11 @@ public class NodeNetwork implements Model {
         decorator.setImage(image);
     }
     
+    public Image getInput() {
+        InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
+        return decorator.getImage();
+    }
+    
     /**
      * Finds the index of the input node
      * 
