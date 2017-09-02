@@ -5,7 +5,7 @@ import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.commons.Threshold;
-import visnode.pdi.PixelProcess;
+import visnode.pdi.Process;
 
 /**
  * Process for applying a binary threshold on a image.
@@ -14,13 +14,10 @@ import visnode.pdi.PixelProcess;
  * the threshold, and the higher boundary if the pixel is <b> higher than or 
  * equal to</b> the boundary.
  */
-public class ThresholdProcess extends PixelProcess<Image> {
+public class ThresholdProcess implements Process {
 
-    /** Threshold */
-    private final Threshold threshold;
-    /** Gray scale image */
-    private final Image grayImage;
-
+    /** Threshold process */
+    private final org.paim.pdi.ThresholdProcess process;
 
     /**
      * Creates a new threshold process
@@ -29,48 +26,17 @@ public class ThresholdProcess extends PixelProcess<Image> {
      * @param threshold 
      */
     public ThresholdProcess(@Input("image") Image image, @Input("threshold") Threshold threshold) {
-        super(image);
         Threshold resultThreshold;
         if (threshold == null) {
             resultThreshold = new Threshold(0);
         } else {
             resultThreshold = threshold;
         }
-        this.threshold = resultThreshold;
-        Image resultImage;
+        Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
-        } else {
-            resultImage = ImageFactory.
-                buildEmptyImage(Image.CHANNELS_GRAYSCALE,
-                        image.getWidth(),
-                        image.getHeight(),
-                        image.getPixelValueRange());
-        }
-        this.grayImage = resultImage;
-        setFinisher(() -> {
-            setOutput(grayImage);
-        });
-    }
-    
-
-    @Override
-    protected void process(int channel, int x, int y, int value) {
-        grayImage.set(channel, x, y, applyThreshold(value));
-    }
-
-    /**
-     * Apply the threshold
-     * 
-     * @param value
-     * @return 
-     */
-    private int applyThreshold(int value) {
-        if (value < threshold.intValue()) {
-            return image.getPixelValueRange().getLower();
-        } else {
-            return image.getPixelValueRange().getHigher();
-        }
+        }        
+        this.process = new org.paim.pdi.ThresholdProcess(new Image(resultImage), resultThreshold.intValue());
     }
 
     /**    
@@ -80,7 +46,12 @@ public class ThresholdProcess extends PixelProcess<Image> {
      */
     @Output("image")
     public Image getImage() {
-        return super.getOutput();
+        return this.process.getOutput();
+    }
+
+    @Override
+    public void process() {
+        this.process.process();
     }
 
 }

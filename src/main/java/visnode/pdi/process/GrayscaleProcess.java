@@ -4,15 +4,15 @@ import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.PixelProcess;
+import visnode.pdi.Process;
 
 /**
  * Process for converting a image to gray scale
  */
-public class GrayscaleProcess extends PixelProcess<Image> {
+public class GrayscaleProcess implements Process {
 
-    /** Gray scale image */
-    private final Image grayImage;
+    /** Gray scale process */
+    private final org.paim.pdi.GrayscaleProcess process;
 
     /**
      * Creates a new gray scale process
@@ -20,37 +20,25 @@ public class GrayscaleProcess extends PixelProcess<Image> {
      * @param image
      */
     public GrayscaleProcess(@Input("image") Image image) {
-        super(image);
-        Image resultImage;
+        Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
-        } else {
-            resultImage = ImageFactory.
-                buildEmptyImage(Image.CHANNELS_GRAYSCALE,
-                        image.getWidth(),
-                        image.getHeight(),
-                        image.getPixelValueRange());
-        }
-        this.grayImage = resultImage;
-        setFinisher(() -> {
-            setOutput(grayImage);
-        });
-    }
-
-    @Override
-    protected void process(int channel, int x, int y, int value) {
-        int grayValue = grayImage.get(Image.CHANNEL_GRAY, x, y);
-        grayImage.set(Image.CHANNEL_GRAY, x, y, grayValue + (value / 3));
+        }       
+        this.process = new org.paim.pdi.GrayscaleProcess(resultImage);
     }
 
     /**
      * Returns the output image
-     * 
+     *
      * @return Image
      */
     @Output("image")
     public Image getImage() {
-        return super.getOutput();
+        return process.getOutput();
     }
-    
+
+    @Override
+    public void process() {
+        this.process.process();
+    }
 }

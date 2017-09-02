@@ -2,21 +2,18 @@ package visnode.pdi.process;
 
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
-import org.paim.commons.Range;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.PixelProcess;
+import visnode.pdi.Process;
 
 /**
  * Process for adjusting the contrast of the image
  */
-public class ContrastProcess extends PixelProcess<Image> {
+public class ContrastProcess implements Process {
 
-    /** Output image */
-    private final Image outputImage;
-    /** Contrast */
-    private double contrast;
-
+    /** Contrast process */
+    private final org.paim.pdi.ContrastProcess process;
+    
     /**
      * Creates a new contrast process
      *
@@ -24,28 +21,17 @@ public class ContrastProcess extends PixelProcess<Image> {
      * @param contrast
      */
     public ContrastProcess(@Input("image") Image image, @Input("contrast") Double contrast) {
-        super(image);
-        Image resultImage;
+       Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
-        } else {
-            resultImage = ImageFactory.
-                buildEmptyImage(image.getChannelCount(),
-                        image.getWidth(),
-                        image.getHeight(),
-                        image.getPixelValueRange());
         }
-        this.contrast = contrast == null ? 1d : contrast;
-        this.outputImage = resultImage;
-        setFinisher(() -> {
-            setOutput(outputImage);
-        });
+        Double resultContrast = contrast == null ? 1d : contrast;
+        this.process = new org.paim.pdi.ContrastProcess(new Image(resultImage), resultContrast);
     }
 
     @Override
-    protected void process(int channel, int x, int y, int value) {
-        Range<Integer> range = outputImage.getPixelValueRange();
-        outputImage.set(channel, x, y, range.limit((int) (value * contrast)));
+    public void process() {
+        process.process();
     }
 
     /**
@@ -55,7 +41,7 @@ public class ContrastProcess extends PixelProcess<Image> {
      */
     @Output("image")
     public Image getImage() {
-        return super.getOutput();
+        return process.getOutput();
     }
     
 }

@@ -1,48 +1,47 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visnode.pdi.process;
 
 import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.ConvolutionProcess;
+import visnode.pdi.Process;
 
 /**
  * Gaussian Blur process
  */
-public class GaussianBlurProcess extends ConvolutionProcess {
+public class GaussianBlurProcess implements Process {
 
-    /** Sigma */
-    private final double sigma;
-    
+    /** Gaussian Blur process */
+    private final org.paim.pdi.GaussianBlurProcess process;
+
     /**
      * Creates a new Gaussian blur process
-     * 
-     * @param image 
-     * @param sigma 
-     * @param maskSize 
+     *
+     * @param image
+     * @param sigma
+     * @param maskSize
      */
     public GaussianBlurProcess(@Input("image") Image image, @Input("sigma") Double sigma, @Input("maskSize") Integer maskSize) {
-        super(image, maskSize);
-        this.sigma = sigma;
+        Image resultImage = image;
+        if (image == null) {
+            resultImage = ImageFactory.buildEmptyImage();
+        }
+        this.process = new org.paim.pdi.GaussianBlurProcess(new Image(resultImage), sigma, maskSize);
     }
 
     @Override
-    protected double[] getKernel() {
-        return GaussKernelGenerator.buildKernel(sigma, maskSize);
+    public void process() {
+        process.process();
     }
 
     /**
      * Returns the output image
-     * 
+     *
      * @return Image
      */
     @Output("image")
     public Image getImage() {
-        return super.getOutput();
+        return process.getOutput();
     }
 
 }

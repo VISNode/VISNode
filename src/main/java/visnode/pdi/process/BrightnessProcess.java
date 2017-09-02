@@ -2,20 +2,17 @@ package visnode.pdi.process;
 
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
-import org.paim.commons.Range;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.PixelProcess;
+import visnode.pdi.Process;
 
 /**
  * Process for adjusting the brightness of the image
  */
-public class BrightnessProcess extends PixelProcess<Image> {
-
-    /** Output image */
-    private final Image outputImage;
-    /** Brightness */
-    private int brightness;
+public class BrightnessProcess implements Process {
+    
+    /** Brightness process*/
+    private final org.paim.pdi.BrightnessProcess process;
 
     /**
      * Creates a new brightness process
@@ -24,28 +21,16 @@ public class BrightnessProcess extends PixelProcess<Image> {
      * @param brightness
      */
     public BrightnessProcess(@Input("image") Image image, @Input("brightness") Integer brightness) {
-        super(image);
-        Image resultImage;
+        Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
-        } else {
-            resultImage = ImageFactory.
-                buildEmptyImage(image.getChannelCount(),
-                        image.getWidth(),
-                        image.getHeight(),
-                        image.getPixelValueRange());
         }
-        this.brightness = brightness == null ? 0 : brightness;
-        this.outputImage = resultImage;
-        setFinisher(() -> {
-            setOutput(outputImage);
-        });
+        this.process = new org.paim.pdi.BrightnessProcess(new Image(resultImage), brightness);
     }
 
     @Override
-    protected void process(int channel, int x, int y, int value) {
-        Range<Integer> range = outputImage.getPixelValueRange();
-        outputImage.set(channel, x, y, range.limit((int) (value + brightness)));
+    public void process() {
+        process.process();
     }
 
     /**
@@ -55,7 +40,7 @@ public class BrightnessProcess extends PixelProcess<Image> {
      */
     @Output("image")
     public Image getImage() {
-        return super.getOutput();
+        return process.getOutput();
     }
     
 }

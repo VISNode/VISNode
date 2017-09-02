@@ -1,6 +1,7 @@
 package visnode.pdi.process;
 
 import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.pdi.Process;
@@ -10,11 +11,8 @@ import visnode.pdi.Process;
  */
 public class InformationProcess implements Process {
 
-    /** Image */
-    private final Image image;
-
-    /** Average */
-    private int average;
+    /** Information process */
+    private final org.paim.pdi.InformationProcess process;
 
     /**
      * Creates a new information process
@@ -22,40 +20,26 @@ public class InformationProcess implements Process {
      * @param image
      */
     public InformationProcess(@Input("image") Image image) {
-        this.image = image;
-    }
-
-    /**
-     * Process the average value
-     */
-    private void processAverage() {
-        int total = 0;
-        for (int channel = 0; channel < image.getChannelCount(); channel++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                for (int y = 0; y < image.getHeight(); y++) {
-                    total += image.get(channel, x, y);
-                }
-            }
+        Image resultImage = image;
+        if (image == null) {
+            resultImage = ImageFactory.buildEmptyImage();
         }
-        int size = image.getChannelCount() * 
-                image.getHeight() * 
-                image.getWidth();
-        average = total / size;
+        this.process = new org.paim.pdi.InformationProcess(resultImage);
     }
 
     @Override
     public void process() {
-        processAverage();
+        this.process.process();
     }
-    
+
     /**
      * Returns the average
-     * 
+     *
      * @return int
      */
     @Output("average")
-    public int getAverage()  {
-        return average;
+    public int getAverage() {
+        return process.getAverage();
     }
 
 }
