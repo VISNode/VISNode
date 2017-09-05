@@ -20,7 +20,7 @@ public class ActionNew extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        VISNode.get().getModel().setNetwork(new NodeNetwork());
+        VISNode.get().getModel().setNetwork(NodeNetworkFactory.createEmpty());
     }
 
 }
