@@ -1,6 +1,7 @@
 package visnode.application;
 
 import java.awt.BorderLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import visnode.application.mvc.PropertyEvent;
@@ -33,6 +34,7 @@ public class MainWindow extends JFrame {
      */
     private void initGui() {
         setSize(1024, 768);
+        setIconImage(new ImageIcon(getClass().getResource("/VISNode_64.png").getFile()).getImage());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(buildDummyInterface());
