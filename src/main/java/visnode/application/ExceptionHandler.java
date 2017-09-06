@@ -1,5 +1,7 @@
 package visnode.application;
 
+import javax.swing.JOptionPane;
+
 /**
  * Exception handler
  */
@@ -27,6 +29,15 @@ public class ExceptionHandler {
      */
     public void handle(Exception e) {
         e.printStackTrace();
+    }
+    
+    /**
+     * Handles the exception
+     * 
+     * @param e 
+     */
+    public void handle(InvalidOpenFileException e) {
+        JOptionPane.showMessageDialog(null, e.getMessage());
     }
     
 }

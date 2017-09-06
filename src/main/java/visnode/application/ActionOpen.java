@@ -33,6 +33,9 @@ public class ActionOpen extends AbstractAction {
         FileFilterFactory.projectFileFilter().apply(chooser);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
+                if (!chooser.isValid()) {
+                    throw new InvalidOpenFileException();
+                }
                 InputStreamReader isr = new InputStreamReader(new FileInputStream(chooser.getSelectedFile()));
                 try (BufferedReader br = new BufferedReader(isr)) {
                     StringBuilder sb = new StringBuilder();
@@ -43,6 +46,8 @@ public class ActionOpen extends AbstractAction {
                     }
                     VISNode.get().getModel().setNetwork(parser.fromJson(sb.toString()));
                 }
+            } catch (InvalidOpenFileException ex) {
+                ExceptionHandler.get().handle(ex);                
             } catch (IOException ex) {
                 ExceptionHandler.get().handle(ex);
             }

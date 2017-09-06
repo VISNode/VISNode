@@ -54,6 +54,11 @@
             <artifactId>PDI</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.paim.examsio</groupId>
+            <artifactId>ExamsIO</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
