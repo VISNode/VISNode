@@ -33,7 +33,7 @@ public class ActionOpen extends AbstractAction {
         FileFilterFactory.projectFileFilter().apply(chooser);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
-                if (!chooser.isValid()) {
+                if (!chooser.getFileFilter().accept(chooser.getSelectedFile())) {
                     throw new InvalidOpenFileException();
                 }
                 InputStreamReader isr = new InputStreamReader(new FileInputStream(chooser.getSelectedFile()));

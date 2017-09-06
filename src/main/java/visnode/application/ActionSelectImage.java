@@ -29,7 +29,7 @@ public class ActionSelectImage extends AbstractAction {
         FileFilterFactory.inputFileFilter().apply(chooser);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
-                if (!chooser.isValid()) {
+                if (!chooser.getFileFilter().accept(chooser.getSelectedFile())) {
                     throw new InvalidOpenFileException();
                 }
                 WebCamCapture.get().stop();
