@@ -1,7 +1,10 @@
 package visnode.application;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
+import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -75,19 +78,6 @@ public class ProcessBrowser extends JComponent {
         };
     }
     
-    /**
-     * Returns the prettyfied name for the process class
-     * 
-     * @param processType
-     * @return String
-     */
-    private String getNameFor(Class<Process> processType) {
-        String name = processType.getSimpleName();
-        name = name.replaceFirst("Process$", "");
-        name = name.replaceAll("([a-z])([A-Z])", "$1 $2");
-        return name;
-    }
-    
     private class CellRenderer implements ListCellRenderer<Class<Process>> {
 
         /** Renderer to base background and foreground color */
@@ -103,14 +93,35 @@ public class ProcessBrowser extends JComponent {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends Class<Process>> list, Class<Process> value, int index, boolean isSelected, boolean cellHasFocus) {
+            ProcessMetadata metadata = ProcessMetadata.fromClass(value);
+            // Title label
             JLabel label = (JLabel) defaultRenderer.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
-            JPanel component = new JPanel(new BorderLayout());
+            label.setText(metadata.getName());
+            label.setFont(new Font("Arial", Font.BOLD, 12));
+            // Description label
+            JLabel description = new JLabel(metadata.getDescription());
+            description.setForeground(description.getForeground());
+            description.setBorder(BorderFactory.createEmptyBorder(1, 10, 3, 3));
+            if (metadata.getDescription() == null || metadata.getDescription().isEmpty()) {
+                description.setText("<No description specified>");
+                description.setForeground(description.getForeground().darker());
+            }
+            // Builds the component
+            JPanel component = new JPanel();
+            component.setLayout(new BorderLayout());
+            component.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
+            if (isSelected) {
+                component.setBackground(new Color(0xEDEDED));
+            } else {
+                if (index % 2 == 0) {
+                    component.setBackground(new Color(0x555555));
+                }
+            }
             component.add(label);
-            label.setText(getNameFor(value));
+            component.add(description, BorderLayout.SOUTH);            
             component.setOpaque(true);
-            component.setBackground(label.getBackground());
-            component.setForeground(label.getForeground());
-            return label;
+            component.setForeground(description.getForeground());
+            return component;
         }
         
     }
