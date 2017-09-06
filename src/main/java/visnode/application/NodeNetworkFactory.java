@@ -1,15 +1,10 @@
 package visnode.application;
 
 import java.awt.Point;
-import visnode.commons.ImageFactory;
-import visnode.commons.Threshold;
+import org.paim.commons.ImageFactory;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
-import visnode.executor.ProcessNode;
-import visnode.pdi.process.GrayscaleProcess;
-import visnode.pdi.process.InformationProcess;
-import visnode.pdi.process.ThresholdProcess;
 
 /**
  * Factory for node networks
