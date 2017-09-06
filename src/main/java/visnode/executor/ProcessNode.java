@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.swing.event.EventListenerList;
+import org.paim.pdi.ImageProcess;
 import visnode.application.ExceptionHandler;
 import visnode.commons.Output;
 import visnode.commons.TypeConverter;
 import visnode.pdi.Process;
-import visnode.pdi.ImageProcess;
 
 /**
  * Process node representation

@@ -9,8 +9,8 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import org.torax.commons.Image;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
 
 /**
  * Image component

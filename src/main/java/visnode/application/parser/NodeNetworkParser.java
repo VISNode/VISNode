@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.ImageFactory;
 import visnode.application.ExceptionHandler;
 import visnode.application.NodeNetwork;
 import visnode.executor.EditNodeDecorator;

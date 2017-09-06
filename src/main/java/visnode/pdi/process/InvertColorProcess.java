@@ -1,19 +1,18 @@
 package visnode.pdi.process;
 
-import org.torax.commons.Image;
-import org.torax.commons.ImageFactory;
-import org.torax.commons.Range;
+import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.PixelProcess;
+import visnode.pdi.Process;
 
 /**
  * Process for inverting the image colors
  */
-public class InvertColorProcess extends PixelProcess<Image> {
+public class InvertColorProcess implements Process {
 
-    /** Inverted image */
-    private final Image invertedImage;
+    /** Invert color process */
+    private final org.paim.pdi.InvertColorProcess process;
 
     /**
      * Creates a new invert colors process
@@ -21,31 +20,18 @@ public class InvertColorProcess extends PixelProcess<Image> {
      * @param image
      */
     public InvertColorProcess(@Input("image") Image image) {
-        super(image);
-        Image resultImage;
+        Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
-        } else {
-            resultImage = ImageFactory.
-                buildEmptyImage(image.getChannelCount(),
-                        image.getWidth(),
-                        image.getHeight(),
-                        image.getPixelValueRange());
         }
-        this.invertedImage = resultImage;
-        setFinisher(() -> {
-            setOutput(invertedImage);
-        });
+        this.process = new org.paim.pdi.InvertColorProcess(new Image(resultImage));
     }
 
     @Override
-    protected void process(int channel, int x, int y, int value) {
-        Range<Integer> range = invertedImage.getPixelValueRange();
-        int normalizedValue = value - range.getLower();
-        int newValue = range.getLower() + ((int)range.getLength() + normalizedValue * -1);
-        invertedImage.set(channel, x, y, newValue);
+    public void process() {
+        process.process();
     }
-
+    
     /**
      * Returns the output image
      * 
@@ -53,7 +39,7 @@ public class InvertColorProcess extends PixelProcess<Image> {
      */
     @Output("image")
     public Image getImage() {
-        return super.getOutput();
+        return process.getOutput();
     }
     
 }

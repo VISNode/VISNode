@@ -7,26 +7,32 @@ import visnode.commons.Output;
 import visnode.pdi.Process;
 
 /**
- * Process for converting a image to gray scale
+ * Roberts process to edge detection
  */
-public class GrayscaleProcess implements Process {
+public class RobertsProcess implements Process {
 
-    /** Gray scale process */
-    private final org.paim.pdi.GrayscaleProcess process;
-
+    /** Roberts process */
+    private final org.paim.pdi.RobertsProcess process;
+    
     /**
-     * Creates a new gray scale process
-     *
-     * @param image
+     * Creates a new Roberts process
+     * 
+     * @param image 
      */
-    public GrayscaleProcess(@Input("image") Image image) {
+    public RobertsProcess(@Input("image") Image image) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
-        }       
-        this.process = new org.paim.pdi.GrayscaleProcess(resultImage);
+        }
+        this.process = new org.paim.pdi.RobertsProcess(new Image(resultImage));
+        
     }
 
+    @Override
+    public void process() {
+        process.process();
+    }
+    
     /**
      * Returns the output image
      *
@@ -37,8 +43,4 @@ public class GrayscaleProcess implements Process {
         return process.getOutput();
     }
 
-    @Override
-    public void process() {
-        this.process.process();
-    }
 }

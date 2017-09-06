@@ -4,7 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.ImageFactory;
 import visnode.application.mvc.Model;
 import visnode.application.mvc.PropertyEvent;
 import visnode.commons.Threshold;
@@ -36,7 +36,6 @@ public class VISNodeModel implements Model {
         try {
             BufferedImage r = ImageIO.read(new File(getClass().getResource("/lena.jpg").getFile()));
             InputNode input = new InputNode(ImageFactory.buildRGBImage(r));
-
             ProcessNode grayScale = new ProcessNode(GrayscaleProcess.class);
             grayScale.addConnection("image", input, "image");
 

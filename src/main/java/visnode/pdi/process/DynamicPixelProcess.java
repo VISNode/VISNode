@@ -4,18 +4,19 @@ import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import org.torax.commons.Image;
-import org.torax.commons.ImageFactory;
+import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
+import org.paim.pdi.PixelProcess;
 import visnode.application.ExceptionHandler;
 import visnode.commons.DynamicNodeValue;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.PixelProcess;
+import visnode.pdi.Process;
 
 /**
  * Dynamic pixel process
  */
-public class DynamicPixelProcess extends PixelProcess<Image> {
+public class DynamicPixelProcess extends PixelProcess<Image> implements Process {
 
     /** The image */
     private final Image dynamicImage;
@@ -39,7 +40,7 @@ public class DynamicPixelProcess extends PixelProcess<Image> {
         this.dynamicImage = resultImage;
         this.script = script;
         buildInvocable();
-        setFinisher(() -> {
+        setFinalizer(() -> {
             setOutput(dynamicImage);
         });
     }

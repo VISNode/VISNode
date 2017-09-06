@@ -2,7 +2,7 @@ package visnode.application;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.torax.commons.Image;
+import org.paim.commons.Image;
 import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.ListRemoveEvent;
 import visnode.application.mvc.Model;
@@ -64,6 +64,11 @@ public class NodeNetwork implements Model {
     public void setInput(Image image) {
         InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
         decorator.setImage(image);
+    }
+    
+    public Image getInput() {
+        InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
+        return decorator.getImage();
     }
     
     /**

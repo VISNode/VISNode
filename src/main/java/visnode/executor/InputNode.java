@@ -4,7 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
-import org.torax.commons.Image;
+import org.paim.commons.Image;
 
 /**
  * Input node representation
@@ -90,6 +90,15 @@ public class InputNode implements Node {
         Image oldValue = this.image;
         this.image = image;
         outputChangeSupport.firePropertyChange("image", oldValue, image);
+    }
+
+    /**
+     * Returns the image
+     * 
+     * @return Image
+     */
+    public Image getImage() {
+        return image;
     }
 
     @Override
