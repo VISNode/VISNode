@@ -58,6 +58,9 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     }
 
     public static BufferedImage getBuffered(Image image) {
+        if (image == null) {
+            return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+        }
         BufferedImage buff = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
@@ -89,9 +92,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     public void paint(Graphics g) {
         g.drawImage(icon.getImage(), 0, 0, this);
     }
-    
-    
-    
+
     @Override
     public JComponent getComponent() {
         return this;

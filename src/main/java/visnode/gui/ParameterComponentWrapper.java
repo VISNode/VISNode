@@ -1,4 +1,3 @@
-
 package visnode.gui;
 
 import java.awt.BorderLayout;
@@ -26,14 +25,16 @@ public class ParameterComponentWrapper extends JComponent {
     private final NodeParameter parameter;
     /** Parameter type */
     private final ConnectionType type;
-    
+    /** Old value */
+    private Object oldValue;
+
     /**
      * Creates a new ParameterComponentWrapper
-     * 
+     *
      * @param component
      * @param node
      * @param parameter
-     * @param type 
+     * @param type
      */
     public ParameterComponentWrapper(ParameterComponent component, Node node, NodeParameter parameter, ConnectionType type) {
         this.component = component;
@@ -81,10 +82,14 @@ public class ParameterComponentWrapper extends JComponent {
             } else {
                 value = node.getOutput(parameter.getName());
             }
+            if (value == null || value == oldValue) {
+                return;
+            }
+            oldValue = value;
             component.setValue(converter.convert(value, parameter.getType()));
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
         }
     }
-    
+
 }

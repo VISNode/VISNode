@@ -45,10 +45,10 @@ public class ParameterComponentFactory {
         if (parameter.getType().equals(DynamicNodeValue.class) && type == ConnectionType.INPUT) {
             return new DynamicNodeValueEditor();
         }
-        if (parameter.getType().equals(Double.class)) {
+        if (parameter.getType().equals(Double.class) && type == ConnectionType.INPUT) {
             return new DoubleEditor();
         }
-        if (parameter.getType().equals(Integer.class)) {
+        if (parameter.getType().equals(Integer.class) && type == ConnectionType.INPUT) {
             return new IntegerEditor();
         }
         return new NotImplementedParameterComponent(parameter);
