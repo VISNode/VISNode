@@ -4,27 +4,27 @@ import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.Process;
 
 /**
- * Sobel process for edge detection
+ * Resize image process
  */
-public class SobelProcess implements Process {
+public class ResizeProcess implements visnode.pdi.Process {
 
-    /** Sobel process */
-    private final org.paim.pdi.SobelProcess process;
+    /** Resize process */
+    private final org.paim.pdi.ResizeProcess process;
     
     /**
-     * Creates a new Sobel process
+     * Creates a new resize process
      * 
      * @param image 
+     * @param size 
      */
-    public SobelProcess(@Input("image") Image image) {
+    public ResizeProcess(@Input("image") Image image, @Input("size") Double size) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        this.process = new org.paim.pdi.SobelProcess(new Image(resultImage));
+        this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), size);
         
     }
 
@@ -42,5 +42,6 @@ public class SobelProcess implements Process {
     public Image getImage() {
         return process.getOutput();
     }
+
 
 }

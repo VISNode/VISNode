@@ -25,7 +25,9 @@ import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
 import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.InvertColorProcess;
+import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.RobertsProcess;
+import visnode.pdi.process.RotateProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.ThresholdProcess;
 
@@ -160,6 +162,8 @@ public class ProcessBrowser extends JComponent {
             GaussianBlurProcess.class,
             InformationProcess.class,
             InvertColorProcess.class,
+            ResizeProcess.class,
+            RotateProcess.class,
             ThresholdProcess.class
         };
     }

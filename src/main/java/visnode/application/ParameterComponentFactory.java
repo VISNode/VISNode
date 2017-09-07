@@ -2,6 +2,7 @@
 package visnode.application;
 
 import org.paim.commons.Image;
+import visnode.commons.Angle;
 import visnode.commons.DynamicNodeValue;
 import visnode.gui.ImageNodeComponent;
 import visnode.commons.Threshold;
@@ -9,6 +10,7 @@ import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeParameter;
 import visnode.executor.OutputNode;
+import visnode.gui.AngleEditor;
 import visnode.gui.DoubleEditor;
 import visnode.gui.DynamicNodeValueEditor;
 import visnode.gui.IntegerEditor;
@@ -50,6 +52,9 @@ public class ParameterComponentFactory {
         }
         if (parameter.getType().equals(Integer.class) && type == ConnectionType.INPUT) {
             return new IntegerEditor();
+        }
+        if (parameter.getType().equals(Angle.class) && type == ConnectionType.INPUT) {
+            return new AngleEditor();
         }
         return new NotImplementedParameterComponent(parameter);
     }
