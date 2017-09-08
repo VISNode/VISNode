@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Arrays;
+import java.util.Comparator;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -152,7 +154,7 @@ public class ProcessBrowser extends JComponent {
      * @return Process[]
      */
     private Class<Process>[] getProcesses() {
-        return new Class[] {
+        Class[] process = new Class[] {
             DynamicPixelProcess.class,
             BrightnessProcess.class,
             ContrastProcess.class,
@@ -166,6 +168,10 @@ public class ProcessBrowser extends JComponent {
             RotateProcess.class,
             ThresholdProcess.class
         };
+        Arrays.sort(process, (it1, it2) -> {
+            return it1.getName().compareTo(it2.getName());
+        });
+        return process;
     }
     
     private class CellRenderer implements ListCellRenderer<Class<Process>> {
