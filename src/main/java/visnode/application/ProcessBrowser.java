@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.JComponent;
@@ -11,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import visnode.gui.ProcessInformationPane;
 import visnode.pdi.Process;
 import visnode.pdi.process.BrightnessProcess;
 import visnode.pdi.process.ContrastProcess;
@@ -55,6 +58,15 @@ public class ProcessBrowser extends JComponent {
         list.setTransferHandler(new ProcessTransferHandler());
         list.setDragEnabled(true);
         list.setDropMode(DropMode.ON_OR_INSERT);
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() % 2 == 0) {
+                    ProcessInformationPane.showDialog(list.getSelectedValue());
+                }
+            }
+        });
+
         return list;
     }
     

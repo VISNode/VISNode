@@ -16,6 +16,10 @@ public class ProcessMetadata {
     private String name;
     /** Description */
     private String description;
+    /** Help URL */
+    private String helpUrl;
+    /** Code URL */
+    private String codeUrl;
     
     /**
      * Returns the metadata from the class
@@ -32,20 +36,11 @@ public class ProcessMetadata {
             String name = process.getSimpleName();
             name = name.replaceFirst("Process$", "");
             name = name.replaceAll("([a-z])([A-Z])", "$1 $2");
-            metadata.setName(name);
+            metadata.name = name;
             return metadata;
         }
     }
 
-    /**
-     * Sets the name
-     * 
-     * @param name 
-     */
-    private void setName(String name) {
-        this.name = name;
-    }
-    
     /**
      * Returns the name
      * 
@@ -65,12 +60,21 @@ public class ProcessMetadata {
     }
 
     /**
-     * Sets the description
+     * Returns the help URL
      * 
-     * @param description 
+     * @return String
      */
-    private void setDescription(String description) {
-        this.description = description;
+    public String getHelpUrl() {
+        return helpUrl;
+    }
+
+    /**
+     * Returns the code URL
+     * 
+     * @return String
+     */
+    public String getCodeUrl() {
+        return codeUrl;
     }
     
 }
