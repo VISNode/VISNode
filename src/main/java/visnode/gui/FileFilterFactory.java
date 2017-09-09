@@ -21,6 +21,17 @@ public class FileFilterFactory {
             new FileNameExtensionFilter("VISNode projects", "vnp")
         );
     }
+
+    /**
+     * Creates the input file filter
+     * 
+     * @return FileFilter
+     */
+    public static FileFilterList inputFileFilter() {
+        return new FileFilterList(
+            new FileNameExtensionFilter("Input files", "jpg", "png", "dcm")
+        );
+    }
                 
     public static class FileFilterList extends ArrayList<FileFilter> {
 

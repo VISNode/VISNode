@@ -9,8 +9,6 @@ import java.awt.BorderLayout;
 import java.text.DecimalFormat;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 /**
  * Editor for Integer values

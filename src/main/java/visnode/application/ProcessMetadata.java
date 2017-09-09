@@ -16,6 +16,11 @@ public class ProcessMetadata {
     private String name;
     /** Description */
     private String description;
+
+    public ProcessMetadata() {
+        name = "";
+        description = "";
+    }
     /** Help URL */
     private String helpUrl;
     /** Code URL */
