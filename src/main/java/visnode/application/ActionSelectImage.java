@@ -29,13 +29,8 @@ public class ActionSelectImage extends AbstractAction {
         FileFilterFactory.inputFileFilter().apply(chooser);
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             try {
-                if (!chooser.isValid()) {
-                    throw new InvalidOpenFileException();
-                }
                 WebCamCapture.get().stop();
                 VISNode.get().getModel().getNetwork().setInput(inputReader.read(chooser.getSelectedFile()));
-            } catch (InvalidOpenFileException ex) {
-                ExceptionHandler.get().handle(ex);
             } catch (Exception ex) {
                 ExceptionHandler.get().handle(ex);
             }

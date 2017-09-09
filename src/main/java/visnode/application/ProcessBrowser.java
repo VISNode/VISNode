@@ -32,6 +32,7 @@ import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RotateProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.ThresholdProcess;
+import visnode.pdi.process.ZhangSuenProcess;
 
 /**
  * Process browser
@@ -166,6 +167,7 @@ public class ProcessBrowser extends JComponent {
             InvertColorProcess.class,
             ResizeProcess.class,
             RotateProcess.class,
+            ZhangSuenProcess.class,
             ThresholdProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
