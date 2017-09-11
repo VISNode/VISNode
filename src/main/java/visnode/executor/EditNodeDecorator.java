@@ -114,7 +114,6 @@ public class EditNodeDecorator implements Node, AttacherNode {
     @Override
     public void addConnection(String attribute, Node node, String attributeNode) {
         if (!(decorated instanceof AttacherNode)) {
-//            throw new IllegalStateException("Decorated node is not an Attacher node!");
             return;
         }
         ((AttacherNode)decorated).addConnection(attribute, node, attributeNode);
@@ -123,7 +122,6 @@ public class EditNodeDecorator implements Node, AttacherNode {
     @Override
     public void removeConnection(String attribute) {
         if (!(decorated instanceof AttacherNode)) {
-//            throw new IllegalStateException("Decorated node is not an Attacher node!");
             return;
         }
         ((AttacherNode)decorated).removeConnection(attribute);
@@ -132,7 +130,6 @@ public class EditNodeDecorator implements Node, AttacherNode {
     @Override
     public void addConnectionChangeListener(ConnectionChangeListener listener) {
         if (!(decorated instanceof AttacherNode)) {
-//            throw new IllegalStateException("Decorated node is not an Attacher node!");
             return;
         }
         ((AttacherNode)decorated).addConnectionChangeListener(listener);

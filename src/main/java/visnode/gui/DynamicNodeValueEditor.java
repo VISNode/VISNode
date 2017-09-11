@@ -28,7 +28,7 @@ public class DynamicNodeValueEditor extends JTextArea implements ParameterCompon
      * @return DynamicNodeValue
      */
     private DynamicNodeValue buildDefault() {
-        return new DynamicNodeValue("function process(channel, x, y, value) {\n    return value;\n}");
+        return new DynamicNodeValue("");
     }
     
     @Override

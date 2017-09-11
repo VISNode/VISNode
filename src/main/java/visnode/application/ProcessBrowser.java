@@ -5,6 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -17,6 +21,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import visnode.gui.IconFactory;
+import visnode.gui.ProcessInformationPane;
 import visnode.pdi.Process;
 import visnode.pdi.process.BrightnessProcess;
 import visnode.pdi.process.ClosingProcess;
@@ -28,13 +33,16 @@ import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
 import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.InvertColorProcess;
+import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.KirshProcess;
 import visnode.pdi.process.OpeningProcess;
 import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RobinsonProcess;
+import visnode.pdi.process.RotateProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.ThresholdProcess;
 import visnode.pdi.process.WeightedGrayscaleProcess;
+import visnode.pdi.process.ZhangSuenProcess;
 
 /**
  * Process browser
@@ -119,6 +127,15 @@ public class ProcessBrowser extends JComponent {
         list.setDragEnabled(true);
         list.setDropMode(DropMode.ON_OR_INSERT);
         updateList();
+        list.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (e.getClickCount() % 2 == 0) {
+                    ProcessInformationPane.showDialog(list.getSelectedValue());
+                }
+            }
+        });
+
         return list;
     }
     
@@ -157,7 +174,7 @@ public class ProcessBrowser extends JComponent {
      * @return Process[]
      */
     private Class<Process>[] getProcesses() {
-        return new Class[] {
+        Class[] process = new Class[] {
             DynamicPixelProcess.class,
             BrightnessProcess.class,
             ContrastProcess.class,
@@ -168,14 +185,21 @@ public class ProcessBrowser extends JComponent {
             GaussianBlurProcess.class,
             InformationProcess.class,
             InvertColorProcess.class,
-            ThresholdProcess.class,
             RobinsonProcess.class,
             KirshProcess.class,
             DilationProcess.class,
             ErosionProcess.class,
             OpeningProcess.class,
-            ClosingProcess.class
+            ClosingProcess.class,
+            ResizeProcess.class,
+            RotateProcess.class,
+            ZhangSuenProcess.class,
+            ThresholdProcess.class
         };
+        Arrays.sort(process, (it1, it2) -> {
+            return it1.getName().compareTo(it2.getName());
+        });
+        return process;
     }
     
     private class CellRenderer implements ListCellRenderer<Class<Process>> {

@@ -127,12 +127,16 @@ public class ProcessNode implements Node, AttacherNode {
      * Runs the process
      */
     public void process() {
-        process = buildProcess();
-        process.process();
-        invalidated = false;
-        for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
-            outputChangeSupport.firePropertyChange(entry.getKey(), null, getOutput(entry.getKey()));
-        }
+        process = buildProcess();        
+        Thread th = new Thread(() -> {
+            process.process();
+            invalidated = false;
+            for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
+                outputChangeSupport.firePropertyChange(entry.getKey(), null, getOutput(entry.getKey()));
+            }
+        });
+        th.setDaemon(true);
+        th.start();
     }
 
     /**

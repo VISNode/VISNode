@@ -7,24 +7,24 @@ import visnode.commons.Output;
 import visnode.pdi.Process;
 
 /**
- * Sobel process for edge detection
+ * Zhang Suen process for edge detection
  */
-public class SobelProcess implements Process {
+public class ZhangSuenProcess implements Process {
 
-    /** Sobel process */
-    private final org.paim.pdi.SobelProcess process;
+    /** Zhang Suen process */
+    private final org.paim.pdi.ZhangSuenProcess process;
     
     /**
-     * Creates a new Sobel process
+     * Creates a new Zhang Suen process
      * 
      * @param image 
      */
-    public SobelProcess(@Input("image") Image image) {
+    public ZhangSuenProcess(@Input("image") Image image) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        this.process = new org.paim.pdi.SobelProcess(new Image(resultImage));
+        this.process = new org.paim.pdi.ZhangSuenProcess(new Image(resultImage));
         
     }
 
