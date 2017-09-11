@@ -19,17 +19,22 @@ import javax.swing.event.DocumentListener;
 import visnode.gui.IconFactory;
 import visnode.pdi.Process;
 import visnode.pdi.process.BrightnessProcess;
+import visnode.pdi.process.ClosingProcess;
 import visnode.pdi.process.ContrastProcess;
+import visnode.pdi.process.DilationProcess;
 import visnode.pdi.process.DynamicPixelProcess;
+import visnode.pdi.process.ErosionProcess;
 import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
 import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.InvertColorProcess;
 import visnode.pdi.process.KirshProcess;
+import visnode.pdi.process.OpeningProcess;
 import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RobinsonProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.ThresholdProcess;
+import visnode.pdi.process.WeightedGrayscaleProcess;
 
 /**
  * Process browser
@@ -157,6 +162,7 @@ public class ProcessBrowser extends JComponent {
             BrightnessProcess.class,
             ContrastProcess.class,
             GrayscaleProcess.class,
+            WeightedGrayscaleProcess.class,
             RobertsProcess.class,
             SobelProcess.class,
             GaussianBlurProcess.class,
@@ -164,7 +170,11 @@ public class ProcessBrowser extends JComponent {
             InvertColorProcess.class,
             ThresholdProcess.class,
             RobinsonProcess.class,
-            KirshProcess.class
+            KirshProcess.class,
+            DilationProcess.class,
+            ErosionProcess.class,
+            OpeningProcess.class,
+            ClosingProcess.class
         };
     }
     
