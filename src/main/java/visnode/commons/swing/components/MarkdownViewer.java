@@ -37,6 +37,7 @@ public class MarkdownViewer extends JPanel {
         jfxPanel.setPreferredSize(new Dimension(800, 600));
         Platform.runLater(() -> {
             webView = new WebView();
+            webView.getEngine().setUserStyleSheetLocation(MarkdownViewer.class.getResource("MarkdownViewer.css").toExternalForm());
             Scene scene = new Scene(webView);
             jfxPanel.setScene(scene);
         });

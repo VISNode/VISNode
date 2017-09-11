@@ -1,0 +1,281 @@
+body {
+    background: #4d4d4d;
+    color: #b3b3b3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    line-height: 1.5;
+    word-wrap: break-word
+}
+
+h1, h2, h3, h4, h5 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25
+}
+
+h1 {
+    padding-bottom: 0.3em;
+    font-size: 2em;
+    border-bottom: 1px solid #eaecef
+}
+h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.5em;
+    border-bottom: 1px solid #eaecef
+}
+h3 {
+    font-size: 1.25em
+}
+h4 {
+    font-size: 1em
+}
+h5 {
+    font-size: 0.875em
+}
+h6 {
+    font-size: 0.85em;
+    color: #6a737d
+}
+ul,
+ol {
+    padding-left: 2em
+}
+ul.no-list,
+ol.no-list {
+    padding: 0;
+    list-style-type: none
+}
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+    margin-top: 0;
+    margin-bottom: 0
+}
+li>p {
+    margin-top: 16px
+}
+li+li {
+    margin-top: 0.25em
+}
+dl {
+    padding: 0
+}
+dl dt {
+    padding: 0;
+    margin-top: 16px;
+    font-size: 1em;
+    font-style: italic;
+    font-weight: 600
+}
+dl dd {
+    padding: 0 16px;
+    margin-bottom: 16px
+}
+table {
+    display: block;
+    width: 100%;
+    overflow: auto
+}
+table th {
+    font-weight: 600
+}
+table th,
+table td {
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5
+}
+table tr {
+    background-color: #fff;
+    border-top: 1px solid #c6cbd1
+}
+table tr:nth-child(2n) {
+    background-color: #f6f8fa
+}
+table img {
+    background-color: transparent
+}
+img {
+    max-width: 100%;
+    box-sizing: content-box;
+    background-color: #fff
+}
+img[align=right] {
+    padding-left: 20px
+}
+img[align=left] {
+    padding-right: 20px
+}
+.emoji {
+    max-width: none;
+    vertical-align: text-top;
+    background-color: transparent
+}
+span.frame {
+    display: block;
+    overflow: hidden
+}
+span.frame>span {
+    display: block;
+    float: left;
+    width: auto;
+    padding: 7px;
+    margin: 13px 0 0;
+    overflow: hidden;
+    border: 1px solid #dfe2e5
+}
+span.frame span img {
+    display: block;
+    float: left
+}
+span.frame span span {
+    display: block;
+    padding: 5px 0 0;
+    clear: both;
+    color: #24292e
+}
+span.align-center {
+    display: block;
+    overflow: hidden;
+    clear: both
+}
+span.align-center>span {
+    display: block;
+    margin: 13px auto 0;
+    overflow: hidden;
+    text-align: center
+}
+span.align-center span img {
+    margin: 0 auto;
+    text-align: center
+}
+span.align-right {
+    display: block;
+    overflow: hidden;
+    clear: both
+}
+span.align-right>span {
+    display: block;
+    margin: 13px 0 0;
+    overflow: hidden;
+    text-align: right
+}
+span.align-right span img {
+    margin: 0;
+    text-align: right
+}
+span.float-left {
+    display: block;
+    float: left;
+    margin-right: 13px;
+    overflow: hidden
+}
+span.float-left span {
+    margin: 13px 0 0
+}
+span.float-right {
+    display: block;
+    float: right;
+    margin-left: 13px;
+    overflow: hidden
+}
+span.float-right>span {
+    display: block;
+    margin: 13px auto 0;
+    overflow: hidden;
+    text-align: right
+}
+code,
+tt {
+    padding: 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(27, 31, 35, 0.05);
+    border-radius: 3px
+}
+code::before,
+code::after,
+tt::before,
+tt::after {
+    letter-spacing: -0.2em;
+    content: "\00a0"
+}
+code br,
+tt br {
+    display: none
+}
+del code {
+    text-decoration: inherit
+}
+pre {
+    word-wrap: normal
+}
+pre>code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0
+}
+.highlight {
+    margin-bottom: 16px
+}
+.highlight pre {
+    margin-bottom: 0;
+    word-break: normal
+}
+.highlight pre,
+pre {
+    padding: 16px;
+    overflow: auto;
+    font-size: 85%;
+    line-height: 1.45;
+    background-color: #f6f8fa;
+    border-radius: 3px
+}
+pre code,
+pre tt {
+    display: inline;
+    max-width: auto;
+    padding: 0;
+    margin: 0;
+    overflow: visible;
+    line-height: inherit;
+    word-wrap: normal;
+    background-color: transparent;
+    border: 0
+}
+pre code::before,
+pre code::after,
+pre tt::before,
+pre tt::after {
+    content: normal
+}
+.csv-data td,
+.csv-data th {
+    padding: 5px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 1;
+    text-align: left;
+    white-space: nowrap
+}
+.csv-data .blob-num {
+    padding: 10px 8px 9px;
+    text-align: right;
+    background: #fff;
+    border: 0
+}
+.csv-data tr {
+    border-top: 0
+}
+.csv-data th {
+    font-weight: 600;
+    background: #f6f8fa;
+    border-top: 0
+}

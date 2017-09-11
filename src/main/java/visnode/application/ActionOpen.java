@@ -46,7 +46,7 @@ public class ActionOpen extends AbstractAction {
                     }
                     VISNode.get().getModel().setNetwork(parser.fromJson(sb.toString()));
                 }
-            } catch (IOException ex) {
+            } catch (IOException | InvalidOpenFileException ex) {
                 ExceptionHandler.get().handle(ex);
             }
         }
