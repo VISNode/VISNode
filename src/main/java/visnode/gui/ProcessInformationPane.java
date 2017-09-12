@@ -2,11 +2,11 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import visnode.application.ProcessMetadata;
 import visnode.commons.http.Http;
+import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 import visnode.commons.swing.components.MarkdownViewer;
 import visnode.pdi.Process;
@@ -87,14 +87,9 @@ public class ProcessInformationPane extends JPanel {
      * @param process
      */
     public static void showDialog(Class<? extends Process> process) {
-        ProcessInformationPane pane = new ProcessInformationPane(process);
-        JDialog dialog = new JDialog();
-        dialog.getContentPane().setLayout(new BorderLayout());
-        dialog.getContentPane().add(pane);
-        dialog.setModal(true);
-        dialog.pack();
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
+        WindowFactory.modal().create((container) -> {
+            container.add(new ProcessInformationPane(process));
+        }).setVisible(true);
     }
 
 }

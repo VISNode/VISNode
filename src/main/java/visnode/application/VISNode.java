@@ -1,10 +1,12 @@
 package visnode.application;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GraphiteSkin;
 import visnode.application.fw.Actions;
+import visnode.commons.swing.WindowFactory;
 
 /**
  * Main class application
@@ -18,7 +20,7 @@ public class VISNode {
     /** Actions */
     private final Actions actions;
     /** Main window */
-    private MainWindow window;
+    private MainPanel window;
 
     /**
      * Creates a new application
@@ -75,18 +77,24 @@ public class VISNode {
      */
     private void buildAndShowWindow() {
         SwingUtilities.invokeLater(() -> {
-            MainWindow window = buildWindow();
-            window.setVisible(true);
+            buildWindow().setVisible(true);
         });
     }
 
     /**
      * Builds the main window
      */
-    private MainWindow buildWindow() {
-        window = new MainWindow(model);
-        window.setDefaultCloseOperation(MainWindow.EXIT_ON_CLOSE);
-        return window;
+    private JFrame buildWindow() {
+        JFrame frame = WindowFactory.mainFrame()
+            .title("VISNode")
+            .menu(VISNode.get().getActions().buildMenuBar())
+            .size(1024, 768)
+            .maximized()
+            .create((container) -> {
+                container.add(new MainPanel(model));
+            });
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        return frame;
     }
 
     /**

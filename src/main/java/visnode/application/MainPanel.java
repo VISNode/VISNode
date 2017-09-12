@@ -1,9 +1,8 @@
 package visnode.application;
 
 import java.awt.BorderLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
 import visnode.application.mvc.PropertyEvent;
 import visnode.gui.SplitPanel;
 import visnode.gui.ViewPanel;
@@ -11,7 +10,7 @@ import visnode.gui.ViewPanel;
 /**
  * Application main window
  */
-public class MainWindow extends JFrame {
+public class MainPanel extends JPanel {
 
     /** Model */
     private final VISNodeModel model;
@@ -23,8 +22,8 @@ public class MainWindow extends JFrame {
      * 
      * @param model
      */
-    public MainWindow(VISNodeModel model) {
-        super("VISNode");
+    public MainPanel(VISNodeModel model) {
+        super();
         this.model = model;
         initGui();
     }
@@ -33,14 +32,9 @@ public class MainWindow extends JFrame {
      * Initializes the interface
      */
     private void initGui() {
-        setSize(1024, 768);
-        setIconImage(new ImageIcon(getClass().getResource("/VISNode_64.png").getFile()).getImage());
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(buildDummyInterface());
-        setJMenuBar(VISNode.get().getActions().buildMenuBar());
-    }
-    
+        setLayout(new BorderLayout());
+        add(buildDummyInterface());
+    }    
     /**
      * Builds the network editor component
      * 

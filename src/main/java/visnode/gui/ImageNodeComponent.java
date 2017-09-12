@@ -41,7 +41,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() % 2 == 0) {
-                    ImageViewerDialog.show(value);
+                    ImageViewerPanel.showDialog(value);
                 }
             }
         });
