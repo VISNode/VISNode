@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.DocumentEvent;
@@ -137,8 +138,9 @@ public class ProcessBrowser extends JComponent {
                 }
             }
         });
-
-        return list;
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(list);
+        return scroll;
     }
     
     /**
