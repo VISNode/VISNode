@@ -6,25 +6,32 @@ import visnode.commons.Input;
 import visnode.commons.Output;
 
 /**
- * Resize image process
+ * Translate image process
  */
-public class ResizeProcess implements visnode.pdi.Process {
+public class TranslateProcess implements visnode.pdi.Process {
 
-    /** Resize process */
-    private final org.paim.pdi.ResizeProcess process;
+    /** Translate process */
+    private final org.paim.pdi.TranslateProcess process;
     
     /**
-     * Creates a new resize process
+     * Creates a new translate process
      * 
      * @param image 
-     * @param size 
+     * @param x 
+     * @param y 
      */
-    public ResizeProcess(@Input("image") Image image, @Input("size") Double size) {
+    public TranslateProcess(@Input("image") Image image, @Input("x") Integer x, @Input("y") Integer y) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), size);
+        if (x == null) {
+            x = 0;
+        }
+        if (y == null) {
+            y = 0;
+        }
+        this.process = new org.paim.pdi.TranslateProcess(new Image(resultImage), x, y);
         
     }
 

@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
@@ -31,6 +30,7 @@ import visnode.pdi.process.DynamicPixelProcess;
 import visnode.pdi.process.ErosionProcess;
 import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
+import visnode.pdi.process.HorizontalMirroringProcess;
 import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.InvertColorProcess;
 import visnode.pdi.process.ResizeProcess;
@@ -41,6 +41,8 @@ import visnode.pdi.process.RobinsonProcess;
 import visnode.pdi.process.RotateProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.ThresholdProcess;
+import visnode.pdi.process.TranslateProcess;
+import visnode.pdi.process.VerticalMirroringProcess;
 import visnode.pdi.process.WeightedGrayscaleProcess;
 import visnode.pdi.process.ZhangSuenProcess;
 
@@ -193,6 +195,9 @@ public class ProcessBrowser extends JComponent {
             ClosingProcess.class,
             ResizeProcess.class,
             RotateProcess.class,
+            TranslateProcess.class,
+            HorizontalMirroringProcess.class,
+            VerticalMirroringProcess.class,
             ZhangSuenProcess.class,
             ThresholdProcess.class
         };

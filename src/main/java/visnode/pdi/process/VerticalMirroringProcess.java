@@ -6,25 +6,24 @@ import visnode.commons.Input;
 import visnode.commons.Output;
 
 /**
- * Resize image process
+ * Vertical mirroring image process
  */
-public class ResizeProcess implements visnode.pdi.Process {
+public class VerticalMirroringProcess implements visnode.pdi.Process {
 
-    /** Resize process */
-    private final org.paim.pdi.ResizeProcess process;
+    /** Vertical mirroring process */
+    private final org.paim.pdi.VerticalMirroringProcess process;
     
     /**
-     * Creates a new resize process
+     * Creates a new horizontal mirroring process
      * 
      * @param image 
-     * @param size 
      */
-    public ResizeProcess(@Input("image") Image image, @Input("size") Double size) {
+    public VerticalMirroringProcess(@Input("image") Image image) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), size);
+        this.process = new org.paim.pdi.VerticalMirroringProcess(new Image(resultImage));
         
     }
 
