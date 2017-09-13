@@ -87,7 +87,7 @@ public class ProcessInformationPane extends JPanel {
      * @param process
      */
     public static void showDialog(Class<? extends Process> process) {
-        WindowFactory.modal().create((container) -> {
+        WindowFactory.frame().create((container) -> {
             container.add(new ProcessInformationPane(process));
         }).setVisible(true);
     }

@@ -1,6 +1,10 @@
 package visnode.application;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import visnode.commons.swing.WindowFactory;
+import visnode.commons.swing.components.ExceptionPanel;
 
 /**
  * Exception handler
@@ -9,6 +13,10 @@ public class ExceptionHandler {
 
     /** Singleton instance */
     private static ExceptionHandler instance;
+    /** Exception dialog */
+    private JDialog exceptionDialog;
+    /** Exception dialog */
+    private ExceptionPanel exceptionPanel;
     
     /**
      * Returns the singleton instance
@@ -21,6 +29,16 @@ public class ExceptionHandler {
         }
         return instance;
     }
+
+    /**
+     * Exception handler
+     */
+    private ExceptionHandler() {
+        exceptionDialog = WindowFactory.modal().title("Error").create((container) -> {
+            exceptionPanel = new ExceptionPanel();
+            container.add(exceptionPanel);
+        });
+    }
     
     /**
      * Handles the exception
@@ -28,7 +46,16 @@ public class ExceptionHandler {
      * @param e 
      */
     public void handle(Exception e) {
-        e.printStackTrace();
+        SwingUtilities.invokeLater(() -> {
+            if (exceptionDialog.isVisible()) {
+                exceptionPanel.add(e);
+            } else {
+                exceptionPanel.set(e);
+                exceptionDialog.setVisible(true);
+            }
+            exceptionDialog.pack();
+            exceptionDialog.setLocationRelativeTo(null);
+        });
     }
     
     /**

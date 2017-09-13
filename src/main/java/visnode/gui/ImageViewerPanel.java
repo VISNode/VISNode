@@ -33,7 +33,7 @@ public class ImageViewerPanel extends JPanel {
      * @param image 
      */
     public static void showDialog(Image image) {
-        WindowFactory.modal().title("Image").create((container) -> {
+        WindowFactory.frame().title("Image").create((container) -> {
             container.add(new ImageViewerPanel(image));
         }).setVisible(true);
     }

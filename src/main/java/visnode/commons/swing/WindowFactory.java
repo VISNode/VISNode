@@ -3,11 +3,14 @@ package visnode.commons.swing;
 import java.awt.BorderLayout;
 import java.awt.Window;
 import java.util.function.Consumer;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Frame and dialog factory
@@ -15,16 +18,25 @@ import javax.swing.JPanel;
 public class WindowFactory {
     
     /**
-     * Creates a model dialog
+     * Creates a modal dialog
      * 
      * @return DialogBuilder
      */
     public static DialogBuilder modal() {
-        return new DialogBuilder();
+        return new DialogBuilder().modal();
+    }
+
+    /**
+     * Creates a frame
+     * 
+     * @return FrameBuilder
+     */
+    public static FrameBuilder frame() {
+        return new FrameBuilder();
     }
     
     /**
-     * Creates a model dialog
+     * Creates a main application frame
      * 
      * @return FrameBuilder
      */
@@ -55,12 +67,22 @@ public class WindowFactory {
             window.setJMenuBar(menu);
             return this;
         }
+
+        /**        
+         * Sets a dialog as modal
+         * 
+         * @return DialogBuilder
+         */
+        public DialogBuilder modal() {
+            window.setModal(true);
+            return this;
+        }
         
         @Override
         public JDialog create(Consumer<JPanel> consumer) {
             window.setIconImage(new ImageIcon(getClass().getResource("/VISNode_64.png").getFile()).getImage());
-            window.setModal(true);
             JPanel container = new JPanel(new BorderLayout());
+            container.setBorder(new CompoundBorder(new EmptyBorder(3, 3, 3, 3), new CompoundBorder(BorderFactory.createEtchedBorder(), new EmptyBorder(6, 6, 6, 6))));
             consumer.accept(container);
             window.getContentPane().setLayout(new BorderLayout());
             window.getContentPane().add(container);
