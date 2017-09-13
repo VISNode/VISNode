@@ -5,6 +5,8 @@ import java.util.EventListener;
 
 /**
  * Value listener
+ * 
+ * @param <T>
  */
 public interface ValueListener<T> extends EventListener {
 

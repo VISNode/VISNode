@@ -1,6 +1,7 @@
 package visnode.commons.swing.components;
 
 import java.awt.BorderLayout;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import javax.swing.JComponent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -16,12 +17,23 @@ public class CodeEditor extends JComponent {
     
     /** Syntax text area */
     private RSyntaxTextArea textArea;
-
+    /** Syntax style */
+    private String syntaxStyle;
+    
     /**
      * Creates the code editor
      */
     public CodeEditor() {
+        this(SyntaxConstants.SYNTAX_STYLE_JAVA);
+    }
+    /**
+     * Creates the code editor
+     * 
+     * @param syntaxStyle
+     */
+    public CodeEditor(String syntaxStyle) {
         super();
+        this.syntaxStyle = syntaxStyle;
         initGui();
     }
     
@@ -40,7 +52,7 @@ public class CodeEditor extends JComponent {
      */
     private JComponent buildCodePane() {
         textArea = new RSyntaxTextArea(20, 60);
-        textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        textArea.setSyntaxEditingStyle(syntaxStyle);
         textArea.setCodeFoldingEnabled(true);
         try {
             Theme theme = Theme.load(getClass().getResourceAsStream("CodeEditorTheme.xml"));
@@ -59,14 +71,30 @@ public class CodeEditor extends JComponent {
     public void setText(String text) {
         textArea.setText(text);
     }
+    
+    /**
+     * Gets the code text
+     * 
+     * @return String
+     */
+    public String getText() {
+        return textArea.getText();
+    }
 
     @Override
     public void setEnabled(boolean enabled) {
         textArea.setEnabled(enabled);
     }
+
+    @Override
+    public synchronized void addKeyListener(KeyListener keyListener) {
+        textArea.addKeyListener(keyListener); 
+    }
+    
+    
     
     /**
-     * Define se o campo é editável
+     * Sets if the field is editable
      * 
      * @param editable 
      */
