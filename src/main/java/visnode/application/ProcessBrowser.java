@@ -32,6 +32,7 @@ import visnode.pdi.process.DynamicPixelProcess;
 import visnode.pdi.process.ErosionProcess;
 import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
+import visnode.pdi.process.HoltProcess;
 import visnode.pdi.process.HorizontalMirroringProcess;
 import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.InvertColorProcess;
@@ -204,6 +205,7 @@ public class ProcessBrowser extends JComponent {
             HorizontalMirroringProcess.class,
             VerticalMirroringProcess.class,
             ZhangSuenProcess.class,
+            HoltProcess.class,
             AverageBlurProcess.class,
             MedianBlurProcess.class,
             ModeBlurProcess.class,
