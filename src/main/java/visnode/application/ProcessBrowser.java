@@ -45,6 +45,7 @@ import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RobinsonProcess;
 import visnode.pdi.process.RotateProcess;
 import visnode.pdi.process.SobelProcess;
+import visnode.pdi.process.StentifordProcess;
 import visnode.pdi.process.ThresholdProcess;
 import visnode.pdi.process.TranslateProcess;
 import visnode.pdi.process.VerticalMirroringProcess;
@@ -206,6 +207,7 @@ public class ProcessBrowser extends JComponent {
             VerticalMirroringProcess.class,
             ZhangSuenProcess.class,
             HoltProcess.class,
+            StentifordProcess.class,
             AverageBlurProcess.class,
             MedianBlurProcess.class,
             ModeBlurProcess.class,
