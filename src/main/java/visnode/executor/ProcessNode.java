@@ -201,6 +201,11 @@ public class ProcessNode implements Node, AttacherNode {
     public void addOutputChangeListener(PropertyChangeListener listener) {
         outputChangeSupport.addPropertyChangeListener(listener);
     }
+    
+    @Override
+    public void removeOutputChangeListener(PropertyChangeListener listener) {
+        outputChangeSupport.removePropertyChangeListener(listener);
+    }
 
 
     @Override

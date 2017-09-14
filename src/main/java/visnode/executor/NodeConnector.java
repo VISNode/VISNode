@@ -40,6 +40,7 @@ public class NodeConnector {
      * @param attribute 
      */
     public void removeConnection(String attribute) {
+        connections.get(attribute).disconnect();
         connections.remove(attribute);
     }
 

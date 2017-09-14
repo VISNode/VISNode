@@ -107,6 +107,11 @@ public class EditNodeDecorator implements Node, AttacherNode {
     }
 
     @Override
+    public void removeOutputChangeListener(PropertyChangeListener listener) {
+        decorated.removeOutputChangeListener(listener);
+    }
+
+    @Override
     public String getName() {
         return decorated.getName();
     }

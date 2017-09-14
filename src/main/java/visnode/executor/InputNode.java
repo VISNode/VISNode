@@ -80,6 +80,11 @@ public class InputNode implements Node {
     public void addOutputChangeListener(PropertyChangeListener listener) {
         outputChangeSupport.addPropertyChangeListener(listener);
     }
+
+    @Override
+    public void removeOutputChangeListener(PropertyChangeListener listener) {
+        outputChangeSupport.removePropertyChangeListener(listener);
+    }
     
     /**
      * Sets the image

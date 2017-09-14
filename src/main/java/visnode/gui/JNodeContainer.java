@@ -6,6 +6,8 @@ import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JComponent;
 
 /**
@@ -125,6 +127,31 @@ public class JNodeContainer extends JComponent {
             }
         }
         return null;
+    }
+    
+    /**
+     * Returns the connections of a node
+     * 
+     * @param node
+     * @return Set<JNodeConnection>
+     */
+    public Set<JNodeConnection> getConnections(JNode node) {
+        Set<JNodeConnector> connectors = node.getConnectors();
+        Set<JNodeConnection> connections = new HashSet<>();
+        for (int i = 0; i < getComponentCount(); i++) {
+            Component child = getComponent(i);
+            if (child instanceof JNodeConnection) {
+                JNodeConnection connection = (JNodeConnection) child;
+                for (JNodeConnector connector : connectors) {
+                    if (connection.getFirst() == connector.getLeftConnector() || connection.getSecond() == connector.getLeftConnector() ||
+                        connection.getFirst() == connector.getRightConnector() || connection.getSecond() == connector.getRightConnector()) {
+                        connections.add(connection);
+                        break;
+                    }
+                }
+            }
+        }
+        return connections;
     }
 
     /**

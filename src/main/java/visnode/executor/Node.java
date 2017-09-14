@@ -81,5 +81,12 @@ public interface Node {
      * @param listener 
      */
     public void addOutputChangeListener(PropertyChangeListener listener);
+
+    /**
+     * Removes a input change listener
+     * 
+     * @param listener 
+     */
+    public void removeOutputChangeListener(PropertyChangeListener listener);
     
 }

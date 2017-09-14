@@ -16,6 +16,7 @@ import visnode.executor.Node;
 import visnode.executor.NodeConnection;
 import visnode.gui.JConnectorPoint;
 import visnode.gui.JNode;
+import visnode.gui.JNodeConnection;
 import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
 import visnode.gui.NodeConnectionEvent;
@@ -67,7 +68,11 @@ public class NetworkEditor extends JComponent {
         model.addEventListener(ListRemoveEvent.class, (ListRemoveEvent evt) -> {
             if (evt.getListName().equals("nodes")) {
                 SwingUtilities.invokeLater(() -> {
-                    nodeContainer.remove(getNodeFor((Node) evt.getRemovedBean()));
+                    NodeView view = getNodeFor((Node) evt.getRemovedBean());
+                    for (JNodeConnection connection : view.getConnections()) {
+                        nodeContainer.remove(connection);
+                    }
+                    nodeContainer.remove(view);
                     nodeContainer.repaint();
                 });
             }
@@ -202,11 +207,17 @@ public class NetworkEditor extends JComponent {
         @Override
         public void connectionCreated(NodeConnectionEvent evt) {
             NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getFirst()).getParentNodeConnector();
+            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
+            //
+            if (rightConnector.getType() == ConnectionType.OUTPUT) {
+                NodeConnectorView flip = rightConnector;
+                rightConnector = leftConnector;
+                leftConnector = flip;
+            }
             NodeView leftView = (NodeView) leftConnector.getParentNode();
             Node leftNode = leftView.getModel();
             String leftAttr = leftConnector.getAttribute();
             //
-            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
             NodeView rightView = (NodeView) rightConnector.getParentNode();
             EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
             AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
@@ -217,13 +228,13 @@ public class NetworkEditor extends JComponent {
 
         @Override
         public void connectionRemoved(NodeConnectionEvent evt) {
-            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
-            NodeView rightView = (NodeView) rightConnector.getParentNode();
-            EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
-            AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
-            String rightAttr = rightConnector.getAttribute();
+            NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getFirst()).getParentNodeConnector();
+            NodeView leftView = (NodeView) leftConnector.getParentNode();
+            EditNodeDecorator leftNodeDecorator = (EditNodeDecorator) leftView.getModel();
+            AttacherNode leftNode = (AttacherNode) leftNodeDecorator.getDecorated();
+            String leftAttr = leftConnector.getAttribute();
             //
-            rightNode.removeConnection(rightAttr);
+            leftNode.removeConnection(leftAttr);
         }
     }
 

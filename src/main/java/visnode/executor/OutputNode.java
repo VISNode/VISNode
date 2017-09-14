@@ -94,6 +94,10 @@ public class OutputNode implements Node, AttacherNode {
     @Override
     public void addOutputChangeListener(PropertyChangeListener listener) {
     }
+    
+    @Override
+    public void removeOutputChangeListener(PropertyChangeListener listener) {
+    }
 
     @Override
     public String getName() {

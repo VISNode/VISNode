@@ -20,7 +20,7 @@ public class VISNode {
     /** Actions */
     private final Actions actions;
     /** Main window */
-    private MainPanel window;
+    private MainPanel panel;
 
     /**
      * Creates a new application
@@ -91,7 +91,8 @@ public class VISNode {
             .size(1024, 768)
             .maximized()
             .create((container) -> {
-                container.add(new MainPanel(model));
+                panel = new MainPanel(model);
+                container.add(panel);
             });
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         return frame;
@@ -112,7 +113,7 @@ public class VISNode {
      * @return NetworkEditor
      */
     public NetworkEditor getNetworkEditor() {
-        return window.getNetworkEditor();
+        return panel.getNetworkEditor();
     }
 
     /**

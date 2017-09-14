@@ -70,10 +70,11 @@ public class ExceptionPanel extends JPanel {
     private JComponent buildTabs() {
         JTabbedPane tabs = new JTabbedPane();
         for (Exception exception : exceptions) {
-            tabs.add(exception.getClass().getSimpleName(), buildExceptionPane(exception));
             if (tabs.getTabCount() > EXCEPTION_LIMIT) {
                 tabs.add("And " + (exceptions.size() - EXCEPTION_LIMIT) + " more", new JLabel(IconFactory.get().create("fa:frown-o")));
+                break;
             }
+            tabs.add(exception.getClass().getSimpleName(), buildExceptionPane(exception));
         }
         return tabs;
     }

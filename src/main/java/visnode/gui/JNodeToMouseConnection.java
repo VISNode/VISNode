@@ -2,6 +2,7 @@ package visnode.gui;
 
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
+import visnode.application.ExceptionHandler;
 
 /**
  * Connection between a node connector point to the mouse position. Used to
@@ -39,9 +40,13 @@ public class JNodeToMouseConnection extends JNodeConnection implements DragListe
     @Override
     public void dragFinished(MouseEvent e) {
         SwingUtilities.invokeLater(() -> {
-            createConnectionIfDroppedOnConnector();
-            cancelMouseConnection();
-            container.repaint();
+            try {
+                createConnectionIfDroppedOnConnector();
+                cancelMouseConnection();
+                container.repaint();
+            } catch (RuntimeException ex) {
+                ExceptionHandler.get().handle(ex);
+            }
         });
     }
 
