@@ -8,6 +8,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
+import org.paim.commons.ImageHelper;
+import org.paim.commons.Range;
 import org.paim.examsio.ExamLoader;
 import org.paim.examsio.ExamLoaderException;
 
@@ -45,7 +47,7 @@ public class InputReader {
     
     private Image readDiacom(File file) throws IOException {
         try {
-            return ImageFactory.buildRGBImage(ExamLoader.load(file).getExamSlice(0).getBufferedImage());
+            return ImageHelper.create(ExamLoader.load(file).getExamSlice(0).getCoefficientMatrix(), new Range<>(-4000, 4000));
         } catch (ExamLoaderException ex) {
             throw new IOException(ex);
         }

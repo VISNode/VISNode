@@ -5,8 +5,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import org.paim.commons.Image;
+import visnode.application.OutputImageFactory;
 import visnode.commons.swing.WindowFactory;
-import static visnode.gui.ImageNodeComponent.getBuffered;
 
 /**
  * Image viewer dialog
@@ -43,7 +43,7 @@ public class ImageViewerPanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        add(new JLabel(new ImageIcon(getBuffered(image))));
+        add(new JLabel(new ImageIcon(OutputImageFactory.getBuffered(image))));
     }
     
 }

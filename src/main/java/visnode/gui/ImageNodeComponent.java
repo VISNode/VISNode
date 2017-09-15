@@ -1,6 +1,5 @@
 package visnode.gui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
+import visnode.application.OutputImageFactory;
 
 /**
  * Image component
@@ -57,34 +57,11 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
         return new JLabel(icon);
     }
 
-    public static BufferedImage getBuffered(Image image) {
-        if (image == null) {
-            return new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        }
-        BufferedImage buff = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int r, g, b;
-                if (image.getChannelCount() == Image.CHANNELS_RGB) {
-                    r = image.get(Image.CHANNEL_RED, x, y);
-                    g = image.get(Image.CHANNEL_GREEN, x, y);
-                    b = image.get(Image.CHANNEL_BLUE, x, y);
-                } else {
-                    r = image.get(0, x, y);
-                    g = image.get(0, x, y);
-                    b = image.get(0, x, y);
-                }
-                buff.setRGB(x, y, new Color(r, g, b).getRGB());
-            }
-        }
-        return buff;
-    }
-
     /**
      * Updates the image
      */
     private void updateImage() {
-        icon.setImage(getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        icon.setImage(OutputImageFactory.getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
         repaint();
     }
 
