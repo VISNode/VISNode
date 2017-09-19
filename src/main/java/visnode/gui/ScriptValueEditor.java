@@ -6,17 +6,17 @@ import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
-import visnode.commons.DynamicNodeValue;
+import visnode.commons.ScriptValue;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 
 /**
  * Dynamic node value editor
  */
-public class DynamicNodeValueEditor extends JComponent implements ParameterComponent<DynamicNodeValue> {
+public class ScriptValueEditor extends JComponent implements ParameterComponent<ScriptValue> {
 
     /** Value */
-    private DynamicNodeValue value;
+    private ScriptValue value;
     /** Code button */
     private JButton codeButton;
     /** Value listener */
@@ -25,7 +25,7 @@ public class DynamicNodeValueEditor extends JComponent implements ParameterCompo
     /**
      * Creates a dynamic node value editor
      */
-    public DynamicNodeValueEditor() {
+    public ScriptValueEditor() {
         value = buildDefault();
         initGui();
         initEvents();
@@ -71,10 +71,10 @@ public class DynamicNodeValueEditor extends JComponent implements ParameterCompo
     /**
      * Builds a default script
      *
-     * @return DynamicNodeValue
+     * @return ScriptValue
      */
-    private DynamicNodeValue buildDefault() {
-        return new DynamicNodeValue("");
+    private ScriptValue buildDefault() {
+        return new ScriptValue("");
     }
 
     @Override
@@ -83,7 +83,7 @@ public class DynamicNodeValueEditor extends JComponent implements ParameterCompo
     }
 
     @Override
-    public void setValue(DynamicNodeValue value) {
+    public void setValue(ScriptValue value) {
         this.value = value;
     }
 
@@ -126,7 +126,7 @@ public class DynamicNodeValueEditor extends JComponent implements ParameterCompo
                 @Override
                 public void keyPressed(KeyEvent e) {
                     if (e.getKeyCode() == KeyEvent.VK_F6) {
-                        valueListener.valueChanged(0, new DynamicNodeValue(textArea.getText()));
+                        valueListener.valueChanged(0, new ScriptValue(textArea.getText()));
                     }
                 }
 
@@ -145,7 +145,7 @@ public class DynamicNodeValueEditor extends JComponent implements ParameterCompo
             if (value != null && value.hasValue()) {
                 return value.getValue();
             }
-            return "function process(channel, x, y, value) {\n\n}";
+            return "function process() {\n\n}";
         }
 
         /**

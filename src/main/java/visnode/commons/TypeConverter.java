@@ -1,5 +1,8 @@
 package visnode.commons;
 
+import org.paim.commons.BinaryImage;
+import org.paim.commons.Image;
+
 /**
  * Type converter
  */
@@ -34,6 +37,9 @@ public class TypeConverter {
             return null;
         }
         if (sourceType.equals(destinyType)) {
+            return (D) value;
+        }
+        if (sourceType.equals(BinaryImage.class) && destinyType.equals(Image.class)) {
             return (D) value;
         }
         if (sourceType.equals(Integer.class) && destinyType.equals(Threshold.class)) {

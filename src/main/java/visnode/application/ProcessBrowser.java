@@ -24,6 +24,7 @@ import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
 import visnode.pdi.Process;
 import visnode.pdi.process.AverageBlurProcess;
+import visnode.pdi.process.BinaryLabelingProcess;
 import visnode.pdi.process.BrightnessProcess;
 import visnode.pdi.process.ClosingProcess;
 import visnode.pdi.process.ContrastProcess;
@@ -40,12 +41,14 @@ import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.KirshProcess;
 import visnode.pdi.process.MedianBlurProcess;
 import visnode.pdi.process.ModeBlurProcess;
+import visnode.pdi.process.ObjectExtractionProcess;
 import visnode.pdi.process.OpeningProcess;
 import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RobinsonProcess;
 import visnode.pdi.process.RotateProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.StentifordProcess;
+import visnode.pdi.process.ThresholdLimitProcess;
 import visnode.pdi.process.ThresholdProcess;
 import visnode.pdi.process.TranslateProcess;
 import visnode.pdi.process.VerticalMirroringProcess;
@@ -211,7 +214,10 @@ public class ProcessBrowser extends JComponent {
             AverageBlurProcess.class,
             MedianBlurProcess.class,
             ModeBlurProcess.class,
-            ThresholdProcess.class
+            BinaryLabelingProcess.class,
+            ObjectExtractionProcess.class,
+            ThresholdProcess.class,
+            ThresholdLimitProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
             return it1.getName().compareTo(it2.getName());

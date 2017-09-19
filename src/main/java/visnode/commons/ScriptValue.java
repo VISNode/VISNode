@@ -3,11 +3,11 @@ package visnode.commons;
 /**
  * Dynamic node value
  */
-public class DynamicNodeValue {
+public class ScriptValue {
 
     private final String value;
 
-    public DynamicNodeValue(String value) {
+    public ScriptValue(String value) {
         this.value = value;
     }
 

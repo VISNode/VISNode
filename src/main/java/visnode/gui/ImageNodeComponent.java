@@ -1,6 +1,5 @@
 package visnode.gui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -10,8 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.paim.commons.Image;
-import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
+import visnode.application.OutputImageFactory;
 
 /**
  * Image component
@@ -62,7 +61,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * Updates the image
      */
     private void updateImage() {
-        icon.setImage(ImageConverter.toBufferedImage(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        icon.setImage(OutputImageFactory.getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
         repaint();
     }
 
