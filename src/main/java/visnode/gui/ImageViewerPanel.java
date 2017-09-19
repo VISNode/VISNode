@@ -2,11 +2,14 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import org.paim.commons.Image;
+import org.paim.commons.ImageConverter;
+import visnode.application.ActionExportImage;
 import visnode.commons.swing.WindowFactory;
-import static visnode.gui.ImageNodeComponent.getBuffered;
 
 /**
  * Image viewer dialog
@@ -43,7 +46,19 @@ public class ImageViewerPanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        add(new JLabel(new ImageIcon(getBuffered(image))));
+        add(buildToolbar(), BorderLayout.NORTH);
+        add(new JLabel(new ImageIcon(ImageConverter.toBufferedImage(image))));
+    }
+    
+    /**
+     * Builds the toolbar
+     * 
+     * @return 
+     */
+    private JComponent buildToolbar() {
+        JToolBar toolbar = new JToolBar();
+        toolbar.add(new ActionExportImage(image));
+        return toolbar;
     }
     
 }

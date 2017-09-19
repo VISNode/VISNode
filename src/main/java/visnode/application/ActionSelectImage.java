@@ -1,10 +1,9 @@
 package visnode.application;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import visnode.gui.FileFilterFactory;
+import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
 
 /**
@@ -25,19 +24,14 @@ public class ActionSelectImage extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser chooser = new JFileChooser();
-        FileFilterFactory.inputFileFilter().apply(chooser);
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        FileChooserFactory.openImage().accept((file) -> {
             try {
-                if (!chooser.getFileFilter().accept(chooser.getSelectedFile())) {
-                    throw new InvalidOpenFileException();
-                }
                 WebCamCapture.get().stop();
-                VISNode.get().getModel().getNetwork().setInput(inputReader.read(chooser.getSelectedFile()));
-            } catch (Exception ex) {
-                ExceptionHandler.get().handle(ex);
+                VISNode.get().getModel().getNetwork().setInput(inputReader.read(file));
+            } catch (IOException ex) {
+                throw new InvalidOpenFileException(ex);
             }
-        }
+        });
     }
 
 }

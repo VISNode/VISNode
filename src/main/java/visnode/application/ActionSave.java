@@ -1,13 +1,11 @@
 package visnode.application;
 
 import java.awt.event.ActionEvent;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.AbstractAction;
-import javax.swing.JFileChooser;
 import visnode.application.parser.NodeNetworkParser;
-import visnode.gui.FileFilterFactory;
+import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
 
 /**
@@ -28,21 +26,13 @@ public class ActionSave extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser chooser = new JFileChooser();
-        FileFilterFactory.projectFileFilter().apply(chooser);
-        chooser.setDialogTitle("Save");
-        chooser.setApproveButtonText("Save");
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            File file = chooser.getSelectedFile();
-            if (!file.getName().endsWith(".vnp")) {
-                file = new File(file.getAbsolutePath() + ".vnp");
-            }
+        FileChooserFactory.saveProject().accept((file) -> {
             try (PrintWriter writer = new PrintWriter(file, "UTF-8");) {
                 writer.print(parser.toJson(VISNode.get().getModel().getNetwork()));
             } catch (IOException ex) {
                 ExceptionHandler.get().handle(ex);
             }
-        }
+        });
     }
 
 }

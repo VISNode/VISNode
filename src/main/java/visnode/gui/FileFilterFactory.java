@@ -32,6 +32,17 @@ public class FileFilterFactory {
             new FileNameExtensionFilter("Input files", "jpg", "png", "dcm")
         );
     }
+
+    /**
+     * Creates the export file filter
+     * 
+     * @return FileFilter
+     */
+    public static FileFilterList exportFileFilter() {
+        return new FileFilterList(
+            new FileNameExtensionFilter("All output files", "jpg", "png")
+        );
+    }
                 
     public static class FileFilterList extends ArrayList<FileFilter> {
 
