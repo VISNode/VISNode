@@ -39,10 +39,12 @@ import visnode.pdi.process.InformationProcess;
 import visnode.pdi.process.InvertColorProcess;
 import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.KirshProcess;
+import visnode.pdi.process.LaplaceProcess;
 import visnode.pdi.process.MedianBlurProcess;
 import visnode.pdi.process.ModeBlurProcess;
 import visnode.pdi.process.ObjectExtractionProcess;
 import visnode.pdi.process.OpeningProcess;
+import visnode.pdi.process.PrewittProcess;
 import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RobinsonProcess;
 import visnode.pdi.process.RotateProcess;
@@ -217,7 +219,9 @@ public class ProcessBrowser extends JComponent {
             BinaryLabelingProcess.class,
             ObjectExtractionProcess.class,
             ThresholdProcess.class,
-            ThresholdLimitProcess.class
+            ThresholdLimitProcess.class,
+            PrewittProcess.class,
+            LaplaceProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
             return it1.getName().compareTo(it2.getName());
