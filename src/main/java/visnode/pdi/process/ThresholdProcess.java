@@ -2,6 +2,7 @@ package visnode.pdi.process;
 
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
+import org.paim.commons.Range;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.commons.Threshold;
@@ -36,7 +37,7 @@ public class ThresholdProcess implements Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }        
-        this.process = new org.paim.pdi.ThresholdProcess(new Image(resultImage), resultThreshold.intValue());
+        this.process = new org.paim.pdi.ThresholdProcess(new Image(resultImage.getData(), new Range<>(0, 1)), resultThreshold.intValue());
     }
 
     /**    

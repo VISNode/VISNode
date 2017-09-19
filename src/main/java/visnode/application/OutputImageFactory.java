@@ -12,10 +12,10 @@ public class OutputImageFactory {
 
     private static final int WINDOW_LEVEL = -400;
     private static final int WINDOW_WIDTH = 1500;
-    
+
     /**
      * Creates a buffered image
-     * 
+     *
      * @param image
      * @return BufferedImage
      */
@@ -30,19 +30,24 @@ public class OutputImageFactory {
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 int r, g, b;
-                if (image.getChannelCount() == Image.CHANNELS_RGB) {
-                    r = image.get(Image.CHANNEL_RED, x, y);
-                    g = image.get(Image.CHANNEL_GREEN, x, y);
-                    b = image.get(Image.CHANNEL_BLUE, x, y);
+                if (image.getPixelValueRange().isBinary()) {
+                    r = g = b = (image.get(0, x, y) == 1 ? 255 : 0);
                 } else {
-                    r = image.get(0, x, y);
-                    g = image.get(0, x, y);
-                    b = image.get(0, x, y);
+
+                    if (image.getChannelCount() == Image.CHANNELS_RGB) {
+                        r = image.get(Image.CHANNEL_RED, x, y);
+                        g = image.get(Image.CHANNEL_GREEN, x, y);
+                        b = image.get(Image.CHANNEL_BLUE, x, y);
+                    } else {
+                        r = image.get(0, x, y);
+                        g = image.get(0, x, y);
+                        b = image.get(0, x, y);
+                    }
                 }
                 buff.setRGB(x, y, new Color(r, g, b).getRGB());
             }
         }
         return buff;
     }
-    
+
 }
