@@ -43,7 +43,7 @@ public class DynamicPixelProcess extends PixelProcess<Image> implements Process 
         Object ret = scriptRunner.invokeFunction("process", channel, x, y, value);
         if (ret != null) {
             int pixel = Integer.valueOf(ret.toString());
-            dynamicImage.set(Image.CHANNEL_GRAY, x, y, pixel);
+            dynamicImage.set(channel, x, y, pixel);
         }
     }
 

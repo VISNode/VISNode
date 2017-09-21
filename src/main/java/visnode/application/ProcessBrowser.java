@@ -41,6 +41,7 @@ import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.KirshProcess;
 import visnode.pdi.process.LaplaceProcess;
 import visnode.pdi.process.MedianBlurProcess;
+import visnode.pdi.process.MergeImageProcess;
 import visnode.pdi.process.ModeBlurProcess;
 import visnode.pdi.process.ObjectExtractionProcess;
 import visnode.pdi.process.OpeningProcess;
@@ -221,6 +222,7 @@ public class ProcessBrowser extends JComponent {
             ThresholdProcess.class,
             ThresholdLimitProcess.class,
             PrewittProcess.class,
+            MergeImageProcess.class,
             LaplaceProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
