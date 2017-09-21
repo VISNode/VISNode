@@ -35,7 +35,6 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
             } else if (imageBase != null) {
                 background.set(channel, x, y, imageBase.get(channel, x, y));
             }
-
         }        
     }
 
