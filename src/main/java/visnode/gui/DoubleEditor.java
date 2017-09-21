@@ -53,8 +53,8 @@ public class DoubleEditor extends JComponent implements ParameterComponent<Doubl
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        field.addActionListener((evt) -> {
-            valueListener.valueChanged(0, getValue());
+        field.addPropertyChangeListener("value", (e) -> {
+            valueListener.valueChanged(0, getValue());            
         });
     }
     
