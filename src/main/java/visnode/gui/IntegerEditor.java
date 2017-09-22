@@ -6,7 +6,10 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
+import java.util.EventListener;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 
@@ -53,8 +56,8 @@ public class IntegerEditor extends JComponent implements ParameterComponent<Inte
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        field.addActionListener((evt) -> {
-            valueListener.valueChanged(0, getValue());
+        field.addPropertyChangeListener("value", (e) -> {
+            valueListener.valueChanged(0, getValue());            
         });
     }
     

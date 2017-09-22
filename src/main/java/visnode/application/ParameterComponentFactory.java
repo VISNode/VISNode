@@ -1,6 +1,7 @@
 
 package visnode.application;
 
+import java.awt.Color;
 import org.paim.commons.Image;
 import visnode.commons.Angle;
 import visnode.commons.ScriptValue;
@@ -11,6 +12,7 @@ import visnode.executor.Node;
 import visnode.executor.NodeParameter;
 import visnode.executor.OutputNode;
 import visnode.gui.AngleEditor;
+import visnode.gui.ColorEditor;
 import visnode.gui.DoubleEditor;
 import visnode.gui.ScriptValueEditor;
 import visnode.gui.IntegerEditor;
@@ -52,6 +54,9 @@ public class ParameterComponentFactory {
         }
         if (parameter.getType().equals(Integer.class) && type == ConnectionType.INPUT) {
             return new IntegerEditor();
+        }
+        if (parameter.getType().equals(Color.class) && type == ConnectionType.INPUT) {
+            return new ColorEditor();
         }
         if (parameter.getType().equals(Angle.class) && type == ConnectionType.INPUT) {
             return new AngleEditor();
