@@ -7,15 +7,15 @@ import visnode.commons.Output;
 import visnode.pdi.Process;
 
 /**
- * Process for Weighted grayscale 
+ * Process for Weighted gray scale 
  */
 public class WeightedGrayscaleProcess implements Process {
     
-    /** Weighted grayscale */
+    /** Weighted gray scale */
     private final org.paim.pdi.WeightedGrayscaleProcess process;
 
     /**
-     * Creates a new Weighted grayscale process
+     * Creates a new Weighted gray scale process
      *
      * @param image
      * @param redWeight
@@ -26,6 +26,15 @@ public class WeightedGrayscaleProcess implements Process {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
+        }
+        if (redWeight == null) {
+            redWeight = 0.3333333333333333d;
+        }
+        if (greenWeight == null) {
+            greenWeight = 0.3333333333333333d;
+        }
+        if (blueWeight == null) {
+            blueWeight = 0.3333333333333333d;
         }
         this.process = new org.paim.pdi.WeightedGrayscaleProcess(new Image(resultImage), redWeight, greenWeight, blueWeight);
     }
