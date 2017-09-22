@@ -1,6 +1,7 @@
 package visnode.commons.swing.components;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
@@ -8,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import visnode.gui.IconFactory;
 
@@ -59,6 +61,18 @@ public class ExceptionPanel extends JPanel {
             add(buildExceptionPane(exceptions.get(0)));
         } else {
             add(buildTabs());
+        }
+        repackWindow();
+    }
+    
+    /**
+     * Repacks the window
+     */
+    private void repackWindow() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.pack();
+            window.setLocationRelativeTo(null);
         }
     }
     

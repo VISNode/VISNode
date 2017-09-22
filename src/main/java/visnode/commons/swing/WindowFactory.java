@@ -2,7 +2,11 @@ package visnode.commons.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -41,7 +45,9 @@ public class WindowFactory {
      * @return FrameBuilder
      */
     public static FrameBuilder mainFrame() {
-        return new FrameBuilder();
+        return new FrameBuilder().onClose((e) -> {
+            System.exit(0);
+        });
     }
     
     /**
@@ -65,6 +71,12 @@ public class WindowFactory {
         @Override
         public DialogBuilder menu(JMenuBar menu) {
             window.setJMenuBar(menu);
+            return this;
+        }
+
+        @Override
+        public DialogBuilder doNothingOnClose() {
+            window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             return this;
         }
 
@@ -117,6 +129,12 @@ public class WindowFactory {
             return this;
         }
         
+        @Override
+        public FrameBuilder doNothingOnClose() {
+            window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            return this;
+        }
+        
         /**
          * Maximized
          * 
@@ -145,10 +163,14 @@ public class WindowFactory {
      * Abstract window builder
      * @param <T> 
      */
-    private static abstract class WindowBuilder<T extends Window, B extends WindowBuilder> {
+    private static abstract class WindowBuilder<T extends Window, B extends WindowBuilder> implements WindowListener {
     
         /** Window */
         protected final T window;
+        /** Incertepct closing callback */
+        private Supplier<Boolean> interceptClosing;
+        /** On close callback */
+        private Consumer<WindowEvent> onClose;
         
         /**
          * Window builder
@@ -157,6 +179,7 @@ public class WindowFactory {
          */
         public WindowBuilder(T window) {
             this.window = window;
+            this.window.addWindowListener(this);
         }
         
         /**
@@ -168,6 +191,36 @@ public class WindowFactory {
          */
         public B size(int width, int height) {
             window.setSize(width, height);
+            return (B) this;
+        }
+        
+        /**
+         * Intercept the window closing event
+         * 
+         * @param callback
+         * @return B
+         */
+        public B interceptClose(Supplier<Boolean> callback) {
+            doNothingOnClose();
+            interceptClosing = callback;
+            return (B) this;
+        }
+        
+        /**
+         * Do nothing on close
+         * 
+         * @return B
+         */
+        public abstract B doNothingOnClose();
+        
+        /**
+         * On the window close. Happens after the interceptClose
+         * 
+         * @param callback
+         * @return B
+         */
+        public B onClose(Consumer<WindowEvent> callback) {
+            onClose = callback;
             return (B) this;
         }
         
@@ -194,6 +247,38 @@ public class WindowFactory {
          * @return T
          */
         public abstract T create(Consumer<JPanel> consumer);
+
+        @Override
+        public void windowOpened(WindowEvent e) {
+        }
+
+        @Override
+        public void windowClosing(WindowEvent e) {
+            if (interceptClosing.get()) {
+                window.dispose();
+            }
+        }
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            onClose.accept(e);
+        }
+
+        @Override
+        public void windowIconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeiconified(WindowEvent e) {
+        }
+
+        @Override
+        public void windowActivated(WindowEvent e) {
+        }
+
+        @Override
+        public void windowDeactivated(WindowEvent e) {
+        }
         
     }
     

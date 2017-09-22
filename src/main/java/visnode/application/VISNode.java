@@ -90,11 +90,13 @@ public class VISNode {
             .menu(VISNode.get().getActions().buildMenuBar())
             .size(1024, 768)
             .maximized()
+            .interceptClose(() -> {
+                return true;
+            })
             .create((container) -> {
                 panel = new MainPanel(model);
                 container.add(panel);
             });
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         return frame;
     }
 
