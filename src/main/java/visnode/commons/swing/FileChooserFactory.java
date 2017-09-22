@@ -8,6 +8,7 @@ package visnode.commons.swing;
 import java.io.File;
 import java.util.function.Consumer;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import visnode.application.ExceptionHandler;
 import visnode.application.InvalidOpenFileException;
 import visnode.gui.FileFilterFactory;
@@ -131,12 +132,29 @@ public class FileChooserFactory {
                         if (!chooser.getFileFilter().accept(chooser.getSelectedFile())) {
                             throw new InvalidOpenFileException();
                         }
+                        if (!checkOverride(chooser.getSelectedFile())) {
+                            return;
+                        }
                         consumer.accept(chooser.getSelectedFile());
                     }
                 }
             } catch (InvalidOpenFileException ex) {
                 ExceptionHandler.get().handle(ex);
             }
+        }
+        
+        /**
+         * Checks file override
+         * 
+         * @param file
+         * @return boolean
+         */
+        private boolean checkOverride(File file) {
+            if (!file.exists()) {
+                return true;
+            }
+            int r = JOptionPane.showConfirmDialog(null, "The file " + file + " already exists. Do you wish to override it?");
+            return r == JOptionPane.OK_OPTION;
         }
         
     }
