@@ -250,12 +250,12 @@ public class ProcessBrowser extends JComponent {
             // Title label
             JLabel label = (JLabel) defaultRenderer.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
             label.setText(metadata.getName());
-            label.setFont(new Font("Arial", Font.BOLD, 12));
+            label.setFont(new Font("Segoe UI", Font.BOLD, 12));
             // Description label
             JLabel description = new JLabel(metadata.getDescription());
             description.setForeground(description.getForeground());
             description.setBorder(BorderFactory.createEmptyBorder(1, 10, 3, 3));
-            description.setFont(new Font("Arial", Font.PLAIN, 10));
+            description.setFont(new Font("Segoe UI", Font.PLAIN, 10));
             if (metadata.getDescription() == null || metadata.getDescription().isEmpty()) {
                 description.setText("<No description specified>");
                 description.setForeground(description.getForeground().darker());
