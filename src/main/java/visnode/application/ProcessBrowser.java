@@ -49,6 +49,7 @@ import visnode.pdi.process.PrewittProcess;
 import visnode.pdi.process.RobertsProcess;
 import visnode.pdi.process.RobinsonProcess;
 import visnode.pdi.process.RotateProcess;
+import visnode.pdi.process.SnakeProcess;
 import visnode.pdi.process.SobelProcess;
 import visnode.pdi.process.StentifordProcess;
 import visnode.pdi.process.ThresholdLimitProcess;
@@ -223,7 +224,8 @@ public class ProcessBrowser extends JComponent {
             ThresholdLimitProcess.class,
             PrewittProcess.class,
             MergeImageProcess.class,
-            LaplaceProcess.class
+            LaplaceProcess.class,
+            SnakeProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
             return it1.getName().compareTo(it2.getName());

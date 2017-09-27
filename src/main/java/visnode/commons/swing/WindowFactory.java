@@ -254,7 +254,7 @@ public class WindowFactory {
 
         @Override
         public void windowClosing(WindowEvent e) {
-            if (interceptClosing.get()) {
+            if (interceptClosing != null && interceptClosing.get()) {
                 window.dispose();
             }
         }
