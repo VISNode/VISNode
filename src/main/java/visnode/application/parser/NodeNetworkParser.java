@@ -75,7 +75,11 @@ public class NodeNetworkParser {
         }).collect(Collectors.toList());
         List connections = node.getConnector().getConnections().values().stream().map((c) -> {
             Map<String, Object> conn = new HashMap<>();
-            conn.put("leftNode", System.identityHashCode(c.getLeftNode()));
+            Node n = c.getLeftNode();
+            if (n instanceof EditNodeDecorator) {
+                n = ((EditNodeDecorator)n).getDecorated();
+            }
+            conn.put("leftNode", System.identityHashCode(n));
             conn.put("leftAttribute", c.getLeftAttribute());
             return conn;
         }).collect(Collectors.toList());
@@ -132,7 +136,10 @@ public class NodeNetworkParser {
                 inputList.forEach((c) -> {
                     try {
                         String attr = c.get("parameterName").toString();
-                        Object obj = gson.fromJson(c.get("value").toString(), Class.forName(c.get("parameterType").toString()));
+                        Object obj = null;
+                        if (c.get("value") != null) {
+                            obj = gson.fromJson(c.get("value").toString(), Class.forName(c.get("parameterType").toString()));
+                        }
                         processNode.setInput(attr, obj);
                     } catch (ClassNotFoundException ex) {
                         ExceptionHandler.get().handle(ex);
@@ -146,7 +153,7 @@ public class NodeNetworkParser {
                 String attr = c.get("leftAttribute").toString();
                 out.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
             });
-        } catch (IOException e) {
+        } catch (Exception e) {
             ExceptionHandler.get().handle(e);
         }
         return network;

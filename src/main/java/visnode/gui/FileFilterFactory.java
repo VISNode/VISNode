@@ -2,6 +2,8 @@
 package visnode.gui;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -18,7 +20,7 @@ public class FileFilterFactory {
      */
     public static FileFilterList projectFileFilter() {
         return new FileFilterList(
-            new FileNameExtensionFilter("VISNode projects", "vnp")
+            byExtension("VISNode projects", "vnp")
         );
     }
 
@@ -29,7 +31,7 @@ public class FileFilterFactory {
      */
     public static FileFilterList inputFileFilter() {
         return new FileFilterList(
-            new FileNameExtensionFilter("Input files", "jpg", "png", "dcm")
+            byExtension("Input files", "jpg", "png", "dcm")
         );
     }
 
@@ -40,10 +42,28 @@ public class FileFilterFactory {
      */
     public static FileFilterList exportFileFilter() {
         return new FileFilterList(
-            new FileNameExtensionFilter("All output files", "jpg", "png")
+            byExtension("All output files", "jpg", "png")
         );
     }
+    
+    /**
+     * Creates a filter by extension
+     * 
+     * @param name
+     * @param extensions
+     * @return FileNameExtensionFilter
+     */
+    private static FileNameExtensionFilter byExtension(String name, String... extensions) {
+        String extensionsList = String.join(",", Arrays.asList(extensions)
+                .stream()
+                .map(string -> "." + string)
+                .collect(Collectors.toList()));
+        return new FileNameExtensionFilter(name + " (" + extensionsList + ')', extensions);
+    }
                 
+    /**
+     * List of file filters
+     */
     public static class FileFilterList extends ArrayList<FileFilter> {
 
         public FileFilterList(FileFilter... filters) {

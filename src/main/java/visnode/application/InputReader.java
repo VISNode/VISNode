@@ -42,7 +42,7 @@ public class InputReader {
      * @return boolean
      */
     private boolean isDiacom(String fileType) {
-        return fileType.equals(DICOM);
+        return DICOM.equals(fileType);
     }
     
     private Image readDiacom(File file) throws IOException {

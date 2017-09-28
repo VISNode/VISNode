@@ -9,6 +9,8 @@ import java.io.File;
 import java.util.function.Consumer;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import visnode.application.ExceptionHandler;
 import visnode.application.InvalidOpenFileException;
 import visnode.gui.FileFilterFactory;
@@ -26,6 +28,7 @@ public class FileChooserFactory {
     public static FileChooserBuilder saveProject() {
         return new FileChooserBuilder()
                 .method(Method.SAVE)
+                .files()
                 .filter(FileFilterFactory.projectFileFilter())
                 .title("Save");
     }
@@ -38,6 +41,7 @@ public class FileChooserFactory {
     public static FileChooserBuilder openProject() {
         return new FileChooserBuilder()
                 .method(Method.OPEN)
+                .files()
                 .filter(FileFilterFactory.projectFileFilter())
                 .title("Open");
     }
@@ -50,6 +54,7 @@ public class FileChooserFactory {
     public static FileChooserBuilder openImage() {
         return new FileChooserBuilder()
                 .method(Method.OPEN)
+                .files()
                 .filter(FileFilterFactory.inputFileFilter())
                 .title("Open");
     }
@@ -62,6 +67,7 @@ public class FileChooserFactory {
     public static FileChooserBuilder exportImage() {
         return new FileChooserBuilder()
                 .method(Method.SAVE)
+                .files()
                 .filter(FileFilterFactory.exportFileFilter())
                 .title("Export");
     }
@@ -81,6 +87,16 @@ public class FileChooserFactory {
          */
         public FileChooserBuilder() {
             chooser = new JFileChooser();
+        }
+        
+        /**
+         * Selects only files
+         * 
+         * @return FileChooserBuilder
+         */
+        private FileChooserBuilder files() {
+            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            return this;
         }
         
         /**
@@ -129,16 +145,17 @@ public class FileChooserFactory {
                     }
                 } else {
                     if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        if (!chooser.getFileFilter().accept(chooser.getSelectedFile())) {
+                        File file = addExtensionIfRequired(chooser.getSelectedFile(), chooser.getFileFilter());
+                        if (!chooser.getFileFilter().accept(file)) {
                             throw new InvalidOpenFileException();
                         }
-                        if (!checkOverride(chooser.getSelectedFile())) {
+                        if (!checkOverride(file)) {
                             return;
                         }
-                        consumer.accept(chooser.getSelectedFile());
+                        consumer.accept(file);
                     }
                 }
-            } catch (InvalidOpenFileException ex) {
+            } catch (Exception ex) {
                 ExceptionHandler.get().handle(ex);
             }
         }
@@ -155,6 +172,26 @@ public class FileChooserFactory {
             }
             int r = JOptionPane.showConfirmDialog(null, "The file " + file + " already exists. Do you wish to override it?");
             return r == JOptionPane.OK_OPTION;
+        }
+
+        /**
+         * Adds the extension to the file if required
+         * 
+         * @param file
+         * @param fileFilter
+         * @return File
+         */
+        private File addExtensionIfRequired(File file, FileFilter fileFilter) {
+            String name = file.getName();
+            // If there is an extension
+            if (name.indexOf('.', name.length() - 4) >= 0) {
+                return file;
+            }
+            if (fileFilter instanceof FileNameExtensionFilter) {
+                FileNameExtensionFilter extensions = (FileNameExtensionFilter) fileFilter;
+                return new File(file.getAbsolutePath() + '.' + extensions.getExtensions()[0]);
+            }
+            return file;
         }
         
     }
