@@ -33,6 +33,7 @@ import visnode.pdi.process.DynamicPixelProcess;
 import visnode.pdi.process.ErosionProcess;
 import visnode.pdi.process.GaussianBlurProcess;
 import visnode.pdi.process.GrayscaleProcess;
+import visnode.pdi.process.HistogramProcess;
 import visnode.pdi.process.HoltProcess;
 import visnode.pdi.process.HorizontalMirroringProcess;
 import visnode.pdi.process.InformationProcess;
@@ -225,7 +226,8 @@ public class ProcessBrowser extends JComponent {
             PrewittProcess.class,
             MergeImageProcess.class,
             LaplaceProcess.class,
-            SnakeProcess.class
+            SnakeProcess.class,
+            HistogramProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
             return it1.getName().compareTo(it2.getName());
