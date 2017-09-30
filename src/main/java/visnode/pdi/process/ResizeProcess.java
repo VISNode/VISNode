@@ -24,6 +24,9 @@ public class ResizeProcess implements visnode.pdi.Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
+        if (size == null) {
+            size = 1d;
+        }
         this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), size);
         
     }
