@@ -41,6 +41,7 @@ import visnode.pdi.process.InvertColorProcess;
 import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.KirshProcess;
 import visnode.pdi.process.LaplaceProcess;
+import visnode.pdi.process.MarrHildrethProcess;
 import visnode.pdi.process.MedianBlurProcess;
 import visnode.pdi.process.MergeImageProcess;
 import visnode.pdi.process.ModeBlurProcess;
@@ -227,6 +228,7 @@ public class ProcessBrowser extends JComponent {
             MergeImageProcess.class,
             LaplaceProcess.class,
             SnakeProcess.class,
+            MarrHildrethProcess.class,
             HistogramProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
