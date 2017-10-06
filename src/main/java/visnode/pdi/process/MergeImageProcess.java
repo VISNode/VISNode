@@ -17,22 +17,25 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
     private final Image background;
     /** Image base */
     private final Image imageBase;
+    /** The image mask */
+    private final Image mask;
     /** Color array */
     private final int[] color;
     
     public MergeImageProcess(@Input("background") Image background, @Input("mask") Image mask, @Input("image") Image image, @Input("color") Color color) {
-        super(mask == null ? ImageFactory.buildEmptyImage() : mask);
+        super(background == null ? ImageFactory.buildEmptyImage() : background);
         this.background = ImageFactory.buildRGBImage(OutputImageFactory.getBuffered(background == null ? ImageFactory.buildEmptyImage() : background));
         this.imageBase = image;
         this.color = buildColor(color);
+        this.mask = mask == null ? ImageFactory.buildEmptyImage() : mask;
     }
 
     @Override
     protected void process(int channel, int x, int y, int value) {
-        if (value == 1) {
+        if (mask.has(0, x, y) && mask.get(0, x, y) == 1) {
             if (color != null) {
                 background.set(channel, x, y, color[channel]);
-            } else if (imageBase != null) {
+            } else if (imageBase != null && imageBase.has(channel, x, y)) {
                 background.set(channel, x, y, imageBase.get(channel, x, y));
             }
         }        
