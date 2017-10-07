@@ -7,8 +7,7 @@ import java.io.InputStreamReader;
 import visnode.pdi.Process;
 
 /**
- *
- * @author Process metadata
+ * Process metadata
  */
 public class ProcessMetadata {
 
@@ -16,15 +15,15 @@ public class ProcessMetadata {
     private String name;
     /** Description */
     private String description;
+    /** Help URL */
+    private String helpUrl;
+    /** Code URL */
+    private String codeUrl;
 
     public ProcessMetadata() {
         name = "";
         description = "";
     }
-    /** Help URL */
-    private String helpUrl;
-    /** Code URL */
-    private String codeUrl;
     
     /**
      * Returns the metadata from the class
