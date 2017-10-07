@@ -17,7 +17,7 @@ public class AngleEditor extends JSlider implements ParameterComponent<Angle> {
      * Creates a new angle editor
      */
     public AngleEditor() {
-        super(0, 359);
+        super(0, 360);
         value = new Angle(0);
         setValue(value);
         setFocusable(false);

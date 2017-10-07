@@ -43,6 +43,7 @@ import visnode.pdi.process.InvertColorProcess;
 import visnode.pdi.process.ResizeProcess;
 import visnode.pdi.process.KirshProcess;
 import visnode.pdi.process.LaplaceProcess;
+import visnode.pdi.process.MarrHildrethProcess;
 import visnode.pdi.process.MedianBlurProcess;
 import visnode.pdi.process.MergeImageProcess;
 import visnode.pdi.process.ModeBlurProcess;
@@ -194,44 +195,26 @@ public class ProcessBrowser extends JComponent {
      */
     private Class<Process>[] getProcesses() {
         Class[] process = new Class[] {
-            DynamicPixelProcess.class,
-            BrightnessProcess.class,
-            ContrastProcess.class,
-            GrayscaleProcess.class,
-            WeightedGrayscaleProcess.class,
-            RobertsProcess.class,
-            SobelProcess.class,
-            GaussianBlurProcess.class,
-            InformationProcess.class,
-            InvertColorProcess.class,
-            RobinsonProcess.class,
-            KirshProcess.class,
-            DilationProcess.class,
-            ErosionProcess.class,
-            OpeningProcess.class,
-            ClosingProcess.class,
-            ResizeProcess.class,
-            RotateProcess.class,
-            TranslateProcess.class,
-            HorizontalMirroringProcess.class,
-            VerticalMirroringProcess.class,
-            ZhangSuenProcess.class,
-            HoltProcess.class,
-            StentifordProcess.class,
-            AverageBlurProcess.class,
-            MedianBlurProcess.class,
-            ModeBlurProcess.class,
-            BinaryLabelingProcess.class,
-            ObjectExtractionProcess.class,
-            ThresholdProcess.class,
-            ThresholdLimitProcess.class,
-            PrewittProcess.class,
-            MergeImageProcess.class,
-            LaplaceProcess.class,
-            SnakeProcess.class,
-            HistogramProcess.class,
-            FreiChenProcess.class,
-            ExtraInputProcess.class
+            DynamicPixelProcess.class, BrightnessProcess.class,
+            ContrastProcess.class,  GrayscaleProcess.class,
+            WeightedGrayscaleProcess.class, RobertsProcess.class,
+            SobelProcess.class, GaussianBlurProcess.class,
+            InformationProcess.class, InvertColorProcess.class,
+            RobinsonProcess.class, KirshProcess.class,
+            DilationProcess.class, ErosionProcess.class, OpeningProcess.class,
+            ClosingProcess.class, ResizeProcess.class, RotateProcess.class,
+            TranslateProcess.class, HorizontalMirroringProcess.class,
+            VerticalMirroringProcess.class, ZhangSuenProcess.class,
+            HoltProcess.class, StentifordProcess.class,
+            AverageBlurProcess.class, MedianBlurProcess.class,
+            ModeBlurProcess.class, BinaryLabelingProcess.class,
+            ObjectExtractionProcess.class, ThresholdProcess.class,
+            ThresholdLimitProcess.class, PrewittProcess.class,
+            MergeImageProcess.class, LaplaceProcess.class,
+            SnakeProcess.class, HistogramProcess.class,
+            FreiChenProcess.class, ExtraInputProcess.class,
+            MarrHildrethProcess.class,
+            HistogramProcess.class
         };
         Arrays.sort(process, (it1, it2) -> {
             return it1.getName().compareTo(it2.getName());
