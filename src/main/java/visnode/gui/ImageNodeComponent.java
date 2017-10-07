@@ -61,7 +61,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * Updates the image
      */
     private void updateImage() {
-        icon.setImage(OutputImageFactory.getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        icon.setImage(OutputImageFactory.getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_SMOOTH));
         repaint();
     }
 

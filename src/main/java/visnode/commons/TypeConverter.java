@@ -1,5 +1,6 @@
 package visnode.commons;
 
+import java.io.File;
 import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
 
@@ -49,6 +50,9 @@ public class TypeConverter {
             return (D) value;
         }
         if (sourceType.equals(Double.class) && destinyType.equals(double.class)) {
+            return (D) value;
+        }
+        if (File.class.isAssignableFrom(sourceType) && File.class.isAssignableFrom(destinyType)) {
             return (D) value;
         }
         throw new UnsupportedOperationException("Unknown conversion from " + sourceType + " to " + destinyType);
