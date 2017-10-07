@@ -17,6 +17,8 @@ import visnode.application.OutputImageFactory;
  */
 public class ImageNodeComponent extends JComponent implements ParameterComponent<Image> {
 
+    /** Thumbnail size */
+    private static final int THUMBNAIL_SIZE = 150;
     /** Image */
     private Image value;
     /** Image */
@@ -61,7 +63,16 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * Updates the image
      */
     private void updateImage() {
-        icon.setImage(OutputImageFactory.getBuffered(value).getScaledInstance(150, 150, BufferedImage.SCALE_FAST));
+        BufferedImage image = OutputImageFactory.getBuffered(value);
+        int size = Math.max(image.getWidth(), image.getHeight());
+        int newWidth = THUMBNAIL_SIZE * image.getWidth() / size;
+        int newHeight = THUMBNAIL_SIZE * image.getHeight() / size;
+        int x = (THUMBNAIL_SIZE - newWidth) / 2;
+        int y = (THUMBNAIL_SIZE - newHeight) / 2;
+        BufferedImage newImage = new BufferedImage(THUMBNAIL_SIZE, THUMBNAIL_SIZE, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+        java.awt.Image scaledImage = image.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
+        newImage.getGraphics().drawImage(scaledImage, x, y, null);
+        icon.setImage(newImage);
         repaint();
     }
 

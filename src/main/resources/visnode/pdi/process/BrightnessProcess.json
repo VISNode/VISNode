@@ -1,7 +1,7 @@
 {
     "name": "Brightness",
     "description": "Adjust the brightness of the image",
-    "tags": ["adjusts", "tags", "..."],
+    "tags": ["adjusts"],
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/BrightnessProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/BrightnessProcess.java"

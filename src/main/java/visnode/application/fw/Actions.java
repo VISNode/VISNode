@@ -36,7 +36,9 @@ public class Actions {
     public JMenuBar buildMenuBar() {
         JMenu file = new JMenu("File");
         file.add(get(ActionNew.class));
+        file.addSeparator();
         file.add(get(ActionOpen.class));
+        file.addSeparator();
         file.add(get(ActionSave.class));
         JMenu input = new JMenu("Input");
         input.add(get(ActionSelectImage.class));

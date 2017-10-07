@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.AbstractAction;
+import static javax.swing.Action.ACCELERATOR_KEY;
+import javax.swing.KeyStroke;
 import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
@@ -23,7 +25,8 @@ public class ActionOpen extends AbstractAction {
      * Creates a new action
      */
     public ActionOpen() {
-        super("Open", IconFactory.get().create("fa:folder-open"));
+        super("Open...", IconFactory.get().create("fa:folder-open"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl O"));
         this.parser = new NodeNetworkParser();
     }
 

@@ -3,6 +3,7 @@ package visnode.application;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import javax.swing.KeyStroke;
 import visnode.gui.IconFactory;
 
 /**
@@ -16,6 +17,7 @@ public class ActionNew extends AbstractAction {
      */
     public ActionNew() {
         super("New", IconFactory.get().create("fa:file"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
     }
     
     @Override

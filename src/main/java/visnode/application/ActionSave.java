@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.AbstractAction;
+import static javax.swing.Action.ACCELERATOR_KEY;
+import javax.swing.KeyStroke;
 import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
@@ -20,7 +22,8 @@ public class ActionSave extends AbstractAction {
      * Creates a new action
      */
     public ActionSave() {
-        super("Save", IconFactory.get().create("fa:floppy-o"));
+        super("Save...", IconFactory.get().create("fa:floppy-o"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl S"));
         this.parser = new NodeNetworkParser();
     }
 
