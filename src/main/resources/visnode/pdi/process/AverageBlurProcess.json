@@ -1,1 +1,7 @@
-{"name":"Average Blur","description":"\u003cNo description specified\u003e","author":"VISNode team","helpUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/AverageBlurProcess.md","codeUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/AverageBlurProcess.java"}
+{
+    "name": "Average Blur",
+    "description": "Define a blur using the image average",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/AverageBlurProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/AverageBlurProcess.java"
+}

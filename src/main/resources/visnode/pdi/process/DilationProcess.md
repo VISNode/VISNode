@@ -1,1 +1,3 @@
 # Dilation
+
+Dilation operator.

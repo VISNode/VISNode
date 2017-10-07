@@ -1,1 +1,7 @@
-{"name":"Dynamic Pixel","description":"\u003cNo description specified\u003e","author":"VISNode team","helpUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DynamicPixelProcess.md","codeUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/DynamicPixelProcess.java"}
+{
+    "name": "Dynamic Pixel",
+    "description": "Process the image dynamically",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DynamicPixelProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/DynamicPixelProcess.java"
+}

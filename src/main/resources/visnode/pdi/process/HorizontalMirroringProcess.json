@@ -1,1 +1,7 @@
-{"name":"Horizontal Mirroring","description":"\u003cNo description specified\u003e","author":"VISNode team","helpUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/HorizontalMirroringProcess.md","codeUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/HorizontalMirroringProcess.java"}
+{
+    "name": "Horizontal Mirroring",
+    "description": "Mirror the image to vertical horizontal",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/HorizontalMirroringProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/HorizontalMirroringProcess.java"
+}

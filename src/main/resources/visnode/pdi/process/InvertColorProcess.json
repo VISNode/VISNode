@@ -1,1 +1,7 @@
-{"name":"Invert Color","description":"\u003cNo description specified\u003e","author":"VISNode team","helpUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/InvertColorProcess.md","codeUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/InvertColorProcess.java"}
+{
+    "name": "Invert Color",
+    "description": "Invert the image color",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/InvertColorProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/InvertColorProcess.java"
+}

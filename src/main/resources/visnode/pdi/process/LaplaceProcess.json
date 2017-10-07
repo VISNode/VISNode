@@ -1,1 +1,7 @@
-{"name":"Laplace","description":"\u003cNo description specified\u003e","author":"VISNode team","helpUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/LaplaceProcess.md","codeUrl":"https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/LaplaceProcess.java"}
+{
+    "name": "Laplace",
+    "description": "Laplace edge detector",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/LaplaceProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/LaplaceProcess.java"
+}

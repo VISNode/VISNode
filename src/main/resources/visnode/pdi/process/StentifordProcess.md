@@ -1,1 +1,3 @@
 # Stentiford
+
+Stentiford skeletonization.

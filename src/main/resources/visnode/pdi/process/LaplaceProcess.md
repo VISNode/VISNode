@@ -1,1 +1,3 @@
 # Laplace
+
+Laplace edge detector.

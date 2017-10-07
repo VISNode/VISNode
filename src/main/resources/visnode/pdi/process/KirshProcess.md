@@ -1,1 +1,3 @@
 # Kirsh
+
+Kirsh edge detector.

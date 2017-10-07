@@ -1,1 +1,3 @@
 # Resize
+
+Resize the image.

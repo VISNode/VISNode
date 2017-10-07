@@ -1,1 +1,3 @@
 # Erosion
+
+Erosion operator.

@@ -1,1 +1,3 @@
 # Prewitt
+
+Prewitt edge detector.

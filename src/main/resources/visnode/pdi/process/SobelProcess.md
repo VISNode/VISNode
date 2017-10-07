@@ -1,1 +1,3 @@
 # Sobel
+
+Sobel edge detector.

@@ -1,1 +1,3 @@
 # Information
+
+Gets image information.

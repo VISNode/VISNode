@@ -1,1 +1,3 @@
 # Closing
+
+Closing operator.
