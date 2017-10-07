@@ -4,31 +4,27 @@ import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
+import visnode.pdi.Process;
 
 /**
- * Resize image process
+ * Marr and Hildreth process for edge detection
  */
-public class ResizeProcess implements visnode.pdi.Process {
+public class MarrHildrethProcess implements Process {
 
-    /** Resize process */
-    private final org.paim.pdi.ResizeProcess process;
+    /** Marr and Hildreth process */
+    private final org.paim.pdi.MarrHildrethProcess process;
     
     /**
-     * Creates a new resize process
+     * Creates a new Marr and Hildreth process
      * 
      * @param image 
-     * @param size 
      */
-    public ResizeProcess(@Input("image") Image image, @Input("size") Double size) {
+    public MarrHildrethProcess(@Input("image") Image image) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        if (size == null) {
-            size = 1d;
-        }
-        this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), size);
-        
+        this.process = new org.paim.pdi.MarrHildrethProcess(new Image(resultImage));
     }
 
     @Override

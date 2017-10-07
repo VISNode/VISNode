@@ -2,6 +2,7 @@
 package visnode.application;
 
 import java.awt.Color;
+import java.io.File;
 import org.paim.commons.Image;
 import visnode.commons.Angle;
 import visnode.commons.ScriptValue;
@@ -14,6 +15,7 @@ import visnode.executor.OutputNode;
 import visnode.gui.AngleEditor;
 import visnode.gui.ColorEditor;
 import visnode.gui.DoubleEditor;
+import visnode.gui.FileEditor;
 import visnode.gui.ScriptValueEditor;
 import visnode.gui.IntegerEditor;
 import visnode.gui.NotImplementedParameterComponent;
@@ -45,6 +47,9 @@ public class ParameterComponentFactory {
         }
         if (parameter.getType().equals(Threshold.class) && type == ConnectionType.INPUT) {
             return new ThresholdEditor();
+        }
+        if (parameter.getType().equals(File.class) && type == ConnectionType.INPUT) {
+            return new FileEditor();
         }
         if (parameter.getType().equals(ScriptValue.class) && type == ConnectionType.INPUT) {
             return new ScriptValueEditor();

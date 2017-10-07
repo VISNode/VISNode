@@ -3,8 +3,6 @@ package visnode.application;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.List;
 import javax.imageio.ImageIO;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
