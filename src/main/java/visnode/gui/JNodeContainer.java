@@ -1,7 +1,10 @@
 package visnode.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 import java.awt.event.MouseEvent;
@@ -19,6 +22,8 @@ public class JNodeContainer extends JComponent {
     private final Selection<JNode> selection;
     /** Select listener */
     private final SelectListener selectListener;
+    /** Revalidation listener */
+    private final RevalidationListener revalidationListener;
     
     /**
      * Creates a new NodeContainer
@@ -27,6 +32,7 @@ public class JNodeContainer extends JComponent {
         super();
         this.selection = new Selection<>();
         this.selectListener = new SelectListener();
+        this.revalidationListener = new RevalidationListener();
         initGui();
         registerListeners();
     }
@@ -56,6 +62,7 @@ public class JNodeContainer extends JComponent {
             public void componentAdded(ContainerEvent e) {
                 if (e.getChild() instanceof JNode) {
                     e.getChild().addMouseListener(selectListener);
+                    e.getChild().addComponentListener(revalidationListener);
                 }
             }
 
@@ -63,6 +70,7 @@ public class JNodeContainer extends JComponent {
             public void componentRemoved(ContainerEvent e) {
                 if (e.getChild() instanceof JNode) {
                     e.getChild().removeMouseListener(selectListener);
+                    e.getChild().removeComponentListener(revalidationListener);
                 }
             }
         });
@@ -133,7 +141,7 @@ public class JNodeContainer extends JComponent {
      * Returns the connections of a node
      * 
      * @param node
-     * @return Set<JNodeConnection>
+     * @return Set of JNodeConnection
      */
     public Set<JNodeConnection> getConnections(JNode node) {
         Set<JNodeConnector> connectors = node.getConnectors();
@@ -194,6 +202,17 @@ public class JNodeContainer extends JComponent {
         }
     }
 
+    @Override
+    public Dimension getPreferredSize() {
+        int maxX = super.getPreferredSize().width;
+        int maxY = super.getPreferredSize().height;
+        for (Component component : getComponents()) {
+            maxX = Math.max(maxX, component.getX() + component.getWidth());
+            maxY = Math.max(maxY, component.getY() + component.getHeight());
+        }
+        return new Dimension(maxX, maxY);
+    }
+
     /**
      * Returns the selection
      * 
@@ -237,6 +256,33 @@ public class JNodeContainer extends JComponent {
         public void mouseExited(MouseEvent e) {
         }
         
+    }
+    
+    /**
+     * Listener that revalidates the preferred size when the children change
+     */
+    private class RevalidationListener implements ComponentListener {
+
+        @Override
+        public void componentResized(ComponentEvent e) {
+            revalidate();
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent e) {
+            revalidate();
+        }
+
+        @Override
+        public void componentShown(ComponentEvent e) {
+            revalidate();
+        }
+
+        @Override
+        public void componentHidden(ComponentEvent e) {
+            revalidate();
+        }
+    
     }
 
 }

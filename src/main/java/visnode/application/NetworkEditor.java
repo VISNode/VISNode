@@ -21,6 +21,7 @@ import visnode.gui.JNodeConnector;
 import visnode.gui.JNodeContainer;
 import visnode.gui.NodeConnectionEvent;
 import visnode.gui.NodeConnectionListener;
+import visnode.gui.ScrollFactory;
 import visnode.gui.Selection;
 
 /**
@@ -87,7 +88,7 @@ public class NetworkEditor extends JComponent {
     private JComponent buildNodeContainer() {
         nodeContainer = new JNodeContainer();
         nodeContainer.addNodeConnectionListener(new NodeConnectionSynchronizer());
-        return nodeContainer;
+        return ScrollFactory.pane(nodeContainer).create();
     }
 
     /**

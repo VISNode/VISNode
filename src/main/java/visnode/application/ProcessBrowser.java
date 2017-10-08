@@ -15,13 +15,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
+import visnode.gui.ScrollFactory;
 import visnode.pdi.Process;
 import visnode.pdi.process.AverageBlurProcess;
 import visnode.pdi.process.BinaryLabelingProcess;
@@ -154,9 +154,7 @@ public class ProcessBrowser extends JComponent {
                 }
             }
         });
-        JScrollPane scroll = new JScrollPane();
-        scroll.setViewportView(list);
-        return scroll;
+        return ScrollFactory.pane(list).create();
     }
     
     /**
