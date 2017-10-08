@@ -93,7 +93,9 @@ public class ScrollFactory {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            lastPos = e.getPoint();
+            if (e.getButton() == MouseEvent.BUTTON2) {
+                lastPos = e.getLocationOnScreen();
+            }
         }
 
         @Override
@@ -112,12 +114,12 @@ public class ScrollFactory {
         @Override
         public void mouseDragged(MouseEvent e) {
             if (lastPos != null) {
-                int xDiff = lastPos.x - e.getPoint().x;
-                int yDiff = lastPos.y - e.getPoint().y;
-                scrollPane.getHorizontalScrollBar().setValue(scrollPane.getHorizontalScrollBar().getValue() + xDiff);
+                int xDiff = lastPos.x - e.getLocationOnScreen().x;
+                int yDiff = lastPos.y - e.getLocationOnScreen().y;
+                 scrollPane.getHorizontalScrollBar().setValue(scrollPane.getHorizontalScrollBar().getValue() + xDiff);
                 scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getValue() + yDiff);
+                lastPos = new Point(e.getLocationOnScreen());
             }
-            lastPos = e.getPoint();
         }
 
         @Override
