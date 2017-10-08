@@ -1,7 +1,10 @@
 package visnode.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -211,6 +214,34 @@ public class JNodeContainer extends JComponent {
             maxY = Math.max(maxY, component.getY() + component.getHeight());
         }
         return new Dimension(maxX, maxY);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g.create();
+        super.paintComponent(g2d);
+        int gridSize = 10;
+        int majorGridSize = 100;
+        
+        g2d.setColor(new Color(0x484848));
+        for (int i = 0; i < Math.max(getWidth(), getHeight()); i += gridSize) {
+            if (i < getWidth()) {
+                g2d.drawLine(i, 0, i, getHeight());
+            }
+            if (i < getHeight()) {
+                g2d.drawLine(0, i, getWidth(), i);
+            }
+        }
+        g2d.setColor(new Color(0x585858));
+        for (int i = 0; i < Math.max(getWidth(), getHeight()); i += majorGridSize) {
+            if (i < getWidth()) {
+                g2d.drawLine(i, 0, i, getHeight());
+            }
+            if (i < getHeight()) {
+                g2d.drawLine(0, i, getWidth(), i);
+            }
+        }
+        g2d.dispose();
     }
 
     /**
