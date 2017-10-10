@@ -2,6 +2,7 @@
     "name": "Kirsh",
     "description": "Kirsh edge detector",
     "author": "VISNode team",
+    "tags": ["edge"],
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/KirshProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/KirshProcess.java"
 }

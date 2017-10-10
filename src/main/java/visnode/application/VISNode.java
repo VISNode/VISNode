@@ -3,6 +3,7 @@ package visnode.application;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.skin.GraphiteSkin;
 import visnode.application.fw.Actions;
@@ -67,7 +68,7 @@ public class VISNode {
     private void setupLookAndFeel() {
         try {
             UIManager.setLookAndFeel(new SubstanceLookAndFeel(new GraphiteSkin()) {});
-        } catch (Exception e) {
+        } catch (UnsupportedLookAndFeelException e) {
             ExceptionHandler.get().handle(e);
         }
     }

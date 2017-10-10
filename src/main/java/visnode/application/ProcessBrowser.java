@@ -15,13 +15,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
+import visnode.gui.ScrollFactory;
 import visnode.pdi.Process;
 import visnode.pdi.process.AverageBlurProcess;
 import visnode.pdi.process.BinaryLabelingProcess;
@@ -154,9 +154,7 @@ public class ProcessBrowser extends JComponent {
                 }
             }
         });
-        JScrollPane scroll = new JScrollPane();
-        scroll.setViewportView(list);
-        return scroll;
+        return ScrollFactory.pane(list).create();
     }
     
     /**
@@ -195,24 +193,43 @@ public class ProcessBrowser extends JComponent {
      */
     private Class<Process>[] getProcesses() {
         Class[] process = new Class[] {
-            DynamicPixelProcess.class, BrightnessProcess.class,
-            ContrastProcess.class,  GrayscaleProcess.class,
-            WeightedGrayscaleProcess.class, RobertsProcess.class,
-            SobelProcess.class, GaussianBlurProcess.class,
-            InformationProcess.class, InvertColorProcess.class,
-            RobinsonProcess.class, KirshProcess.class,
-            DilationProcess.class, ErosionProcess.class, OpeningProcess.class,
-            ClosingProcess.class, ResizeProcess.class, RotateProcess.class,
-            TranslateProcess.class, HorizontalMirroringProcess.class,
-            VerticalMirroringProcess.class, ZhangSuenProcess.class,
-            HoltProcess.class, StentifordProcess.class,
-            AverageBlurProcess.class, MedianBlurProcess.class,
-            ModeBlurProcess.class, BinaryLabelingProcess.class,
-            ObjectExtractionProcess.class, ThresholdProcess.class,
-            ThresholdLimitProcess.class, PrewittProcess.class,
-            MergeImageProcess.class, LaplaceProcess.class,
-            SnakeProcess.class, HistogramProcess.class,
-            FreiChenProcess.class, ExtraInputProcess.class,
+            DynamicPixelProcess.class, 
+            BrightnessProcess.class,
+            ContrastProcess.class,  
+            GrayscaleProcess.class,
+            WeightedGrayscaleProcess.class, 
+            RobertsProcess.class,
+            SobelProcess.class, 
+            GaussianBlurProcess.class,
+            InformationProcess.class, 
+            InvertColorProcess.class,
+            RobinsonProcess.class, 
+            KirshProcess.class,
+            DilationProcess.class, 
+            ErosionProcess.class, 
+            OpeningProcess.class,
+            ClosingProcess.class, 
+            ResizeProcess.class, 
+            RotateProcess.class,
+            TranslateProcess.class, 
+            HorizontalMirroringProcess.class,
+            VerticalMirroringProcess.class, 
+            ZhangSuenProcess.class,
+            HoltProcess.class, 
+            StentifordProcess.class,
+            AverageBlurProcess.class, 
+            MedianBlurProcess.class,
+            ModeBlurProcess.class,
+            BinaryLabelingProcess.class,
+            ObjectExtractionProcess.class,
+            ThresholdProcess.class,
+            ThresholdLimitProcess.class, 
+            PrewittProcess.class,
+            MergeImageProcess.class,
+            LaplaceProcess.class,
+            SnakeProcess.class, 
+            FreiChenProcess.class, 
+            ExtraInputProcess.class,
             MarrHildrethProcess.class,
             HistogramProcess.class
         };

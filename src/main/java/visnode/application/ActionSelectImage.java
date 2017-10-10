@@ -3,6 +3,8 @@ package visnode.application;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import javax.swing.AbstractAction;
+import static javax.swing.Action.ACCELERATOR_KEY;
+import javax.swing.KeyStroke;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
 
@@ -19,6 +21,7 @@ public class ActionSelectImage extends AbstractAction {
      */
     public ActionSelectImage() {
         super("From image...", IconFactory.get().create("fa:picture-o"));
+        putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl shift I"));
         this.inputReader = new InputReader();
     }
 
