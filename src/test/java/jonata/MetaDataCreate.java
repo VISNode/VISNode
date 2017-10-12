@@ -56,6 +56,7 @@ public class MetaDataCreate {
 //        metaDataCreate.process("ExtraInputProcess");
 //        metaDataCreate.process("MarrHildrethProcess");
 //        metaDataCreate.process("HistogramProcess");
+//        metaDataCreate.process("CannyProcess");
     }
 
     public void process(String process) throws FileNotFoundException, IOException {
