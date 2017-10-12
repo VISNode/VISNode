@@ -26,6 +26,7 @@ import visnode.pdi.Process;
 import visnode.pdi.process.AverageBlurProcess;
 import visnode.pdi.process.BinaryLabelingProcess;
 import visnode.pdi.process.BrightnessProcess;
+import visnode.pdi.process.CannyProcess;
 import visnode.pdi.process.ClosingProcess;
 import visnode.pdi.process.ContrastProcess;
 import visnode.pdi.process.DilationProcess;
@@ -200,6 +201,7 @@ public class ProcessBrowser extends JComponent {
             WeightedGrayscaleProcess.class, 
             RobertsProcess.class,
             SobelProcess.class, 
+            CannyProcess.class,
             GaussianBlurProcess.class,
             InformationProcess.class, 
             InvertColorProcess.class,
