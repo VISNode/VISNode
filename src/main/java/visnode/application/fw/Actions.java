@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import visnode.application.ActionAboutVisnode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
@@ -45,10 +46,13 @@ public class Actions {
         input.add(get(ActionSelectWebCam.class));
         JMenu edit = new JMenu("Edit");
         edit.add(get(ActionDeleteSelectedNodes.class));
+        JMenu help = new JMenu("Help");
+        help.add(get(ActionAboutVisnode.class));
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(input);
+        menuBar.add(help);
         return menuBar;
     }
 
@@ -62,6 +66,7 @@ public class Actions {
         actions.put(ActionSelectImage.class, new ActionSelectImage());
         actions.put(ActionSelectWebCam.class, new ActionSelectWebCam());
         actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());
+        actions.put(ActionAboutVisnode.class, new ActionAboutVisnode());
     }
     
     /**

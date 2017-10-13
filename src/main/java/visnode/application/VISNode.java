@@ -13,7 +13,7 @@ import visnode.commons.swing.WindowFactory;
  * Main class application
  */
 public class VISNode {
-
+    
     /** Application instance */
     private static VISNode instance;
     /** Application model */
