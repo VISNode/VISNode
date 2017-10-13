@@ -22,7 +22,7 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
     /** Connection size */
     private static final Dimension SIZE = new Dimension(10, 10);
     /** Connector color */
-    private Color color;
+    private final Color color;
     
     /**
      * Creates a new connector point

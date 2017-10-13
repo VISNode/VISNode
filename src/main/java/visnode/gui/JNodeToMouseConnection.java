@@ -56,7 +56,7 @@ public class JNodeToMouseConnection extends JNodeConnection implements DragListe
     }
 
     /**
-     * Creates a connection between the start point and where the user released 
+     * Creates a connection between the start point and where the user released
      * the drag, if there's a connector there
      */
     private void createConnectionIfDroppedOnConnector() {

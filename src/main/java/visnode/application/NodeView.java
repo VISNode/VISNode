@@ -6,16 +6,25 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
 import visnode.executor.NodeParameter;
+import visnode.executor.ProcessNode;
 import visnode.gui.EventHelper;
+import visnode.gui.IconFactory;
 import visnode.gui.JNode;
+import visnode.gui.Selection;
 
 /**
  * View for the node
@@ -24,16 +33,19 @@ public class NodeView extends JNode {
 
     /** Model */
     private final EditNodeDecorator model;
+    /** Pop up menu */
+    private JPopupMenu popup;
 
     /**
      * Creates the view
-     * 
-     * @param model 
+     *
+     * @param model
      */
     public NodeView(EditNodeDecorator model) {
         super(model.getName());
         this.model = model;
         initGui();
+        initEvents();
     }
 
     /**
@@ -48,6 +60,55 @@ public class NodeView extends JNode {
             model.setPosition(getLocation());
         });
         createConnectors();
+        buildPopUpMenu();
+    }
+    
+    /**
+     * Creates the pop up menu
+     */
+    private void buildPopUpMenu() {
+        popup = new JPopupMenu();
+        JMenuItem menuItem = new JMenuItem(Messages.get().message("delete"), IconFactory.get().create("fa:trash"));
+        menuItem.addActionListener((ev) -> {
+            Selection<NodeView> selection = VISNode.get().getNetworkEditor().getSelection();
+            List<EditNodeDecorator> nodes = selection.stream().
+                    map((view) -> view.getModel()).
+                    collect(Collectors.toList());
+            VISNode.get().getModel().getNetwork().remove(nodes);
+        });
+        popup.add(menuItem);
+    }
+
+    /**
+     * Initializes the events
+     */
+    private void initEvents() {
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (model.getDecorated() instanceof ProcessNode && 
+                        e.getButton() == MouseEvent.BUTTON3) {
+                    popup.show(NodeView.this, e.getX(), e.getY());
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+
     }
 
     /**
@@ -66,9 +127,9 @@ public class NodeView extends JNode {
     }
 
     /**
-     * Creates the connectors 
-     * 
-     * @param node 
+     * Creates the connectors
+     *
+     * @param node
      */
     private void createConnectors(Node node) {
         boolean first = true;
@@ -81,14 +142,14 @@ public class NodeView extends JNode {
             first = false;
         }
     }
-    
+
     /**
      * Setups the parameter connector
-     * 
+     *
      * @param node
      * @param parameter
      * @param type
-     * @param first 
+     * @param first
      */
     private void setupParameterConnector(Node node, NodeParameter parameter, ConnectionType type, boolean first) {
         if (!first) {
@@ -99,10 +160,10 @@ public class NodeView extends JNode {
         view.setAlignmentX(JLabel.LEFT_ALIGNMENT);
         add(view);
     }
-    
+
     /**
      * Builds a separator for the node parâmetros
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildSeparator() {
@@ -117,10 +178,10 @@ public class NodeView extends JNode {
         container.setOpaque(false);
         return container;
     }
-    
+
     /**
      * Build the label for the parameter
-     * 
+     *
      * @param text
      * @return JComponent
      */
@@ -137,7 +198,7 @@ public class NodeView extends JNode {
 
     /**
      * Returns the model
-     * 
+     *
      * @return EditNodeDecorator
      */
     public EditNodeDecorator getModel() {
@@ -146,7 +207,7 @@ public class NodeView extends JNode {
 
     /**
      * Returns a connector for the attribute
-     * 
+     *
      * @param attribute
      * @param type
      * @return NodeConnectorView
@@ -163,5 +224,5 @@ public class NodeView extends JNode {
         }
         return null;
     }
-    
+
 }
