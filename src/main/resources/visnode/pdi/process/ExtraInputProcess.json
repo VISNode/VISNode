@@ -1,6 +1,8 @@
 {
-    "name": "Extra Input",
-    "description": "Input images",
+    "name_en_US": "Extra Input",
+    "name_pt_BR": "Extra Input",
+    "description_en_US": "Input images",
+    "description_pt_BR": "Input images",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ExtraInputProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ExtraInputProcess.java"

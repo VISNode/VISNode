@@ -1,6 +1,8 @@
 {
-    "name": "Contrast",
-    "description": "Adjust the contrast of the image",
+    "name_en_US": "Contrast",
+    "name_pt_BR": "Contraste",
+    "description_en_US": "Adjust the contrast of the image",
+    "description_pt_BR": "Ajusta o contraste da imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ContrastProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ContrastProcess.java"

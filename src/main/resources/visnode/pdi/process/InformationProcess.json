@@ -1,6 +1,8 @@
 {
-    "name": "Information",
-    "description": "Gets image information",
+    "name_en_US": "Information",
+    "name_pt_BR": "Informações",
+    "description_en_US": "Gets image information",
+    "description_pt_BR": "Busca informações da imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/InformationProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/InformationProcess.java"

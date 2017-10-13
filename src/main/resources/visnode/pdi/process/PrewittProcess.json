@@ -1,6 +1,8 @@
 {
-    "name": "Prewitt",
-    "description": "Prewitt edge detector",
+    "name_en_US": "Prewitt",
+    "name_pt_BR": "Prewitt",
+    "description_en_US": "Prewitt edge detector",
+    "description_pt_BR": "Prewitt detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/PrewittProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/PrewittProcess.java"

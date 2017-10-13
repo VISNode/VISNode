@@ -1,6 +1,8 @@
 {
-    "name": "Horizontal Mirroring",
-    "description": "Mirror the image to vertical horizontal",
+    "name_en_US": "Horizontal Mirroring",
+    "name_pt_BR": "Espelhamento Horizontal",
+    "description_en_US": "Mirror the image to vertical horizontal",
+    "description_pt_BR": "Espelha a imagem horizontalmente",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/HorizontalMirroringProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/HorizontalMirroringProcess.java"

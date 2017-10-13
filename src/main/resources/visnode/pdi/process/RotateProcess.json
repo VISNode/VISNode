@@ -1,6 +1,8 @@
 {
-    "name": "Rotate",
-    "description": "Rotate the image",
+    "name_en_US": "Rotate",
+    "name_pt_BR": "Rotaciona",
+    "description_en_US": "Rotate the image",
+    "description_pt_BR": "Rotaciona a imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/RotateProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/RotateProcess.java"

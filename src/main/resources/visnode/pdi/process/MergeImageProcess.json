@@ -1,6 +1,8 @@
 {
-    "name": "Merge Image",
-    "description": "Merge images using a mask",
+    "name_en_US": "Merge Image",
+    "name_pt_BR": "Merge Image",
+    "description_en_US": "Merge images using a mask",
+    "description_pt_BR": "Merge images using a mask",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/MergeImageProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/MergeImageProcess.java"

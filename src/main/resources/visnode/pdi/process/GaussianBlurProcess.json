@@ -1,6 +1,8 @@
 {
-    "name": "Gaussian Blur",
-    "description": "Define a Gaussian blur",
+    "name_en_US": "Gaussian Blur",
+    "name_pt_BR": "Gaussian Blur",
+    "description_en_US": "Define a Gaussian blur",
+    "description_pt_BR": "Define um Gaussian blur",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GaussianBlurProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/GaussianBlurProcess.java"

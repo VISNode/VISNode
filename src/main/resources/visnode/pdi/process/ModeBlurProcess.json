@@ -1,6 +1,8 @@
 {
-    "name": "Mode Blur",
-    "description": "Define a blur using the image mode",
+    "name_en_US": "Mode Blur",
+    "name_pt_BR": "Moda Blur",
+    "description_en_US": "Define a blur using the image mode",
+    "description_pt_BR": "Define um blur usando a moda da imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ModeBlurProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ModeBlurProcess.java"

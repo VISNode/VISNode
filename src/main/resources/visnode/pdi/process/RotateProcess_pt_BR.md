@@ -1,0 +1,3 @@
+# Rotaciona
+
+Rotaciona a imagem.

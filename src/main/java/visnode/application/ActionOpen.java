@@ -25,7 +25,7 @@ public class ActionOpen extends AbstractAction {
      * Creates a new action
      */
     public ActionOpen() {
-        super("Open...", IconFactory.get().create("fa:folder-open"));
+        super(Messages.get().message("open") + "...", IconFactory.get().create("fa:folder-open"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl O"));
         this.parser = new NodeNetworkParser();
     }

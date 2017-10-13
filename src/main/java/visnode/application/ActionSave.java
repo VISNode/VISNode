@@ -22,7 +22,7 @@ public class ActionSave extends AbstractAction {
      * Creates a new action
      */
     public ActionSave() {
-        super("Save...", IconFactory.get().create("fa:floppy-o"));
+        super(Messages.get().message("save") + "...", IconFactory.get().create("fa:floppy-o"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl S"));
         this.parser = new NodeNetworkParser();
     }

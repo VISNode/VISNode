@@ -1,6 +1,8 @@
 {
-    "name": "Erosion",
-    "description": "Erosion operator",
+    "name_en_US": "Erosion",
+    "name_pt_BR": "Erosão",
+    "description_en_US": "Erosion operator",
+    "description_pt_BR": "Executa a operação de erosão",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ErosionProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ErosionProcess.java"

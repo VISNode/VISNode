@@ -1,6 +1,8 @@
 {
-    "name": "Holt",
-    "description": "Holt skeletonization",
+    "name_en_US": "Holt",
+    "name_pt_BR": "Holt",
+    "description_en_US": "Holt skeletonization",
+    "description_pt_BR": "Holt esqueletização",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/HoltProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/HoltProcess.java"

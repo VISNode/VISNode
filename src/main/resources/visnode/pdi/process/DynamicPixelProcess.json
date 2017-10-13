@@ -1,6 +1,8 @@
 {
-    "name": "Dynamic Pixel",
-    "description": "Process the image dynamically",
+    "name_en_US": "Dynamic Pixel",
+    "name_pt_BR": "Dynamic Pixel",
+    "description_en_US": "Process the image dynamically",
+    "description_pt_BR": "Processa a imagem dinamicamente",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DynamicPixelProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/DynamicPixelProcess.java"

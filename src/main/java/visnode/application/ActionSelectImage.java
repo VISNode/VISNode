@@ -20,7 +20,7 @@ public class ActionSelectImage extends AbstractAction {
      * Creates a new action
      */
     public ActionSelectImage() {
-        super("From image...", IconFactory.get().create("fa:picture-o"));
+        super(Messages.get().message("fromImage") + "...", IconFactory.get().create("fa:picture-o"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl shift I"));
         this.inputReader = new InputReader();
     }

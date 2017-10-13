@@ -1,6 +1,8 @@
 {
-    "name": "Invert Color",
-    "description": "Invert the image color",
+    "name_en_US": "Invert Color",
+    "name_pt_BR": "Inverte cores",
+    "description_en_US": "Invert the image color",
+    "description_pt_BR": "Inverte as cores da imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/InvertColorProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/InvertColorProcess.java"

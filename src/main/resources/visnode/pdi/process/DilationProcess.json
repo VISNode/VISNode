@@ -1,6 +1,8 @@
 {
-    "name": "Dilation",
-    "description": "Dilation operator",
+    "name_en_US": "Dilation",
+    "name_pt_BR": "Dilatação",
+    "description_en_US": "Dilation operator",
+    "description_pt_BR": "Executa a operação de dilatação",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DilationProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/DilationProcess.java"

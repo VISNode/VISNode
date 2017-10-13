@@ -1,6 +1,8 @@
 {
-    "name": "Stentiford",
-    "description": "Stentiford skeletonization",
+    "name_en_US": "Stentiford",
+    "name_pt_BR": "Stentiford",
+    "description_en_US": "Stentiford skeletonization",
+    "description_pt_BR": "Stentiford esqueletização",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/StentifordProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/StentifordProcess.java"

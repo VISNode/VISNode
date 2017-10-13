@@ -1,6 +1,8 @@
 {
-    "name": "Grayscale",
-    "description": "Convert the image to gray scale",
+    "name_en_US": "Grayscale",
+    "name_pt_BR": "Grayscale",
+    "description_en_US": "Convert the image to gray scale",
+    "description_pt_BR": "Converte a imagem para tons de cinza",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GrayscaleProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/GrayscaleProcess.java"

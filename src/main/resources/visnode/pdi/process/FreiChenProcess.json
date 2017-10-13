@@ -1,6 +1,8 @@
 {
-    "name": "Frei Chen",
-    "description": "Frei Chen edge detector",
+    "name_en_US": "Frei Chen",
+    "name_pt_BR": "Frei Chen",
+    "description_en_US": "Frei Chen edge detector",
+    "description_pt_BR": "Frei Chen detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/FreiChenProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/FreiChenProcess.java"

@@ -1,6 +1,8 @@
 {
-    "name": "Median Blur",
-    "description": "Define a blur using the image median",
+    "name_en_US": "Median Blur",
+    "name_pt_BR": "Mediana Blur",
+    "description_en_US": "Define a blur using the image median",
+    "description_pt_BR": "Define um blur usando a mediana da imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/MedianBlurProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/MedianBlurProcess.java"

@@ -1,6 +1,8 @@
 {
-    "name": "Histogram",
-    "description": "Histogram",
+    "name_en_US": "Histogram",
+    "name_pt_BR": "Histogram",
+    "description_en_US": "Histogram",
+    "description_pt_BR": "Histogram",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/HistogramProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/HistogramProcess.java"

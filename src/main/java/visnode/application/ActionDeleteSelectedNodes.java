@@ -20,7 +20,7 @@ public class ActionDeleteSelectedNodes extends AbstractAction {
      * Creates a new action
      */
     public ActionDeleteSelectedNodes() {
-        super("Delete seletected nodes", IconFactory.get().create("fa:trash"));
+        super(Messages.get().message("deleteSelectedNodes"), IconFactory.get().create("fa:trash"));
     }
     
     @Override

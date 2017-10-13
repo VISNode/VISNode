@@ -1,6 +1,8 @@
 {
-    "name": "Kirsh",
-    "description": "Kirsh edge detector",
+    "name_en_US": "Kirsh",
+    "name_pt_BR": "Kirsh",
+    "description_en_US": "Kirsh edge detector",
+    "description_pt_BR": "Kirsh detector de bordas",
     "author": "VISNode team",
     "tags": ["edge"],
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/KirshProcess.md",

@@ -1,6 +1,8 @@
 {
-    "name": "Roberts",
-    "description": "Roberts edge detector",
+    "name_en_US": "Roberts",
+    "name_pt_BR": "Roberts",
+    "description_en_US": "Roberts edge detector",
+    "description_pt_BR": "Roberts detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/RobertsProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/RobertsProcess.java"

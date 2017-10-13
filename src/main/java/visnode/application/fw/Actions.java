@@ -12,6 +12,7 @@ import visnode.application.ActionOpen;
 import visnode.application.ActionSave;
 import visnode.application.ActionSelectImage;
 import visnode.application.ActionSelectWebCam;
+import visnode.application.Messages;
 
 /**
  * Application actions
@@ -35,18 +36,18 @@ public class Actions {
      * @return JMenuBar
      */
     public JMenuBar buildMenuBar() {
-        JMenu file = new JMenu("File");
+        JMenu file = new JMenu(Messages.get().message("file"));
         file.add(get(ActionNew.class));
         file.addSeparator();
         file.add(get(ActionOpen.class));
         file.addSeparator();
         file.add(get(ActionSave.class));
-        JMenu input = new JMenu("Input");
+        JMenu input = new JMenu(Messages.get().message("input"));
         input.add(get(ActionSelectImage.class));
         input.add(get(ActionSelectWebCam.class));
-        JMenu edit = new JMenu("Edit");
+        JMenu edit = new JMenu(Messages.get().message("edit"));
         edit.add(get(ActionDeleteSelectedNodes.class));
-        JMenu help = new JMenu("Help");
+        JMenu help = new JMenu(Messages.get().message("help"));
         help.add(get(ActionAboutVisnode.class));
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(file);

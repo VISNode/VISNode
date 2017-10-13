@@ -1,6 +1,8 @@
 {
-    "name": "Canny",
-    "description": "Canny edge detector",
+    "name_en_US": "Canny",
+    "name_pt_BR": "Canny",
+    "description_en_US": "Canny edge detector",
+    "description_pt_BR": "Canny detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/CannyProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/CannyProcess.java"

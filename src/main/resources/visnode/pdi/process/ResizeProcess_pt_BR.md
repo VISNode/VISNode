@@ -1,0 +1,3 @@
+# Redimencionamento
+
+Redimenciona a imagem.

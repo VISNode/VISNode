@@ -1,6 +1,8 @@
 {
-    "name": "Threshold",
-    "description": "Binary a image using specified threshold value",
+    "name_en_US": "Threshold",
+    "name_pt_BR": "Threshold",
+    "description_en_US": "Binary a image using specified threshold value",
+    "description_pt_BR": "Binariza a imagem",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ThresholdProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ThresholdProcess.java"

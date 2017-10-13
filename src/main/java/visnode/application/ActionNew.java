@@ -16,7 +16,7 @@ public class ActionNew extends AbstractAction {
      * Creates a new action
      */
     public ActionNew() {
-        super("New", IconFactory.get().create("fa:file"));
+        super(Messages.get().message("new"), IconFactory.get().create("fa:file"));
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
     }
     

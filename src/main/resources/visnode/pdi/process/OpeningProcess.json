@@ -1,6 +1,8 @@
 {
-    "name": "Opening",
-    "description": "Opening operator",
+    "name_en_US": "Opening",
+    "name_pt_BR": "Abertura",
+    "description_en_US": "Opening operator",
+    "description_pt_BR": "Executa operação de abertura",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/OpeningProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/OpeningProcess.java"

@@ -1,6 +1,8 @@
 {
-    "name": "Marr and Hildreth",
-    "description": "Marr and Hildreth edge detector",
+    "name_en_US": "Marr and Hildreth",
+    "name_pt_BR": "Marr and Hildreth",
+    "description_en_US": "Marr and Hildreth edge detector",
+    "description_pt_BR": "Marr e Hildreth detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/MarrHildrethProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/MarrHildrethProcess.java"

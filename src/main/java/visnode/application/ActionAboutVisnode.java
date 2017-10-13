@@ -14,7 +14,7 @@ public class ActionAboutVisnode extends AbstractAction {
      * Creates a new action
      */
     public ActionAboutVisnode() {
-        super("Abous VISNode", IconFactory.get().create("fa:info"));
+        super(Messages.get().message("aboutVisnode"), IconFactory.get().create("fa:info"));
     }
     
     @Override

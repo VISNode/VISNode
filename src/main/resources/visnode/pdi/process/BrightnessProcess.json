@@ -1,6 +1,8 @@
 {
-    "name": "Brightness",
-    "description": "Adjust the brightness of the image",
+    "name_en_US": "Brightness",
+    "name_pt_BR": "Brilho",
+    "description_en_US": "Adjust the brightness of the image",
+    "description_pt_BR": "Ajusta o brilho da imagem",
     "tags": ["adjusts"],
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/BrightnessProcess.md",

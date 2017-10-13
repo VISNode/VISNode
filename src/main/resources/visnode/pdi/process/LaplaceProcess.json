@@ -1,6 +1,8 @@
 {
-    "name": "Laplace",
-    "description": "Laplace edge detector",
+    "name_en_US": "Laplace",
+    "name_pt_BR": "Laplace",
+    "description_en_US": "Laplace edge detector",
+    "description_pt_BR": "Laplace detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/LaplaceProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/LaplaceProcess.java"

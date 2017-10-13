@@ -13,8 +13,16 @@ public class ProcessMetadata {
 
     /** Name */
     private String name;
+    /** Name en-US */
+    private String name_en_US;
+    /** Name pt-BR */
+    private String name_pt_BR;
     /** Description */
     private String description;
+    /** Description en-US */
+    private String description_en_US;
+    /** Description pt-BR */
+    private String description_pt_BR;
     /** Help URL */
     private String helpUrl;
     /** Code URL */
@@ -34,7 +42,16 @@ public class ProcessMetadata {
     public static ProcessMetadata fromClass(Class<? extends Process> process) {
         try {
             InputStream stream = ProcessMetadata.class.getResourceAsStream('/' + process.getName().replace('.', '/') + ".json");
-            return new GsonBuilder().create().fromJson(new InputStreamReader(stream), ProcessMetadata.class);
+            ProcessMetadata meta = new GsonBuilder().create().fromJson(new InputStreamReader(stream), ProcessMetadata.class);
+            meta.name = meta.name_en_US;
+            meta.description = meta.description_en_US;
+            if (Configuration.get().isLocalePtBR()) {
+                meta.name = meta.name_pt_BR;
+                meta.description = meta.description_pt_BR;
+            }
+            String mdLocale = "_" + Configuration.get().getLocale().toLanguageTag().replace("-", "_") + ".md";
+            meta.helpUrl = meta.helpUrl.replace(".md", mdLocale);
+            return meta;
         } catch (Exception e) {
             ProcessMetadata metadata = new ProcessMetadata();
             String name = process.getSimpleName();

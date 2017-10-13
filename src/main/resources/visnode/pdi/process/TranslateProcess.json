@@ -1,6 +1,8 @@
 {
-    "name": "Translate",
-    "description": "Translate the image",
+    "name_en_US": "Translate",
+    "name_pt_BR": "Translate",
+    "description_en_US": "Translate the image",
+    "description_pt_BR": "Translate the image",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/TranslateProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/TranslateProcess.java"

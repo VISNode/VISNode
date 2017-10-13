@@ -1,6 +1,8 @@
 {
-    "name": "Sobel",
-    "description": "Sobel edge detector",
+    "name_en_US": "Sobel",
+    "name_pt_BR": "Sobel",
+    "description_en_US": "Sobel edge detector",
+    "description_pt_BR": "Sobel detector de bordas",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/SobelProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/SobelProcess.java"

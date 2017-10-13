@@ -1,6 +1,8 @@
 {
-    "name": "Zhang Suen",
-    "description": "Zhang Suen skeletonization",
+    "name_en_US": "Zhang Suen",
+    "name_pt_BR": "Zhang Suen",
+    "description_en_US": "Zhang Suen skeletonization",
+    "description_pt_BR": "Zhang Suen esqueletização",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ZhangSuenProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ZhangSuenProcess.java"

@@ -1,6 +1,8 @@
 {
-    "name": "Closing",
-    "description": "Closing operator",
+    "name_en_US": "Closing",
+    "name_pt_BR": "Fechamento",
+    "description_en_US": "Closing operator",
+    "description_pt_BR": "Executa a operação de fechamento",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ClosingProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ClosingProcess.java"

@@ -1,0 +1,3 @@
+# Threshold
+
+Binariza a imagem.
