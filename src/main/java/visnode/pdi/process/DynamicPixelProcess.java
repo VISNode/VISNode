@@ -26,10 +26,7 @@ public class DynamicPixelProcess extends PixelProcess<Image> implements Process 
             resultImage = ImageFactory.buildEmptyImage();
         } else {
             resultImage = ImageFactory.
-                    buildEmptyImage(Image.CHANNELS_GRAYSCALE,
-                            image.getWidth(),
-                            image.getHeight(),
-                            image.getPixelValueRange());
+                    buildEmptyImage(image);
         }
         this.dynamicImage = resultImage;
         this.scriptRunner = new ScriptRunner(script);
