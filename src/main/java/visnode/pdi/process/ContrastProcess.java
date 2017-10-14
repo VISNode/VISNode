@@ -25,8 +25,7 @@ public class ContrastProcess implements Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        Double resultContrast = contrast == null ? 1d : contrast;
-        this.process = new org.paim.pdi.ContrastProcess(new Image(resultImage), resultContrast);
+        this.process = new org.paim.pdi.ContrastProcess(new Image(resultImage), contrast);
     }
 
     @Override

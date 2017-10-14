@@ -19,7 +19,7 @@ public class ErosionProcess implements visnode.pdi.Process {
     private final org.paim.pdi.ErosionProcess process;
     
     /**
-     * Creates a new Erpsopm process
+     * Creates a new erosion process
      * 
      * @param image 
      */

@@ -4,6 +4,8 @@ package visnode.application;
 import com.google.gson.GsonBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import visnode.pdi.Process;
 
 /**
@@ -27,10 +29,13 @@ public class ProcessMetadata {
     private String helpUrl;
     /** Code URL */
     private String codeUrl;
+    /** Defaults */
+    private final Map<String, String> defaults;
 
     public ProcessMetadata() {
         name = "";
         description = "";
+        defaults = new HashMap<>();
     }
     
     /**
@@ -96,6 +101,10 @@ public class ProcessMetadata {
      */
     public String getCodeUrl() {
         return codeUrl;
+    }
+    
+    public String getDefault(String key) {
+        return this.defaults.get(key);
     }
     
 }

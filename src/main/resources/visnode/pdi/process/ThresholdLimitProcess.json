@@ -4,6 +4,12 @@
     "description_en_US": "Binary a image using specified threshold value",
     "description_pt_BR": "Binariza a imagem",
     "author": "VISNode team",
+    "defaults": {
+        "lowerThreshold": "0",
+        "higherThreshold": "0",
+        "lowerReplaceValue": "0",
+        "higherReplaceValue": "0"
+    },    
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ThresholdLimitProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ThresholdLimitProcess.java"
 }

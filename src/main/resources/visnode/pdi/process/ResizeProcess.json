@@ -4,6 +4,9 @@
     "description_en_US": "Resize the image",
     "description_pt_BR": "Redimenciona a imagem",
     "author": "VISNode team",
+    "defaults": {
+        "size": "1d"
+    }, 
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ResizeProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ResizeProcess.java"
 }

@@ -25,11 +25,7 @@ public class RotateProcess implements visnode.pdi.Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        Angle resultAngle = angle;
-        if (angle == null) {
-            resultAngle = new Angle(0);
-        }
-        this.process = new org.paim.pdi.RotateProcess(new Image(resultImage), resultAngle.intValue());
+        this.process = new org.paim.pdi.RotateProcess(new Image(resultImage), angle.intValue());
 
     }
 

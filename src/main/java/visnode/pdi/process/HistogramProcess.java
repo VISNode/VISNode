@@ -7,7 +7,6 @@ package visnode.pdi.process;
 
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
-import org.paim.commons.Range;
 import visnode.commons.Input;
 import visnode.commons.Output;
 

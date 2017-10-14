@@ -4,6 +4,10 @@
     "description_en_US": "Define a Gaussian blur",
     "description_pt_BR": "Define um Gaussian blur",
     "author": "VISNode team",
+    "defaults": {
+        "sigma": "1.76d",
+        "maskSize": "5"
+    },    
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GaussianBlurProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/GaussianBlurProcess.java"
 }

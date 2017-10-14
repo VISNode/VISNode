@@ -26,12 +26,6 @@ public class GaussianBlurProcess implements Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        if (sigma == null) {
-            sigma = 1.76;
-        }
-        if (maskSize == null) {
-            maskSize = 5;
-        }
         this.process = new org.paim.pdi.GaussianBlurProcess(new Image(resultImage), sigma, maskSize);
     }
 

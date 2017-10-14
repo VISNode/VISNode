@@ -34,18 +34,6 @@ public class ThresholdLimitProcess implements Process {
             @Input("lowerReplaceValue") Integer lowerReplaceValue,
             @Input("higherReplaceValue") Integer higherReplaceValue,
             @Input("centerReplaceValue") Integer centerReplaceValue) {
-        if (lowerThreshold == null) {
-            lowerThreshold = 0;
-        }
-        if (higherThreshold == null) {
-            higherThreshold = 0;
-        }
-        if (lowerReplaceValue == null) {
-            lowerReplaceValue = 0;
-        }
-        if (higherReplaceValue == null) {
-            higherReplaceValue = 0;
-        }
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();

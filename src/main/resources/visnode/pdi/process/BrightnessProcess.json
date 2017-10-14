@@ -5,6 +5,9 @@
     "description_pt_BR": "Ajusta o brilho da imagem",
     "tags": ["adjusts"],
     "author": "VISNode team",
+    "defaults": {
+        "brightness": "0"
+    },
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/BrightnessProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/BrightnessProcess.java"
 }

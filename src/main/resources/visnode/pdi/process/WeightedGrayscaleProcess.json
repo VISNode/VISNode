@@ -4,6 +4,11 @@
     "description_en_US": "Convert the image to gray scale",
     "description_pt_BR": "Converte a imagem em tons de cinza",
     "author": "VISNode team",
+    "defaults": {
+        "redWeight": "0.3333333333333333d",
+        "greenWeight": "0.3333333333333333d",
+        "blueWeight": "0.3333333333333333d"
+    },    
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/WeightedGrayscaleProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/WeightedGrayscaleProcess.java"
 }

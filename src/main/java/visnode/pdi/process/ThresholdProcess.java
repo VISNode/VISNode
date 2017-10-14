@@ -27,17 +27,11 @@ public class ThresholdProcess implements Process {
      * @param threshold 
      */
     public ThresholdProcess(@Input("image") Image image, @Input("threshold") Threshold threshold) {
-        Threshold resultThreshold;
-        if (threshold == null) {
-            resultThreshold = new Threshold(0);
-        } else {
-            resultThreshold = threshold;
-        }
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }        
-        this.process = new org.paim.pdi.ThresholdProcess(new Image(resultImage.getData(), new Range<>(0, 1)), resultThreshold.intValue());
+        this.process = new org.paim.pdi.ThresholdProcess(new Image(resultImage.getData(), new Range<>(0, 1)), threshold.intValue());
     }
 
     /**    

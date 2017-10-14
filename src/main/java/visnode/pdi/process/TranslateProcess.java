@@ -25,12 +25,6 @@ public class TranslateProcess implements visnode.pdi.Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        if (x == null) {
-            x = 0;
-        }
-        if (y == null) {
-            y = 0;
-        }
         this.process = new org.paim.pdi.TranslateProcess(new Image(resultImage), x, y);
         
     }

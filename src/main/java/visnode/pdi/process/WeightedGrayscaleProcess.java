@@ -27,15 +27,6 @@ public class WeightedGrayscaleProcess implements Process {
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        if (redWeight == null) {
-            redWeight = 0.3333333333333333d;
-        }
-        if (greenWeight == null) {
-            greenWeight = 0.3333333333333333d;
-        }
-        if (blueWeight == null) {
-            blueWeight = 0.3333333333333333d;
-        }
         this.process = new org.paim.pdi.WeightedGrayscaleProcess(new Image(resultImage), redWeight, greenWeight, blueWeight);
     }
 

@@ -4,6 +4,10 @@
     "description_en_US": "Translate the image",
     "description_pt_BR": "Translate the image",
     "author": "VISNode team",
+    "defaults": {
+        "x": "0",
+        "y": "0"
+    },    
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/TranslateProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/TranslateProcess.java"
 }

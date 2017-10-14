@@ -46,6 +46,9 @@ public class TypeConverter {
         if (sourceType.equals(Integer.class) && destinyType.equals(Threshold.class)) {
             return (D) new Threshold((Integer) value);
         }
+        if (sourceType.equals(Integer.class) && destinyType.equals(Angle.class)) {
+            return (D) new Angle((Integer) value);
+        }
         if (sourceType.equals(Integer.class) && destinyType.equals(int.class)) {
             return (D) value;
         }
