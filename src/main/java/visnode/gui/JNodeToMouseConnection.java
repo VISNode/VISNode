@@ -1,6 +1,7 @@
 package visnode.gui;
 
 import java.awt.event.MouseEvent;
+import java.security.InvalidParameterException;
 import javax.swing.SwingUtilities;
 import visnode.application.ExceptionHandler;
 
@@ -66,7 +67,11 @@ public class JNodeToMouseConnection extends JNodeConnection implements DragListe
             if (connection == null) {
                 connection = new JNodeConnection(connectorPoint, endPoint);
                 container.add(connection);
-                container.fireConnectionCreated(connection);
+                try {
+                    container.fireConnectionCreated(connection);
+                } catch (IllegalArgumentException e) {
+                    container.removeConnection(connection);
+                }
             } else {
                 container.removeConnection(connection);
                 container.fireConnectionRemoved(connection);

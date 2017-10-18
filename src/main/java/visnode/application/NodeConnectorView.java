@@ -64,6 +64,15 @@ public class NodeConnectorView extends JNodeConnector {
     }
 
     /**
+     * Returns the attribute type
+     *
+     * @return Class
+     */
+    public Class getAttributeType() {
+        return parameter.getType();
+    }
+
+    /**
      * Returns the type
      *
      * @return ConnectionType

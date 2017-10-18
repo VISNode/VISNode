@@ -2,6 +2,7 @@ package visnode.application;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.ListRemoveEvent;
+import visnode.commons.TypeConverter;
 import visnode.executor.AttacherNode;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
@@ -209,6 +211,11 @@ public class NetworkEditor extends JComponent {
         public void connectionCreated(NodeConnectionEvent evt) {
             NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getFirst()).getParentNodeConnector();
             NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
+
+            TypeConverter converter = new TypeConverter();
+            if (!converter.isValidConvertion(leftConnector.getAttributeType(), rightConnector.getAttributeType())) {
+                throw new IllegalArgumentException();
+            }
             //
             if (rightConnector.getType() == ConnectionType.OUTPUT) {
                 NodeConnectorView flip = rightConnector;

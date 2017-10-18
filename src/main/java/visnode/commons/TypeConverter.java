@@ -1,13 +1,23 @@
 package visnode.commons;
 
-import java.io.File;
-import org.paim.commons.BinaryImage;
-import org.paim.commons.Image;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Type converter
  */
 public class TypeConverter {
+
+    /** Converters */
+    private final List<TypeConverterExecutor> converters;
+
+    public TypeConverter() {
+        this.converters = new ArrayList<>();
+        this.converters.add(new TypeConverterGeneric());
+        this.converters.add(new TypeConverterThreshold());
+        this.converters.add(new TypeConverterGeneric());
+    }
 
     /**
      * Converts a {@code value} to a value of type {@code <D>} (Destiny)
@@ -34,31 +44,20 @@ public class TypeConverter {
      * @return D
      */
     public <D> D convert(Object value, Class sourceType, Class<D> destinyType) {
-        if (value == null) {
-            return null;
+        try {
+            if (value == null) {
+                return null;
+            }
+            return converters.stream().
+                    filter((converter) -> converter.can(sourceType, destinyType)).
+                    findFirst().get().convert(value, destinyType);
+        } catch (NoSuchElementException e) {
+            throw new UnsupportedOperationException("Unknown conversion from " + sourceType + " to " + destinyType, e);
         }
-        if (sourceType.equals(destinyType)) {
-            return (D) value;
-        }
-        if (sourceType.equals(BinaryImage.class) && destinyType.equals(Image.class)) {
-            return (D) value;
-        }
-        if (sourceType.equals(Integer.class) && destinyType.equals(Threshold.class)) {
-            return (D) new Threshold((Integer) value);
-        }
-        if (sourceType.equals(Integer.class) && destinyType.equals(Angle.class)) {
-            return (D) new Angle((Integer) value);
-        }
-        if (sourceType.equals(Integer.class) && destinyType.equals(int.class)) {
-            return (D) value;
-        }
-        if (sourceType.equals(Double.class) && destinyType.equals(double.class)) {
-            return (D) value;
-        }
-        if (File.class.isAssignableFrom(sourceType) && File.class.isAssignableFrom(destinyType)) {
-            return (D) value;
-        }
-        throw new UnsupportedOperationException("Unknown conversion from " + sourceType + " to " + destinyType);
+    }
+
+    public boolean isValidConvertion(Class sourceType, Class destinyType) {
+        return converters.stream().anyMatch((converter) -> converter.can(sourceType, destinyType));
     }
 
 }

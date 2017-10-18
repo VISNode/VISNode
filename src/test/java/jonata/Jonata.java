@@ -12,7 +12,8 @@ public class Jonata {
     public static void main(String[] args) {
         
 //        System.out.println(NumberUtils.isParsable("5.5d"));
-        System.out.println(NumberUtils.createNumber("5s").getClass());
+        System.out.println(int.class.isAssignableFrom(Number.class));
+        System.out.println(Number.class.isAssignableFrom(int.class));
         
     }
     
