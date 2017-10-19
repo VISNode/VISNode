@@ -16,7 +16,7 @@ public class TypeConverter {
         this.converters = new ArrayList<>();
         this.converters.add(new TypeConverterGeneric());
         this.converters.add(new TypeConverterThreshold());
-        this.converters.add(new TypeConverterGeneric());
+        this.converters.add(new TypeConverterAngle());
     }
 
     /**

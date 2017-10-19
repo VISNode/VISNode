@@ -28,9 +28,13 @@ public class ProcessTransferHandler extends TransferHandler {
         return info.isDataFlavorSupported(DataFlavor.stringFlavor);
     }
 
+    @Override
     public boolean importData(TransferHandler.TransferSupport info) {
         try {
             if (!info.isDrop()) {
+                return false;
+            }
+            if (!(info.getComponent() instanceof NetworkEditor)) {
                 return false;
             }
             // Check for String flavor
@@ -58,6 +62,7 @@ public class ProcessTransferHandler extends TransferHandler {
         return false;
     }
 
+    @Override
     public int getSourceActions(JComponent c) {
         return COPY;
     }
