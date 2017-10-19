@@ -232,7 +232,7 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public String getName() {
-        return processType.getSimpleName();
+        return ProcessMetadata.fromClass(processType).getName();
     }
 
     @Override

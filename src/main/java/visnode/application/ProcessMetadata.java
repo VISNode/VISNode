@@ -4,6 +4,7 @@ package visnode.application;
 import com.google.gson.GsonBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import visnode.pdi.Process;
@@ -47,7 +48,7 @@ public class ProcessMetadata {
     public static ProcessMetadata fromClass(Class<? extends Process> process) {
         try {
             InputStream stream = ProcessMetadata.class.getResourceAsStream('/' + process.getName().replace('.', '/') + ".json");
-            ProcessMetadata meta = new GsonBuilder().create().fromJson(new InputStreamReader(stream), ProcessMetadata.class);
+            ProcessMetadata meta = new GsonBuilder().create().fromJson(new InputStreamReader(stream, Charset.forName("utf-8")), ProcessMetadata.class);
             meta.name = meta.name_en_US;
             meta.description = meta.description_en_US;
             if (Configuration.get().isLocalePtBR()) {
