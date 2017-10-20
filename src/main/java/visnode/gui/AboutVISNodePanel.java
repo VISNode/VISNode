@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,7 +25,7 @@ import visnode.commons.swing.WindowFactory;
  * About VISNode
  */
 public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
-    
+
     /** GitHub button */
     private JButton github;
 
@@ -65,21 +68,26 @@ public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
             }
         });
     }
-    
+
     /**
      * Builds the tool icon
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildIcon() {
-        JLabel icon = new JLabel(new ImageIcon(getClass().getResource("/VISNode_64.png").getFile()));
-        icon.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 15));
+        JLabel icon = new JLabel();
+        try {
+            icon.setIcon(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/VISNode_64.png"))));
+            icon.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 15));
+        } catch (IOException ex) {
+            Logger.getLogger(AboutVISNodePanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return icon;
     }
-    
+
     /**
      * Builds the tool information
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildInfo() {
@@ -93,9 +101,9 @@ public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
         github.setIcon(IconFactory.get().create("fa:github"));
         github.setText(GITHUB_URL);
         github.setBorder(BorderFactory.createEmptyBorder());
-        github.setBorderPainted(false); 
-        github.setContentAreaFilled(false); 
-        github.setFocusPainted(false); 
+        github.setBorderPainted(false);
+        github.setContentAreaFilled(false);
+        github.setFocusPainted(false);
         github.setOpaque(false);
         info.add(title);
         info.add(version);

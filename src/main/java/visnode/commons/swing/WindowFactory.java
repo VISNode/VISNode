@@ -2,11 +2,14 @@ package visnode.commons.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -15,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import visnode.application.ExceptionHandler;
 
 /**
  * Frame and dialog factory
@@ -92,7 +96,11 @@ public class WindowFactory {
         
         @Override
         public JDialog create(Consumer<JPanel> consumer) {
-            window.setIconImage(new ImageIcon(getClass().getResource("/VISNode_64.png").getFile()).getImage());
+            try {
+                window.setIconImage(new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/VISNode_64.png"))).getImage());
+            } catch (IOException ex) {
+                ExceptionHandler.get().handle(ex);
+            }
             JPanel container = new JPanel(new BorderLayout());
             container.setBorder(new CompoundBorder(new EmptyBorder(3, 3, 3, 3), new CompoundBorder(BorderFactory.createEtchedBorder(), new EmptyBorder(6, 6, 6, 6))));
             consumer.accept(container);
@@ -147,7 +155,11 @@ public class WindowFactory {
         
         @Override
         public JFrame create(Consumer<JPanel> consumer) {
-            window.setIconImage(new ImageIcon(getClass().getResource("/VISNode_64.png").getFile()).getImage());
+            try {
+                window.setIconImage(ImageIO.read(getClass().getResourceAsStream("/VISNode_64.png")));
+            } catch (IOException ex) {
+                ExceptionHandler.get().handle(ex);
+            }
             JPanel container = new JPanel(new BorderLayout());
             consumer.accept(container);
             window.getContentPane().setLayout(new BorderLayout());

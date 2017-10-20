@@ -104,7 +104,7 @@ public class NodeNetworkParser {
         Map data = gson.fromJson(json, Map.class);
         try {
             Map<String, Node> mapHashCode = new HashMap<>();
-            BufferedImage r = ImageIO.read(new File(getClass().getResource("/lena.jpg").getFile()));
+            BufferedImage r = ImageIO.read(getClass().getResourceAsStream("/lena.jpg"));
             InputNode input = new InputNode(ImageFactory.buildRGBImage(r));
             OutputNode out = new OutputNode();
             Map inputMap = (Map) data.get("input");
