@@ -96,6 +96,8 @@
                         <manifest>
                             <mainClass>visnode.application.VISNode</mainClass>
                             <classpathPrefix>dependency-jars/</classpathPrefix>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                     </archive>
                 </configuration>
