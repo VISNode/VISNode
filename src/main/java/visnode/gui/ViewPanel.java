@@ -29,7 +29,6 @@ public class ViewPanel extends JComponent {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        add(new JLabel(view.getClass().getSimpleName()), BorderLayout.NORTH);
         add(view);
     }
     
