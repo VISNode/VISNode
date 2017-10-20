@@ -34,7 +34,7 @@ public class VISNodeModel implements Model {
     
     private void buildDummyModel() {
         try {
-            BufferedImage r = ImageIO.read(new File(getClass().getResource("/lena.jpg").getFile()));
+            BufferedImage r = ImageIO.read(VISNodeModel.class.getResourceAsStream("/lena.jpg"));
             InputNode input = new InputNode(ImageFactory.buildRGBImage(r));
             ProcessNode grayScale = new ProcessNode(GrayscaleProcess.class);
             grayScale.addConnection("image", input, "image");
