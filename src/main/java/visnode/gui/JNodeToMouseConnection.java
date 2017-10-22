@@ -1,7 +1,6 @@
 package visnode.gui;
 
 import java.awt.event.MouseEvent;
-import java.security.InvalidParameterException;
 import javax.swing.SwingUtilities;
 import visnode.application.ExceptionHandler;
 
