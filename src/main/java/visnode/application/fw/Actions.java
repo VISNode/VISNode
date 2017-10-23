@@ -10,6 +10,7 @@ import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
 import visnode.application.ActionSave;
+import visnode.application.ActionSaveAs;
 import visnode.application.ActionSelectImage;
 import visnode.application.ActionSelectWebCam;
 import visnode.application.Messages;
@@ -42,6 +43,7 @@ public class Actions {
         file.add(get(ActionOpen.class));
         file.addSeparator();
         file.add(get(ActionSave.class));
+        file.add(get(ActionSaveAs.class));
         JMenu input = new JMenu(Messages.get().message("input"));
         input.add(get(ActionSelectImage.class));
         input.add(get(ActionSelectWebCam.class));
@@ -64,6 +66,7 @@ public class Actions {
         actions.put(ActionNew.class, new ActionNew());
         actions.put(ActionOpen.class, new ActionOpen());
         actions.put(ActionSave.class, new ActionSave());
+        actions.put(ActionSaveAs.class, new ActionSaveAs());
         actions.put(ActionSelectImage.class, new ActionSelectImage());
         actions.put(ActionSelectWebCam.class, new ActionSelectWebCam());
         actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());

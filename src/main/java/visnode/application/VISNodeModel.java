@@ -23,6 +23,8 @@ public class VISNodeModel implements Model {
 
     /** Node network */
     private NodeNetwork network;
+    /** File linked to this project */
+    private File linkedFile;
 
     /**
      * Creates a new model
@@ -78,6 +80,26 @@ public class VISNodeModel implements Model {
         NodeNetwork oldValue = this.network;
         this.network = network;
         fireEvent(new PropertyEvent("network", oldValue, network));
+    }
+
+    /**
+     * Returns the linked file
+     * 
+     * @return File
+     */
+    public File getLinkedFile() {
+        return linkedFile;
+    }
+
+    /**
+     * Sets the linked file
+     * 
+     * @param linkedFile 
+     */
+    public void setLinkedFile(File linkedFile) {
+        File oldValue = this.linkedFile;
+        this.linkedFile = linkedFile;
+        fireEvent(new PropertyEvent("linkedFile", oldValue, linkedFile));
     }
     
 }

@@ -18,6 +18,8 @@ public class VISNode {
     private static VISNode instance;
     /** Application model */
     private final VISNodeModel model;
+    /** Application controler */
+    private final VISNodeController controller;
     /** Actions */
     private final Actions actions;
     /** Main window */
@@ -29,6 +31,7 @@ public class VISNode {
     public VISNode() {
         this.model = new VISNodeModel();
         this.actions = new Actions();
+        this.controller = new VISNodeController(this.model);
     }
     
     /**
@@ -108,6 +111,15 @@ public class VISNode {
      */
     public VISNodeModel getModel() {
         return model;
+    }
+
+    /**
+     * Returns the controller
+     * 
+     * @return VISNodeController
+     */
+    public VISNodeController getController() {
+        return controller;
     }
     
     /**
