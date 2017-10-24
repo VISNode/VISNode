@@ -44,12 +44,14 @@ public class Actions {
         file.add(get(ActionNew.class));
         file.addSeparator();
         file.add(get(ActionOpen.class));
-        file.add(buildReopenMenu());
+        file.add(buildReopenProjectMenu());
         file.addSeparator();
         file.add(get(ActionSave.class));
         file.add(get(ActionSaveAs.class));
         JMenu input = new JMenu(Messages.get().message("input"));
         input.add(get(ActionSelectImage.class));
+        input.add(buildReopenInputMenu());
+        file.addSeparator();
         input.add(get(ActionSelectWebCam.class));
         JMenu edit = new JMenu(Messages.get().message("edit"));
         edit.add(get(ActionDeleteSelectedNodes.class));
@@ -64,16 +66,32 @@ public class Actions {
     }
 
     /**
-     * Builds the reopen menu
+     * Builds the reopen project menu
      * 
      * @return JMenu
      */
-    private JMenu buildReopenMenu() {
+    private JMenu buildReopenProjectMenu() {
         JMenu menu = new JMenu(Messages.get().message("openRecent"));
         VISNode.get().getController().addRecentProjectListener((projects) -> {
             menu.removeAll();
             for (File project : projects) {
                 menu.add(new ActionDirectOpen(project));
+            }
+        });
+        return menu;
+    }
+
+    /**
+     * Builds the reopen input menu
+     * 
+     * @return JMenu
+     */
+    private JMenu buildReopenInputMenu() {
+        JMenu menu = new JMenu(Messages.get().message("openRecentInput"));
+        VISNode.get().getController().addRecentInputListener((inputs) -> {
+            menu.removeAll();
+            for (File file : inputs) {
+                menu.add(new ActionDirectOpen(file));
             }
         });
         return menu;

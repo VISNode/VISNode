@@ -23,6 +23,8 @@ public class VISNodeController {
     private final NodeNetworkParser parser;
     /** Recent project listeners */
     private final List<Consumer<List<File>>> recentProjectListeners;
+    /** Recent input listeners */
+    private final List<Consumer<List<File>>> recentInputListeners;
 
     /**
      * VISNode model
@@ -33,9 +35,11 @@ public class VISNodeController {
         this.model = model;
         this.parser = new NodeNetworkParser();
         this.recentProjectListeners = new ArrayList<>();
+        this.recentInputListeners = new ArrayList<>();
         model.addEventListener(PropertyEvent.class, (evt) -> {
             if (evt.getPropertyName().equals("userPreferences")) {
                 fireRecentProjects();
+                fireRecentInputs();
             }
         });
     }
@@ -128,5 +132,32 @@ public class VISNodeController {
         listener.accept(model.getUserPreferences().getRecentProjects());
     }
     
+    /**
+     * Adds a recent input listener
+     * 
+     * @param listener 
+     */
+    public void addRecentInputListener(Consumer<List<File>> listener) {
+        recentInputListeners.add(listener);
+        fireRecentInputs(listener);
+    }
+
+    /**
+     * Fire the recent projects event
+     */
+    public void fireRecentInputs() {
+        for (Consumer<List<File>> listener : recentInputListeners) {
+            fireRecentInputs(listener);
+        }
+    }
+    
+    /**
+     * Fire the recent inputs event
+     * 
+     * @param listener
+     */
+    public void fireRecentInputs(Consumer<List<File>> listener) {
+        listener.accept(model.getUserPreferences().getRecentInput());
+    }
 
 }
