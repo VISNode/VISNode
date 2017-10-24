@@ -23,14 +23,17 @@ public class VISNodeModel implements Model {
 
     /** Node network */
     private NodeNetwork network;
-    /** File linked to this project */
+    /** File linked to the current project */
     private File linkedFile;
+    /** User preferences */
+    private UserPreferences userPreferences;
 
     /**
      * Creates a new model
      */
     public VISNodeModel() {
         network = new NodeNetwork();
+        userPreferences = new UserPreferences();
         buildDummyModel();
     }
     
@@ -100,6 +103,26 @@ public class VISNodeModel implements Model {
         File oldValue = this.linkedFile;
         this.linkedFile = linkedFile;
         fireEvent(new PropertyEvent("linkedFile", oldValue, linkedFile));
+    }
+
+    /**
+     * Returns the user preferences
+     * 
+     * @return UserPreferences
+     */
+    public UserPreferences getUserPreferences() {
+        return userPreferences;
+    }
+
+    /**
+     * Sets the user preferences
+     * 
+     * @param userPreferences 
+     */
+    public void setUserPreferences(UserPreferences userPreferences) {
+        UserPreferences oldValue = this.userPreferences;
+        this.userPreferences = userPreferences;
+        fireEvent(new PropertyEvent("userPreferences", oldValue, userPreferences));
     }
     
 }

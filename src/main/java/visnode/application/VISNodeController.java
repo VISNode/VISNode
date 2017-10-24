@@ -6,6 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import visnode.application.mvc.PropertyEvent;
 import visnode.application.parser.NodeNetworkParser;
 
 /**
@@ -17,6 +21,8 @@ public class VISNodeController {
     private final VISNodeModel model;
     /** Node network parser */
     private final NodeNetworkParser parser;
+    /** Recent project listeners */
+    private final List<Consumer<List<File>>> recentProjectListeners;
 
     /**
      * VISNode model
@@ -26,6 +32,12 @@ public class VISNodeController {
     public VISNodeController(VISNodeModel model) {
         this.model = model;
         this.parser = new NodeNetworkParser();
+        this.recentProjectListeners = new ArrayList<>();
+        model.addEventListener(PropertyEvent.class, (evt) -> {
+            if (evt.getPropertyName().equals("userPreferences")) {
+                fireRecentProjects();
+            }
+        });
     }
 
     /**
@@ -33,6 +45,7 @@ public class VISNodeController {
      */
     public void createNew() {
         model.setNetwork(NodeNetworkFactory.createEmtpy());
+        model.setLinkedFile(null);
     }
     
     /**
@@ -55,6 +68,8 @@ public class VISNodeController {
         try (PrintWriter writer = new PrintWriter(file, "UTF-8");) {
             writer.print(parser.toJson(model.getNetwork()));
             model.setLinkedFile(file);
+            model.getUserPreferences().addRecentProject(file);
+            fireRecentProjects();
         } catch (IOException ex) {
             ExceptionHandler.get().handle(ex);
         }
@@ -78,9 +93,40 @@ public class VISNodeController {
                 model.setNetwork(parser.fromJson(sb.toString()));
             }
             model.setLinkedFile(file);
+            model.getUserPreferences().addRecentProject(file);
+            fireRecentProjects();
         } catch (IOException ex) {
             throw new InvalidOpenFileException(ex);
         }
     }
+
+    /**
+     * Adds a recent project listener
+     * 
+     * @param listener 
+     */
+    public void addRecentProjectListener(Consumer<List<File>> listener) {
+        recentProjectListeners.add(listener);
+        fireRecentProjects(listener);
+    }
+
+    /**
+     * Fire the recent projects event
+     */
+    private void fireRecentProjects() {
+        for (Consumer<List<File>> listener : recentProjectListeners) {
+            fireRecentProjects(listener);
+        }
+    }
+    
+    /**
+     * Fire the recent projects event
+     * 
+     * @param listener
+     */
+    private void fireRecentProjects(Consumer<List<File>> listener) {
+        listener.accept(model.getUserPreferences().getRecentProjects());
+    }
+    
 
 }

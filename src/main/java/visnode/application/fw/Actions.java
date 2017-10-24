@@ -1,5 +1,6 @@
 package visnode.application.fw;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.Action;
@@ -7,6 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
 import visnode.application.ActionDeleteSelectedNodes;
+import visnode.application.ActionDirectOpen;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
 import visnode.application.ActionSave;
@@ -14,6 +16,7 @@ import visnode.application.ActionSaveAs;
 import visnode.application.ActionSelectImage;
 import visnode.application.ActionSelectWebCam;
 import visnode.application.Messages;
+import visnode.application.VISNode;
 
 /**
  * Application actions
@@ -41,6 +44,7 @@ public class Actions {
         file.add(get(ActionNew.class));
         file.addSeparator();
         file.add(get(ActionOpen.class));
+        file.add(buildReopenMenu());
         file.addSeparator();
         file.add(get(ActionSave.class));
         file.add(get(ActionSaveAs.class));
@@ -57,6 +61,22 @@ public class Actions {
         menuBar.add(input);
         menuBar.add(help);
         return menuBar;
+    }
+
+    /**
+     * Builds the reopen menu
+     * 
+     * @return JMenu
+     */
+    private JMenu buildReopenMenu() {
+        JMenu menu = new JMenu(Messages.get().message("openRecent"));
+        VISNode.get().getController().addRecentProjectListener((projects) -> {
+            menu.removeAll();
+            for (File project : projects) {
+                menu.add(new ActionDirectOpen(project));
+            }
+        });
+        return menu;
     }
 
     /**
