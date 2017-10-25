@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionDirectOpen;
+import visnode.application.ActionDirectOpenImage;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
 import visnode.application.ActionSave;
@@ -91,7 +92,7 @@ public class Actions {
         VISNode.get().getController().addRecentInputListener((inputs) -> {
             menu.removeAll();
             for (File file : inputs) {
-                menu.add(new ActionDirectOpen(file));
+                menu.add(new ActionDirectOpenImage(file));
             }
         });
         return menu;

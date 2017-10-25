@@ -3,9 +3,6 @@ package visnode.application;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
-import visnode.commons.swing.FileChooserFactory;
-import visnode.gui.IconFactory;
 
 /**
  * Action for opening a project directly
@@ -13,7 +10,7 @@ import visnode.gui.IconFactory;
 public class ActionDirectOpen extends AbstractAction {
 
     /** File to open */
-    private File file;
+    private final File file;
     
     /**
      * Creates a new action
