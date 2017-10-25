@@ -35,6 +35,7 @@ import visnode.pdi.process.ErosionProcess;
 import visnode.pdi.process.ExtraInputProcess;
 import visnode.pdi.process.FreiChenProcess;
 import visnode.pdi.process.GaussianBlurProcess;
+import visnode.pdi.process.GradientProcess;
 import visnode.pdi.process.GrayscaleProcess;
 import visnode.pdi.process.HistogramProcess;
 import visnode.pdi.process.HoltProcess;
@@ -202,6 +203,7 @@ public class ProcessBrowser extends JComponent {
             RobertsProcess.class,
             SobelProcess.class, 
             CannyProcess.class,
+            GradientProcess.class,
             GaussianBlurProcess.class,
             InformationProcess.class, 
             InvertColorProcess.class,

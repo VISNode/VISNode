@@ -2,6 +2,7 @@ package visnode.application;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import org.paim.commons.BinaryImage;
 import org.paim.commons.ConverterWLWW;
 import org.paim.commons.Image;
 
@@ -30,7 +31,9 @@ public class OutputImageFactory {
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 int r, g, b;
-                if (image.getPixelValueRange().isBinary()) {
+                if (image instanceof BinaryImage) {
+                    r = g = b = (((BinaryImage) image).get(x, y) ? 255 : 0);
+                } else if (image.getPixelValueRange().isBinary()) {
                     r = g = b = (image.get(0, x, y) == 1 ? 255 : 0);
                 } else {
 
