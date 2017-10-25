@@ -3,7 +3,6 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 /**
  * Panel for views

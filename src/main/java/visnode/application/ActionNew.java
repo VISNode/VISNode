@@ -22,7 +22,7 @@ public class ActionNew extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        VISNode.get().getModel().setNetwork(NodeNetworkFactory.createEmtpy());
+        VISNode.get().getController().createNew();
     }
 
 }

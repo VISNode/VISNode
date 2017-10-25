@@ -31,6 +31,8 @@ public class ActionSelectImage extends AbstractAction {
             try {
                 WebCamCapture.get().stop();
                 VISNode.get().getModel().getNetwork().setInput(inputReader.read(file));
+                VISNode.get().getModel().getUserPreferences().addRecentInput(file);
+                VISNode.get().getController().fireRecentInputs();
             } catch (IOException ex) {
                 throw new InvalidOpenFileException(ex);
             }
