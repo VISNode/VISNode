@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +44,6 @@ public class NodeNetworkParser {
         network.getNodes().stream().filter((n) -> {
             return n.getDecorated() instanceof ProcessNode;
         }).forEach((node) -> {
-
             nodes.add(toJson(node));
         });
         data.put("nodes", nodes);
@@ -77,7 +74,7 @@ public class NodeNetworkParser {
             Map<String, Object> conn = new HashMap<>();
             Node n = c.getLeftNode();
             if (n instanceof EditNodeDecorator) {
-                n = ((EditNodeDecorator)n).getDecorated();
+                n = ((EditNodeDecorator) n).getDecorated();
             }
             conn.put("leftNode", System.identityHashCode(n));
             conn.put("leftAttribute", c.getLeftAttribute());
@@ -138,7 +135,7 @@ public class NodeNetworkParser {
                         String attr = c.get("parameterName").toString();
                         Object obj = null;
                         if (c.get("value") != null) {
-                            obj = gson.fromJson(c.get("value").toString(), Class.forName(c.get("parameterType").toString()));
+                            obj = gson.fromJson(gson.toJson(c.get("value")), Class.forName(c.get("parameterType").toString()));
                         }
                         processNode.setInput(attr, obj);
                     } catch (ClassNotFoundException ex) {

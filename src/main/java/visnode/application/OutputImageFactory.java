@@ -38,13 +38,11 @@ public class OutputImageFactory {
                 } else {
 
                     if (image.getChannelCount() == Image.CHANNELS_RGB) {
-                        r = image.get(Image.CHANNEL_RED, x, y);
-                        g = image.get(Image.CHANNEL_GREEN, x, y);
-                        b = image.get(Image.CHANNEL_BLUE, x, y);
+                        r = image.getPixelValueRange().limit(image.get(Image.CHANNEL_RED, x, y));
+                        g = image.getPixelValueRange().limit(image.get(Image.CHANNEL_GREEN, x, y));
+                        b = image.getPixelValueRange().limit(image.get(Image.CHANNEL_BLUE, x, y));
                     } else {
-                        r = image.get(0, x, y);
-                        g = image.get(0, x, y);
-                        b = image.get(0, x, y);
+                        r = g = b = image.getPixelValueRange().limit(image.get(0, x, y));
                     }
                 }
                 buff.setRGB(x, y, new Color(r, g, b).getRGB());

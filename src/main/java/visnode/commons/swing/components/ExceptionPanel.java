@@ -1,12 +1,14 @@
 package visnode.commons.swing.components;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -144,7 +146,9 @@ public class ExceptionPanel extends JPanel {
         JTextArea textArea = new JTextArea(2, 100);
         textArea.setText(ExceptionUtils.getStackTrace(exception));
         textArea.setEditable(false);
-        return textArea;
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(0, 600));
+        return scrollPane;
     }
     
     /**

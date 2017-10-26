@@ -14,7 +14,7 @@ public class BinaryLabelingProcess implements Process {
 
     /** binary label process */
     private final org.paim.pdi.BinaryLabelingProcess process;
-   
+
     /**
      * Creates a new invert colors process
      *
@@ -26,22 +26,21 @@ public class BinaryLabelingProcess implements Process {
             prcImage = ImageFactory.buildEmptyImage();
         }
         this.process = new org.paim.pdi.BinaryLabelingProcess(new Image(prcImage));
-
     }
 
     @Override
     public void process() {
         process.process();
     }
-    
+
     /**
      * Returns the output image
-     * 
+     *
      * @return Image
      */
     @Output("objectList")
     public ObjectList getImage() {
         return process.getExtractedObjects();
     }
-    
+
 }
