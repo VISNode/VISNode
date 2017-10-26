@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.util.Arrays;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -23,47 +24,7 @@ import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
 import visnode.gui.ScrollFactory;
 import visnode.pdi.Process;
-import visnode.pdi.process.AverageBlurProcess;
-import visnode.pdi.process.BinaryLabelingProcess;
-import visnode.pdi.process.BrightnessProcess;
-import visnode.pdi.process.CannyProcess;
-import visnode.pdi.process.ClosingProcess;
-import visnode.pdi.process.ContrastProcess;
-import visnode.pdi.process.DilationProcess;
-import visnode.pdi.process.DynamicPixelProcess;
-import visnode.pdi.process.ErosionProcess;
-import visnode.pdi.process.ExtraInputProcess;
-import visnode.pdi.process.FreiChenProcess;
-import visnode.pdi.process.GaussianBlurProcess;
-import visnode.pdi.process.GradientProcess;
-import visnode.pdi.process.GrayscaleProcess;
-import visnode.pdi.process.HistogramProcess;
-import visnode.pdi.process.HoltProcess;
-import visnode.pdi.process.HorizontalMirroringProcess;
-import visnode.pdi.process.InformationProcess;
-import visnode.pdi.process.InvertColorProcess;
-import visnode.pdi.process.ResizeProcess;
-import visnode.pdi.process.KirshProcess;
-import visnode.pdi.process.LaplaceProcess;
-import visnode.pdi.process.MarrHildrethProcess;
-import visnode.pdi.process.MedianBlurProcess;
-import visnode.pdi.process.MergeImageProcess;
-import visnode.pdi.process.ModeBlurProcess;
-import visnode.pdi.process.ObjectExtractionProcess;
-import visnode.pdi.process.OpeningProcess;
-import visnode.pdi.process.PrewittProcess;
-import visnode.pdi.process.RobertsProcess;
-import visnode.pdi.process.RobinsonProcess;
-import visnode.pdi.process.RotateProcess;
-import visnode.pdi.process.SnakeProcess;
-import visnode.pdi.process.SobelProcess;
-import visnode.pdi.process.StentifordProcess;
-import visnode.pdi.process.ThresholdLimitProcess;
-import visnode.pdi.process.ThresholdProcess;
-import visnode.pdi.process.TranslateProcess;
-import visnode.pdi.process.VerticalMirroringProcess;
-import visnode.pdi.process.WeightedGrayscaleProcess;
-import visnode.pdi.process.ZhangSuenProcess;
+import visnode.pdi.process.ProcessLoader;
 
 /**
  * Process browser
@@ -176,7 +137,7 @@ public class ProcessBrowser extends JComponent {
             filter = filter.toLowerCase();
         }
         DefaultListModel<Class<Process>> model = new DefaultListModel();
-        for (Class<Process> process : getProcesses()) {
+        for (Class process : ProcessLoader.get().getProcesses()) {
             if (filter != null) {
                 ProcessMetadata metadata = ProcessMetadata.fromClass(process);
                 if (!metadata.getName().toLowerCase().contains(filter) && !metadata.getDescription().toLowerCase().contains(filter)) {
@@ -186,61 +147,6 @@ public class ProcessBrowser extends JComponent {
             model.addElement(process);
         }
         list.setModel(model);
-    }
-    
-    /**
-     * Returns the processes
-     * 
-     * @return Process[]
-     */
-    private Class<Process>[] getProcesses() {
-        Class[] process = new Class[] {
-            DynamicPixelProcess.class, 
-            BrightnessProcess.class,
-            ContrastProcess.class,  
-            GrayscaleProcess.class,
-            WeightedGrayscaleProcess.class, 
-            RobertsProcess.class,
-            SobelProcess.class, 
-            CannyProcess.class,
-            GradientProcess.class,
-            GaussianBlurProcess.class,
-            InformationProcess.class, 
-            InvertColorProcess.class,
-            RobinsonProcess.class, 
-            KirshProcess.class,
-            DilationProcess.class, 
-            ErosionProcess.class, 
-            OpeningProcess.class,
-            ClosingProcess.class, 
-            ResizeProcess.class, 
-            RotateProcess.class,
-            TranslateProcess.class, 
-            HorizontalMirroringProcess.class,
-            VerticalMirroringProcess.class, 
-            ZhangSuenProcess.class,
-            HoltProcess.class, 
-            StentifordProcess.class,
-            AverageBlurProcess.class, 
-            MedianBlurProcess.class,
-            ModeBlurProcess.class,
-            BinaryLabelingProcess.class,
-            ObjectExtractionProcess.class,
-            ThresholdProcess.class,
-            ThresholdLimitProcess.class, 
-            PrewittProcess.class,
-            MergeImageProcess.class,
-            LaplaceProcess.class,
-            SnakeProcess.class, 
-            FreiChenProcess.class, 
-            ExtraInputProcess.class,
-            MarrHildrethProcess.class,
-            HistogramProcess.class
-        };
-        Arrays.sort(process, (it1, it2) -> {
-            return it1.getName().compareTo(it2.getName());
-        });
-        return process;
     }
     
     private class CellRenderer implements ListCellRenderer<Class<Process>> {
