@@ -3,14 +3,12 @@ package visnode.application.parser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.imageio.ImageIO;
-import org.paim.commons.ImageFactory;
 import visnode.application.ExceptionHandler;
 import visnode.application.NodeNetwork;
 import visnode.executor.EditNodeDecorator;
@@ -47,9 +45,24 @@ public class NodeNetworkParser {
             nodes.add(toJson(node));
         });
         data.put("nodes", nodes);
-        data.put("input", toJson(network.getNodes().get(network.getInputIndex())));
+        data.put("input", toJsonInput(network.getNodes().get(network.getInputIndex())));
         data.put("output", toJson(network.getNodes().get(network.getOutputIndex())));
         return gson.toJson(data);
+    }
+
+    /**
+     * Parser the input node
+     * 
+     * @param node
+     * @return Map
+     */
+    private Map toJsonInput(EditNodeDecorator node) {
+        Map map = toJson(node);
+        File file = ((InputNode) node.getDecorated()).getFile();
+        if (file != null) {
+            map.put("file", file.getPath());
+        }
+        return map;
     }
 
     /**
@@ -101,13 +114,16 @@ public class NodeNetworkParser {
         Map data = gson.fromJson(json, Map.class);
         try {
             Map<String, Node> mapHashCode = new HashMap<>();
-            BufferedImage r = ImageIO.read(getClass().getResourceAsStream("/lena.jpg"));
-            InputNode input = new InputNode(ImageFactory.buildRGBImage(r));
+            InputNode input = new InputNode();
             OutputNode out = new OutputNode();
             Map inputMap = (Map) data.get("input");
             Map outputMap = (Map) data.get("output");
             mapHashCode.put(inputMap.get("hashCode").toString(), input);
             mapHashCode.put(outputMap.get("hashCode").toString(), out);
+            // The input node has a file
+            if (inputMap.get("file") != null) {
+                input.setFile(new File(inputMap.get("file").toString()));
+            }
             // Define input/output node
             network.add(new EditNodeDecorator(input, fromJson(inputMap.get("position"))));
             network.add(new EditNodeDecorator(out, fromJson(outputMap.get("position"))));

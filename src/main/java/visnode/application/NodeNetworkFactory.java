@@ -18,7 +18,7 @@ public class NodeNetworkFactory {
      */
     public static NodeNetwork createEmtpy() {
         NodeNetwork network = new NodeNetwork();
-        InputNode input = new InputNode(ImageFactory.buildEmptyImage());
+        InputNode input = new InputNode();
         OutputNode output = new OutputNode();
         network.add(new EditNodeDecorator(input, new Point(50, 50)));
         network.add(new EditNodeDecorator(output, new Point(250, 50)));

@@ -1,24 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visnode.pdi.process;
 
 import java.io.File;
+import java.io.IOException;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
+import visnode.application.ExceptionHandler;
 import visnode.application.InputReader;
 import visnode.commons.Input;
 import visnode.commons.Output;
 
 /**
  *
- * @author jouwee
  */
 public class ExtraInputProcess implements visnode.pdi.Process {
     
-    private File file;
+    /** Extra image */
     private Image image;
 
     public ExtraInputProcess(@Input("file") File file) {
@@ -27,17 +23,14 @@ public class ExtraInputProcess implements visnode.pdi.Process {
         } else {
             try {
                 this.image = new InputReader().read(file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            };
-
+            } catch (IOException e) {
+                ExceptionHandler.get().handle(e);
+            }
         }
-        this.file = file;
     }    
     
     @Override
     public void process() {
-        
     }
     
     /**
