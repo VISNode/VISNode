@@ -3,9 +3,9 @@ package visnode.pdi.process;
 import java.awt.Color;
 import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
+import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
 import org.paim.pdi.PixelProcess;
-import visnode.application.OutputImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
 
@@ -25,7 +25,7 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
     
     public MergeImageProcess(@Input("background") Image background, @Input("mask") BinaryImage mask, @Input("image") Image image, @Input("color") Color color) {
         super(background == null ? ImageFactory.buildEmptyImage() : background);
-        this.background = ImageFactory.buildRGBImage(OutputImageFactory.getBuffered(background == null ? ImageFactory.buildEmptyImage() : background));
+        this.background = ImageFactory.buildRGBImage(ImageConverter.toBufferedImage(background == null ? ImageFactory.buildEmptyImage() : background));
         this.imageBase = image;
         this.color = buildColor(color);
         this.mask = mask;
