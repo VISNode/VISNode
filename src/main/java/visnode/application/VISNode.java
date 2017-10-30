@@ -62,6 +62,7 @@ public class VISNode {
      */
     public void start(String[] args) {
         setupLookAndFeel();
+        model.setUserPreferences(new UserPreferencesPersistor().load());
         buildAndShowWindow();
     }
     
@@ -95,6 +96,7 @@ public class VISNode {
             .size(1024, 768)
             .maximized()
             .interceptClose(() -> {
+                new UserPreferencesPersistor().persist(model.getUserPreferences());
                 return true;
             })
             .create((container) -> {

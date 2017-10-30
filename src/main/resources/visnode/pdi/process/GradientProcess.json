@@ -1,0 +1,9 @@
+{
+    "name_en_US": "Gradient",
+    "name_pt_BR": "Gradient",
+    "description_en_US": "Gradient",
+    "description_pt_BR": "Gradient",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GradientProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/GradientProcess.java"
+}

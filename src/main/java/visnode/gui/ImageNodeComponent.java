@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import org.paim.commons.Image;
+import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
-import visnode.application.OutputImageFactory;
 
 /**
  * Image component
@@ -63,7 +63,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * Updates the image
      */
     private void updateImage() {
-        BufferedImage image = OutputImageFactory.getBuffered(value);
+        BufferedImage image = ImageConverter.toBufferedImage(value);
         int size = Math.max(image.getWidth(), image.getHeight());
         int newWidth = THUMBNAIL_SIZE * image.getWidth() / size;
         int newHeight = THUMBNAIL_SIZE * image.getHeight() / size;

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import org.paim.commons.Image;
-import visnode.application.OutputImageFactory;
+import org.paim.commons.ImageConverter;
 import visnode.application.ActionExportImage;
 import visnode.commons.swing.WindowFactory;
 
@@ -49,7 +49,7 @@ public class ImageViewerPanel extends JPanel {
         setLayout(new BorderLayout());
         add(buildToolbar(), BorderLayout.NORTH);
         add(buildInfo(), BorderLayout.SOUTH);
-        add(new JLabel(new ImageIcon(OutputImageFactory.getBuffered(image))));
+        add(new JLabel(new ImageIcon(ImageConverter.toBufferedImage(image))));
     }
     
     /**

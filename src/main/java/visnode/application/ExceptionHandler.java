@@ -1,12 +1,8 @@
 package visnode.application;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import org.apache.commons.lang3.ArrayUtils;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.ExceptionPanel;
 
@@ -18,7 +14,7 @@ public class ExceptionHandler {
     /** Singleton instance */
     private static ExceptionHandler instance;
     /** Exception dialog */
-    private JDialog exceptionDialog;
+    private final JDialog exceptionDialog;
     /** Exception dialog */
     private ExceptionPanel exceptionPanel;
     

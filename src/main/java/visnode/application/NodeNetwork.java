@@ -1,5 +1,6 @@
 package visnode.application;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.paim.commons.Image;
@@ -54,6 +55,16 @@ public class NodeNetwork implements Model {
      */
     public List<EditNodeDecorator> getNodes() {
         return new ArrayList<>(nodes);
+    }
+    
+    /**
+     * Sets the input image
+     * 
+     * @param file
+     */
+    public void setInput(File file) {
+        InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
+        decorator.setFile(file);
     }
     
     /**

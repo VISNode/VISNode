@@ -1,10 +1,11 @@
 package visnode.pdi.process;
 
 import java.awt.Color;
+import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
+import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
 import org.paim.pdi.PixelProcess;
-import visnode.application.OutputImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
 
@@ -18,21 +19,21 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
     /** Image base */
     private final Image imageBase;
     /** The image mask */
-    private final Image mask;
+    private final BinaryImage mask;
     /** Color array */
     private final int[] color;
     
-    public MergeImageProcess(@Input("background") Image background, @Input("mask") Image mask, @Input("image") Image image, @Input("color") Color color) {
+    public MergeImageProcess(@Input("background") Image background, @Input("mask") BinaryImage mask, @Input("image") Image image, @Input("color") Color color) {
         super(background == null ? ImageFactory.buildEmptyImage() : background);
-        this.background = ImageFactory.buildRGBImage(OutputImageFactory.getBuffered(background == null ? ImageFactory.buildEmptyImage() : background));
+        this.background = ImageFactory.buildRGBImage(ImageConverter.toBufferedImage(background == null ? ImageFactory.buildEmptyImage() : background));
         this.imageBase = image;
         this.color = buildColor(color);
-        this.mask = mask == null ? ImageFactory.buildEmptyImage() : mask;
+        this.mask = mask;
     }
 
     @Override
     protected void process(int channel, int x, int y, int value) {
-        if (mask.has(0, x, y) && mask.get(0, x, y) == 1) {
+        if (mask != null && mask.has(0, x, y) && mask.get(x, y)) {
             if (color != null) {
                 background.set(channel, x, y, color[channel]);
             } else if (imageBase != null && imageBase.has(channel, x, y)) {

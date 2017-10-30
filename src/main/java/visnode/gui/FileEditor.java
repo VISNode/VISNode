@@ -40,7 +40,6 @@ public class FileEditor extends JButton implements ParameterComponent<File> {
     public void addValueListener(ValueListener valueListener) {
         addActionListener((e) -> {
             FileChooserFactory.openImage().accept((File file) -> {
-                System.out.println(file.getClass());
                 valueListener.valueChanged(null, (File) file);
             });
         });
