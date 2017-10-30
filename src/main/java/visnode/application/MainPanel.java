@@ -50,7 +50,7 @@ public class MainPanel extends JPanel {
         SplitPanel split = new SplitPanel(SplitPanel.HORIZONTAL_SPLIT);
         split.setLeftComponent(new ViewPanel(networkEditor));
         split.setRightComponent(new ViewPanel(new ProcessBrowser()));
-        split.setDividerLocation(1024);
+        split.setResizeWeight(1);
         return split;
     }
 

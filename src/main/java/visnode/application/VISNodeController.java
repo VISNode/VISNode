@@ -25,6 +25,8 @@ public class VISNodeController {
     private final List<Consumer<List<File>>> recentProjectListeners;
     /** Recent input listeners */
     private final List<Consumer<List<File>>> recentInputListeners;
+    /** Rendering options listeners */
+    private final List<Runnable> renderingOptionsListeners;
 
     /**
      * VISNode model
@@ -36,6 +38,7 @@ public class VISNodeController {
         this.parser = new NodeNetworkParser();
         this.recentProjectListeners = new ArrayList<>();
         this.recentInputListeners = new ArrayList<>();
+        this.renderingOptionsListeners = new ArrayList<>();
         model.addEventListener(PropertyEvent.class, (evt) -> {
             if (evt.getPropertyName().equals("userPreferences")) {
                 fireRecentProjects();
@@ -158,6 +161,24 @@ public class VISNodeController {
      */
     public void fireRecentInputs(Consumer<List<File>> listener) {
         listener.accept(model.getUserPreferences().getRecentInput());
+    }
+    
+    /**
+     * Rendering options listener
+     * 
+     * @param listener 
+     */
+    public void addRenderingOptionsListener(Runnable listener) {
+        renderingOptionsListeners.add(listener);
+    }
+    
+    /**
+     * Repaint the image previews
+     */
+    public void repaintImagePreviews() {
+        for (Runnable consumer : renderingOptionsListeners) {
+            consumer.run();
+        }
     }
 
 }

@@ -6,10 +6,7 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.text.DecimalFormat;
-import java.util.EventListener;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.paim.commons.RenderingOptions;
 
 /**
  * User preferences
@@ -16,6 +17,8 @@ public class UserPreferences {
     private final List<String> recentProjects;
     /** Recent input files */
     private final List<String> recentInputFiles;
+    /** Rendering options */
+    private final RenderingOptions renderingOptions;
 
     /**
      * Creates a new set of user preferences
@@ -23,6 +26,7 @@ public class UserPreferences {
     public UserPreferences() {
         this.recentProjects = new ArrayList<>();
         this.recentInputFiles = new ArrayList<>();
+        this.renderingOptions = new RenderingOptions();
     }
 
     /**
@@ -73,6 +77,15 @@ public class UserPreferences {
      */
     public List<File> getRecentInput() {
         return recentInputFiles.stream().map(name -> new File(name)).collect(Collectors.toList());
+    }
+
+    /**
+     * Rendering options
+     * 
+     * @return RenderingOptions
+     */
+    public RenderingOptions getRenderingOptions() {
+        return renderingOptions;
     }
     
 }

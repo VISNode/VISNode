@@ -1,6 +1,7 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -9,7 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import org.paim.commons.Image;
 import org.paim.commons.ImageConverter;
+import org.paim.commons.RenderingOptions;
 import visnode.application.ActionExportImage;
+import visnode.application.VISNode;
 import visnode.commons.swing.WindowFactory;
 
 /**
@@ -49,7 +52,8 @@ public class ImageViewerPanel extends JPanel {
         setLayout(new BorderLayout());
         add(buildToolbar(), BorderLayout.NORTH);
         add(buildInfo(), BorderLayout.SOUTH);
-        add(new JLabel(new ImageIcon(ImageConverter.toBufferedImage(image))));
+        RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
+        add(new JLabel(new ImageIcon(ImageConverter.toBufferedImage(image, options))));
     }
     
     /**

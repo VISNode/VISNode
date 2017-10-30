@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.swing.AbstractAction;
 import org.paim.commons.Image;
 import org.paim.commons.ImageExporter;
+import org.paim.commons.RenderingOptions;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
 
@@ -30,7 +31,8 @@ public class ActionExportImage extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         FileChooserFactory.exportImage().accept((file) -> {
             try {
-                ImageExporter.exportBufferedImage(image, file);
+                RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
+                ImageExporter.exportBufferedImage(image, file, options);
             } catch (IOException ex) {
                 throw new InvalidOpenFileException(ex);
             }

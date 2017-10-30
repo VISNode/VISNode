@@ -11,6 +11,8 @@ import javax.swing.JLabel;
 import org.paim.commons.Image;
 import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
+import org.paim.commons.RenderingOptions;
+import visnode.application.VISNode;
 
 /**
  * Image component
@@ -30,6 +32,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     public ImageNodeComponent() {
         this.value = ImageFactory.buildEmptyImage();
         initGui();
+        VISNode.get().getController().addRenderingOptionsListener(this::updateImage);
     }
 
     /**
@@ -63,7 +66,8 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      * Updates the image
      */
     private void updateImage() {
-        BufferedImage image = ImageConverter.toBufferedImage(value);
+        RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
+        BufferedImage image = ImageConverter.toBufferedImage(value, options);
         int size = Math.max(image.getWidth(), image.getHeight());
         int newWidth = THUMBNAIL_SIZE * image.getWidth() / size;
         int newHeight = THUMBNAIL_SIZE * image.getHeight() / size;

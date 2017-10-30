@@ -27,8 +27,8 @@ public class InputReader {
      */
     public Image read(File file) throws IOException {
         String fileType = Files.probeContentType(file.toPath());
-        if (isDiacom(fileType)) {
-            return readDiacom(file);
+        if (isDicom(fileType) || file.getName().endsWith(".dcm")) {
+            return readDicom(file);
         }
         return readImage(file);
     }
@@ -39,11 +39,11 @@ public class InputReader {
      * @param filename
      * @return boolean
      */
-    private boolean isDiacom(String fileType) {
+    private boolean isDicom(String fileType) {
         return DICOM.equals(fileType);
     }
     
-    private Image readDiacom(File file) throws IOException {
+    private Image readDicom(File file) throws IOException {
         try {
             return ImageHelper.create(ExamLoader.load(file).getExamSlice(0).getCoefficientMatrix(), new Range<>(-4000, 4000));
         } catch (ExamLoaderException ex) {
