@@ -19,7 +19,7 @@ public class TypeConverterGeneric implements TypeConverterExecutor {
         if (sourceType.equals(destinyType)) {
             return true;
         }
-        if (sourceType.equals(BinaryImage.class) && destinyType.equals(Image.class)) {
+        if (BinaryImage.class.isAssignableFrom(sourceType) && destinyType.equals(Image.class)) {
             return true;
         }
         if (sourceType.equals(Integer.class) && destinyType.equals(int.class)) {

@@ -1,5 +1,6 @@
 package visnode.pdi.process;
 
+import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import org.paim.commons.Range;
@@ -40,7 +41,7 @@ public class ThresholdProcess implements Process {
      * @return Image
      */
     @Output("image")
-    public Image getImage() {
+    public BinaryImage getImage() {
         return this.process.getOutput();
     }
 

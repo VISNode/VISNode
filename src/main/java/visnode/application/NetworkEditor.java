@@ -211,16 +211,15 @@ public class NetworkEditor extends JComponent {
         public void connectionCreated(NodeConnectionEvent evt) {
             NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getFirst()).getParentNodeConnector();
             NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
-
-            TypeConverter converter = new TypeConverter();
-            if (!converter.isValidConvertion(leftConnector.getAttributeType(), rightConnector.getAttributeType())) {
-                throw new IllegalArgumentException();
-            }
             //
             if (rightConnector.getType() == ConnectionType.OUTPUT) {
                 NodeConnectorView flip = rightConnector;
                 rightConnector = leftConnector;
                 leftConnector = flip;
+            }
+            TypeConverter converter = new TypeConverter();
+            if (!converter.isValidConvertion(leftConnector.getAttributeType(), rightConnector.getAttributeType())) {
+                throw new IllegalArgumentException();
             }
             NodeView leftView = (NodeView) leftConnector.getParentNode();
             Node leftNode = leftView.getModel();

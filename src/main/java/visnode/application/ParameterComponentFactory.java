@@ -1,4 +1,3 @@
-
 package visnode.application;
 
 import java.awt.Color;
@@ -29,20 +28,20 @@ public class ParameterComponentFactory {
 
     /**
      * Creates a new component for parameter visualization and or/editing
-     * 
+     *
      * @param node
      * @param parameter
      * @param type
      * @return ParameterComponent
      */
     public ParameterComponent create(Node node, NodeParameter parameter, ConnectionType type) {
-        if (parameter.getType().equals(Image.class) && type == ConnectionType.OUTPUT) {
+        if (Image.class.isAssignableFrom(parameter.getType()) && type == ConnectionType.OUTPUT) {
             return new ImageNodeComponent();
         }
         if (parameter.getType().equals(Image.class) && node instanceof OutputNode) {
             return new ImageNodeComponent();
         }
-        if (parameter.getType().equals(Image.class) && node instanceof EditNodeDecorator && ((EditNodeDecorator)node).getDecorated() instanceof OutputNode) {
+        if (parameter.getType().equals(Image.class) && node instanceof EditNodeDecorator && ((EditNodeDecorator) node).getDecorated() instanceof OutputNode) {
             return new ImageNodeComponent();
         }
         if (parameter.getType().equals(Threshold.class) && type == ConnectionType.INPUT) {

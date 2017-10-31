@@ -91,6 +91,7 @@ public class NodeNetworkParser {
             }
             conn.put("leftNode", System.identityHashCode(n));
             conn.put("leftAttribute", c.getLeftAttribute());
+            conn.put("rightAttribute", c.getRightAttribute());
             return conn;
         }).collect(Collectors.toList());
         param.put("input", input);
@@ -142,8 +143,9 @@ public class NodeNetworkParser {
                 ProcessNode processNode = (ProcessNode) mapHashCode.get(node.get("hashCode").toString());
                 List<Map> connections = (List) node.get("connections");
                 connections.forEach((c) -> {
-                    String attr = c.get("leftAttribute").toString();
-                    processNode.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
+                    String leftAttr = c.get("leftAttribute").toString();
+                    String rightAttr = c.get("rightAttribute").toString();
+                    processNode.addConnection(rightAttr, mapHashCode.get(c.get("leftNode").toString()), leftAttr);
                 });
                 List<Map> inputList = (List) node.get("input");
                 inputList.forEach((c) -> {
