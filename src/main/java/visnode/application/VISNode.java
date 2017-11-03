@@ -1,6 +1,7 @@
 package visnode.application;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -97,7 +98,8 @@ public class VISNode {
             .maximized()
             .interceptClose(() -> {
                 new UserPreferencesPersistor().persist(model.getUserPreferences());
-                return true;
+                int result = JOptionPane.showConfirmDialog(panel, Messages.get().message("app.closing"), null, JOptionPane.YES_NO_OPTION);
+                return result == JOptionPane.YES_OPTION;
             })
             .create((container) -> {
                 panel = new MainPanel(model);
