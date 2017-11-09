@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: circleci/java:8-jdk
+      - image: circleci/openjdk:8-jdk
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -21,6 +21,8 @@ jobs:
       MAVEN_OPTS: -Xmx3200m
     
     steps:
+    
+      - run: sudo apt-get install openjfx
         
       - run: git clone https://github.com/GrupoTorax/Commons.git ../Commons
       
