@@ -22,17 +22,17 @@ jobs:
     
     steps:
         
-      -run: git clone https://github.com/GrupoTorax/Commons.git
+      - run: git clone https://github.com/GrupoTorax/Commons.git
       
-      -run: git clone https://github.com/GrupoTorax/ExamsIO.git
+      - run: git clone https://github.com/GrupoTorax/ExamsIO.git
       
-      -run: git clone https://github.com/GrupoTorax/PDI.git
+      - run: git clone https://github.com/GrupoTorax/PDI.git
       
-      -run: mvn -f Commons/pom.xml install
+      - run: mvn -f Commons/pom.xml install
       
-      -run: mvn -f ExamsIO/pom.xml install
+      - run: mvn -f ExamsIO/pom.xml install
       
-      -run: mvn -f PDI/pom.xml install    
+      - run: mvn -f PDI/pom.xml install    
     
       - checkout
 
