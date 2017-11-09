@@ -4,6 +4,15 @@
 #
 version: 2
 jobs:
+  
+  checkout:
+    post:
+        -git clone https://github.com/GrupoTorax/Commons.git
+        -git clone https://github.com/GrupoTorax/ExamsIO.git
+        -git clone https://github.com/GrupoTorax/PDI.git
+        -mvn -f Commons/pom.xml install
+        -mvn -f ExamsIO/pom.xml install
+        -mvn -f PDI/pom.xml install
   build:
     docker:
       # specify the version you desire here
