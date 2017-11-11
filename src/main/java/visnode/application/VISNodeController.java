@@ -1,5 +1,6 @@
 package visnode.application;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,11 +10,18 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import visnode.application.mvc.PropertyEvent;
 import visnode.application.parser.NodeNetworkParser;
+import visnode.commons.NodeCloner;
+import visnode.commons.clipboard.Clipboard;
+import visnode.executor.EditNodeDecorator;
+import visnode.executor.NodeParameter;
+import visnode.executor.ProcessNode;
+import visnode.gui.Selection;
 
 /**
- * Application controler
+ * Application controller
  */
 public class VISNodeController {
 
@@ -179,6 +187,37 @@ public class VISNodeController {
         for (Runnable consumer : renderingOptionsListeners) {
             consumer.run();
         }
+    }
+    
+    /**
+     * Copy the selected nodes
+     */
+    public void copyNodes() {
+        Selection<NodeView> nodes = VISNode.get().getNetworkEditor().getSelection();
+        Clipboard.get().put(nodes
+                .stream()
+                .map(view -> view.getModel())
+                .map(node -> new NodeCloner(node).fullClone().createEditNode())
+                .collect(Collectors.toList()));
+   }
+    
+    /**
+     * Paste de selected nodes
+     */
+    public void pasteNodes() {
+        if (Clipboard.get().isSupported(List.class)) {
+            List<EditNodeDecorator> list = Clipboard.get().get(List.class);
+            for (EditNodeDecorator node : list) {
+                EditNodeDecorator newNode = new NodeCloner(node)
+                        .cloneProcess()
+                        .cloneInputs()
+                        .createEditNode();
+                newNode.getPosition().x += 50;
+                newNode.getPosition().y += 50;
+                model.getNetwork().add(newNode);
+            }
+        }
+        
     }
 
 }

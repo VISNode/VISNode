@@ -1,6 +1,8 @@
 package visnode.gui;
 
 import java.awt.Component;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.BoxLayout;
@@ -38,6 +40,13 @@ public class JNode extends JComponent {
     private void initGui() {
         setBorder(new JNodeBorder(this, title));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setFocusable(true);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                requestFocusInWindow();
+            }
+        });
     }
     
     /**

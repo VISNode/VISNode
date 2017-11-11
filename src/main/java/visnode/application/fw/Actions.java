@@ -7,11 +7,13 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
+import visnode.application.ActionCopyNode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionDirectOpen;
 import visnode.application.ActionDirectOpenImage;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
+import visnode.application.ActionPasteNode;
 import visnode.application.ActionSave;
 import visnode.application.ActionSaveAs;
 import visnode.application.ActionSelectImage;
@@ -53,9 +55,12 @@ public class Actions {
         JMenu input = new JMenu(Messages.get().message("input"));
         input.add(get(ActionSelectImage.class));
         input.add(buildReopenInputMenu());
-        file.addSeparator();
+        input.addSeparator();
         input.add(get(ActionSelectWebCam.class));
         JMenu edit = new JMenu(Messages.get().message("edit"));
+        edit.add(get(ActionCopyNode.class));
+        edit.add(get(ActionPasteNode.class));
+        edit.addSeparator();
         edit.add(get(ActionDeleteSelectedNodes.class));
         JMenu view = new JMenu(Messages.get().message("view"));
         JMenu rendering = new JMenu(Messages.get().message("rendering"));
@@ -115,6 +120,8 @@ public class Actions {
         actions.put(ActionSelectImage.class, new ActionSelectImage());
         actions.put(ActionSelectWebCam.class, new ActionSelectWebCam());
         actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());
+        actions.put(ActionCopyNode.class, new ActionCopyNode());
+        actions.put(ActionPasteNode.class, new ActionPasteNode());
         actions.put(ActionAboutVisnode.class, new ActionAboutVisnode());
         actions.put(ActionSelectWindow.class, new ActionSelectWindow());
     }

@@ -2,7 +2,6 @@ package visnode.application;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

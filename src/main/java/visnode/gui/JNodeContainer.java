@@ -10,11 +10,15 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 /**
  * Node container
@@ -46,6 +50,7 @@ public class JNodeContainer extends JComponent {
     private void initGui() {
         setLayout(null);
         setupDragSupport();
+        setFocusable(true);
     }
 
     /**
@@ -75,6 +80,12 @@ public class JNodeContainer extends JComponent {
                     e.getChild().removeMouseListener(selectListener);
                     e.getChild().removeComponentListener(revalidationListener);
                 }
+            }
+        });
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                requestFocusInWindow();
             }
         });
     }
@@ -222,7 +233,6 @@ public class JNodeContainer extends JComponent {
         super.paintComponent(g2d);
         int gridSize = 10;
         int majorGridSize = 100;
-        
         g2d.setColor(new Color(0x484848));
         for (int i = 0; i < Math.max(getWidth(), getHeight()); i += gridSize) {
             if (i < getWidth()) {
