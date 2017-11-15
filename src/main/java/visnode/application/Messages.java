@@ -36,7 +36,7 @@ public class Messages {
             VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
                 messages = ResourceBundle.getBundle("MessagesBundle", locale);
                 subjects.forEach((key, value) -> {
-                    value.onNext(buildMessage(key));
+                    value.onNext(singleMessage(key));
                 });
             });
         }
@@ -49,12 +49,12 @@ public class Messages {
      * @param key
      * @return
      */
-    private String buildMessage(String key) {
+    public String singleMessage(String key) {
         return getResource().getString(key);
     }
 
     /**
-     * Returns the message
+     * Returns a message observable
      *
      * @param key
      * @return {@code Observable<String>}
@@ -64,7 +64,7 @@ public class Messages {
         if (subject != null) {
             return subject;
         }
-        subject = BehaviorSubject.createDefault(buildMessage(key));
+        subject = BehaviorSubject.createDefault(singleMessage(key));
         subjects.put(key, subject);
         return subject;
     }

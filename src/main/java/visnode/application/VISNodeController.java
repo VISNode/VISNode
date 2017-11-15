@@ -196,6 +196,7 @@ public class VISNodeController {
         Selection<NodeView> nodes = VISNode.get().getNetworkEditor().getSelection();
         Clipboard.get().put(nodes
                 .stream()
+                .filter(view -> view.getModel().getDecorated() instanceof ProcessNode)
                 .map(view -> view.getModel())
                 .map(node -> new NodeCloner(node).fullClone().createEditNode())
                 .collect(Collectors.toList()));

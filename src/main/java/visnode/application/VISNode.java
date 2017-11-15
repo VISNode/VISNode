@@ -31,8 +31,6 @@ public class VISNode {
      */
     public VISNode() {
         this.model = new VISNodeModel();
-
-//        this.controller = new VISNodeController(this.model);
     }
 
     /**
@@ -99,7 +97,7 @@ public class VISNode {
             .maximized()
             .interceptClose(() -> {
                 new UserPreferencesPersistor().persist(model.getUserPreferences());
-                int result = JOptionPane.showConfirmDialog(panel, Messages.get().message("app.closing"), null, JOptionPane.YES_NO_OPTION);
+                int result = JOptionPane.showConfirmDialog(panel, Messages.get().singleMessage("app.closing"), null, JOptionPane.YES_NO_OPTION);
                 return result == JOptionPane.YES_OPTION;
             })
             .create((container) -> {
