@@ -5,5 +5,5 @@
     "description_pt_BR": "Extrai objetos da imagem utilizando Snake",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/SnakeProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/SnakeProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/SnakeProcess.java"
 }

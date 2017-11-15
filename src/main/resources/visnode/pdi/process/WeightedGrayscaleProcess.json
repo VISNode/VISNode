@@ -10,5 +10,5 @@
         "blueWeight": "0.3333333333333333d"
     },    
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/WeightedGrayscaleProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/WeightedGrayscaleProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/WeightedGrayscaleProcess.java"
 }
