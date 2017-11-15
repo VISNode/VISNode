@@ -1,4 +1,6 @@
-# ![alt text](https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/VISNode_32.png "VISNode") VISNode
+# ![VISNode](https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/VISNode_32.png "VISNode") VISNode
+
+![CircleCI status](https://circleci.com/gh/VISNode/VISNode.png?style=shield&circle-token=7fdb3fcebe115e100e0f5bdb77f2407d1b1e7385)
 
 VISNode is the programable node based image editor built entirely in Java. We designed it to be easy to learn and easy to use, allowing users to easily program the image editor to do the heavy work for them.
 

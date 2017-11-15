@@ -1,7 +1,7 @@
 package visnode.application;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -93,18 +93,19 @@ public class VISNode {
      */
     private JFrame buildWindow() {
         JFrame frame = WindowFactory.mainFrame()
-                .title("VISNode")
-                .menu(VISNode.get().getActions().buildMenuBar())
-                .size(1024, 768)
-                .maximized()
-                .interceptClose(() -> {
-                    new UserPreferencesPersistor().persist(model.getUserPreferences());
-                    return true;
-                })
-                .create((container) -> {
-                    panel = new MainPanel(model);
-                    container.add(panel);
-                });
+            .title("VISNode")
+            .menu(VISNode.get().getActions().buildMenuBar())
+            .size(1024, 768)
+            .maximized()
+            .interceptClose(() -> {
+                new UserPreferencesPersistor().persist(model.getUserPreferences());
+                int result = JOptionPane.showConfirmDialog(panel, Messages.get().message("app.closing"), null, JOptionPane.YES_NO_OPTION);
+                return result == JOptionPane.YES_OPTION;
+            })
+            .create((container) -> {
+                panel = new MainPanel(model);
+                container.add(panel);
+            });
         return frame;
     }
 

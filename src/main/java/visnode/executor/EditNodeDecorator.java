@@ -139,5 +139,5 @@ public class EditNodeDecorator implements Node, AttacherNode {
         }
         ((AttacherNode)decorated).addConnectionChangeListener(listener);
     }
-    
+
 }
