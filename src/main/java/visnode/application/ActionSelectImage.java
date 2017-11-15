@@ -16,7 +16,11 @@ public class ActionSelectImage extends AbstractAction {
      * Creates a new action
      */
     public ActionSelectImage() {
-        super(Messages.get().message("fromImage") + "...", IconFactory.get().create("fa:picture-o"));
+        super();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:picture-o"));
+        Messages.get().message("fromImage").subscribe((msg) -> {
+            putValue(NAME, msg + "...");
+        });
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl shift I"));
     }
 

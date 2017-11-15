@@ -17,6 +17,7 @@ import visnode.application.ActionSaveAs;
 import visnode.application.ActionSelectImage;
 import visnode.application.ActionSelectWebCam;
 import visnode.application.ActionSelectWindow;
+import visnode.application.ActionUserPreferences;
 import visnode.application.Messages;
 import visnode.application.VISNode;
 
@@ -42,7 +43,10 @@ public class Actions {
      * @return JMenuBar
      */
     public JMenuBar buildMenuBar() {
-        JMenu file = new JMenu(Messages.get().message("file"));
+        JMenu file = new JMenu();
+        Messages.get().message("file").subscribe((msg) -> {
+            file.setText(msg);
+        });
         file.add(get(ActionNew.class));
         file.addSeparator();
         file.add(get(ActionOpen.class));
@@ -50,18 +54,35 @@ public class Actions {
         file.addSeparator();
         file.add(get(ActionSave.class));
         file.add(get(ActionSaveAs.class));
-        JMenu input = new JMenu(Messages.get().message("input"));
+        JMenu input = new JMenu();
+        Messages.get().message("input").subscribe((msg) -> {
+            input.setText(msg);
+        });
         input.add(get(ActionSelectImage.class));
         input.add(buildReopenInputMenu());
         file.addSeparator();
         input.add(get(ActionSelectWebCam.class));
-        JMenu edit = new JMenu(Messages.get().message("edit"));
+        JMenu edit = new JMenu();
+        Messages.get().message("edit").subscribe((msg) -> {
+            edit.setText(msg);
+        });
         edit.add(get(ActionDeleteSelectedNodes.class));
-        JMenu view = new JMenu(Messages.get().message("view"));
-        JMenu rendering = new JMenu(Messages.get().message("rendering"));
+        edit.addSeparator();
+        edit.add(get(ActionUserPreferences.class));
+        JMenu view = new JMenu();
+        Messages.get().message("view").subscribe((msg) -> {
+            view.setText(msg);
+        });
+        JMenu rendering = new JMenu();
+        Messages.get().message("rendering").subscribe((msg) -> {
+            rendering.setText(msg);
+        });
         rendering.add(get(ActionSelectWindow.class));
         view.add(rendering);
-        JMenu help = new JMenu(Messages.get().message("help"));
+        JMenu help = new JMenu();
+        Messages.get().message("help").subscribe((msg) -> {
+            help.setText(msg);
+        });
         help.add(get(ActionAboutVisnode.class));
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(file);
@@ -78,7 +99,10 @@ public class Actions {
      * @return JMenu
      */
     private JMenu buildReopenProjectMenu() {
-        JMenu menu = new JMenu(Messages.get().message("openRecent"));
+        JMenu menu = new JMenu();
+        Messages.get().message("openRecent").subscribe((msg) -> {
+            menu.setText(msg);
+        });
         VISNode.get().getController().addRecentProjectListener((projects) -> {
             menu.removeAll();
             for (File project : projects) {
@@ -94,7 +118,10 @@ public class Actions {
      * @return JMenu
      */
     private JMenu buildReopenInputMenu() {
-        JMenu menu = new JMenu(Messages.get().message("openRecentInput"));
+        JMenu menu = new JMenu();
+        Messages.get().message("openRecentInput").subscribe((msg) -> {
+            menu.setText(msg);
+        });
         VISNode.get().getController().addRecentInputListener((inputs) -> {
             menu.removeAll();
             for (File file : inputs) {
@@ -112,6 +139,7 @@ public class Actions {
         actions.put(ActionOpen.class, new ActionOpen());
         actions.put(ActionSave.class, new ActionSave());
         actions.put(ActionSaveAs.class, new ActionSaveAs());
+        actions.put(ActionUserPreferences.class, new ActionUserPreferences());
         actions.put(ActionSelectImage.class, new ActionSelectImage());
         actions.put(ActionSelectWebCam.class, new ActionSelectWebCam());
         actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());

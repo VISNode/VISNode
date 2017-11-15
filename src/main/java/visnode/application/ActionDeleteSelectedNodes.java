@@ -20,7 +20,11 @@ public class ActionDeleteSelectedNodes extends AbstractAction {
      * Creates a new action
      */
     public ActionDeleteSelectedNodes() {
-        super(Messages.get().message("deleteSelectedNodes"), IconFactory.get().create("fa:trash"));
+        super();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:trash"));
+        Messages.get().message("deleteSelectedNodes").subscribe((msg) -> {
+            putValue(NAME, msg);
+        });
     }
     
     @Override

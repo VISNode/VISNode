@@ -11,7 +11,6 @@ import java.text.DecimalFormat;
 import javax.swing.AbstractAction;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 
@@ -22,11 +21,15 @@ public class ActionSelectWindow extends AbstractAction {
 
     private JFormattedTextField fieldWindowLevel;
     private JFormattedTextField fieldWindowWidth;
-    
+
     public ActionSelectWindow() {
-        super(Messages.get().message("selectDicomWindow"), IconFactory.get().create("fa:sliders"));
+        super();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:sliders"));
+        Messages.get().message("selectDicomWindow").subscribe((msg) -> {
+            putValue(NAME, msg);
+        });
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
         WindowFactory.modal().interceptClose(() -> true).onClose((evt) -> updateRenderingOptions()).create((panel) -> {
@@ -41,11 +44,11 @@ public class ActionSelectWindow extends AbstractAction {
             panel.add(fieldWindowWidth);
         }).setVisible(true);
     }
-    
+
     private void updateRenderingOptions() {
         VISNode.get().getModel().getUserPreferences().getRenderingOptions().setDicomWindowLevel(((Number) fieldWindowLevel.getValue()).intValue());
         VISNode.get().getModel().getUserPreferences().getRenderingOptions().setDicomWindowWidth(((Number) fieldWindowWidth.getValue()).intValue());
         VISNode.get().getController().repaintImagePreviews();
     }
-    
+
 }

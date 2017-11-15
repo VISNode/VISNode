@@ -1,20 +1,8 @@
 package visnode.application;
 
-import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.imageio.ImageIO;
-import org.paim.commons.ImageFactory;
 import visnode.application.mvc.Model;
 import visnode.application.mvc.PropertyEvent;
-import visnode.commons.Threshold;
-import visnode.executor.EditNodeDecorator;
-import visnode.executor.InputNode;
-import visnode.executor.OutputNode;
-import visnode.executor.ProcessNode;
-import visnode.pdi.process.GrayscaleProcess;
-import visnode.pdi.process.InformationProcess;
-import visnode.pdi.process.ThresholdProcess;
 
 /**
  * Model of the application

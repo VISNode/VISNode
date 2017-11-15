@@ -62,13 +62,16 @@ public class NodeView extends JNode {
         createConnectors();
         buildPopUpMenu();
     }
-    
+
     /**
      * Creates the pop up menu
      */
     private void buildPopUpMenu() {
         popup = new JPopupMenu();
-        JMenuItem menuItem = new JMenuItem(Messages.get().message("delete"), IconFactory.get().create("fa:trash"));
+        JMenuItem menuItem = new JMenuItem(IconFactory.get().create("fa:trash"));
+        Messages.get().message("delete").subscribe((msg) -> {
+            menuItem.setText(msg);
+        });
         menuItem.addActionListener((ev) -> {
             Selection<NodeView> selection = VISNode.get().getNetworkEditor().getSelection();
             List<EditNodeDecorator> nodes = selection.stream().
@@ -86,8 +89,8 @@ public class NodeView extends JNode {
         addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (model.getDecorated() instanceof ProcessNode && 
-                        e.getButton() == MouseEvent.BUTTON3) {
+                if (model.getDecorated() instanceof ProcessNode
+                        && e.getButton() == MouseEvent.BUTTON3) {
                     popup.show(NodeView.this, e.getX(), e.getY());
                 }
             }

@@ -16,8 +16,12 @@ public class ActionNew extends AbstractAction {
      * Creates a new action
      */
     public ActionNew() {
-        super(Messages.get().message("new"), IconFactory.get().create("fa:file"));
+        super();
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl N"));
+        putValue(SMALL_ICON, IconFactory.get().create("fa:file"));
+        Messages.get().message("new").subscribe((msg) -> {
+            putValue(NAME, msg);
+        });        
     }
     
     @Override

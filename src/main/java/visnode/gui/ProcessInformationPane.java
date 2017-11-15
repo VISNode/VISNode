@@ -5,6 +5,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import visnode.application.ProcessMetadata;
+import visnode.application.VISNode;
 import visnode.commons.http.Http;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
@@ -18,7 +19,7 @@ public class ProcessInformationPane extends JPanel {
 
     /** Process type */
     private final Class<? extends Process> type;
-    /** Process metadata */
+    /** Process meta-data */
     private final ProcessMetadata metadata;
 
     /**
@@ -29,7 +30,7 @@ public class ProcessInformationPane extends JPanel {
     public ProcessInformationPane(Class<? extends Process> type) {
         super();
         this.type = type;
-        this.metadata = ProcessMetadata.fromClass(type);
+        this.metadata = ProcessMetadata.fromClass(type, VISNode.get().getModel().getUserPreferences().getLocale());
         initGui();
     }
 

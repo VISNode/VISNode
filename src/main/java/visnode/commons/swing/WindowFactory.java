@@ -1,5 +1,6 @@
 package visnode.commons.swing;
 
+import io.reactivex.Observable;
 import java.awt.BorderLayout;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
@@ -7,8 +8,6 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -24,10 +23,10 @@ import visnode.application.ExceptionHandler;
  * Frame and dialog factory
  */
 public class WindowFactory {
-    
+
     /**
      * Creates a modal dialog
-     * 
+     *
      * @return DialogBuilder
      */
     public static DialogBuilder modal() {
@@ -36,16 +35,16 @@ public class WindowFactory {
 
     /**
      * Creates a frame
-     * 
+     *
      * @return FrameBuilder
      */
     public static FrameBuilder frame() {
         return new FrameBuilder();
     }
-    
+
     /**
      * Creates a main application frame
-     * 
+     *
      * @return FrameBuilder
      */
     public static FrameBuilder mainFrame() {
@@ -53,7 +52,7 @@ public class WindowFactory {
             System.exit(0);
         });
     }
-    
+
     /**
      * Dialog builder
      */
@@ -65,10 +64,17 @@ public class WindowFactory {
         public DialogBuilder() {
             super(new JDialog());
         }
-        
+
         @Override
         public DialogBuilder title(String title) {
             window.setTitle(title);
+            return this;
+        }
+
+        public DialogBuilder title(Observable<String> observable) {
+            observable.subscribe((title) -> {
+                window.setTitle(title);
+            });
             return this;
         }
 
@@ -84,16 +90,16 @@ public class WindowFactory {
             return this;
         }
 
-        /**        
+        /**
          * Sets a dialog as modal
-         * 
+         *
          * @return DialogBuilder
          */
         public DialogBuilder modal() {
             window.setModal(true);
             return this;
         }
-        
+
         @Override
         public JDialog create(Consumer<JPanel> consumer) {
             try {
@@ -110,9 +116,9 @@ public class WindowFactory {
             window.setLocationRelativeTo(null);
             return window;
         }
-        
+
     }
-    
+
     /**
      * Frame builder
      */
@@ -124,7 +130,7 @@ public class WindowFactory {
         public FrameBuilder() {
             super(new JFrame());
         }
-        
+
         @Override
         public FrameBuilder title(String title) {
             window.setTitle(title);
@@ -136,23 +142,23 @@ public class WindowFactory {
             window.setJMenuBar(menu);
             return this;
         }
-        
+
         @Override
         public FrameBuilder doNothingOnClose() {
             window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             return this;
         }
-        
+
         /**
          * Maximized
-         * 
+         *
          * @return FrameBuilder
          */
         public FrameBuilder maximized() {
             window.setExtendedState(JFrame.MAXIMIZED_BOTH);
             return this;
         }
-        
+
         @Override
         public JFrame create(Consumer<JPanel> consumer) {
             try {
@@ -168,35 +174,36 @@ public class WindowFactory {
             window.setLocationRelativeTo(null);
             return window;
         }
-        
+
     }
-    
+
     /**
      * Abstract window builder
-     * @param <T> 
+     *
+     * @param <T>
      */
     private static abstract class WindowBuilder<T extends Window, B extends WindowBuilder> implements WindowListener {
-    
+
         /** Window */
         protected final T window;
-        /** Incertepct closing callback */
+        /** Intercept closing callback */
         private Supplier<Boolean> interceptClosing;
         /** On close callback */
         private Consumer<WindowEvent> onClose;
-        
+
         /**
          * Window builder
-         * 
+         *
          * @param window
          */
         public WindowBuilder(T window) {
             this.window = window;
             this.window.addWindowListener(this);
         }
-        
+
         /**
          * Sets the size
-         * 
+         *
          * @param width
          * @param height
          * @return B
@@ -205,10 +212,10 @@ public class WindowFactory {
             window.setSize(width, height);
             return (B) this;
         }
-        
+
         /**
          * Intercept the window closing event
-         * 
+         *
          * @param callback
          * @return B
          */
@@ -217,17 +224,17 @@ public class WindowFactory {
             interceptClosing = callback;
             return (B) this;
         }
-        
+
         /**
          * Do nothing on close
-         * 
+         *
          * @return B
          */
         public abstract B doNothingOnClose();
-        
+
         /**
          * On the window close. Happens after the interceptClose
-         * 
+         *
          * @param callback
          * @return B
          */
@@ -235,26 +242,26 @@ public class WindowFactory {
             onClose = callback;
             return (B) this;
         }
-        
+
         /**
          * Sets the title
-         * 
+         *
          * @param title
          * @return B
          */
         public abstract B title(String title);
-        
+
         /**
          * Sets the menu
-         * 
+         *
          * @param menu
          * @return B
          */
         public abstract B menu(JMenuBar menu);
-        
+
         /**
          * Creates the window
-         * 
+         *
          * @param consumer
          * @return T
          */
@@ -273,7 +280,9 @@ public class WindowFactory {
 
         @Override
         public void windowClosed(WindowEvent e) {
-            onClose.accept(e);
+            if (onClose != null) {
+                onClose.accept(e);
+            }
         }
 
         @Override
@@ -291,7 +300,7 @@ public class WindowFactory {
         @Override
         public void windowDeactivated(WindowEvent e) {
         }
-        
+
     }
-    
+
 }

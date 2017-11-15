@@ -1,5 +1,9 @@
 package visnode.application;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -10,28 +14,64 @@ public class Messages {
     /** Locale messages instance */
     private static Messages instance;
     /** Resource */
-    private final ResourceBundle messages;
-    
+    private ResourceBundle messages;
+
+    private final Map<String, BehaviorSubject> subjects;
+
     /**
      * Creates a new locale messages
      */
     private Messages() {
-        this.messages = ResourceBundle.getBundle("MessagesBundle", Configuration.get().getLocale());
+        this.subjects = new HashMap<>();
+
     }
-        
-    /**
-     * Returns the message
-     * 
-     * @param key
-     * @return 
-     */
-    public String message(String key) {
-        return messages.getString(key);
-    } 
     
     /**
-     * Returns the locale message instance
+     * Returns the resource bundle
      * 
+     * @return ResourceBundle
+     */
+    private ResourceBundle getResource() {
+        if (messages == null) {
+            VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
+                messages = ResourceBundle.getBundle("MessagesBundle", locale);
+                subjects.forEach((key, value) -> {
+                    value.onNext(buildMessage(key));
+                });
+            });
+        }
+        return messages;
+    }
+
+    /**
+     * Returns the message
+     *
+     * @param key
+     * @return
+     */
+    private String buildMessage(String key) {
+        return getResource().getString(key);
+    }
+
+    /**
+     * Returns the message
+     *
+     * @param key
+     * @return {@code Observable<String>}
+     */
+    public Observable<String> message(String key) {
+        BehaviorSubject subject = subjects.get(key);
+        if (subject != null) {
+            return subject;
+        }
+        subject = BehaviorSubject.createDefault(buildMessage(key));
+        subjects.put(key, subject);
+        return subject;
+    }
+
+    /**
+     * Returns the locale message instance
+     *
      * @return Messages
      */
     public static Messages get() {

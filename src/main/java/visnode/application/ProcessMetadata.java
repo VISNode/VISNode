@@ -1,4 +1,3 @@
-
 package visnode.application;
 
 import com.google.gson.GsonBuilder;
@@ -6,11 +5,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import visnode.pdi.Process;
 
 /**
- * Process metadata
+ * Process meta-data
  */
 public class ProcessMetadata {
 
@@ -38,24 +38,35 @@ public class ProcessMetadata {
         description = "";
         defaults = new HashMap<>();
     }
-    
+
     /**
-     * Returns the metadata from the class
-     * 
+     * Returns the meta-data from the class
+     *
      * @param process
      * @return ProcessMetadata
      */
     public static ProcessMetadata fromClass(Class<? extends Process> process) {
+        return fromClass(process, new Locale("en", "US"));
+    }
+
+    /**
+     * Returns the meta-data from the class
+     *
+     * @param process
+     * @param locale
+     * @return ProcessMetadata
+     */
+    public static ProcessMetadata fromClass(Class<? extends Process> process, Locale locale) {
         try {
             InputStream stream = ProcessMetadata.class.getResourceAsStream('/' + process.getName().replace('.', '/') + ".json");
             ProcessMetadata meta = new GsonBuilder().create().fromJson(new InputStreamReader(stream, Charset.forName("utf-8")), ProcessMetadata.class);
             meta.name = meta.name_en_US;
             meta.description = meta.description_en_US;
-            if (Configuration.get().isLocalePtBR()) {
+            if (locale.getLanguage().equals("pt")) {
                 meta.name = meta.name_pt_BR;
                 meta.description = meta.description_pt_BR;
             }
-            String mdLocale = "_" + Configuration.get().getLocale().toLanguageTag().replace("-", "_") + ".md";
+            String mdLocale = "_" + locale.toLanguageTag().replace("-", "_") + ".md";
             meta.helpUrl = meta.helpUrl.replace(".md", mdLocale);
             return meta;
         } catch (Exception e) {
@@ -70,16 +81,16 @@ public class ProcessMetadata {
 
     /**
      * Returns the name
-     * 
+     *
      * @return String
      */
     public String getName() {
         return name;
     }
-    
+
     /**
      * Returns the description
-     * 
+     *
      * @return String
      */
     public String getDescription() {
@@ -88,7 +99,7 @@ public class ProcessMetadata {
 
     /**
      * Returns the help URL
-     * 
+     *
      * @return String
      */
     public String getHelpUrl() {
@@ -97,15 +108,15 @@ public class ProcessMetadata {
 
     /**
      * Returns the code URL
-     * 
+     *
      * @return String
      */
     public String getCodeUrl() {
         return codeUrl;
     }
-    
+
     public String getDefault(String key) {
         return this.defaults.get(key);
     }
-    
+
 }

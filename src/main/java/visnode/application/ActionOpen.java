@@ -16,7 +16,11 @@ public class ActionOpen extends AbstractAction {
      * Creates a new action
      */
     public ActionOpen() {
-        super(Messages.get().message("open") + "...", IconFactory.get().create("fa:folder-open"));
+        super();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:folder-open"));
+        Messages.get().message("open").subscribe((msg) -> {
+            putValue(NAME, msg + "...");
+        });
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl O"));
     }
 

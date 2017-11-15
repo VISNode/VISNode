@@ -14,7 +14,11 @@ public class ActionAboutVisnode extends AbstractAction {
      * Creates a new action
      */
     public ActionAboutVisnode() {
-        super(Messages.get().message("aboutVisnode"), IconFactory.get().create("fa:info"));
+        super();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:info"));
+        Messages.get().message("aboutVisnode").subscribe((msg) -> {
+            putValue(NAME, msg);
+        });
     }
     
     @Override

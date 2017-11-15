@@ -12,16 +12,16 @@ import visnode.gui.IconFactory;
  */
 public class ActionSave extends AbstractAction {
 
-    /** Node network parser */
-    private final NodeNetworkParser parser;
-
     /**
      * Creates a new action
      */
     public ActionSave() {
-        super(Messages.get().message("save"), IconFactory.get().create("fa:floppy-o"));
+        super();
         putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke("ctrl S"));
-        this.parser = new NodeNetworkParser();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:floppy-o"));
+        Messages.get().message("save").subscribe((msg) -> {
+            putValue(NAME, msg);
+        });
     }
 
     @Override

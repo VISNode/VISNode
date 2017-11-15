@@ -15,7 +15,11 @@ public class ActionSelectWebCam extends AbstractAction {
      * Creates a new action
      */
     public ActionSelectWebCam() {
-        super(Messages.get().message("fromWebcam") + "...", IconFactory.get().create("fa:video-camera"));
+        super();
+        putValue(SMALL_ICON, IconFactory.get().create("fa:video-camera"));
+        Messages.get().message("fromWebcam").subscribe((msg) -> {
+            putValue(NAME, msg + "...");
+        });
     }
 
     @Override

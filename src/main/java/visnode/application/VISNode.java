@@ -1,6 +1,7 @@
 package visnode.application;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -13,15 +14,15 @@ import visnode.commons.swing.WindowFactory;
  * Main class application
  */
 public class VISNode {
-    
+
     /** Application instance */
     private static VISNode instance;
     /** Application model */
     private final VISNodeModel model;
-    /** Application controler */
-    private final VISNodeController controller;
+    /** Application controller */
+    private VISNodeController controller;
     /** Actions */
-    private final Actions actions;
+    private Actions actions;
     /** Main window */
     private MainPanel panel;
 
@@ -30,34 +31,34 @@ public class VISNode {
      */
     public VISNode() {
         this.model = new VISNodeModel();
-        this.actions = new Actions();
-        this.controller = new VISNodeController(this.model);
+
+//        this.controller = new VISNodeController(this.model);
     }
-    
+
     /**
      * Returns the application instance
-     * 
+     *
      * @return VISNode
      */
     public static VISNode get() {
-       if (instance == null)  {
-           instance = new VISNode();
-       }
-       return instance;
+        if (instance == null) {
+            instance = new VISNode();
+        }
+        return instance;
     }
-    
+
     /**
      * Main method
-     * 
-     * @param args 
+     *
+     * @param args
      */
     public static void main(String[] args) {
-       VISNode.get().start(args);
+        VISNode.get().start(args);
     }
-    
+
     /**
      * Starts the application
-     * 
+     *
      * @param args
      */
     public void start(String[] args) {
@@ -65,13 +66,14 @@ public class VISNode {
         model.setUserPreferences(new UserPreferencesPersistor().load());
         buildAndShowWindow();
     }
-    
+
     /**
      * Sets up the LookAndFeel
      */
     private void setupLookAndFeel() {
         try {
-            UIManager.setLookAndFeel(new SubstanceLookAndFeel(new GraphiteSkin()) {});
+            UIManager.setLookAndFeel(new SubstanceLookAndFeel(new GraphiteSkin()) {
+            });
         } catch (UnsupportedLookAndFeelException e) {
             ExceptionHandler.get().handle(e);
         }
@@ -91,24 +93,24 @@ public class VISNode {
      */
     private JFrame buildWindow() {
         JFrame frame = WindowFactory.mainFrame()
-            .title("VISNode")
-            .menu(VISNode.get().getActions().buildMenuBar())
-            .size(1024, 768)
-            .maximized()
-            .interceptClose(() -> {
-                new UserPreferencesPersistor().persist(model.getUserPreferences());
-                return true;
-            })
-            .create((container) -> {
-                panel = new MainPanel(model);
-                container.add(panel);
-            });
+                .title("VISNode")
+                .menu(VISNode.get().getActions().buildMenuBar())
+                .size(1024, 768)
+                .maximized()
+                .interceptClose(() -> {
+                    new UserPreferencesPersistor().persist(model.getUserPreferences());
+                    return true;
+                })
+                .create((container) -> {
+                    panel = new MainPanel(model);
+                    container.add(panel);
+                });
         return frame;
     }
 
     /**
      * Returns the model
-     * 
+     *
      * @return VISNodeModel
      */
     public VISNodeModel getModel() {
@@ -117,16 +119,19 @@ public class VISNode {
 
     /**
      * Returns the controller
-     * 
+     *
      * @return VISNodeController
      */
     public VISNodeController getController() {
+        if (controller == null) {
+            controller = new VISNodeController(this.model);
+        }
         return controller;
     }
-    
+
     /**
      * Returns the current network editor
-     * 
+     *
      * @return NetworkEditor
      */
     public NetworkEditor getNetworkEditor() {
@@ -135,11 +140,14 @@ public class VISNode {
 
     /**
      * Returns the actions for the application
-     * 
+     *
      * @return Actions
      */
     public Actions getActions() {
+        if (actions == null) {
+            actions = new Actions();
+        }
         return actions;
     }
-    
+
 }

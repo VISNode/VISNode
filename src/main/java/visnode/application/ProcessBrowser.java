@@ -5,10 +5,10 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.Arrays;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -33,13 +33,17 @@ public class ProcessBrowser extends JComponent {
 
     /** Process list */
     private JList<Class<Process>> list;
-    
+    /** Process meta-data */
+    private final Map<Class<Process>, ProcessMetadata> processMetadata;
+
     /**
      * Creates the process browser
      */
     public ProcessBrowser() {
         super();
+        this.processMetadata = new HashMap<>();
         initGui();
+        buildProcessMetadata();
     }
 
     /**
@@ -52,8 +56,21 @@ public class ProcessBrowser extends JComponent {
     }
 
     /**
+     * Builds the process meta-data
+     */
+    private void buildProcessMetadata() {
+        VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
+            processMetadata.clear();
+            ProcessLoader.get().getProcesses().forEach((process) -> {
+                processMetadata.put((Class<Process>) process, ProcessMetadata.fromClass(process, locale));
+            });
+            updateList();
+        });
+    }
+
+    /**
      * Builds the filter panel
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildFilterPanel() {
@@ -63,10 +80,10 @@ public class ProcessBrowser extends JComponent {
         panel.setBorder(BorderFactory.createEmptyBorder(2, 3, 2, 3));
         return panel;
     }
-    
+
     /**
      * Creates the field for name filtering
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildFilterField() {
@@ -87,6 +104,7 @@ public class ProcessBrowser extends JComponent {
             public void changedUpdate(DocumentEvent e) {
                 updateFilter();
             }
+
             /**
              * Updates the filter
              */
@@ -96,10 +114,10 @@ public class ProcessBrowser extends JComponent {
         });
         return field;
     }
-    
+
     /**
      * Creates the process list
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildList() {
@@ -119,18 +137,18 @@ public class ProcessBrowser extends JComponent {
         });
         return ScrollFactory.pane(list).create();
     }
-    
+
     /**
      * Updates the list
      */
     private void updateList() {
         updateList(null);
     }
-    
+
     /**
      * Updates the list based on a filter
-     * 
-     * @param filter 
+     *
+     * @param filter
      */
     private void updateList(String filter) {
         if (filter != null) {
@@ -139,7 +157,7 @@ public class ProcessBrowser extends JComponent {
         DefaultListModel<Class<Process>> model = new DefaultListModel();
         for (Class process : ProcessLoader.get().getProcesses()) {
             if (filter != null) {
-                ProcessMetadata metadata = ProcessMetadata.fromClass(process);
+                ProcessMetadata metadata = processMetadata.get(process);
                 if (!metadata.getName().toLowerCase().contains(filter) && !metadata.getDescription().toLowerCase().contains(filter)) {
                     continue;
                 }
@@ -148,15 +166,16 @@ public class ProcessBrowser extends JComponent {
         }
         list.setModel(model);
     }
-    
+
     private class CellRenderer implements ListCellRenderer<Class<Process>> {
 
         /** Renderer to base background and foreground color */
         private final ListCellRenderer defaultRenderer;
 
         /**
-         * Creates 
-         * @param defaultRenderer 
+         * Creates
+         *
+         * @param defaultRenderer
          */
         public CellRenderer(ListCellRenderer defaultRenderer) {
             this.defaultRenderer = defaultRenderer;
@@ -164,7 +183,7 @@ public class ProcessBrowser extends JComponent {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends Class<Process>> list, Class<Process> value, int index, boolean isSelected, boolean cellHasFocus) {
-            ProcessMetadata metadata = ProcessMetadata.fromClass(value);
+            ProcessMetadata metadata = processMetadata.get(value);
             // Title label
             JLabel label = (JLabel) defaultRenderer.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
             label.setText(metadata.getName());
@@ -190,12 +209,12 @@ public class ProcessBrowser extends JComponent {
                 }
             }
             component.add(label);
-            component.add(description, BorderLayout.SOUTH);            
+            component.add(description, BorderLayout.SOUTH);
             component.setOpaque(true);
             component.setForeground(description.getForeground());
             return component;
         }
-        
+
     }
-    
+
 }
