@@ -15,7 +15,7 @@ public class Messages {
     private static Messages instance;
     /** Resource */
     private ResourceBundle messages;
-
+    /* Messages subjecs */
     private final Map<String, BehaviorSubject> subjects;
 
     /**
@@ -23,7 +23,6 @@ public class Messages {
      */
     private Messages() {
         this.subjects = new HashMap<>();
-
     }
     
     /**

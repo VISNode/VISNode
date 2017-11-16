@@ -1,19 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visnode.executor;
 
 import java.util.Objects;
 
 /**
- *
+ * Node parameter
  */
 public class NodeParameter {
     
+    /** Name */
     private final String name;
-    
+    /** Type */
     private final Class type;
 
     public NodeParameter(String name, Class type) {

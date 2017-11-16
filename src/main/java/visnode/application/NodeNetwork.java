@@ -76,9 +76,24 @@ public class NodeNetwork implements Model {
         InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
         decorator.setImage(image);
     }
-    
+        
+    /**
+     * Returns the input image
+     * 
+     * @return Image
+     */
     public Image getInput() {
         InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
+        return decorator.getImage();
+    }
+    
+    /**
+     * Returns the output image 
+     * 
+     * @return Image
+     */
+    public Image getOutput() {
+        OutputNode decorator = (OutputNode) nodes.get(getOutputIndex()).getDecorated();
         return decorator.getImage();
     }
     

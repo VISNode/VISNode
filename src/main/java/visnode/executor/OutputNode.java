@@ -48,7 +48,16 @@ public class OutputNode implements Node, AttacherNode {
         }
         throw new InvalidAttributeException(attribute);
     }
-
+    
+    /**
+     * Returns the output image
+     * 
+     * @return Image
+     */
+    public Image getImage() {
+        return img;
+    }
+    
     @Override
     public Object getOutput(String attribute) {
         throw new InvalidAttributeException(attribute);

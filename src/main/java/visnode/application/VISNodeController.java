@@ -1,6 +1,5 @@
 package visnode.application;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +15,6 @@ import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.NodeCloner;
 import visnode.commons.clipboard.Clipboard;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.NodeParameter;
 import visnode.executor.ProcessNode;
 import visnode.gui.Selection;
 
