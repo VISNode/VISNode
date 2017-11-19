@@ -1,4 +1,4 @@
-# ![VISNode](https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/VISNode_32.png "VISNode") VISNode
+# ![VISNode](https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/Banner.png "VISNode")
 
 ![CircleCI status](https://circleci.com/gh/VISNode/VISNode.png?style=shield&circle-token=7fdb3fcebe115e100e0f5bdb77f2407d1b1e7385)
 
