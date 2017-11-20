@@ -4,12 +4,11 @@ import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.Process;
 
 /**
  * Canny process for edge detection
  */
-public class CannyProcess implements Process {
+public class CannyProcess implements visnode.pdi.Process {
 
     /** Canny process */
     private final org.paim.pdi.CannyProcess process;

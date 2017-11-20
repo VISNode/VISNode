@@ -29,9 +29,8 @@ public class ProcessLoader {
         Reflections reflections = new Reflections();
         Set<Class<? extends Process>> classes = reflections.
                 getSubTypesOf(Process.class).stream().
-                sorted((it1, it2) -> {
-                    return it1.getName().compareTo(it2.getName());
-                }).collect(Collectors.toSet());
+                collect(Collectors.toSet());
+        classes.add(DynamicPixelProcess.class);
         return Collections.unmodifiableSet(classes);
     }
 

@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
@@ -126,7 +127,6 @@ public class ProcessBrowser extends JComponent {
         list.setTransferHandler(new ProcessTransferHandler());
         list.setDragEnabled(true);
         list.setDropMode(DropMode.ON_OR_INSERT);
-        updateList();
         list.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -154,16 +154,23 @@ public class ProcessBrowser extends JComponent {
         if (filter != null) {
             filter = filter.toLowerCase();
         }
-        DefaultListModel<Class<Process>> model = new DefaultListModel();
+        TreeMap<String, Class<Process>> orderMap = new TreeMap<>();
         for (Class process : ProcessLoader.get().getProcesses()) {
+            ProcessMetadata metadata = processMetadata.get(process);
+            if (metadata == null) {
+                break;
+            }
             if (filter != null) {
-                ProcessMetadata metadata = processMetadata.get(process);
                 if (!metadata.getName().toLowerCase().contains(filter) && !metadata.getDescription().toLowerCase().contains(filter)) {
                     continue;
                 }
             }
-            model.addElement(process);
+            orderMap.put(metadata.getName(), process);
         }
+        DefaultListModel<Class<Process>> model = new DefaultListModel();
+        orderMap.values().forEach((it) -> {
+            model.addElement(it);
+        });
         list.setModel(model);
     }
 

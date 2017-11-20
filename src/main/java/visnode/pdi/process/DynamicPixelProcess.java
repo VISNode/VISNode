@@ -7,12 +7,11 @@ import visnode.application.ScriptRunner;
 import visnode.commons.ScriptValue;
 import visnode.commons.Input;
 import visnode.commons.Output;
-import visnode.pdi.Process;
 
 /**
  * Dynamic pixel process
  */
-public class DynamicPixelProcess extends PixelProcess<Image> implements Process {
+public class DynamicPixelProcess extends PixelProcess<Image> implements visnode.pdi.Process {
 
     /** The image */
     private final Image dynamicImage;
