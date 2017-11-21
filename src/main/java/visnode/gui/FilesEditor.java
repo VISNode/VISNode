@@ -57,6 +57,8 @@ public class FilesEditor extends JComponent implements ParameterComponent<MultiF
         slider = new JSlider(0, 0);
         slider.setPreferredSize(new Dimension(150, 25));
         slider.setEnabled(false);
+        slider.setOpaque(false);
+        slider.setFocusable(false);
         return slider;
     }
 
