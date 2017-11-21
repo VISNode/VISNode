@@ -14,7 +14,7 @@ public class FileEditor extends JButton implements ParameterComponent<File> {
     private File value;
     
     /**
-     * Creates a new threshold editor
+     * Creates a new file editor
      */
     public FileEditor() {
         super("Choose file");

@@ -14,64 +14,161 @@ import visnode.gui.FileFilterFactory;
  * File chooser factory
  */
 public class FileChooserFactory {
-    
+
     /**
      * Creates a dialog for saving projects
-     * 
-     * @return FileChooserBuilder
+     *
+     * @return SingleFileChooserBuilder
      */
-    public static FileChooserBuilder saveProject() {
-        return new FileChooserBuilder()
-                .method(Method.SAVE)
-                .files()
-                .filter(FileFilterFactory.projectFileFilter())
-                .title("Save");
+    public static SingleFileChooserBuilder saveProject() {
+        return new SingleFileChooserBuilder(
+                new FileChooserBuilder()
+                        .method(Method.SAVE)
+                        .files()
+                        .filter(FileFilterFactory.projectFileFilter())
+                        .title("Save")
+        );
     }
-    
+
     /**
      * Creates a dialog for opening projects
-     * 
-     * @return FileChooserBuilder
+     *
+     * @return SingleFileChooserBuilder
      */
-    public static FileChooserBuilder openProject() {
-        return new FileChooserBuilder()
-                .method(Method.OPEN)
-                .files()
-                .filter(FileFilterFactory.projectFileFilter())
-                .title("Open");
+    public static SingleFileChooserBuilder openProject() {
+        return new SingleFileChooserBuilder(
+                new FileChooserBuilder()
+                        .method(Method.OPEN)
+                        .files()
+                        .filter(FileFilterFactory.projectFileFilter())
+                        .title("Open")
+        );
     }
-    
+
     /**
      * Creates a dialog for opening images
-     * 
-     * @return FileChooserBuilder
+     *
+     * @return SingleFileChooserBuilder
      */
-    public static FileChooserBuilder openImage() {
-        return new FileChooserBuilder()
-                .method(Method.OPEN)
-                .files()
-                .filter(FileFilterFactory.inputFileFilter())
-                .title("Open");
+    public static SingleFileChooserBuilder openImage() {
+        return new SingleFileChooserBuilder(
+                new FileChooserBuilder()
+                        .method(Method.OPEN)
+                        .files()
+                        .filter(FileFilterFactory.inputFileFilter())
+                        .title("Open")
+        );
     }
-    
+
+    /**
+     * Creates a dialog for opening images with multiple file selections
+     *
+     * @return MultiFileChooserBuilder
+     */
+    public static MultiFileChooserBuilder openImages() {
+        return new MultiFileChooserBuilder(
+                new FileChooserBuilder()
+                        .method(Method.OPEN)
+                        .files()
+                        .filter(FileFilterFactory.inputFileFilter())
+                        .title("Open")
+        );
+    }
+
     /**
      * Creates a dialog for exporting images
-     * 
+     *
      * @return FileChooserBuilder
      */
-    public static FileChooserBuilder exportImage() {
-        return new FileChooserBuilder()
-                .method(Method.SAVE)
-                .files()
-                .filter(FileFilterFactory.exportFileFilter())
-                .title("Export");
+    public static SingleFileChooserBuilder exportImage() {
+        return new SingleFileChooserBuilder(
+                new FileChooserBuilder()
+                        .method(Method.SAVE)
+                        .files()
+                        .filter(FileFilterFactory.exportFileFilter())
+                        .title("Export")
+        );
     }
-    
+
+    /**
+     * Builder for file choosers with single files
+     */
+    public static class SingleFileChooserBuilder {
+
+        /** File chooser */
+        private final FileChooserBuilder builder;
+
+        public SingleFileChooserBuilder(FileChooserBuilder builder) {
+            this.builder = builder;
+        }
+
+        /**
+         * Accepts the file chooser and calls the consumer when ready
+         *
+         * @param consumer
+         */
+        public void accept(Consumer<File> consumer) {
+            try {
+                if (builder.method == Method.OPEN) {
+                    if (builder.chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        consumer.accept(builder.chooser.getSelectedFile());
+                    }
+                } else {
+                    if (builder.chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        File file = builder.addExtensionIfRequired(builder.chooser.getSelectedFile(), builder.chooser.getFileFilter());
+                        if (!builder.chooser.getFileFilter().accept(file)) {
+                            throw new InvalidOpenFileException();
+                        }
+                        if (!builder.checkOverride(file)) {
+                            return;
+                        }
+                        consumer.accept(file);
+                    }
+                }
+            } catch (Exception ex) {
+                ExceptionHandler.get().handle(ex);
+            }
+        }
+
+    }
+
+    /**
+     * Builder for file choosers with multi files
+     */
+    public static class MultiFileChooserBuilder {
+
+        /** File chooser */
+        private final FileChooserBuilder builder;
+
+        public MultiFileChooserBuilder(FileChooserBuilder builder) {
+            this.builder = builder;
+            this.builder.chooser.setMultiSelectionEnabled(true);
+        }
+
+        /**
+         * Accepts the file chooser and calls the consumer when ready
+         *
+         * @param consumer
+         */
+        public void accept(Consumer<File[]> consumer) {
+            try {
+                if (builder.method == Method.OPEN) {
+                    if (builder.chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                        consumer.accept(builder.chooser.getSelectedFiles());
+                    }
+                }
+            } catch (Exception ex) {
+                ExceptionHandler.get().handle(ex);
+            }
+        }
+
+    }
+
     /**
      * Builder for file choosers
      */
     public static class FileChooserBuilder {
-        
+
         /** Chooser */
         private final JFileChooser chooser;
         /** Method for the chooser */
@@ -83,20 +180,20 @@ public class FileChooserFactory {
         public FileChooserBuilder() {
             chooser = new JFileChooser();
         }
-        
+
         /**
          * Selects only files
-         * 
+         *
          * @return FileChooserBuilder
          */
         private FileChooserBuilder files() {
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
             return this;
         }
-        
+
         /**
          * Sets the method for the dialog
-         * 
+         *
          * @param method
          * @return FileChooserBuilder
          */
@@ -104,10 +201,10 @@ public class FileChooserFactory {
             this.method = method;
             return this;
         }
-        
+
         /**
          * Sets the filter
-         * 
+         *
          * @param filter
          * @return FileChooserBuilder
          */
@@ -115,10 +212,10 @@ public class FileChooserFactory {
             filter.apply(chooser);
             return this;
         }
-        
+
         /**
          * Sets the dialog title
-         * 
+         *
          * @param title
          * @return FileChooserBuilder
          */
@@ -128,36 +225,8 @@ public class FileChooserFactory {
         }
 
         /**
-         * Acepts the file chooser and calls the consumer when ready
-         * 
-         * @param consumer 
-         */
-        public void accept(Consumer<File> consumer) {
-            try {
-                if (method == Method.OPEN) {
-                    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        consumer.accept(chooser.getSelectedFile());
-                    }
-                } else {
-                    if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                        File file = addExtensionIfRequired(chooser.getSelectedFile(), chooser.getFileFilter());
-                        if (!chooser.getFileFilter().accept(file)) {
-                            throw new InvalidOpenFileException();
-                        }
-                        if (!checkOverride(file)) {
-                            return;
-                        }
-                        consumer.accept(file);
-                    }
-                }
-            } catch (Exception ex) {
-                ExceptionHandler.get().handle(ex);
-            }
-        }
-        
-        /**
          * Checks file override
-         * 
+         *
          * @param file
          * @return boolean
          */
@@ -171,7 +240,7 @@ public class FileChooserFactory {
 
         /**
          * Adds the extension to the file if required
-         * 
+         *
          * @param file
          * @param fileFilter
          * @return File
@@ -188,14 +257,14 @@ public class FileChooserFactory {
             }
             return file;
         }
-        
+
     }
-    
+
     /**
      * Method for the dialog
      */
     private static enum Method {
         OPEN, SAVE
     }
-    
+
 }
