@@ -4,13 +4,13 @@
 
 VISNode is the programable node based image editor built entirely in Java. We designed it to be easy to learn and easy to use, allowing users to easily program the image editor to do the heavy work for them.
 
-VISNode is a very pwerful tool for experimenting with different ways of manipulating images, providing a wide variety of image manipulation processes, easy parameter editing and instant feedback.
+VISNode is a very powerful tool for experimenting with different ways of manipulating images, providing a wide variety of image manipulation processes, easy parameter editing and instant feedback.
 
 Currently supported file formats are JPG, BMP, PNG, GIF and DICOM (*Digital Imaging and Communications in Medicine*).
 
 Contact us at [visnode@gmail.com](mailto:visnode@gmail.com)
 
-## Instalation
+## Installation
 
 ### Prerequisites
 
