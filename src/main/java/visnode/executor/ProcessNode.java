@@ -16,6 +16,8 @@ import javax.swing.event.EventListenerList;
 import org.apache.commons.lang3.math.NumberUtils;
 import visnode.application.ExceptionHandler;
 import visnode.application.ProcessMetadata;
+import static visnode.application.ProcessMetadata.fromClass;
+import visnode.application.VISNode;
 import visnode.commons.Output;
 import visnode.commons.TypeConverter;
 import visnode.pdi.Process;
@@ -45,6 +47,8 @@ public class ProcessNode implements Node, AttacherNode {
     private Process process;
     /** If the process has been invalidated */
     private boolean invalidated;
+    /** Process meta-data */
+    private ProcessMetadata metadata;
 
     /**
      * Creates a new process node
@@ -59,8 +63,11 @@ public class ProcessNode implements Node, AttacherNode {
         this.connector = new NodeConnector(this);
         this.inputChangeSupport = new PropertyChangeSupport(this);
         this.outputChangeSupport = new PropertyChangeSupport(this);
-        listenerList = new EventListenerList();
-        invalidated = true;
+        this.listenerList = new EventListenerList();
+        this.invalidated = true;
+        VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
+            metadata = ProcessMetadata.fromClass(process, locale);
+        });
     }
 
     /**
@@ -79,12 +86,12 @@ public class ProcessNode implements Node, AttacherNode {
             return param;
         }).collect(Collectors.toList());
     }
-    
+
     /**
      * Sets the default input value
-     * 
+     *
      * @param meta
-     * @param param 
+     * @param param
      */
     private void dafaultInput(ProcessMetadata meta, NodeParameter param) {
         if (meta.getDefault(param.getName()) != null) {
@@ -92,7 +99,7 @@ public class ProcessNode implements Node, AttacherNode {
             Object value;
             try {
                 value = NumberUtils.createNumber(meta.getDefault(param.getName()));
-            } catch(NumberFormatException ex) {
+            } catch (NumberFormatException ex) {
                 value = meta.getDefault(param.getName());
             }
             this.input.put(param.getName(), converter.convert(value, param.getType()));
@@ -232,7 +239,7 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public String getName() {
-        return ProcessMetadata.fromClass(processType).getName();
+        return metadata.getName();
     }
 
     @Override

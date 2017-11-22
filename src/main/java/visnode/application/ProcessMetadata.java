@@ -88,6 +88,11 @@ public class ProcessMetadata {
         return name;
     }
 
+    public boolean containsName(String filter) {
+        return name_pt_BR.toLowerCase().contains(filter) ||
+                name_en_US.toLowerCase().contains(filter);
+    }
+    
     /**
      * Returns the description
      *
@@ -95,6 +100,12 @@ public class ProcessMetadata {
      */
     public String getDescription() {
         return description;
+    }
+    
+    
+    public boolean containsDescription(String filter) {
+        return description_pt_BR.toLowerCase().contains(filter) ||
+                description_en_US.toLowerCase().contains(filter);
     }
 
     /**

@@ -161,7 +161,7 @@ public class ProcessBrowser extends JComponent {
                 break;
             }
             if (filter != null) {
-                if (!metadata.getName().toLowerCase().contains(filter) && !metadata.getDescription().toLowerCase().contains(filter)) {
+                if (!metadata.containsName(filter) && !metadata.containsDescription(filter)) {
                     continue;
                 }
             }

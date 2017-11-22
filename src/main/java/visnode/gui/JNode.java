@@ -52,7 +52,7 @@ public class JNode extends JComponent {
     /**
      * Returns the connectors for this node
      * 
-     * @return Set<JNodeConnector>
+     * @return {@code Set<JNodeConnector>}
      */
     public Set<JNodeConnector> getConnectors() {
         Set<JNodeConnector> connectors = new HashSet<>();
@@ -67,7 +67,7 @@ public class JNode extends JComponent {
     /**
      * Returns the connections for this node
      * 
-     * @return Set<JNodeConnection>
+     * @return {@code Set<JNodeConnection>}
      */
     public Set<JNodeConnection> getConnections() {
         return getParentNodeContainer().getConnections(this);
