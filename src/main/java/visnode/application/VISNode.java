@@ -136,6 +136,15 @@ public class VISNode {
     public NetworkEditor getNetworkEditor() {
         return panel.getNetworkEditor();
     }
+    
+    /**
+     * Returns the main window
+     * 
+     * @return MainPanel
+     */
+    public MainPanel getMainPanel() {
+        return panel;
+    }
 
     /**
      * Returns the actions for the application
