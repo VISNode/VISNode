@@ -31,6 +31,7 @@ public class ProcessLoader {
                 getSubTypesOf(Process.class).stream().
                 collect(Collectors.toSet());
         classes.add(DynamicPixelProcess.class);
+        classes.add(ObjectExtractionProcess.class);
         return Collections.unmodifiableSet(classes);
     }
 
