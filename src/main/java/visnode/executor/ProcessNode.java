@@ -1,5 +1,8 @@
 package visnode.executor;
 
+import io.reactivex.Observable;
+import io.reactivex.internal.subscribers.FutureSubscriber;
+import io.reactivex.subjects.BehaviorSubject;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import visnode.commons.Input;
@@ -11,12 +14,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.swing.event.EventListenerList;
 import org.apache.commons.lang3.math.NumberUtils;
 import visnode.application.ExceptionHandler;
 import visnode.application.ProcessMetadata;
-import static visnode.application.ProcessMetadata.fromClass;
 import visnode.application.VISNode;
 import visnode.commons.Output;
 import visnode.commons.TypeConverter;
@@ -137,10 +140,31 @@ public class ProcessNode implements Node, AttacherNode {
     }
 
     @Override
-    public Object getOutput(String attribute) {
+    public Observable getOutput(String attribute) {
+        BehaviorSubject subject = BehaviorSubject.create();
         if (invalidated) {
-            process();
+            process((p) -> {
+                Object value = getOutputValue(attribute);
+                if (value != null) {
+                    subject.onNext(value);
+                }
+            });
+            return subject;
         }
+        Object value = getOutputValue(attribute);
+        if (value != null) {
+            subject.onNext(value);
+        }
+        return subject;
+    }
+
+    /**
+     * Returns the output value
+     * 
+     * @param attribute
+     * @return Object
+     */
+    private Object getOutputValue(String attribute) {
         try {
             return processOutput.get(attribute).invoke(process);
         } catch (Exception e) {
@@ -155,14 +179,23 @@ public class ProcessNode implements Node, AttacherNode {
 
     /**
      * Runs the process
+     *
+     * @param callable
      */
-    public void process() {
+    public void process(Consumer callable) {
+
         process = buildProcess();
         Thread th = new Thread(() -> {
-            process.process();
-            invalidated = false;
-            for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
-                outputChangeSupport.firePropertyChange(entry.getKey(), null, getOutput(entry.getKey()));
+            try {
+                process.process();
+                invalidated = false;
+                for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
+                    outputChangeSupport.firePropertyChange(entry.getKey(), null, getOutputValue(entry.getKey()));
+                }
+
+                callable.accept(true);
+            } catch (Exception ex) {
+                ExceptionHandler.get().handle(ex);
             }
         });
         th.setDaemon(true);

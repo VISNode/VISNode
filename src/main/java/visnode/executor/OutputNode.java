@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import io.reactivex.Observable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class OutputNode implements Node, AttacherNode {
     }
     
     @Override
-    public Object getOutput(String attribute) {
+    public Observable getOutput(String attribute) {
         throw new InvalidAttributeException(attribute);
     }
 

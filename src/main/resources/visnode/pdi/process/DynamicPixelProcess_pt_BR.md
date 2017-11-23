@@ -9,7 +9,7 @@ function process(channel, x, y, value) {
 }
 ```
 
-#### Parametros
+#### Parâmetros
 * __image:__ Imagem
 * __script:__ Script contendo o código de maniputação dos pixels
 

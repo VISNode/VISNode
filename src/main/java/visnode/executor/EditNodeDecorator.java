@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import io.reactivex.Observable;
 import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.util.List;
@@ -72,7 +73,7 @@ public class EditNodeDecorator implements Node, AttacherNode {
     }
 
     @Override
-    public Object getOutput(String attribute) {
+    public Observable getOutput(String attribute) {
         return decorated.getOutput(attribute);
     }
 

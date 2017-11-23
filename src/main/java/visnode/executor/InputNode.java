@@ -1,5 +1,7 @@
 package visnode.executor;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
@@ -45,9 +47,9 @@ public class InputNode implements Node {
     }
 
     @Override
-    public Object getOutput(String attribute) {
+    public Observable getOutput(String attribute) {
         if (attribute.equals("image")) {
-            return image;
+            return BehaviorSubject.createDefault(image);
         }
         throw new InvalidAttributeException(attribute);
     }

@@ -1,7 +1,9 @@
 package visnode.executor;
 
+import io.reactivex.Observable;
 import java.beans.PropertyChangeListener;
 import java.util.List;
+import org.reactivestreams.Subscriber;
 
 /**
  * Node representation
@@ -30,7 +32,7 @@ public interface Node {
      * @param attribute
      * @return Object
      */
-    public Object getOutput(String attribute);
+    public Observable getOutput(String attribute);
     
     /**
      * Sets a output value

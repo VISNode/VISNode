@@ -51,7 +51,9 @@ public class NodeConnection {
         };
         leftNode.addOutputChangeListener(connectorListener);
         try {
-            rightNode.setInput(rightAttribute, leftNode.getOutput(leftAttribute));
+            leftNode.getOutput(leftAttribute).subscribe((value) -> {
+                rightNode.setInput(rightAttribute, value);
+            });
         } catch(Exception e) {
             ExceptionHandler.get().handle(e);
         } 

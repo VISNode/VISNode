@@ -35,7 +35,11 @@ public class ProcessMetadata {
 
     public ProcessMetadata() {
         name = "";
+        name_en_US = "";
+        name_pt_BR = "";
         description = "";
+        description_pt_BR = "";
+        description_en_US = "";
         defaults = new HashMap<>();
     }
 
@@ -88,6 +92,12 @@ public class ProcessMetadata {
         return name;
     }
 
+    /**
+     * Returns true if the name contains a filter
+     * 
+     * @param filter
+     * @return boolean
+     */
     public boolean containsName(String filter) {
         return name_pt_BR.toLowerCase().contains(filter) ||
                 name_en_US.toLowerCase().contains(filter);
@@ -102,10 +112,15 @@ public class ProcessMetadata {
         return description;
     }
     
-    
+    /**
+     * Returns true if the description contains a filter
+     * 
+     * @param filter
+     * @return boolean
+     */
     public boolean containsDescription(String filter) {
         return description_pt_BR.toLowerCase().contains(filter) ||
-                description_en_US.toLowerCase().contains(filter);
+                description_pt_BR.toLowerCase().contains(filter);
     }
 
     /**

@@ -9,7 +9,7 @@ function process(objectList) {
 }
 ```
 
-#### Parametros
+#### Parâmetros
 * __objectList:__ Lista de objetos extraidos da imagem
 * __script:__ Script para extração de objetos   
 

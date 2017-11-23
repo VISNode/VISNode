@@ -1,0 +1,9 @@
+{
+    "name_en_US": "Canvas Size",
+    "name_pt_BR": "Tamanho da tela",
+    "description_en_US": "Adjust the canvas size",
+    "description_pt_BR": "Ajusta o tamanho da tela de pintura",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/visnode/pdi/process/CanvasSizeProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/CanvasSizeProcess.java"
+}

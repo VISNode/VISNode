@@ -75,21 +75,28 @@ public class ParameterComponentWrapper extends JComponent {
      */
     private void updateComponentValue() {
         try {
-            TypeConverter converter = new TypeConverter();
-            Object value;
             if (type == ConnectionType.INPUT) {
-                value = node.getInput(parameter.getName());
+                updateComponentValue(node.getInput(parameter.getName()));
             } else {
-                value = node.getOutput(parameter.getName());
+                node.getOutput(parameter.getName()).subscribe((value) -> {
+                    updateComponentValue(value);
+                });
             }
-            if (value == null || value == oldValue) {
-                return;
-            }
-            oldValue = value;
-            component.setValue(converter.convert(value, parameter.getType()));
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
         }
+    }
+
+    /**
+     * Updates the component value
+     */
+    private void updateComponentValue(Object value) {
+        TypeConverter converter = new TypeConverter();
+        if (value == null || value == oldValue) {
+            return;
+        }
+        oldValue = value;
+        component.setValue(converter.convert(value, parameter.getType()));
     }
 
 }

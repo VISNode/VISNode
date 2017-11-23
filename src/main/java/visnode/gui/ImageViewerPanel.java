@@ -1,7 +1,6 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
@@ -23,8 +22,6 @@ public class ImageViewerPanel extends JPanel {
 
     /** Image */
     private final Image image;
-    /** Panel margin */
-    private static final int MARGIN = 200;
 
     /**
      * Creates a new image viewer dialog
@@ -94,16 +91,8 @@ public class ImageViewerPanel extends JPanel {
     private JComponent buildImage() {
         RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
         JComponent imageComponent = new JLabel(new ImageIcon(ImageConverter.toBufferedImage(image, options)));
-        Dimension screen = VISNode.get().getMainPanel().getSize();
-        screen.width -= MARGIN;
-        screen.height -= MARGIN;
-        // The image is lower than the screen
-        if (image.getWidth() < screen.getWidth()
-                && image.getHeight() < screen.getHeight()) {
-            return imageComponent;
-        }
         JScrollPane scrollPane = new JScrollPane(imageComponent);
-        scrollPane.setPreferredSize(screen);
+        scrollPane.setMaximumSize(VISNode.get().getMainPanel().getSize());
         return scrollPane;
     }
 
