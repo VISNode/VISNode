@@ -2,20 +2,21 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
+import visnode.application.Messages;
 import visnode.commons.MultiFile;
+import visnode.commons.gui.Button;
+import visnode.commons.gui.Buttons;
+import visnode.commons.gui.Panel;
 import visnode.commons.swing.FileChooserFactory;
 
 /**
  * Files editor
  */
-public class FilesEditor extends JComponent implements ParameterComponent<MultiFile> {
+public class FilesEditor extends Panel implements ParameterComponent<MultiFile> {
 
-    /** File chooser */
-    private JButton button;
     /** Slider image */
     private JSlider slider;
     /** Image selection */
@@ -33,19 +34,8 @@ public class FilesEditor extends JComponent implements ParameterComponent<MultiF
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        add(buildButton());
+        add(Buttons.create().text(Messages.get().message("file.choose")).focusable(false).id("file"));
         add(buidSlider(), BorderLayout.SOUTH);
-    }
-
-    /**
-     * Creates de file chooser button
-     * 
-     * @return JComponent
-     */
-    private JComponent buildButton() {
-        button = new JButton("Choose file");
-        button.setFocusable(false);
-        return button;
     }
 
     /**
@@ -78,7 +68,7 @@ public class FilesEditor extends JComponent implements ParameterComponent<MultiF
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        button.addActionListener((e) -> {
+        findId("file").as(Button.class).addActionListener((e) -> {
             FileChooserFactory.openImages().accept((filesSelected) -> {
                 multiFile = new MultiFile(filesSelected, 0);
                 slider.setEnabled(false);

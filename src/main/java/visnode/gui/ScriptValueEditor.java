@@ -5,23 +5,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.AbstractAction;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JToolBar;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.commons.ScriptValue;
+import visnode.commons.gui.Buttons;
+import visnode.commons.gui.Panel;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 
 /**
  * Dynamic node value editor
  */
-public class ScriptValueEditor extends JComponent implements ParameterComponent<ScriptValue> {
+public class ScriptValueEditor extends Panel implements ParameterComponent<ScriptValue> {
 
     /** Value */
     private ScriptValue value;
-    /** Code button */
-    private JButton codeButton;
     /** Value listener */
     private ValueListener valueListener;
 
@@ -31,7 +30,6 @@ public class ScriptValueEditor extends JComponent implements ParameterComponent<
     public ScriptValueEditor() {
         value = buildDefault();
         initGui();
-        initEvents();
     }
 
     /**
@@ -39,27 +37,9 @@ public class ScriptValueEditor extends JComponent implements ParameterComponent<
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        add(buildButton());
-    }
-
-    /**
-     * Initialize the interface events
-     */
-    private void initEvents() {
-        codeButton.addActionListener((e) -> {
+        add(Buttons.create("Code").icon(IconFactory.get().create("fa:code")).onClick((e) -> {
             showDialog();
-        });
-    }
-
-    /**
-     * Builds the button code
-     *
-     * @return JComponent
-     */
-    private JComponent buildButton() {
-        this.codeButton = new JButton("Code");
-        codeButton.setIcon(IconFactory.get().create("fa:code"));
-        return codeButton;
+        }));
     }
 
     /**

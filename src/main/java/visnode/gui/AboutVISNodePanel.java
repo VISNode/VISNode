@@ -13,12 +13,12 @@ import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import visnode.application.ExceptionHandler;
 import visnode.application.VISNodeConstants;
+import visnode.commons.gui.Labels;
 import visnode.commons.swing.WindowFactory;
 
 /**
@@ -26,16 +26,12 @@ import visnode.commons.swing.WindowFactory;
  */
 public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
 
-    /** GitHub button */
-    private JButton github;
-
     /**
      * Creates about information panel
      */
     public AboutVISNodePanel() {
         super();
         initGui();
-        initEvents();
     }
 
     /**
@@ -54,19 +50,6 @@ public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
         setLayout(new BorderLayout());
         add(buildIcon(), BorderLayout.WEST);
         add(buildInfo());
-    }
-
-    /**
-     * Initializes the events
-     */
-    private void initEvents() {
-        github.addActionListener((ev) -> {
-            try {
-                Desktop.getDesktop().browse(new URL(GITHUB_URL).toURI());
-            } catch (IOException | URISyntaxException e) {
-                ExceptionHandler.get().handle(e);
-            }
-        });
     }
 
     /**
@@ -97,17 +80,24 @@ public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
         title.setFont(new Font("Segoe UI", Font.PLAIN, 32));
         JLabel version = new JLabel(VERSION);
         version.setBackground(Color.red);
-        github = new JButton();
-        github.setIcon(IconFactory.get().create("fa:github"));
-        github.setText(GITHUB_URL);
-        github.setBorder(BorderFactory.createEmptyBorder());
-        github.setBorderPainted(false);
-        github.setContentAreaFilled(false);
-        github.setFocusPainted(false);
-        github.setOpaque(false);
+        
+//        github = new JButton();
+//        github.setIcon(IconFactory.get().create("fa:github"));
+//        github.setText(GITHUB_URL);
+//        github.setBorder(BorderFactory.createEmptyBorder());
+//        github.setBorderPainted(false);
+//        github.setContentAreaFilled(false);
+//        github.setFocusPainted(false);
+//        github.setOpaque(false);
         info.add(title);
         info.add(version);
-        info.add(github);
+        info.add(Labels.create(GITHUB_URL).icon(IconFactory.get().create("fa:github")).onClick((ev) -> {
+            try {
+                Desktop.getDesktop().browse(new URL(GITHUB_URL).toURI());
+            } catch (IOException | URISyntaxException e) {
+                ExceptionHandler.get().handle(e);
+            }
+        }));
         return info;
     }
 

@@ -1,14 +1,15 @@
 package visnode.gui;
 
 import java.io.File;
-import javax.swing.JButton;
 import javax.swing.JComponent;
+import visnode.application.Messages;
+import visnode.commons.gui.Button;
 import visnode.commons.swing.FileChooserFactory;
 
 /**
  * File editor
  */
-public class FileEditor extends JButton implements ParameterComponent<File> {
+public class FileEditor extends Button implements ParameterComponent<File> {
 
     /** Value */
     private File value;
@@ -17,9 +18,9 @@ public class FileEditor extends JButton implements ParameterComponent<File> {
      * Creates a new file editor
      */
     public FileEditor() {
-        super("Choose file");
+        super();
         value = null;
-        setFocusable(false);
+        text(Messages.get().message("file.choose")).focusable(false);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class FileEditor extends JButton implements ParameterComponent<File> {
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        addActionListener((e) -> {
+        onClick((e) -> {
             FileChooserFactory.openImage().accept((File file) -> {
                 valueListener.valueChanged(null, (File) file);
             });

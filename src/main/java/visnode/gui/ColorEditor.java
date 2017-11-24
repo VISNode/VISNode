@@ -2,17 +2,16 @@ package visnode.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
+import visnode.application.Messages;
+import visnode.commons.gui.Buttons;
 
 /**
  * Color editor
  */
 public class ColorEditor extends JComponent implements ParameterComponent<Color> {
 
-    /** Field */
-    private JButton field;
     /** Color */
     private Color color;
     /** Value listener */
@@ -24,21 +23,15 @@ public class ColorEditor extends JComponent implements ParameterComponent<Color>
     public ColorEditor() {
         super();
         initGui();
-        initEvents();
     }
 
     private void initGui() {
         setLayout(new BorderLayout());
-        field = new JButton("Color");
-        add(field);
-    }
-    
-    private void initEvents() {
-        field.addActionListener((ev) -> {
+        add(Buttons.create().text(Messages.get().message("color")).focusable(false).onClick((ev) -> {
             Color ret = JColorChooser.showDialog(null, "Choose a color", color);
             setValue(ret);
             valueListener.valueChanged(ret, ret);
-        });
+        }));
     }
     
     @Override
