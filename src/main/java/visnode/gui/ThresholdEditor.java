@@ -1,17 +1,14 @@
 package visnode.gui;
 
-import java.awt.BorderLayout;
 import javax.swing.JComponent;
+import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import visnode.commons.Threshold;
-import visnode.commons.gui.Inputs;
-import visnode.commons.gui.Panel;
-import visnode.commons.gui.RangedIntegerInput;
 
 /**
  * Threshold editor
  */
-public class ThresholdEditor extends Panel implements ParameterComponent<Threshold> {
+public class ThresholdEditor extends JSlider implements ParameterComponent<Threshold> {
 
     /** Value */
     private Threshold value;
@@ -20,10 +17,10 @@ public class ThresholdEditor extends Panel implements ParameterComponent<Thresho
      * Creates a new threshold editor
      */
     public ThresholdEditor() {
-        super();
+        super(0, 255);
         value = new Threshold(128);
-        setLayout(new BorderLayout());
-        put(Inputs.rangedInteger().id("field"));
+        setFocusable(false);
+        setOpaque(false);
     }
 
     @Override
@@ -38,13 +35,13 @@ public class ThresholdEditor extends Panel implements ParameterComponent<Thresho
         } else {
             this.value = new Threshold(0);
         }
-        findId("field").as(RangedIntegerInput.class).value(this.value.intValue());
+        super.setValue(this.value.intValue());
     }
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        findId("field").as(RangedIntegerInput.class).valueObservable().subscribe((v) -> {
-            valueListener.valueChanged(0, new Threshold(v));
+        addChangeListener((ChangeEvent e) -> {
+            valueListener.valueChanged(0, new Threshold(getValue()));
         });
     }
     

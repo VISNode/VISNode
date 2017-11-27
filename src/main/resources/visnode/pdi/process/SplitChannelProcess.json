@@ -1,0 +1,12 @@
+{
+    "name_en_US": "Channel split",
+    "name_pt_BR": "Separação de canais",
+    "description_en_US": "Splits the image into channels",
+    "description_pt_BR": "Separa a imagem em canais",
+    "tags": ["adjusts"],
+    "author": "VISNode team",
+    "defaults": {
+    },
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/SplitChannelProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/SplitChannelProcess.java"
+}

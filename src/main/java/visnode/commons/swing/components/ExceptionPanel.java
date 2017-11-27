@@ -58,13 +58,15 @@ public class ExceptionPanel extends JPanel {
      * Updates the interface
      */
     private void update() {
-        removeAll();
-        if (exceptions.size() == 1) {
-            add(buildExceptionPane(exceptions.get(0)));
-        } else {
-            add(buildTabs());
-        }
-        repackWindow();
+        SwingUtilities.invokeLater(() -> {
+            removeAll();
+            if (exceptions.size() == 1) {
+                add(buildExceptionPane(exceptions.get(0)));
+            } else {
+                add(buildTabs());
+            }
+            repackWindow();
+        });
     }
     
     /**
