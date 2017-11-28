@@ -34,13 +34,13 @@ jobs:
       
       - run: mvn -f ../Commons/pom.xml compile
       
-      - run: mvn -f ../ExamsIO/pom.xml compile
-      
-      - run: mvn -f ../PDI/pom.xml compile    
-
       - run: mvn -f ../Commons/pom.xml install
       
+      - run: mvn -f ../ExamsIO/pom.xml compile
+      
       - run: mvn -f ../ExamsIO/pom.xml install
+      
+      - run: mvn -f ../PDI/pom.xml compile    
       
       - run: mvn -f ../PDI/pom.xml install    
     
