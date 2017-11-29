@@ -6,13 +6,13 @@ import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import visnode.commons.gui.Labels;
 import visnode.gui.IconFactory;
 
 /**
@@ -89,7 +89,7 @@ public class ExceptionPanel extends JPanel {
         JTabbedPane tabs = new JTabbedPane();
         for (Exception exception : exceptions) {
             if (tabs.getTabCount() > EXCEPTION_LIMIT) {
-                tabs.add("And " + (exceptions.size() - EXCEPTION_LIMIT) + " more", new JLabel(IconFactory.get().create("fa:frown-o")));
+                tabs.add("And " + (exceptions.size() - EXCEPTION_LIMIT) + " more", Labels.create().icon(IconFactory.get().create("fa:frown-o")));
                 break;
             }
             tabs.add(exception.getClass().getSimpleName(), buildExceptionPane(exception));
@@ -118,7 +118,7 @@ public class ExceptionPanel extends JPanel {
      */
     private JComponent buildHeader(Exception exception) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.add(new JLabel(IconFactory.get().create("fa:exclamation-triangle")), BorderLayout.WEST);
+        panel.add(Labels.create().icon(IconFactory.get().create("fa:exclamation-triangle")), BorderLayout.WEST);
         panel.add(buildMessageLabel(exception));
         return panel;
     }
