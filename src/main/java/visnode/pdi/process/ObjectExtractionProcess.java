@@ -6,8 +6,8 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
-import org.paim.pdi.BinaryLabelingProcess.ExtractedObject;
-import org.paim.pdi.BinaryLabelingProcess.ObjectList;
+import org.paim.pdi.ExtractedObject;
+import org.paim.pdi.ObjectList;
 import visnode.application.ScriptRunner;
 import visnode.commons.Input;
 import visnode.commons.Output;
@@ -24,7 +24,7 @@ public class ObjectExtractionProcess implements Process {
     /** Script runner */
     private final ScriptRunner scriptRunner;
     /** The result image */
-    private Image resultImage;
+    private BinaryImage resultImage;
 
     /**
      * Creates a new invert colors process
@@ -35,7 +35,7 @@ public class ObjectExtractionProcess implements Process {
     public ObjectExtractionProcess(@Input("objectList") ObjectList objectList, @Input("script") ScriptValue script) {
         this.objectList = objectList;
         this.scriptRunner = new ScriptRunner(script);
-        this.resultImage = ImageFactory.buildEmptyImage();
+        this.resultImage = ImageFactory.buildBinaryImage(1, 1);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ObjectExtractionProcess implements Process {
      * @param list
      * @return resultFromObjects
      */
-    private Image resultFromObjects(List<ExtractedObject> list) {
+    private BinaryImage resultFromObjects(List<ExtractedObject> list) {
         BinaryImage result = null;
         for (ExtractedObject extractedObject : list) {
             if (result == null) {
@@ -80,10 +80,10 @@ public class ObjectExtractionProcess implements Process {
     /**
      * Returns the output image
      *
-     * @return Image
+     * @return BinaryImage
      */
     @Output("image")
-    public Image getImage() {
+    public BinaryImage getImage() {
         return resultImage;
     }
 
