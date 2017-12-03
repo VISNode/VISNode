@@ -1,7 +1,6 @@
 package visnode.executor;
 
 import io.reactivex.Observable;
-import io.reactivex.internal.subscribers.FutureSubscriber;
 import io.reactivex.subjects.BehaviorSubject;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

@@ -10,20 +10,17 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
+import javax.swing.JLayeredPane;
 
 /**
  * Node container
  */
-public class JNodeContainer extends JComponent {
+public class JNodeContainer extends JLayeredPane {
 
     /** Selection of nodes */
     private final Selection<JNode> selection;
@@ -59,6 +56,19 @@ public class JNodeContainer extends JComponent {
     private void setupDragSupport() {
         DragSupport dragSupport = new DragSupport(this);
         dragSupport.setAllowDragPredicate((component) -> component instanceof JNode || component instanceof JConnectorPoint);
+    }
+
+    @Override
+    public Component add(Component comp) {
+        if (comp instanceof JNodeConnection) {
+            super.add(comp, DEFAULT_LAYER);
+            return comp;
+        }
+        if (comp instanceof JNode) {
+            super.add(comp, PALETTE_LAYER);
+            return comp;
+        }
+        throw new IllegalArgumentException("Only JNodes and JConnections can be added to the container");
     }
 
     /**

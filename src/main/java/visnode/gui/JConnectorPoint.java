@@ -68,7 +68,7 @@ public class JConnectorPoint extends JComponent implements PositionSupplier {
      * @param another 
      */
     public void connectTo(JConnectorPoint another) {
-        getParentNodeContainer().add(new JNodeConnection(this, another));
+        getParentNodeContainer().add(new JNodeConnection(another, this));
     }
 
     /**
