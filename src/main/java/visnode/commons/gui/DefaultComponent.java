@@ -6,7 +6,7 @@ package visnode.commons.gui;
 
 import io.reactivex.Observable;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
 
@@ -84,6 +84,26 @@ public interface DefaultComponent<T extends DefaultComponent> extends Component<
     @Override
     public default Observable<Color> backgroundObservable() {
         return getDefaultComponentSupport().backgroundObservable();
+    }
+
+    @Override
+    public default T preferredSize(Dimension preferredSize) {
+        return getDefaultComponentSupport().preferredSize(preferredSize);
+    }
+
+    @Override
+    public default T preferredSize(Observable<Dimension> preferredSize) {
+        return getDefaultComponentSupport().preferredSize(preferredSize);
+    }
+
+    @Override
+    public default Dimension preferredSize() {
+        return getDefaultComponentSupport().preferredSize();
+    }
+
+    @Override
+    public default Observable<Dimension> preferredSizeObservable() {
+        return getDefaultComponentSupport().preferredSizeObservable();
     }
     
     @Override

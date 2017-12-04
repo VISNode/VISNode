@@ -5,7 +5,10 @@
 package visnode.commons.gui;
 
 import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
@@ -110,6 +113,34 @@ public class DefaultComponentSupport<T extends DefaultComponent> implements Comp
     @Override
     public Observable<Color> backgroundObservable() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public T preferredSize(Dimension preferredSize) {
+        swingComponent().setPreferredSize(preferredSize);
+        return component;
+    }
+
+    @Override
+    public T preferredSize(Observable<Dimension> preferredSize) {
+        preferredSize.subscribe((size) -> {
+            preferredSize(size);
+        });
+        return component;
+    }
+
+    @Override
+    public Dimension preferredSize() {
+        return swingComponent().getPreferredSize();
+    }
+
+    @Override
+    public Observable<Dimension> preferredSizeObservable() {
+        Subject<Dimension> subject = BehaviorSubject.createDefault(preferredSize());
+        swingComponent().addPropertyChangeListener("preferredSize", (evt) -> {
+            subject.onNext((Dimension)evt.getNewValue());
+        });
+        return subject;
     }
     
     @Override

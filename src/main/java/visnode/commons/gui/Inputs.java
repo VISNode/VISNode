@@ -12,6 +12,15 @@ public class Inputs {
     }
     
     /**
+     * Creates a new TextField
+     * 
+     * @return TextField
+     */
+    public static TextField text() {
+        return new TextField();
+    }
+    
+    /**
      * Creates a new Integer input
      * 
      * @return Numeric Input

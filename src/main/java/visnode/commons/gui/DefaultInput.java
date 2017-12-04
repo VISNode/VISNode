@@ -6,6 +6,7 @@
 package visnode.commons.gui;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Default input
@@ -28,6 +29,17 @@ public interface DefaultInput<V, T extends DefaultInput> extends DefaultComponen
     @Override
     public default Observable<V> valueObservable() {
         return getDefaultInputSupport().valueObservable();
+    }
+
+    /**
+     * Subscribes to the value and return self
+     * 
+     * @param consumer
+     * @return T
+     */
+    public default T subscribeValue(Consumer<V> consumer) {
+        getDefaultInputSupport().valueObservable().subscribe(consumer);
+        return (T) this;
     }
 
     @Override

@@ -17,10 +17,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import visnode.commons.gui.Inputs;
 import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
 import visnode.gui.ScrollFactory;
@@ -77,43 +75,11 @@ public class ProcessBrowser extends JComponent {
     private JComponent buildFilterPanel() {
         JPanel panel = new JPanel(new BorderLayout(5, 0));
         panel.add(new JLabel(IconFactory.get().create("fa:search")), BorderLayout.WEST);
-        panel.add(buildFilterField());
+        panel.add(Inputs.text()
+                .preferredSize(new Dimension(100, 25))
+                .subscribeValue((val) -> updateList(val)));
         panel.setBorder(BorderFactory.createEmptyBorder(2, 3, 2, 3));
         return panel;
-    }
-
-    /**
-     * Creates the field for name filtering
-     *
-     * @return JComponent
-     */
-    private JComponent buildFilterField() {
-        JTextField field = new JTextField();
-        field.setPreferredSize(new Dimension(100, 25));
-        field.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                updateFilter();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                updateFilter();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                updateFilter();
-            }
-
-            /**
-             * Updates the filter
-             */
-            private void updateFilter() {
-                updateList(field.getText());
-            }
-        });
-        return field;
     }
 
     /**
@@ -151,6 +117,9 @@ public class ProcessBrowser extends JComponent {
      * @param filter
      */
     private void updateList(String filter) {
+        if (list == null) {
+            return;
+        }
         if (filter != null) {
             filter = filter.toLowerCase();
         }
