@@ -10,15 +10,15 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 
 /**
  * Node container
@@ -31,7 +31,7 @@ public class JNodeContainer extends JComponent {
     private final SelectListener selectListener;
     /** Revalidation listener */
     private final RevalidationListener revalidationListener;
-    
+
     /**
      * Creates a new NodeContainer
      */
@@ -45,7 +45,7 @@ public class JNodeContainer extends JComponent {
     }
 
     /**
-     * Inititalizes the interface
+     * Initializes the interface
      */
     private void initGui() {
         setLayout(null);
@@ -59,6 +59,9 @@ public class JNodeContainer extends JComponent {
     private void setupDragSupport() {
         DragSupport dragSupport = new DragSupport(this);
         dragSupport.setAllowDragPredicate((component) -> component instanceof JNode || component instanceof JConnectorPoint);
+        dragSupport.setSelection(() -> {
+            return selection.stream().map((e) -> (JComponent) e).collect(Collectors.toList());
+        });
     }
 
     /**
@@ -89,12 +92,12 @@ public class JNodeContainer extends JComponent {
             }
         });
     }
-    
-    /** 
+
+    /**
      * Starts a connection
-     * 
+     *
      * @param connectorPoint
-     * @param e 
+     * @param e
      */
     public void startConnection(JConnectorPoint connectorPoint, MouseEvent e) {
         add(new JNodeToMouseConnection(this, connectorPoint));
@@ -102,7 +105,7 @@ public class JNodeContainer extends JComponent {
 
     /**
      * Returns the connector point in a specified position
-     * 
+     *
      * @param point
      * @return JConnectorPoint
      */
@@ -112,7 +115,7 @@ public class JNodeContainer extends JComponent {
 
     /**
      * Returns the connector point in a specified position
-     * 
+     *
      * @param point
      * @return JConnectorPoint
      */
@@ -132,7 +135,7 @@ public class JNodeContainer extends JComponent {
     /**
      * Returns the connection between two connector points, or {@code null} if
      * none.
-     * 
+     *
      * @param start
      * @param end
      * @return JNodeConnection
@@ -142,18 +145,18 @@ public class JNodeContainer extends JComponent {
             Component child = getComponent(i);
             if (child instanceof JNodeConnection) {
                 JNodeConnection connection = (JNodeConnection) child;
-                if ((connection.getFirst() == start || connection.getSecond() == start) && 
-                    (connection.getFirst() == end || connection.getSecond() == end)) {
+                if ((connection.getFirst() == start || connection.getSecond() == start)
+                        && (connection.getFirst() == end || connection.getSecond() == end)) {
                     return connection;
                 }
             }
         }
         return null;
     }
-    
+
     /**
      * Returns the connections of a node
-     * 
+     *
      * @param node
      * @return Set of JNodeConnection
      */
@@ -165,8 +168,10 @@ public class JNodeContainer extends JComponent {
             if (child instanceof JNodeConnection) {
                 JNodeConnection connection = (JNodeConnection) child;
                 for (JNodeConnector connector : connectors) {
-                    if (connection.getFirst() == connector.getLeftConnector() || connection.getSecond() == connector.getLeftConnector() ||
-                        connection.getFirst() == connector.getRightConnector() || connection.getSecond() == connector.getRightConnector()) {
+                    if (connection.getFirst() == connector.getLeftConnector() || 
+                            connection.getSecond() == connector.getLeftConnector() || 
+                            connection.getFirst() == connector.getRightConnector() || 
+                            connection.getSecond() == connector.getRightConnector()) {
                         connections.add(connection);
                         break;
                     }
@@ -178,25 +183,25 @@ public class JNodeContainer extends JComponent {
 
     /**
      * Removes a connection
-     * 
-     * @param connection 
+     *
+     * @param connection
      */
     public void removeConnection(JNodeConnection connection) {
         remove(connection);
     }
-    
+
     /**
      * Adds a connection listener
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void addNodeConnectionListener(NodeConnectionListener listener) {
-       listenerList.add(NodeConnectionListener.class, listener);
+        listenerList.add(NodeConnectionListener.class, listener);
     }
-    
+
     /**
      * Fires the event of a connection created
-     * 
+     *
      * @param connection
      */
     public void fireConnectionCreated(JNodeConnection connection) {
@@ -204,10 +209,10 @@ public class JNodeContainer extends JComponent {
             listener.connectionCreated(new NodeConnectionEvent(connection));
         }
     }
-    
+
     /**
      * Fires the event of a connection removed
-     * 
+     *
      * @param connection
      */
     public void fireConnectionRemoved(JNodeConnection connection) {
@@ -256,13 +261,13 @@ public class JNodeContainer extends JComponent {
 
     /**
      * Returns the selection
-     * 
+     *
      * @return {@code Selection<JNode>}
      */
     public Selection<JNode> getSelection() {
         return selection;
     }
-    
+
     /**
      * Select listener
      */
@@ -280,7 +285,13 @@ public class JNodeContainer extends JComponent {
                 for (JNode oldNode : oldSelection) {
                     oldNode.repaint();
                 }
-                selection.set(node);
+                if (e.isControlDown()) {
+                    if (!selection.contains(node)) {
+                        selection.add(node);
+                    }
+                } else {
+                    selection.set(node);
+                }
                 node.repaint();
             }
         }
@@ -296,9 +307,9 @@ public class JNodeContainer extends JComponent {
         @Override
         public void mouseExited(MouseEvent e) {
         }
-        
+
     }
-    
+
     /**
      * Listener that revalidates the preferred size when the children change
      */
@@ -323,7 +334,7 @@ public class JNodeContainer extends JComponent {
         public void componentHidden(ComponentEvent e) {
             revalidate();
         }
-    
+
     }
 
 }
