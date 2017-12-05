@@ -1,7 +1,6 @@
 package visnode.application;
 
 import java.awt.Point;
-import org.paim.commons.ImageFactory;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
@@ -12,17 +11,26 @@ import visnode.executor.OutputNode;
 public class NodeNetworkFactory {
 
     /**
-     * Creates a empty node network
+     * Creates a new node network
      *
      * @return NodeNetwork
      */
-    public static NodeNetwork createEmtpy() {
-        NodeNetwork network = new NodeNetwork();
+    public static NodeNetwork create() {
+        NodeNetwork network = createEmpty();
         InputNode input = new InputNode();
         OutputNode output = new OutputNode();
         network.add(new EditNodeDecorator(input, new Point(50, 50)));
         network.add(new EditNodeDecorator(output, new Point(250, 50)));
         return network;
+    }
+
+    /**
+     * Creates a new empty node network
+     *
+     * @return NodeNetwork
+     */
+    public static NodeNetwork createEmpty() {
+        return new NodeNetwork();
     }
 
 }

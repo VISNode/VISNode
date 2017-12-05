@@ -20,7 +20,7 @@ public class VISNodeModel implements Model {
      * Creates a new model
      */
     public VISNodeModel() {
-        network = NodeNetworkFactory.createEmtpy();
+        network = NodeNetworkFactory.create();
         userPreferences = new UserPreferences();
     }
     

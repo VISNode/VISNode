@@ -57,7 +57,7 @@ public class VISNodeController {
      * Creates a new project
      */
     public void createNew() {
-        model.setNetwork(NodeNetworkFactory.createEmtpy());
+        model.setNetwork(NodeNetworkFactory.create());
         model.setLinkedFile(null);
     }
     

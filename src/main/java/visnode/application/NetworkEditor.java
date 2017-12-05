@@ -234,13 +234,13 @@ public class NetworkEditor extends JComponent {
 
         @Override
         public void connectionRemoved(NodeConnectionEvent evt) {
-            NodeConnectorView leftConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getFirst()).getParentNodeConnector();
-            NodeView leftView = (NodeView) leftConnector.getParentNode();
-            EditNodeDecorator leftNodeDecorator = (EditNodeDecorator) leftView.getModel();
-            AttacherNode leftNode = (AttacherNode) leftNodeDecorator.getDecorated();
-            String leftAttr = leftConnector.getAttribute();
+            NodeConnectorView rightConnector = (NodeConnectorView) ((JConnectorPoint) evt.getConnection().getSecond()).getParentNodeConnector();
+            NodeView rightView = (NodeView) rightConnector.getParentNode();
+            EditNodeDecorator rightNodeDecorator = (EditNodeDecorator) rightView.getModel();
+            AttacherNode rightNode = (AttacherNode) rightNodeDecorator.getDecorated();
+            String rightAttr = rightConnector.getAttribute();
             //
-            leftNode.removeConnection(leftAttr);
+            rightNode.removeConnection(rightAttr);
         }
     }
 

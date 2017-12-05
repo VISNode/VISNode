@@ -26,8 +26,7 @@ public class NodeNetworkParser {
     private final Gson gson;
 
     public NodeNetworkParser() {
-        this.gson = new GsonBuilder().
-                create();
+        this.gson = new GsonBuilder().registerTypeAdapter(File.class, new FileAdapter()).create();
     }
 
     /**
@@ -45,8 +44,14 @@ public class NodeNetworkParser {
             nodes.add(toJson(node));
         });
         data.put("nodes", nodes);
-        data.put("input", toJsonInput(network.getNodes().get(network.getInputIndex())));
-        data.put("output", toJson(network.getNodes().get(network.getOutputIndex())));
+        int input = network.getInputIndex();
+        if (input >= 0) {
+            data.put("input", toJsonInput(network.getNodes().get(input)));
+        }
+        int output = network.getOutputIndex();
+        if (output >= 0) {
+            data.put("output", toJson(network.getNodes().get(output)));
+        }
         return gson.toJson(data);
     }
 
@@ -118,16 +123,20 @@ public class NodeNetworkParser {
             InputNode input = new InputNode();
             OutputNode out = new OutputNode();
             Map inputMap = (Map) data.get("input");
-            Map outputMap = (Map) data.get("output");
-            mapHashCode.put(inputMap.get("hashCode").toString(), input);
-            mapHashCode.put(outputMap.get("hashCode").toString(), out);
-            // The input node has a file
-            if (inputMap.get("file") != null) {
-                input.setFile(new File(inputMap.get("file").toString()));
+            if (inputMap != null) {
+                mapHashCode.put(inputMap.get("hashCode").toString(), input);
+                // The input node has a file
+                if (inputMap.get("file") != null) {
+                    input.setFile(new File(inputMap.get("file").toString()));
+                }
+                // Define input/output node
+                network.add(new EditNodeDecorator(input, fromJson(inputMap.get("position"))));
             }
-            // Define input/output node
-            network.add(new EditNodeDecorator(input, fromJson(inputMap.get("position"))));
-            network.add(new EditNodeDecorator(out, fromJson(outputMap.get("position"))));
+            Map outputMap = (Map) data.get("output");
+            if (outputMap != null) {
+                mapHashCode.put(outputMap.get("hashCode").toString(), out);
+                network.add(new EditNodeDecorator(out, fromJson(outputMap.get("position"))));
+            }
             // Define nodes hashCodes
             List<Map> nodes = (List) data.get("nodes");
             nodes.forEach((node) -> {
@@ -162,12 +171,14 @@ public class NodeNetworkParser {
                 });
                 network.add(new EditNodeDecorator(processNode, fromJson(node.get("position"))));
             });
-            // Define output connection
-            List<Map> connections = (List) outputMap.get("connections");
-            connections.forEach((c) -> {
-                String attr = c.get("leftAttribute").toString();
-                out.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
-            });
+            if (outputMap != null) {
+                // Define output connection
+                List<Map> connections = (List) outputMap.get("connections");
+                connections.forEach((c) -> {
+                    String attr = c.get("leftAttribute").toString();
+                    out.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
+                });
+            }
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
         }

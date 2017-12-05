@@ -2,7 +2,7 @@ package visnode.pdi.process;
 
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
-import org.paim.pdi.BinaryLabelingProcess.ObjectList;
+import org.paim.pdi.ObjectList;
 import visnode.commons.Input;
 import visnode.commons.Output;
 import visnode.pdi.Process;
