@@ -30,17 +30,13 @@ jobs:
       
       - run: git clone https://github.com/GrupoTorax/PDI.git ../PDI
       
+      - run: mvn dependency:purge-local-repository -DreResolve=false
+      
       - run: mvn install:install-file -Dfile=../ExamsIO/lib/pixelmed.jar -DgroupId=com.pixelmed -DartifactId=pixelmed -Dversion=1.0 -Dpackaging=jar
       
-      - run: mvn -f ../Commons/pom.xml compile
-      
       - run: mvn -f ../Commons/pom.xml install
-      
-      - run: mvn -f ../ExamsIO/pom.xml compile
-      
+
       - run: mvn -f ../ExamsIO/pom.xml install
-      
-      - run: mvn -f ../PDI/pom.xml compile    
       
       - run: mvn -f ../PDI/pom.xml install    
     
