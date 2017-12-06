@@ -30,10 +30,8 @@ jobs:
       
       - run: git clone https://github.com/GrupoTorax/PDI.git ../PDI
       
-      - run: mvn dependency:purge-local-repository -DreResolve=false
-      
-      - run: mvn install:install-file -Dfile=../ExamsIO/lib/pixelmed.jar -DgroupId=com.pixelmed -DartifactId=pixelmed -Dversion=1.0 -Dpackaging=jar
-      
+      - run: mvn dependency:purge-local-repository -DreResolve=false     
+     
       - run: mvn -f ../Commons/pom.xml install
 
       - run: mvn -f ../ExamsIO/pom.xml install
@@ -41,20 +39,6 @@ jobs:
       - run: mvn -f ../PDI/pom.xml install    
     
       - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "pom.xml" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: mvn dependency:go-offline
-
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: v1-dependencies-{{ checksum "pom.xml" }}
         
       # run tests!
       - run: mvn integration-test
