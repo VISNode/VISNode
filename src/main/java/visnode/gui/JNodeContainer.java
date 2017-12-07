@@ -101,8 +101,13 @@ public class JNodeContainer extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 requestFocusInWindow();
+                for (JNode oldNode : selection.copy()) {
+                    oldNode.repaint();
+                }
+                selection.clear();
             }
         });
+        MouseInterceptor.get().addDragListener(new DragSelectionListener());
     }
 
     /**
@@ -180,10 +185,10 @@ public class JNodeContainer extends JLayeredPane {
             if (child instanceof JNodeConnection) {
                 JNodeConnection connection = (JNodeConnection) child;
                 for (JNodeConnector connector : connectors) {
-                    if (connection.getFirst() == connector.getLeftConnector() || 
-                            connection.getSecond() == connector.getLeftConnector() || 
-                            connection.getFirst() == connector.getRightConnector() || 
-                            connection.getSecond() == connector.getRightConnector()) {
+                    if (connection.getFirst() == connector.getLeftConnector()
+                            || connection.getSecond() == connector.getLeftConnector()
+                            || connection.getFirst() == connector.getRightConnector()
+                            || connection.getSecond() == connector.getRightConnector()) {
                         connections.add(connection);
                         break;
                     }
@@ -285,6 +290,11 @@ public class JNodeContainer extends JLayeredPane {
      */
     private class SelectListener implements MouseListener {
 
+        /** The point where it was pressed */
+        private Point pressedPosition;
+        /** The old selection */
+        private Selection<JNode> oldSelection;
+
         @Override
         public void mouseClicked(MouseEvent e) {
         }
@@ -292,24 +302,44 @@ public class JNodeContainer extends JLayeredPane {
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.getSource() instanceof JNode) {
+                pressedPosition = e.getLocationOnScreen();
+                oldSelection = selection.copy();
                 JNode node = (JNode) e.getSource();
-                Selection<JNode> oldSelection = selection.copy();
-                for (JNode oldNode : oldSelection) {
-                    oldNode.repaint();
-                }
+                // Add new node to selection
                 if (e.isControlDown()) {
                     if (!selection.contains(node)) {
                         selection.add(node);
                     }
-                } else {
-                    selection.set(node);
+                    node.repaint();
+                    return;
                 }
-                node.repaint();
+                // it has only one selection
+                if (selection.isEmpty() || selection.size() == 1) {
+                    for (JNode oldNode : oldSelection) {
+                        oldNode.repaint();
+                    }
+                    selection.set(node);
+                    node.repaint();
+                }
             }
+
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if (e.getSource() instanceof JNode) {
+                // If there weren't multiple selection or component has draged
+                if (!e.isControlDown() || !e.getLocationOnScreen().equals(pressedPosition)) {
+                    return;
+                }
+                JNode node = (JNode) e.getSource();
+                // It is a new node
+                if (!oldSelection.contains(node)) {
+                    return;
+                }
+                selection.remove(node);
+                node.repaint();
+            }
         }
 
         @Override
@@ -347,6 +377,46 @@ public class JNodeContainer extends JLayeredPane {
             revalidate();
         }
 
+    }
+
+    /**
+     * Drag selection listener
+     */
+    private class DragSelectionListener implements DragListener {
+
+        /** Container selection */
+        private JNodeContainerSelection selectionContainer;
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if (selectionContainer != null) {
+                selectionContainer.update(e.getPoint());
+            }
+        }
+
+        @Override
+        public void dragStarted(MouseEvent e) {
+            if (e.getSource() instanceof JLayeredPane) {
+                selectionContainer = new JNodeContainerSelection(e.getPoint());
+                add(selectionContainer, JLayeredPane.POPUP_LAYER);
+            }
+        }
+
+        @Override
+        public void dragFinished(MouseEvent e) {
+            if (selectionContainer != null) {
+                remove(selectionContainer);
+                repaint();
+                selection.clear();
+                for (Component component : getComponents()) {
+                    // Selection contains the component
+                    if (component instanceof JNode && selectionContainer.contains(component)) {
+                        selection.add((JNode) component);
+                    }
+                }
+                selectionContainer = null;
+            }
+        }
     }
 
 }
