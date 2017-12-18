@@ -15,6 +15,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import javax.swing.JComponent;
 import javax.swing.JLayeredPane;
 
 /**
@@ -28,7 +30,7 @@ public class JNodeContainer extends JLayeredPane {
     private final SelectListener selectListener;
     /** Revalidation listener */
     private final RevalidationListener revalidationListener;
-    
+
     /**
      * Creates a new NodeContainer
      */
@@ -42,7 +44,7 @@ public class JNodeContainer extends JLayeredPane {
     }
 
     /**
-     * Inititalizes the interface
+     * Initializes the interface
      */
     private void initGui() {
         setLayout(null);
@@ -56,6 +58,9 @@ public class JNodeContainer extends JLayeredPane {
     private void setupDragSupport() {
         DragSupport dragSupport = new DragSupport(this);
         dragSupport.setAllowDragPredicate((component) -> component instanceof JNode || component instanceof JConnectorPoint);
+        dragSupport.setSelection(() -> {
+            return selection.stream().map((e) -> (JComponent) e).collect(Collectors.toList());
+        });
     }
 
     @Override
@@ -96,15 +101,20 @@ public class JNodeContainer extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 requestFocusInWindow();
+                for (JNode oldNode : selection.copy()) {
+                    oldNode.repaint();
+                }
+                selection.clear();
             }
         });
+        MouseInterceptor.get().addDragListener(new DragSelectionListener());
     }
-    
-    /** 
+
+    /**
      * Starts a connection
-     * 
+     *
      * @param connectorPoint
-     * @param e 
+     * @param e
      */
     public void startConnection(JConnectorPoint connectorPoint, MouseEvent e) {
         add(new JNodeToMouseConnection(this, connectorPoint));
@@ -112,7 +122,7 @@ public class JNodeContainer extends JLayeredPane {
 
     /**
      * Returns the connector point in a specified position
-     * 
+     *
      * @param point
      * @return JConnectorPoint
      */
@@ -122,7 +132,7 @@ public class JNodeContainer extends JLayeredPane {
 
     /**
      * Returns the connector point in a specified position
-     * 
+     *
      * @param point
      * @return JConnectorPoint
      */
@@ -142,7 +152,7 @@ public class JNodeContainer extends JLayeredPane {
     /**
      * Returns the connection between two connector points, or {@code null} if
      * none.
-     * 
+     *
      * @param start
      * @param end
      * @return JNodeConnection
@@ -152,18 +162,18 @@ public class JNodeContainer extends JLayeredPane {
             Component child = getComponent(i);
             if (child instanceof JNodeConnection) {
                 JNodeConnection connection = (JNodeConnection) child;
-                if ((connection.getFirst() == start || connection.getSecond() == start) && 
-                    (connection.getFirst() == end || connection.getSecond() == end)) {
+                if ((connection.getFirst() == start || connection.getSecond() == start)
+                        && (connection.getFirst() == end || connection.getSecond() == end)) {
                     return connection;
                 }
             }
         }
         return null;
     }
-    
+
     /**
      * Returns the connections of a node
-     * 
+     *
      * @param node
      * @return Set of JNodeConnection
      */
@@ -175,8 +185,10 @@ public class JNodeContainer extends JLayeredPane {
             if (child instanceof JNodeConnection) {
                 JNodeConnection connection = (JNodeConnection) child;
                 for (JNodeConnector connector : connectors) {
-                    if (connection.getFirst() == connector.getLeftConnector() || connection.getSecond() == connector.getLeftConnector() ||
-                        connection.getFirst() == connector.getRightConnector() || connection.getSecond() == connector.getRightConnector()) {
+                    if (connection.getFirst() == connector.getLeftConnector()
+                            || connection.getSecond() == connector.getLeftConnector()
+                            || connection.getFirst() == connector.getRightConnector()
+                            || connection.getSecond() == connector.getRightConnector()) {
                         connections.add(connection);
                         break;
                     }
@@ -188,25 +200,25 @@ public class JNodeContainer extends JLayeredPane {
 
     /**
      * Removes a connection
-     * 
-     * @param connection 
+     *
+     * @param connection
      */
     public void removeConnection(JNodeConnection connection) {
         remove(connection);
     }
-    
+
     /**
      * Adds a connection listener
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void addNodeConnectionListener(NodeConnectionListener listener) {
-       listenerList.add(NodeConnectionListener.class, listener);
+        listenerList.add(NodeConnectionListener.class, listener);
     }
-    
+
     /**
      * Fires the event of a connection created
-     * 
+     *
      * @param connection
      */
     public void fireConnectionCreated(JNodeConnection connection) {
@@ -214,10 +226,10 @@ public class JNodeContainer extends JLayeredPane {
             listener.connectionCreated(new NodeConnectionEvent(connection));
         }
     }
-    
+
     /**
      * Fires the event of a connection removed
-     * 
+     *
      * @param connection
      */
     public void fireConnectionRemoved(JNodeConnection connection) {
@@ -266,17 +278,22 @@ public class JNodeContainer extends JLayeredPane {
 
     /**
      * Returns the selection
-     * 
+     *
      * @return {@code Selection<JNode>}
      */
     public Selection<JNode> getSelection() {
         return selection;
     }
-    
+
     /**
      * Select listener
      */
     private class SelectListener implements MouseListener {
+
+        /** The point where it was pressed */
+        private Point pressedPosition;
+        /** The old selection */
+        private Selection<JNode> oldSelection;
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -285,18 +302,44 @@ public class JNodeContainer extends JLayeredPane {
         @Override
         public void mousePressed(MouseEvent e) {
             if (e.getSource() instanceof JNode) {
+                pressedPosition = e.getLocationOnScreen();
+                oldSelection = selection.copy();
                 JNode node = (JNode) e.getSource();
-                Selection<JNode> oldSelection = selection.copy();
-                for (JNode oldNode : oldSelection) {
-                    oldNode.repaint();
+                // Add new node to selection
+                if (e.isControlDown()) {
+                    if (!selection.contains(node)) {
+                        selection.add(node);
+                    }
+                    node.repaint();
+                    return;
                 }
-                selection.set(node);
-                node.repaint();
+                // it has only one selection
+                if (selection.isEmpty() || selection.size() == 1) {
+                    for (JNode oldNode : oldSelection) {
+                        oldNode.repaint();
+                    }
+                    selection.set(node);
+                    node.repaint();
+                }
             }
+
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
+            if (e.getSource() instanceof JNode) {
+                // If there weren't multiple selection or component has draged
+                if (!e.isControlDown() || !e.getLocationOnScreen().equals(pressedPosition)) {
+                    return;
+                }
+                JNode node = (JNode) e.getSource();
+                // It is a new node
+                if (!oldSelection.contains(node)) {
+                    return;
+                }
+                selection.remove(node);
+                node.repaint();
+            }
         }
 
         @Override
@@ -306,9 +349,9 @@ public class JNodeContainer extends JLayeredPane {
         @Override
         public void mouseExited(MouseEvent e) {
         }
-        
+
     }
-    
+
     /**
      * Listener that revalidates the preferred size when the children change
      */
@@ -333,7 +376,47 @@ public class JNodeContainer extends JLayeredPane {
         public void componentHidden(ComponentEvent e) {
             revalidate();
         }
-    
+
+    }
+
+    /**
+     * Drag selection listener
+     */
+    private class DragSelectionListener implements DragListener {
+
+        /** Container selection */
+        private JNodeContainerSelection selectionContainer;
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            if (selectionContainer != null) {
+                selectionContainer.update(e.getPoint());
+            }
+        }
+
+        @Override
+        public void dragStarted(MouseEvent e) {
+            if (e.getSource() instanceof JLayeredPane) {
+                selectionContainer = new JNodeContainerSelection(e.getPoint());
+                add(selectionContainer, JLayeredPane.POPUP_LAYER);
+            }
+        }
+
+        @Override
+        public void dragFinished(MouseEvent e) {
+            if (selectionContainer != null) {
+                remove(selectionContainer);
+                repaint();
+                selection.clear();
+                for (Component component : getComponents()) {
+                    // Selection contains the component
+                    if (component instanceof JNode && selectionContainer.contains(component)) {
+                        selection.add((JNode) component);
+                    }
+                }
+                selectionContainer = null;
+            }
+        }
     }
 
 }
