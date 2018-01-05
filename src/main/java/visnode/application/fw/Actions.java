@@ -7,6 +7,8 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
+import visnode.application.ActionChallenge;
+import visnode.application.ActionChallengeRun;
 import visnode.application.ActionCopyNode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionDirectOpen;
@@ -90,6 +92,8 @@ public class Actions {
         Messages.get().message("challenge").subscribe((msg) -> {
             challenge.setText(msg);
         });
+        challenge.add(get(ActionChallenge.class));
+        challenge.add(get(ActionChallengeRun.class));
         JMenu help = new JMenu();
         Messages.get().message("help").subscribe((msg) -> {
             help.setText(msg);
@@ -160,6 +164,8 @@ public class Actions {
         actions.put(ActionPasteNode.class, new ActionPasteNode());
         actions.put(ActionAboutVisnode.class, new ActionAboutVisnode());
         actions.put(ActionSelectWindow.class, new ActionSelectWindow());
+        actions.put(ActionChallenge.class, new ActionChallenge());
+        actions.put(ActionChallengeRun.class, new ActionChallengeRun());
     }
     
     /**
