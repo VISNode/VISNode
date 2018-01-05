@@ -86,6 +86,10 @@ public class Actions {
         });
         rendering.add(get(ActionSelectWindow.class));
         view.add(rendering);
+        JMenu challenge = new JMenu();
+        Messages.get().message("challenge").subscribe((msg) -> {
+            challenge.setText(msg);
+        });
         JMenu help = new JMenu();
         Messages.get().message("help").subscribe((msg) -> {
             help.setText(msg);
@@ -96,6 +100,7 @@ public class Actions {
         menuBar.add(edit);
         menuBar.add(view);
         menuBar.add(input);
+        menuBar.add(challenge);
         menuBar.add(help);
         return menuBar;
     }
