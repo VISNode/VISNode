@@ -4,12 +4,14 @@ package visnode.challenge;
  * The challenge information
  */
 public class Challenge {
-    
-    /** The name */
+
+    /** Id */
+    private int id;
+    /** Name */
     private String name;
-    /** The description */
+    /** Description */
     private String description;
-    /** The difficulty */
+    /** Difficulty */
     private ChallengeDifficulty difficulty;
     /** Input */
     private String input;
@@ -17,8 +19,26 @@ public class Challenge {
     private String output;
 
     /**
+     * Returns the challenge id
+     *
+     * @return int
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Sets the challenge id
+     *
+     * @param id
+     */
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
      * Returns the challenge name
-     * 
+     *
      * @return String
      */
     public String getName() {
@@ -27,8 +47,8 @@ public class Challenge {
 
     /**
      * Sets the challenge name
-     * 
-     * @param name 
+     *
+     * @param name
      */
     public void setName(String name) {
         this.name = name;
@@ -36,7 +56,7 @@ public class Challenge {
 
     /**
      * Returns the challenge description
-     * 
+     *
      * @return String
      */
     public String getDescription() {
@@ -45,8 +65,8 @@ public class Challenge {
 
     /**
      * Sets the challenge description
-     * 
-     * @param description 
+     *
+     * @param description
      */
     public void setDescription(String description) {
         this.description = description;
@@ -54,7 +74,7 @@ public class Challenge {
 
     /**
      * Returns the challenge difficulty
-     * 
+     *
      * @return ChallengeDifficulty
      */
     public ChallengeDifficulty getDifficulty() {
@@ -63,8 +83,8 @@ public class Challenge {
 
     /**
      * Sets the challenge difficulty
-     * 
-     * @param difficulty 
+     *
+     * @param difficulty
      */
     public void setDifficulty(ChallengeDifficulty difficulty) {
         this.difficulty = difficulty;
@@ -72,7 +92,7 @@ public class Challenge {
 
     /**
      * Returns the challenge input
-     * 
+     *
      * @return String
      */
     public String getInput() {
@@ -81,8 +101,8 @@ public class Challenge {
 
     /**
      * Sets the challenge input
-     * 
-     * @param input 
+     *
+     * @param input
      */
     public void setInput(String input) {
         this.input = input;
@@ -90,7 +110,7 @@ public class Challenge {
 
     /**
      * Returns the challenge output
-     * 
+     *
      * @return String
      */
     public String getOutput() {
@@ -99,11 +119,11 @@ public class Challenge {
 
     /**
      * Sets the challenge output
-     * 
-     * @param output 
+     *
+     * @param output
      */
     public void setOutput(String output) {
         this.output = output;
     }
-    
+
 }

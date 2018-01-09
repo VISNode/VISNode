@@ -80,15 +80,6 @@ public class AboutVISNodePanel extends JPanel implements VISNodeConstants {
         title.setFont(new Font("Segoe UI", Font.PLAIN, 32));
         JLabel version = new JLabel(VERSION);
         version.setBackground(Color.red);
-        
-//        github = new JButton();
-//        github.setIcon(IconFactory.get().create("fa:github"));
-//        github.setText(GITHUB_URL);
-//        github.setBorder(BorderFactory.createEmptyBorder());
-//        github.setBorderPainted(false);
-//        github.setContentAreaFilled(false);
-//        github.setFocusPainted(false);
-//        github.setOpaque(false);
         info.add(title);
         info.add(version);
         info.add(Labels.create(GITHUB_URL).icon(IconFactory.get().create("fa:github")).onClick((ev) -> {

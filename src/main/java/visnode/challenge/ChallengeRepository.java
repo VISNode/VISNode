@@ -22,6 +22,18 @@ public class ChallengeRepository {
         challenge.setInput("/home/jonatabecker/Desktop/Lenna.png");
         challenge.setOutput("/home/jonatabecker/Desktop/LennaSobel.png");
         challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
+        challenges.add(challenge);
         return challenges;
     }
     
