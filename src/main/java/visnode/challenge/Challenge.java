@@ -17,6 +17,8 @@ public class Challenge {
     private String input;
     /** Output */
     private String output;
+    /** Problem */
+    private String problem;
 
     /**
      * Returns the challenge id
@@ -124,6 +126,24 @@ public class Challenge {
      */
     public void setOutput(String output) {
         this.output = output;
+    }
+
+    /**
+     * Returns the problem md file
+     *
+     * @return String
+     */
+    public String getProblem() {
+        return problem;
+    }
+
+    /**
+     * Sets the problem md file
+     *
+     * @param problem
+     */
+    public void setProblem(String problem) {
+        this.problem = problem;
     }
 
 }

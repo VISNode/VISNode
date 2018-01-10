@@ -78,6 +78,7 @@ public class ChallengeListPanel extends JPanel {
                 ChallengeScope.get().start(challenge);
                 VISNode.get().getController().createNew();
                 VISNode.get().getModel().getNetwork().setInput(new File(challenge.getInput()));
+                ChallengeProblemPanel.showDialog();
             }
 
         });

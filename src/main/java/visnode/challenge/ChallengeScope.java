@@ -1,5 +1,8 @@
 package visnode.challenge;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+
 /**
  * The challenge scope
  */
@@ -9,17 +12,20 @@ public class ChallengeScope {
     private static ChallengeScope instance;
     /** The challenge data */
     private Challenge challenge;
-
+    /** Has challenge */
+    private final BehaviorSubject<Boolean> has;
+    
     private ChallengeScope() {
+        has = BehaviorSubject.createDefault(Boolean.FALSE);
     }
 
     /**
      * Returns true if had a challenge
      *
-     * @return boolean
+     * @return Observable
      */
-    public boolean hadChallenge() {
-        return challenge != null;
+    public Observable<Boolean> hasChallenge() {
+        return has;
     }
 
     /**
@@ -29,6 +35,7 @@ public class ChallengeScope {
      */
     public void start(Challenge challenge) {
         this.challenge = challenge;
+        has.onNext(Boolean.TRUE);
     }
 
     /**
@@ -37,6 +44,7 @@ public class ChallengeScope {
      */
     public void end() {
         this.challenge = null;
+        has.onNext(Boolean.FALSE);
     }
 
     /**
