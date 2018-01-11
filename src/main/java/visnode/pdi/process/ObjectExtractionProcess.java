@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import org.paim.commons.BinaryImage;
-import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import org.paim.pdi.ExtractedObject;
 import org.paim.pdi.ObjectList;

@@ -9,6 +9,7 @@ import org.paim.commons.Image;
 import visnode.challenge.Challenge;
 import visnode.challenge.ChallengeComparator;
 import visnode.challenge.ChallengeScope;
+import visnode.commons.DynamicValue;
 import visnode.gui.IconFactory;
 
 /**
@@ -36,12 +37,12 @@ public class ActionChallengeRun extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Image ouput = VISNode.get().getModel().getNetwork().getOutput();
-        if (ouput == null) {
+        DynamicValue ouput = VISNode.get().getModel().getNetwork().getOutput();
+        if (ouput == null || ouput.isImage()) {
             return;
         }
         Challenge challenge = ChallengeScope.get().getChallenge();
-        if (comparator.comparate(challenge, ouput)) {
+        if (comparator.comparate(challenge, (Image) ouput.get())) {
             JOptionPane.showMessageDialog(null, "The output is correct! :)");
         } else {
             JOptionPane.showMessageDialog(null, "The output is incorrect! :(");

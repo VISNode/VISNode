@@ -7,6 +7,7 @@ import org.paim.commons.Image;
 import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.ListRemoveEvent;
 import visnode.application.mvc.Model;
+import visnode.commons.DynamicValue;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
@@ -90,11 +91,11 @@ public class NodeNetwork implements Model {
     /**
      * Returns the output image 
      * 
-     * @return Image
+     * @return DynamicValue
      */
-    public Image getOutput() {
+    public DynamicValue getOutput() {
         OutputNode decorator = (OutputNode) nodes.get(getOutputIndex()).getDecorated();
-        return decorator.getImage();
+        return decorator.getValue();
     }
     
     /**

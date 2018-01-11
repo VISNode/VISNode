@@ -31,7 +31,7 @@ public class ChallengeRepository {
         challenge.setDifficulty(ChallengeDifficulty.EASY);
         challenge.setInput(getFile("/challenges/objectsSegmentation/input.png"));
         challenge.setOutput(getFile("/challenges/objectsSegmentation/output.png"));
-        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/visnode/pdi/process/AverageBlurProcess_en_US.md");
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/challange/src/main/resources/challenges/objectsSegmentation/problem.md");
         return challenge;
     }
 

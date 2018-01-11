@@ -17,6 +17,7 @@ public class TypeConverter {
         this.converters.add(new TypeConverterGeneric());
         this.converters.add(new TypeConverterThreshold());
         this.converters.add(new TypeConverterAngle());
+        this.converters.add(new TypeConverterDynamicValue());
     }
 
     /**
