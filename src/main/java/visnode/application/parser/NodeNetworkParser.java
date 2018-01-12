@@ -176,7 +176,8 @@ public class NodeNetworkParser {
                 List<Map> connections = (List) outputMap.get("connections");
                 connections.forEach((c) -> {
                     String attr = c.get("leftAttribute").toString();
-                    out.addConnection(attr, mapHashCode.get(c.get("leftNode").toString()), attr);
+                    String attrRight = c.get("rightAttribute").toString();
+                    out.addConnection(attrRight, mapHashCode.get(c.get("leftNode").toString()), attr);
                 });
             }
         } catch (Exception e) {

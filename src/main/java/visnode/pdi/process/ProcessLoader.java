@@ -32,6 +32,7 @@ public class ProcessLoader {
                 collect(Collectors.toSet());
         classes.add(DynamicPixelProcess.class);
         classes.add(ObjectExtractionProcess.class);
+        classes.add(ScriptProcess.class);
         return Collections.unmodifiableSet(classes);
     }
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.paim.commons.Image;
 import visnode.application.ExceptionHandler;
 import visnode.application.InputReader;
+import visnode.commons.DynamicValue;
 
 /**
  * Executes the challenge comparation
@@ -18,11 +19,31 @@ public class ChallengeComparator {
      * @param output
      * @return boolean
      */
-    public boolean comparate(Challenge challange, Image output) {
+    public boolean comparate(Challenge challange, DynamicValue output) {
+        if (output == null) {
+            return false;
+        }
+        if (challange.getOutput().isTypeImage()) {
+            return comparateImage(challange, output);
+        }
+        return comprateObject(challange, output);
+    }
+
+    /**
+     * Execute the challenge comparation to images
+     *
+     * @param challange
+     * @param output
+     * @return boolean
+     */
+    public boolean comparateImage(Challenge challange, DynamicValue<Object> output) {
+        if (!output.isImage()) {
+            return false;
+        }
         try {
-            Image base = new InputReader().read(new File(challange.getOutput()));
-            int [][][] expected = base.getData();
-            int [][][] result = output.getData();
+            Image base = new InputReader().read(new File(challange.getOutput().getValue()));
+            int[][][] expected = base.getData();
+            int[][][] result = output.get(Image.class).getData();
             for (int channel = 0; channel < expected.length; channel++) {
                 for (int x = 0; x < expected[channel].length; x++) {
                     for (int y = 0; y < expected[channel][x].length; y++) {
@@ -38,4 +59,16 @@ public class ChallengeComparator {
         }
         return false;
     }
+
+    /**
+     * Execute the challenge comparation to object
+     *
+     * @param challange
+     * @param output
+     * @return boolean
+     */
+    private boolean comprateObject(Challenge challange, DynamicValue output) {
+        return challange.getOutput().getValue().equals(output.get());
+    }
+
 }

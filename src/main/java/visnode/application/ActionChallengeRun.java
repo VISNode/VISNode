@@ -38,11 +38,11 @@ public class ActionChallengeRun extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         DynamicValue ouput = VISNode.get().getModel().getNetwork().getOutput();
-        if (ouput == null || ouput.isImage()) {
+        if (ouput == null) {
             return;
         }
         Challenge challenge = ChallengeScope.get().getChallenge();
-        if (comparator.comparate(challenge, (Image) ouput.get())) {
+        if (comparator.comparate(challenge, ouput)) {
             JOptionPane.showMessageDialog(null, "The output is correct! :)");
         } else {
             JOptionPane.showMessageDialog(null, "The output is incorrect! :(");

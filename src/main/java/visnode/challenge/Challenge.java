@@ -16,7 +16,7 @@ public class Challenge {
     /** Input */
     private String input;
     /** Output */
-    private String output;
+    private ChallengeValue output;
     /** Problem */
     private String problem;
 
@@ -113,9 +113,9 @@ public class Challenge {
     /**
      * Returns the challenge output
      *
-     * @return String
+     * @return ChallengeValue
      */
-    public String getOutput() {
+    public ChallengeValue getOutput() {
         return output;
     }
 
@@ -124,7 +124,7 @@ public class Challenge {
      *
      * @param output
      */
-    public void setOutput(String output) {
+    public void setOutput(ChallengeValue output) {
         this.output = output;
     }
 
