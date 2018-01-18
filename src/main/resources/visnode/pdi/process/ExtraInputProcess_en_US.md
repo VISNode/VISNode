@@ -1,3 +1,0 @@
-# Extra Input
-
-Input images.

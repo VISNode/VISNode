@@ -15,14 +15,6 @@ public class VISNodeModel implements Model {
     private File linkedFile;
     /** User preferences */
     private UserPreferences userPreferences;
-
-    /**
-     * Creates a new model
-     */
-    public VISNodeModel() {
-        network = NodeNetworkFactory.create();
-        userPreferences = new UserPreferences();
-    }
     
     /**
      * Returns the node network
@@ -30,6 +22,9 @@ public class VISNodeModel implements Model {
      * @return NodeNetwork
      */
     public NodeNetwork getNetwork() {
+        if (network == null) {
+            network = NodeNetworkFactory.create();
+        }
         return network;
     }
 
@@ -70,6 +65,9 @@ public class VISNodeModel implements Model {
      * @return UserPreferences
      */
     public UserPreferences getUserPreferences() {
+        if (userPreferences == null) {
+            userPreferences = new UserPreferences();
+        }
         return userPreferences;
     }
 

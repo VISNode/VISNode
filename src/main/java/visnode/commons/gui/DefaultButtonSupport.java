@@ -8,11 +8,10 @@ package visnode.commons.gui;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.function.Consumer;
+import javax.swing.AbstractButton;
 import javax.swing.Icon;
-import javax.swing.JButton;
 
 /**
  * Default button support
@@ -23,6 +22,7 @@ public class DefaultButtonSupport<T extends DefaultButton> extends DefaultCompon
     
     /**
      * Creates a new Default button support
+     * 
      * @param component 
      */
     public DefaultButtonSupport(T component) {
@@ -94,8 +94,8 @@ public class DefaultButtonSupport<T extends DefaultButton> extends DefaultCompon
     }
 
     @Override
-    protected JButton swingComponent() {
-        return (JButton) super.swingComponent();
+    protected AbstractButton swingComponent() {
+        return (AbstractButton) super.swingComponent();
     }
     
 }

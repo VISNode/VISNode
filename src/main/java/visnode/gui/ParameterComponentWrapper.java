@@ -1,5 +1,6 @@
 package visnode.gui;
 
+import io.reactivex.Observable;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JComponent;

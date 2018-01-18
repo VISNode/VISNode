@@ -48,6 +48,9 @@ public class TypeConverter {
             if (value == null) {
                 return null;
             }
+            if (destinyType.isAssignableFrom(sourceType)) {
+                return (D) value;
+            }
             return converters.stream().
                     filter((converter) -> converter.can(sourceType, destinyType)).
                     findFirst().get().convert(value, destinyType);
@@ -56,7 +59,7 @@ public class TypeConverter {
         }
     }
 
-    public boolean isValidConvertion(Class sourceType, Class destinyType) {
+    public boolean isValidConversion(Class sourceType, Class destinyType) {
         return converters.stream().anyMatch((converter) -> converter.can(sourceType, destinyType));
     }
 

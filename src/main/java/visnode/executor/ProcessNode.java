@@ -145,14 +145,26 @@ public class ProcessNode implements Node, AttacherNode {
             process((p) -> {
                 Object value = getOutputValue(attribute);
                 if (value != null) {
-                    subject.onNext(value);
+                    if (value instanceof Observable) {
+                        ((Observable)value).subscribe((v) -> {
+                            subject.onNext(v);
+                        });
+                    } else {
+                        subject.onNext(value);
+                    }
                 }
             });
             return subject;
         }
         Object value = getOutputValue(attribute);
         if (value != null) {
-            subject.onNext(value);
+            if (value instanceof Observable) {
+                ((Observable)value).subscribe((v) -> {
+                    subject.onNext(v);
+                });
+            } else {
+                subject.onNext(value);
+            }
         }
         return subject;
     }
@@ -182,16 +194,21 @@ public class ProcessNode implements Node, AttacherNode {
      * @param callable
      */
     public void process(Consumer callable) {
-
         process = buildProcess();
         Thread th = new Thread(() -> {
             try {
                 process.process();
                 invalidated = false;
                 for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
-                    outputChangeSupport.firePropertyChange(entry.getKey(), null, getOutputValue(entry.getKey()));
+                    Object output = getOutputValue(entry.getKey());
+                    if (output instanceof Observable) {
+                        ((Observable) output).subscribe((value) -> {
+                            outputChangeSupport.firePropertyChange(entry.getKey(), null, value);
+                        });
+                    } else {
+                        outputChangeSupport.firePropertyChange(entry.getKey(), null, output);
+                    }
                 }
-
                 callable.accept(true);
             } catch (Exception ex) {
                 ExceptionHandler.get().handle(ex);
@@ -245,7 +262,12 @@ public class ProcessNode implements Node, AttacherNode {
     @Override
     public List<NodeParameter> getOutputParameters() {
         return processOutput.entrySet().stream().map((p) -> {
-            return new NodeParameter(p.getKey(), p.getValue().getReturnType());
+            Class returnType = p.getValue().getReturnType();
+            Output meta = p.getValue().getAnnotation(Output.class);
+            if (meta.observableOf() != Void.class) {
+                returnType = meta.observableOf();
+            }
+            return new NodeParameter(p.getKey(), returnType);
         }).collect(Collectors.toList());
     }
 

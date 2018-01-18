@@ -38,4 +38,13 @@ public class Buttons {
         return create();
     }
     
+    /**
+     * Creates a new toggle button
+     * 
+     * @return ToggleButton
+     */
+    public static ToggleButton toggle() {
+        return new ToggleButton();
+    }
+    
 }

@@ -19,6 +19,14 @@ public interface Container<T extends Container> extends Component<T> {
     public void put(Component component);
 
     /**
+     * Adds a component
+     *
+     * @param component
+     * @param layoutConstraints
+     */
+    public void put(Component component, Object layoutConstraints);
+
+    /**
      * Returns a component by it's id
      *
      * @param id

@@ -6,26 +6,24 @@
 package visnode.application.parser;
 
 import java.awt.Point;
-import java.io.File;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.paim.pdi.GaussianBlurProcess;
 import visnode.application.NodeNetwork;
 import visnode.application.NodeNetworkFactory;
-import visnode.commons.MultiFile;
+import visnode.commons.MultiFileInput;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
 import visnode.executor.ProcessNode;
-import visnode.pdi.process.ExtraInputProcess;
+import visnode.pdi.process.InputProcess;
 import visnode.pdi.process.KirshProcess;
 import visnode.pdi.process.ThresholdProcess;
 
 /**
  *
  * @author Pichau
- */
+ */ 
 public class NodeNetworkParserTest {
     
     /** Node network for testing */
@@ -46,12 +44,19 @@ public class NodeNetworkParserTest {
 
     @Test
     public void testSimpleNetwork() {
-        network.add(new EditNodeDecorator(new InputNode()));
         network.add(new EditNodeDecorator(new OutputNode()));
         network.add(new EditNodeDecorator(new ProcessNode(ThresholdProcess.class), new Point(1, 2)));
         network.add(new EditNodeDecorator(new ProcessNode(KirshProcess.class), new Point(3, 4)));
         network.add(new EditNodeDecorator(new ProcessNode(GaussianBlurProcess.class), new Point(5, 6)));
-        network.add(new EditNodeDecorator(new ProcessNode(ExtraInputProcess.class)));
+        network.add(new EditNodeDecorator(new ProcessNode(InputProcess.class)));
+        assertWriteAndRead(network);
+    }
+
+    @Test
+    public void testInputWithInterfaces() {
+        ProcessNode node = new ProcessNode(InputProcess.class);
+        node.setInput("file", new MultiFileInput());
+        network.add(new EditNodeDecorator(node));
         assertWriteAndRead(network);
     }
 

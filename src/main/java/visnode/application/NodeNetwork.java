@@ -8,7 +8,6 @@ import visnode.application.mvc.ListAddEvent;
 import visnode.application.mvc.ListRemoveEvent;
 import visnode.application.mvc.Model;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
 
 /**
@@ -58,36 +57,6 @@ public class NodeNetwork implements Model {
     }
     
     /**
-     * Sets the input image
-     * 
-     * @param file
-     */
-    public void setInput(File file) {
-        InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
-        decorator.setFile(file);
-    }
-    
-    /**
-     * Sets the input image
-     * 
-     * @param image
-     */
-    public void setInput(Image image) {
-        InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
-        decorator.setImage(image);
-    }
-        
-    /**
-     * Returns the input image
-     * 
-     * @return Image
-     */
-    public Image getInput() {
-        InputNode decorator = (InputNode) nodes.get(getInputIndex()).getDecorated();
-        return decorator.getImage();
-    }
-    
-    /**
      * Returns the output image 
      * 
      * @return Image
@@ -95,20 +64,6 @@ public class NodeNetwork implements Model {
     public Image getOutput() {
         OutputNode decorator = (OutputNode) nodes.get(getOutputIndex()).getDecorated();
         return decorator.getImage();
-    }
-    
-    /**
-     * Finds the index of the input node
-     * 
-     * @return int
-     */
-    public int getInputIndex() {
-        for (int i = 0; i < nodes.size(); i++) {
-            if (nodes.get(i).getDecorated() instanceof InputNode) {
-                return i;
-            }
-        }
-        return -1;
     }
     
     /**

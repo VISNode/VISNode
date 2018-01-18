@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.InputNode;
 import visnode.executor.OutputNode;
 import visnode.gui.IconFactory;
 import visnode.gui.Selection;
@@ -33,8 +32,7 @@ public class ActionDeleteSelectedNodes extends AbstractAction {
         List<EditNodeDecorator> nodes = selection.stream().
                 map((view) -> view.getModel()).
                 filter((node) -> 
-                        !(node.getDecorated() instanceof InputNode) && 
-                        !(node.getDecorated() instanceof OutputNode)).
+                            !(node.getDecorated() instanceof OutputNode)).
                 collect(Collectors.toList());
         VISNode.get().getModel().getNetwork().remove(nodes);
     }

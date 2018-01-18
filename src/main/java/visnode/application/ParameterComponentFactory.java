@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.io.File;
 import org.paim.commons.Image;
 import visnode.commons.Angle;
-import visnode.commons.MultiFile;
 import visnode.commons.ScriptValue;
 import visnode.gui.ImageNodeComponent;
 import visnode.commons.Threshold;
@@ -16,12 +15,13 @@ import visnode.gui.AngleEditor;
 import visnode.gui.ColorEditor;
 import visnode.gui.DoubleEditor;
 import visnode.gui.FileEditor;
-import visnode.gui.FilesEditor;
+import visnode.gui.InputEditor;
 import visnode.gui.ScriptValueEditor;
 import visnode.gui.IntegerEditor;
 import visnode.gui.NotImplementedParameterComponent;
 import visnode.gui.ParameterComponent;
 import visnode.gui.ThresholdEditor;
+import visnode.pdi.process.ImageInput;
 
 /**
  * Parameter component factory
@@ -52,8 +52,8 @@ public class ParameterComponentFactory {
         if (parameter.getType().equals(File.class) && type == ConnectionType.INPUT) {
             return new FileEditor();
         }
-        if (parameter.getType().equals(MultiFile.class) && type == ConnectionType.INPUT) {
-            return new FilesEditor();
+        if (parameter.getType().equals(ImageInput.class) && type == ConnectionType.INPUT) {
+            return new InputEditor();
         }
         if (parameter.getType().equals(ScriptValue.class) && type == ConnectionType.INPUT) {
             return new ScriptValueEditor();

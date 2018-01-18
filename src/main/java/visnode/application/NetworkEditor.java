@@ -217,7 +217,7 @@ public class NetworkEditor extends JComponent {
                 leftConnector = flip;
             }
             TypeConverter converter = new TypeConverter();
-            if (!converter.isValidConvertion(leftConnector.getAttributeType(), rightConnector.getAttributeType())) {
+            if (!converter.isValidConversion(leftConnector.getAttributeType(), rightConnector.getAttributeType())) {
                 throw new IllegalArgumentException();
             }
             NodeView leftView = (NodeView) leftConnector.getParentNode();

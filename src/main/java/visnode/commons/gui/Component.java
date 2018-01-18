@@ -126,6 +126,17 @@ public interface Component<T extends Component> {
     /**
      * Sets the preferred size of the component
      *
+     * @param width
+     * @param height
+     * @return T
+     */
+    public default T preferredSize(int width, int height) {
+        return preferredSize(new Dimension(width, height));
+    }
+
+    /**
+     * Sets the preferred size of the component
+     *
      * @param size
      * @return T
      */

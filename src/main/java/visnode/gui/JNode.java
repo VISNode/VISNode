@@ -72,6 +72,21 @@ public class JNode extends JComponent {
     public Set<JNodeConnection> getConnections() {
         return getParentNodeContainer().getConnections(this);
     }
+    
+    @Override
+    public void validate() {
+        // Since this component is added to a null-layout container, the 
+        // validate method is the one that applies the preferred size
+        if (getLayout() != null) {
+            setSize(getLayout().preferredLayoutSize(this));
+        }
+        super.validate();
+    }
+
+    @Override
+    public boolean isValidateRoot() {
+        return true;
+    }
 
     /**
      * Returns the parent node container

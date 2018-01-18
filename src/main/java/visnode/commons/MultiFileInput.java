@@ -1,21 +1,46 @@
 package visnode.commons;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
 import java.io.File;
 import java.util.Arrays;
+import org.paim.commons.Image;
+import visnode.application.ExceptionHandler;
+import visnode.application.InputReader;
+import visnode.pdi.process.ImageInput;
 
 /**
  * Multi files
  */
-public class MultiFile {
+public class MultiFileInput implements ImageInput {
 
     /** Files */
     private final File[] file;
     /** File selected */
     private final int index;
 
-    public MultiFile(File[] file, int index) {
+    public MultiFileInput() {
+        this.file = new File[0];
+        this.index = 0;
+    }
+
+    public MultiFileInput(File file) {
+        this(new File[] {file}, 0);
+    }
+
+    public MultiFileInput(File[] file, int index) {
         this.file = file;
         this.index = index;
+    }
+    
+    @Override
+    public Observable<Image> getImageObservable() {
+        try {
+            return BehaviorSubject.createDefault(new InputReader().read(getFile()));
+        } catch (Exception e) {
+            ExceptionHandler.get().handle(e);
+            return null;
+        }
     }
 
     public int getIndex() {
@@ -53,7 +78,7 @@ public class MultiFile {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final MultiFile other = (MultiFile) obj;
+        final MultiFileInput other = (MultiFileInput) obj;
         if (this.index != other.index) {
             return false;
         }

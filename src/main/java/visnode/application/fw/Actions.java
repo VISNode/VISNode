@@ -10,15 +10,12 @@ import visnode.application.ActionAboutVisnode;
 import visnode.application.ActionCopyNode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionDirectOpen;
-import visnode.application.ActionDirectOpenImage;
 import visnode.application.ActionExport;
 import visnode.application.ActionNew;
 import visnode.application.ActionOpen;
 import visnode.application.ActionPasteNode;
 import visnode.application.ActionSave;
 import visnode.application.ActionSaveAs;
-import visnode.application.ActionSelectImage;
-import visnode.application.ActionSelectWebCam;
 import visnode.application.ActionSelectWindow;
 import visnode.application.ActionUserPreferences;
 import visnode.application.Messages;
@@ -58,14 +55,6 @@ public class Actions {
         file.add(get(ActionSave.class));
         file.add(get(ActionSaveAs.class));
         file.add(get(ActionExport.class));
-        JMenu input = new JMenu();
-        Messages.get().message("input").subscribe((msg) -> {
-            input.setText(msg);
-        });
-        input.add(get(ActionSelectImage.class));
-        input.add(buildReopenInputMenu());
-        input.addSeparator();
-        input.add(get(ActionSelectWebCam.class));
         JMenu edit = new JMenu();
         Messages.get().message("edit").subscribe((msg) -> {
             edit.setText(msg);
@@ -95,7 +84,6 @@ public class Actions {
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(view);
-        menuBar.add(input);
         menuBar.add(help);
         return menuBar;
     }
@@ -120,25 +108,6 @@ public class Actions {
     }
 
     /**
-     * Builds the reopen input menu
-     * 
-     * @return JMenu
-     */
-    private JMenu buildReopenInputMenu() {
-        JMenu menu = new JMenu();
-        Messages.get().message("openRecentInput").subscribe((msg) -> {
-            menu.setText(msg);
-        });
-        VISNode.get().getController().addRecentInputListener((inputs) -> {
-            menu.removeAll();
-            for (File file : inputs) {
-                menu.add(new ActionDirectOpenImage(file));
-            }
-        });
-        return menu;
-    }
-
-    /**
      * Loads the actions
      */
     private void loadActions() {
@@ -148,8 +117,6 @@ public class Actions {
         actions.put(ActionSaveAs.class, new ActionSaveAs());
         actions.put(ActionExport.class, new ActionExport());
         actions.put(ActionUserPreferences.class, new ActionUserPreferences());
-        actions.put(ActionSelectImage.class, new ActionSelectImage());
-        actions.put(ActionSelectWebCam.class, new ActionSelectWebCam());
         actions.put(ActionDeleteSelectedNodes.class, new ActionDeleteSelectedNodes());
         actions.put(ActionCopyNode.class, new ActionCopyNode());
         actions.put(ActionPasteNode.class, new ActionPasteNode());

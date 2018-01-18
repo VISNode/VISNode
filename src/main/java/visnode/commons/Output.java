@@ -18,5 +18,7 @@ import java.lang.annotation.Target;
 public @interface Output {
 
     String value();
+    
+    Class observableOf() default Void.class;
 
 }

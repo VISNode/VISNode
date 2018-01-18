@@ -1,6 +1,7 @@
 package visnode.gui;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -57,9 +58,11 @@ public class JNodeContainerSelection extends JComponent {
             Dimension dim = getSize();
             dim.width--;
             dim.height--;
-            g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{10.0f}, 0.0f));
+            g2.setColor(Color.WHITE);
+            g2.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, new float[]{3.0f}, 0.0f));
             g2.draw(new Rectangle(dim));
-
+            g2.setColor(new Color(255, 255, 255, 20));
+            g2.fill(new Rectangle(dim));
         }
     }
 

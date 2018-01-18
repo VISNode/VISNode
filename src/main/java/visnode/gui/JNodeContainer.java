@@ -396,7 +396,7 @@ public class JNodeContainer extends JLayeredPane {
 
         @Override
         public void dragStarted(MouseEvent e) {
-            if (e.getSource() instanceof JLayeredPane) {
+            if (e.getButton() == MouseEvent.BUTTON1 && e.getSource() instanceof JLayeredPane) {
                 selectionContainer = new JNodeContainerSelection(e.getPoint());
                 add(selectionContainer, JLayeredPane.POPUP_LAYER);
             }

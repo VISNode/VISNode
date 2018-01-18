@@ -17,6 +17,11 @@ public interface DefaultContainer<T extends DefaultContainer> extends Container<
     }
 
     @Override
+    public default void put(Component component, Object layoutConstraints) {
+        getSwingSelf().add((java.awt.Component) component, layoutConstraints);
+    }
+
+    @Override
     public default Component<Component> findId(String id) {
         for (java.awt.Component component : getSwingSelf().getComponents()) {
             if (component == null) {

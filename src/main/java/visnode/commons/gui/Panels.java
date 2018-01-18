@@ -19,4 +19,13 @@ public class Panels {
         return new Panel();
     }
     
+    /**
+     * Button group
+     * 
+     * @return ButtonGroup
+     */
+    public static ButtonGroup buttonGroup() {
+        return new ButtonGroup();
+    }
+    
 }

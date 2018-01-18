@@ -15,6 +15,14 @@ public class Panel extends JPanel implements DefaultComponent<Panel>, DefaultCon
     /** Suporte to default components */
     private DefaultComponentSupport defaultComponentSupport;
 
+    /**
+     * Creates a new panel
+     */
+    public Panel() {
+        super();
+        setOpaque(false);
+    }
+    
     @Override
     public DefaultComponentSupport getDefaultComponentSupport() {
         if (defaultComponentSupport == null) {

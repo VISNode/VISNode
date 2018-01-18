@@ -1,0 +1,9 @@
+{
+    "name_en_US": "Input",
+    "name_pt_BR": "Input",
+    "description_en_US": "Input images",
+    "description_pt_BR": "Input images",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/InputProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/InputProcess.java"
+}

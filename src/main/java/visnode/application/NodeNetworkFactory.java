@@ -2,8 +2,10 @@ package visnode.application;
 
 import java.awt.Point;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.InputNode;
+import visnode.executor.Node;
 import visnode.executor.OutputNode;
+import visnode.executor.ProcessNode;
+import visnode.pdi.process.InputProcess;
 
 /**
  * Factory for node networks
@@ -17,8 +19,8 @@ public class NodeNetworkFactory {
      */
     public static NodeNetwork create() {
         NodeNetwork network = createEmpty();
-        InputNode input = new InputNode();
-        OutputNode output = new OutputNode();
+        Node input = new ProcessNode(InputProcess.class);
+        Node output = new OutputNode();
         network.add(new EditNodeDecorator(input, new Point(50, 50)));
         network.add(new EditNodeDecorator(output, new Point(250, 50)));
         return network;

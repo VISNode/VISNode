@@ -2,8 +2,17 @@ package visnode.application.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.InstanceCreator;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import java.awt.Point;
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,10 +21,10 @@ import java.util.stream.Collectors;
 import visnode.application.ExceptionHandler;
 import visnode.application.NodeNetwork;
 import visnode.executor.EditNodeDecorator;
-import visnode.executor.InputNode;
 import visnode.executor.Node;
 import visnode.executor.OutputNode;
 import visnode.executor.ProcessNode;
+import visnode.pdi.process.ImageInput;
 
 /**
  * Node network parser
@@ -26,7 +35,19 @@ public class NodeNetworkParser {
     private final Gson gson;
 
     public NodeNetworkParser() {
-        this.gson = new GsonBuilder().registerTypeAdapter(File.class, new FileAdapter()).create();
+        this.gson = createBareGsonBuilder()
+                .registerTypeHierarchyAdapter(ImageInput.class, new InterfaceAdapter<>())
+                .create();
+    }
+    
+    /**
+     * Creates a bare GSon builder
+     * 
+     * @return GsonBuilder
+     */
+    private GsonBuilder createBareGsonBuilder() {
+        return new GsonBuilder()
+                .registerTypeAdapter(File.class, new FileAdapter());
     }
 
     /**
@@ -44,30 +65,11 @@ public class NodeNetworkParser {
             nodes.add(toJson(node));
         });
         data.put("nodes", nodes);
-        int input = network.getInputIndex();
-        if (input >= 0) {
-            data.put("input", toJsonInput(network.getNodes().get(input)));
-        }
         int output = network.getOutputIndex();
         if (output >= 0) {
             data.put("output", toJson(network.getNodes().get(output)));
         }
         return gson.toJson(data);
-    }
-
-    /**
-     * Parser the input node
-     * 
-     * @param node
-     * @return Map
-     */
-    private Map toJsonInput(EditNodeDecorator node) {
-        Map map = toJson(node);
-        File file = ((InputNode) node.getDecorated()).getFile();
-        if (file != null) {
-            map.put("file", file.getPath());
-        }
-        return map;
     }
 
     /**
@@ -120,18 +122,7 @@ public class NodeNetworkParser {
         Map data = gson.fromJson(json, Map.class);
         try {
             Map<String, Node> mapHashCode = new HashMap<>();
-            InputNode input = new InputNode();
             OutputNode out = new OutputNode();
-            Map inputMap = (Map) data.get("input");
-            if (inputMap != null) {
-                mapHashCode.put(inputMap.get("hashCode").toString(), input);
-                // The input node has a file
-                if (inputMap.get("file") != null) {
-                    input.setFile(new File(inputMap.get("file").toString()));
-                }
-                // Define input/output node
-                network.add(new EditNodeDecorator(input, fromJson(inputMap.get("position"))));
-            }
             Map outputMap = (Map) data.get("output");
             if (outputMap != null) {
                 mapHashCode.put(outputMap.get("hashCode").toString(), out);
@@ -196,6 +187,48 @@ public class NodeNetworkParser {
         Point point = new Point();
         point.setLocation(Float.parseFloat(position.get("x").toString()), Float.parseFloat(position.get("y").toString()));
         return point;
+    }
+
+    /**
+     * Adapter for serializing interfaces
+     * 
+     * @param <T> 
+     */
+    public class InterfaceAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
+
+        @Override
+        public JsonElement serialize(T object, Type interfaceType, JsonSerializationContext context) {
+            final JsonObject wrapper = new JsonObject();
+            wrapper.addProperty("type", object.getClass().getName());
+            wrapper.add("data", createBareGsonBuilder().create().toJsonTree(object));
+            return wrapper;
+        }
+
+        @Override
+        public T deserialize(JsonElement elem, Type interfaceType, JsonDeserializationContext context) throws JsonParseException {
+            final JsonObject wrapper = (JsonObject) elem;
+            final JsonElement typeName = get(wrapper, "type");
+            final JsonElement data = get(wrapper, "data");
+            final Type actualType = typeForName(typeName);
+            return createBareGsonBuilder().create().fromJson(data, actualType);
+        }
+
+        private Type typeForName(final JsonElement typeElem) {
+            try {
+                return Class.forName(typeElem.getAsString());
+            } catch (ClassNotFoundException e) {
+                throw new JsonParseException(e);
+            }
+        }
+
+        private JsonElement get(final JsonObject wrapper, String memberName) {
+            final JsonElement elem = wrapper.get(memberName);
+            if (elem == null) {
+                throw new JsonParseException("no '" + memberName + "' member found in what was expected to be an interface wrapper: " + wrapper.toString());
+            }
+            return elem;
+        }
+
     }
 
 }

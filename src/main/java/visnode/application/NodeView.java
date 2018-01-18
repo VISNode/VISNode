@@ -16,6 +16,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import visnode.executor.EditNodeDecorator;
 import visnode.executor.Node;
@@ -54,7 +55,7 @@ public class NodeView extends JNode {
     private void initGui() {
         setBounds(model.getPosition().x, model.getPosition().y, 50, 50);
         addHierarchyListener((HierarchyEvent e) -> {
-            updateSize();
+            SwingUtilities.invokeLater(this::revalidate);
         });
         EventHelper.addMoveListener(this, (ComponentEvent e) -> {
             model.setPosition(getLocation());
@@ -112,14 +113,6 @@ public class NodeView extends JNode {
             }
         });
 
-    }
-
-    /**
-     * Updates the size of the node
-     */
-    private void updateSize() {
-        setSize(getLayout().preferredLayoutSize(this));
-        revalidate();
     }
 
     /**
