@@ -90,9 +90,9 @@
             <version>2.1.6</version>
         </dependency>
         <dependency>
-            <groupId>net.sourceforge.cssparser</groupId>
-            <artifactId>cssparser</artifactId>
-            <version>0.9.24</version>
+            <groupId>com.github</groupId>
+            <artifactId>RxSling</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>net.sf.flexjson</groupId>

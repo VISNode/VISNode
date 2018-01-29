@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
-import visnode.commons.gui.Inputs;
+import com.github.rxsling.Inputs;
 import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
 import visnode.gui.ScrollFactory;

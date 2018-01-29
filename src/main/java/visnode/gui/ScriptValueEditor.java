@@ -9,8 +9,8 @@ import javax.swing.JComponent;
 import javax.swing.JToolBar;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.commons.ScriptValue;
-import visnode.commons.gui.Buttons;
-import visnode.commons.gui.Panel;
+import com.github.rxsling.Buttons;
+import com.github.rxsling.Panel;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 

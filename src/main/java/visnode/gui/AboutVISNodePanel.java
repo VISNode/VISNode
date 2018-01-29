@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import visnode.application.ExceptionHandler;
 import visnode.application.VISNodeConstants;
-import visnode.commons.gui.Labels;
+import com.github.rxsling.Labels;
 import visnode.commons.swing.WindowFactory;
 
 /**

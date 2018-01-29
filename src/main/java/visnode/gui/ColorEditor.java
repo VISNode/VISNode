@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.swing.JColorChooser;
 import javax.swing.JComponent;
 import visnode.application.Messages;
-import visnode.commons.gui.Buttons;
+import com.github.rxsling.Buttons;
 
 /**
  * Color editor

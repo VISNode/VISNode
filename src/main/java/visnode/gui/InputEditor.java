@@ -16,12 +16,12 @@ import javax.swing.event.ChangeEvent;
 import visnode.application.VISNode;
 import visnode.commons.MultiFileInput;
 import visnode.commons.WebcamInput;
-import visnode.commons.gui.Buttons;
-import visnode.commons.gui.Component;
-import visnode.commons.gui.Inputs;
-import visnode.commons.gui.Panel;
-import visnode.commons.gui.Panels;
-import visnode.commons.gui.TextField;
+import com.github.rxsling.Buttons;
+import com.github.rxsling.Component;
+import com.github.rxsling.Inputs;
+import com.github.rxsling.Panel;
+import com.github.rxsling.Panels;
+import com.github.rxsling.TextField;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.pdi.process.ImageInput;
 

@@ -3,7 +3,7 @@ package visnode.gui;
 import java.io.File;
 import javax.swing.JComponent;
 import visnode.application.Messages;
-import visnode.commons.gui.Button;
+import com.github.rxsling.Button;
 import visnode.commons.swing.FileChooserFactory;
 
 /**

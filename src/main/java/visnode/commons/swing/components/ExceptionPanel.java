@@ -12,7 +12,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import visnode.commons.gui.Labels;
+import com.github.rxsling.Labels;
 import visnode.gui.IconFactory;
 
 /**

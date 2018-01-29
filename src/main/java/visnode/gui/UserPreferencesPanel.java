@@ -12,9 +12,9 @@ import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.application.VISNode;
 import visnode.application.VISNodeConstants;
-import visnode.commons.gui.Buttons;
-import visnode.commons.gui.Labels;
-import visnode.commons.gui.Panel;
+import com.github.rxsling.Buttons;
+import com.github.rxsling.Labels;
+import com.github.rxsling.Panel;
 import visnode.commons.swing.WindowFactory;
 
 /**
