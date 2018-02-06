@@ -29,6 +29,8 @@ jobs:
       - run: git clone https://github.com/GrupoTorax/ExamsIO.git ../ExamsIO
       
       - run: git clone https://github.com/GrupoTorax/PDI.git ../PDI
+      
+      - run: git clone https://github.com/Jouwee/RxSling.git ../RxSling
      
       - run: mvn install:install-file -Dfile=../ExamsIO/lib/pixelmed.jar -DgroupId=com.pixelmed -DartifactId=pixelmed -Dversion=1.0 -Dpackaging=jar
       
@@ -37,6 +39,8 @@ jobs:
       - run: mvn -f ../ExamsIO/pom.xml install
       
       - run: mvn -f ../PDI/pom.xml install    
+      
+      - run: mvn -f ../RxSling/pom.xml install    
     
       - checkout
 
