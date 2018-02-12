@@ -7,6 +7,9 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
+import visnode.application.ActionChallenge;
+import visnode.application.ActionChallengeProblem;
+import visnode.application.ActionChallengeRun;
 import visnode.application.ActionCopyNode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionDirectOpen;
@@ -75,6 +78,13 @@ public class Actions {
         });
         rendering.add(get(ActionSelectWindow.class));
         view.add(rendering);
+        JMenu challenge = new JMenu();
+        Messages.get().message("challenge").subscribe((msg) -> {
+            challenge.setText(msg);
+        });
+        challenge.add(get(ActionChallenge.class));
+        challenge.add(get(ActionChallengeRun.class));
+        challenge.add(get(ActionChallengeProblem.class));
         JMenu help = new JMenu();
         Messages.get().message("help").subscribe((msg) -> {
             help.setText(msg);
@@ -84,6 +94,7 @@ public class Actions {
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(view);
+        menuBar.add(challenge);
         menuBar.add(help);
         return menuBar;
     }
@@ -122,6 +133,9 @@ public class Actions {
         actions.put(ActionPasteNode.class, new ActionPasteNode());
         actions.put(ActionAboutVisnode.class, new ActionAboutVisnode());
         actions.put(ActionSelectWindow.class, new ActionSelectWindow());
+        actions.put(ActionChallenge.class, new ActionChallenge());
+        actions.put(ActionChallengeRun.class, new ActionChallengeRun());
+        actions.put(ActionChallengeProblem.class, new ActionChallengeProblem());
     }
     
     /**

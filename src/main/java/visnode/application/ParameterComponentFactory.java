@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import org.paim.commons.Image;
 import visnode.commons.Angle;
+import visnode.commons.DynamicValue;
 import visnode.commons.ScriptValue;
 import visnode.gui.ImageNodeComponent;
 import visnode.commons.Threshold;
@@ -14,6 +15,7 @@ import visnode.executor.OutputNode;
 import visnode.gui.AngleEditor;
 import visnode.gui.ColorEditor;
 import visnode.gui.DoubleEditor;
+import visnode.gui.DynamicValueComponent;
 import visnode.gui.FileEditor;
 import visnode.gui.InputEditor;
 import visnode.gui.ScriptValueEditor;
@@ -40,11 +42,8 @@ public class ParameterComponentFactory {
         if (Image.class.isAssignableFrom(parameter.getType()) && type == ConnectionType.OUTPUT) {
             return new ImageNodeComponent();
         }
-        if (parameter.getType().equals(Image.class) && node instanceof OutputNode) {
-            return new ImageNodeComponent();
-        }
-        if (parameter.getType().equals(Image.class) && node instanceof EditNodeDecorator && ((EditNodeDecorator) node).getDecorated() instanceof OutputNode) {
-            return new ImageNodeComponent();
+        if (parameter.getType().equals(DynamicValue.class) && node instanceof EditNodeDecorator && ((EditNodeDecorator) node).getDecorated() instanceof OutputNode) {
+            return new DynamicValueComponent();
         }
         if (parameter.getType().equals(Threshold.class) && type == ConnectionType.INPUT) {
             return new ThresholdEditor();

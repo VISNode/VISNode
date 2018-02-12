@@ -3,7 +3,6 @@ package visnode.executor;
 import io.reactivex.Observable;
 import java.beans.PropertyChangeListener;
 import java.util.List;
-import org.reactivestreams.Subscriber;
 
 /**
  * Node representation

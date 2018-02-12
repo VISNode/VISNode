@@ -3,6 +3,7 @@ package visnode.application;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import visnode.application.mvc.PropertyEvent;
 import visnode.gui.SplitPanel;
 import visnode.gui.ViewPanel;
@@ -33,6 +34,14 @@ public class MainPanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
+        JToolBar toolbar = new JToolBar();
+        toolbar.add(new ActionNew());
+        toolbar.add(new ActionOpen());
+        toolbar.add(new ActionSave());
+        toolbar.addSeparator();
+        toolbar.add(new ActionChallengeRun());
+        toolbar.add(new ActionChallengeProblem());
+        add(toolbar, BorderLayout.NORTH);
         add(buildDummyInterface());
     }    
     /**
