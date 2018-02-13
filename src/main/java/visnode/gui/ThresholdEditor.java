@@ -1,14 +1,13 @@
 package visnode.gui;
 
 import javax.swing.JComponent;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
 import visnode.commons.Threshold;
+import com.github.rxsling.RangedIntegerInput;
 
 /**
  * Threshold editor
  */
-public class ThresholdEditor extends JSlider implements ParameterComponent<Threshold> {
+public class ThresholdEditor extends RangedIntegerInput implements ParameterComponent<Threshold> {
 
     /** Value */
     private Threshold value;
@@ -17,10 +16,11 @@ public class ThresholdEditor extends JSlider implements ParameterComponent<Thres
      * Creates a new threshold editor
      */
     public ThresholdEditor() {
-        super(0, 255);
+        super();
+        lowerLimit(0).upperLimit(255);
+        id("thresholdSelector");
+        styleSheet(ThresholdEditor.class.getResourceAsStream("/styles/visnode.css"));
         value = new Threshold(128);
-        setFocusable(false);
-        setOpaque(false);
     }
 
     @Override
@@ -35,13 +35,13 @@ public class ThresholdEditor extends JSlider implements ParameterComponent<Thres
         } else {
             this.value = new Threshold(0);
         }
-        super.setValue(this.value.intValue());
+        super.value(this.value.intValue());
     }
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        addChangeListener((ChangeEvent e) -> {
-            valueListener.valueChanged(0, new Threshold(getValue()));
+        valueObservable().subscribe((v) -> {
+            valueListener.valueChanged(0, new Threshold(v));
         });
     }
     

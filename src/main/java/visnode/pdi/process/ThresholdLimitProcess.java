@@ -4,6 +4,7 @@ import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import visnode.commons.Input;
 import visnode.commons.Output;
+import visnode.commons.Threshold;
 import visnode.pdi.Process;
 
 /**
@@ -29,16 +30,21 @@ public class ThresholdLimitProcess implements Process {
      * @param centerReplaceValue 
      */
     public ThresholdLimitProcess(@Input("image") Image image, 
-            @Input("lowerThreshold") Integer lowerThreshold, 
-            @Input("higherThreshold") Integer higherThreshold, 
-            @Input("lowerReplaceValue") Integer lowerReplaceValue,
-            @Input("higherReplaceValue") Integer higherReplaceValue,
-            @Input("centerReplaceValue") Integer centerReplaceValue) {
+            @Input("lowerThreshold") Threshold lowerThreshold, 
+            @Input("higherThreshold") Threshold higherThreshold, 
+            @Input("lowerReplaceValue") Threshold lowerReplaceValue,
+            @Input("higherReplaceValue") Threshold higherReplaceValue,
+            @Input("centerReplaceValue") Threshold centerReplaceValue) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }        
-        this.process = new org.paim.pdi.ThresholdLimitProcess(new Image(resultImage), lowerThreshold, higherThreshold, lowerReplaceValue, higherReplaceValue, centerReplaceValue);
+        this.process = new org.paim.pdi.ThresholdLimitProcess(new Image(resultImage), 
+                lowerThreshold.intValue(), 
+                higherThreshold.intValue(), 
+                lowerReplaceValue.intValue(), 
+                higherReplaceValue.intValue(), 
+                centerReplaceValue.intValue());
     }
 
     /**    
