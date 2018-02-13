@@ -1,5 +1,6 @@
 package visnode.gui;
 
+import com.github.rxsling.Labels;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -7,7 +8,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import org.paim.commons.Image;
 import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
@@ -59,7 +59,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      */
     private JComponent buildImage() {
         this.icon = new ImageIcon();
-        return new JLabel(icon);
+        return Labels.create(icon);
     }
 
     /**

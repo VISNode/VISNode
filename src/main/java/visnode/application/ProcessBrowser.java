@@ -19,6 +19,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import com.github.rxsling.Inputs;
+import com.github.rxsling.Labels;
 import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
 import visnode.gui.ScrollFactory;
@@ -74,7 +75,7 @@ public class ProcessBrowser extends JComponent {
      */
     private JComponent buildFilterPanel() {
         JPanel panel = new JPanel(new BorderLayout(5, 0));
-        panel.add(new JLabel(IconFactory.get().create("fa:search")), BorderLayout.WEST);
+        panel.add(Labels.create(IconFactory.get().create("fa:search")), BorderLayout.WEST);
         panel.add(Inputs.text()
                 .preferredSize(new Dimension(100, 25))
                 .subscribeValue((val) -> updateList(val)));

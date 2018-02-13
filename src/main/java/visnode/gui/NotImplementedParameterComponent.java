@@ -1,13 +1,13 @@
 package visnode.gui;
 
+import com.github.rxsling.Label;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import visnode.executor.NodeParameter;
 
 /**
  * Parameter component for not implemented classes
  */
-public class NotImplementedParameterComponent extends JLabel implements ParameterComponent {
+public class NotImplementedParameterComponent extends Label implements ParameterComponent {
 
     /**
      * Creates a new parameter component for not implemented classes
@@ -15,7 +15,8 @@ public class NotImplementedParameterComponent extends JLabel implements Paramete
      * @param parameter 
      */
     public NotImplementedParameterComponent(NodeParameter parameter) {
-        super(String.format("<Not impl.: %1$s %2$s>", parameter.getName(), parameter.getType().getSimpleName()));
+        super();
+        text(String.format("<Not impl.: %1$s %2$s>", parameter.getName(), parameter.getType().getSimpleName()));
     }
     
     @Override
