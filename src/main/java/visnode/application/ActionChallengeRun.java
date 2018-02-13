@@ -5,7 +5,6 @@ import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import static javax.swing.Action.SMALL_ICON;
 import javax.swing.JOptionPane;
-import org.paim.commons.Image;
 import visnode.challenge.Challenge;
 import visnode.challenge.ChallengeComparator;
 import visnode.challenge.ChallengeScope;

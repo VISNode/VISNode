@@ -4,12 +4,14 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import visnode.challenge.ChallengeListPanel;
+import visnode.user.LoginPanel;
+import visnode.user.UserController;
 
 /**
  * The challenge action
  */
 public class ActionChallenge extends AbstractAction {
-    
+
     /**
      * Creates a new action
      */
@@ -22,7 +24,14 @@ public class ActionChallenge extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ChallengeListPanel.showDialog();
+        UserController.get().isLogged().first(false).subscribe((has) -> {
+            if (has) {
+                ChallengeListPanel.showDialog();
+                return;
+            }
+            LoginPanel.showDialog();
+            ChallengeListPanel.showDialog();
+        });
     }
 
 }

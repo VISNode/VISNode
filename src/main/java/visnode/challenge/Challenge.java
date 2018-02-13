@@ -1,10 +1,14 @@
 package visnode.challenge;
 
+import visnode.user.User;
+
 /**
  * The challenge information
  */
 public class Challenge {
 
+    /** Owner */
+    private User owner;
     /** Id */
     private int id;
     /** Name */
@@ -19,6 +23,24 @@ public class Challenge {
     private ChallengeValue output;
     /** Problem */
     private String problem;
+
+    /**
+     * Returns the owner
+     *
+     * @return User
+     */
+    public User getOwner() {
+        return owner;
+    }
+
+    /**
+     * Sets the owner
+     *
+     * @param owner
+     */
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     /**
      * Returns the challenge id
