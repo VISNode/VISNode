@@ -25,7 +25,7 @@ public class NodeNetworkFactory {
         network.add(new EditNodeDecorator(output, new Point(250, 50)));
         return network;
     }
-
+    
     /**
      * Creates a new empty node network
      *

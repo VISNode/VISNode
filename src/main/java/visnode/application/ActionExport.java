@@ -6,6 +6,7 @@ import javax.swing.AbstractAction;
 import org.paim.commons.Image;
 import org.paim.commons.ImageExporter;
 import org.paim.commons.RenderingOptions;
+import visnode.commons.DynamicValue;
 import visnode.commons.swing.FileChooserFactory;
 
 /**
@@ -25,11 +26,14 @@ public class ActionExport extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        DynamicValue value = VISNode.get().getModel().getNetwork().getOutput();
+        if (!value.isImage()) {
+            return;
+        }
         FileChooserFactory.exportImage().accept((file) -> {
             try {
                 RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
-                Image image = VISNode.get().getModel().getNetwork().getOutput();
-                ImageExporter.exportBufferedImage(image, file, options);
+                ImageExporter.exportBufferedImage((Image) value.get(), file, options);
             } catch (IOException ex) {
                 throw new InvalidOpenFileException(ex);
             }
