@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -18,39 +17,40 @@ import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.application.VISNode;
-import visnode.commons.MultiFileInput;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
 import visnode.user.UserController;
 
 /**
- * The challenge list panel
+ * The challenge solved list panel
  */
-public class ChallengeListPanel extends JPanel {
+public class ChallengeSolvedListPanel extends JPanel {
 
-    /** Challenge repository */
-    private final ChallengeRepository repository;
     /** Challenge list */
-    private JList<Challenge> list;
+    private JList<ChallengeUser> list;
+    /** Challenge */
+    private final int challenge;
 
     /**
      * Creates a new challenge list panel
      */
-    private ChallengeListPanel() {
+    private ChallengeSolvedListPanel(int challenge) {
         super();
-        this.repository = new ChallengeRepository();
+        this.challenge = challenge;
         initGui();
     }
 
     /**
      * Shows the dialog
+     *
+     * @param challenge
      */
-    public static void showDialog() {
+    public static void showDialog(int challenge) {
         Messages.get().message("challenge").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new ChallengeListPanel());
+                container.add(new ChallengeSolvedListPanel(challenge));
             }).setVisible(true);
         });
     }
@@ -75,23 +75,16 @@ public class ChallengeListPanel extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
-                Challenge challenge = list.getSelectedValue();
-                if (solved(challenge)) {
-                    ChallengeSolvedListPanel.showDialog(challenge.getId());
-                    return;
-                }
-                ChallengeController.get().start(challenge);
-                VISNode.get().getController().createNew();
-                VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(new File(challenge.getInput())));
-                ChallengeProblemPanel.showDialog();
+                SwingUtilities.getWindowAncestor(ChallengeSolvedListPanel.this).dispose();
+                ChallengeUser challenge = list.getSelectedValue();
+                VISNode.get().getController().open(challenge.getSubmission());
             }
 
         });
         list.setCellRenderer(new CellRenderer(list.getCellRenderer()));
-        DefaultListModel<Challenge> model = new DefaultListModel();
-        repository.getChallenges().forEach((challenge) -> {
-            model.addElement(challenge);
+        DefaultListModel<ChallengeUser> model = new DefaultListModel();
+        ChallengeUserRepository.get().get(challenge).forEach((obj) -> {
+            model.addElement(obj);
         });
         list.setModel(model);
         return ScrollFactory.pane(list).create();
@@ -107,7 +100,7 @@ public class ChallengeListPanel extends JPanel {
         return ChallengeUserRepository.get().has(UserController.get().getUser(), value.getId());
     }
 
-    private class CellRenderer implements ListCellRenderer<Challenge> {
+    private class CellRenderer implements ListCellRenderer<ChallengeUser> {
 
         /** Renderer to base background and foreground color */
         private final ListCellRenderer defaultRenderer;
@@ -122,24 +115,14 @@ public class ChallengeListPanel extends JPanel {
         }
 
         @Override
-        public Component getListCellRendererComponent(JList<? extends Challenge> list, Challenge value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends ChallengeUser> list, ChallengeUser value, int index, boolean isSelected, boolean cellHasFocus) {
             // Title label
             JLabel label = (JLabel) defaultRenderer.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
-            label.setText(value.getName());
+            label.setText(value.getUser());
             label.setFont(new Font("Segoe UI", Font.BOLD, 18));
-            // Description label
-            JLabel description = new JLabel(value.getDescription());
-            description.setForeground(description.getForeground());
-            description.setBorder(BorderFactory.createEmptyBorder(1, 10, 3, 3));
-            description.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-            // Solve challenge
-            JButton solve = new JButton();
-            Messages.get().message("challenge.solve").subscribe((msg) -> {
-                solve.setText(msg);
-            });
-            JButton solutions = new JButton();
-            Messages.get().message("challenge.solutions").subscribe((msg) -> {
-                solutions.setText(msg);
+            JButton open = new JButton();
+            Messages.get().message("open").subscribe((msg) -> {
+                open.setText(msg);
             });
             // Builds the component
             JPanel componentBorder = new JPanel();
@@ -152,12 +135,7 @@ public class ChallengeListPanel extends JPanel {
             component.setLayout(new BorderLayout());
             component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             component.add(label);
-            component.add(description, BorderLayout.SOUTH);
-            if (solved(value)) {
-                component.add(solutions, BorderLayout.EAST);
-            } else {
-                component.add(solve, BorderLayout.EAST);
-            }
+            component.add(open, BorderLayout.EAST);
             componentBorder.add(component);
             componentBox.add(componentBorder);
             return componentBox;

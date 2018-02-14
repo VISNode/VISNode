@@ -27,12 +27,13 @@ public class ChallengeRepository {
      */
     private Challenge getObjectsSegmentation() {
         Challenge challenge = new Challenge();
+        challenge.setId(1);
         challenge.setName("Segmentação de objetos");
         challenge.setDescription("Execute a segmentação de objetos de uma imagem");
         challenge.setDifficulty(ChallengeDifficulty.EASY);
         challenge.setInput(getFile("/challenges/objectsSegmentation/input.png"));
         challenge.setOutput(valueImage(getFile("/challenges/objectsSegmentation/output.png")));
-        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/challange/src/main/resources/challenges/objectsSegmentation/problem.md");
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
         return challenge;
     }
   
@@ -43,12 +44,13 @@ public class ChallengeRepository {
      */
     private Challenge getDayOrNight() {
         Challenge challenge = new Challenge();
+        challenge.setId(2);
         challenge.setName("Dia ou noite");
         challenge.setDescription("Duscubra se é dia ou noite");
         challenge.setDifficulty(ChallengeDifficulty.EASY);
         challenge.setInput(getFile("/challenges/dayOrNight/input.jpg"));
         challenge.setOutput(value("1"));
-        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/challange/src/main/resources/challenges/dayOrNight/problem.md");
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
         return challenge;
     }
 

@@ -10,7 +10,7 @@ import javax.swing.AbstractAction;
 import static javax.swing.Action.SMALL_ICON;
 import javax.swing.JOptionPane;
 import visnode.challenge.Challenge;
-import visnode.challenge.ChallengeScope;
+import visnode.challenge.ChallengeController;
 import visnode.commons.DynamicValue;
 import visnode.gui.IconFactory;
 import visnode.user.UserController;

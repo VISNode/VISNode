@@ -68,7 +68,7 @@ public class ChallengeComparator {
      * @return boolean
      */
     private boolean comprateObject(Challenge challange, DynamicValue output) {
-        return challange.getOutput().getValue().equals(output.get());
+        return challange.getOutput().getValue().equals(String.valueOf(output.get()));
     }
 
 }

@@ -60,7 +60,7 @@ public class VISNodeController {
         model.setNetwork(NodeNetworkFactory.create());
         model.setLinkedFile(null);
     }
-    
+
     /**
      * Save the current project to it's linked file
      */
@@ -71,7 +71,7 @@ public class VISNodeController {
             ExceptionHandler.get().handle(ex);
         }
     }
-    
+
     /**
      * Save the current project as a file
      *
@@ -114,9 +114,18 @@ public class VISNodeController {
     }
 
     /**
+     * Open a project
+     *
+     * @param content
+     */
+    public void open(String content) {
+        model.setNetwork(parser.fromJson(content));
+    }
+
+    /**
      * Adds a recent project listener
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void addRecentProjectListener(Consumer<List<File>> listener) {
         recentProjectListeners.add(listener);
@@ -131,20 +140,20 @@ public class VISNodeController {
             fireRecentProjects(listener);
         }
     }
-    
+
     /**
      * Fire the recent projects event
-     * 
+     *
      * @param listener
      */
     private void fireRecentProjects(Consumer<List<File>> listener) {
         listener.accept(model.getUserPreferences().getRecentProjects());
     }
-    
+
     /**
      * Adds a recent input listener
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void addRecentInputListener(Consumer<List<File>> listener) {
         recentInputListeners.add(listener);
@@ -159,25 +168,25 @@ public class VISNodeController {
             fireRecentInputs(listener);
         }
     }
-    
+
     /**
      * Fire the recent inputs event
-     * 
+     *
      * @param listener
      */
     public void fireRecentInputs(Consumer<List<File>> listener) {
         listener.accept(model.getUserPreferences().getRecentInput());
     }
-    
+
     /**
      * Rendering options listener
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void addRenderingOptionsListener(Runnable listener) {
         renderingOptionsListeners.add(listener);
     }
-    
+
     /**
      * Repaint the image previews
      */
@@ -186,7 +195,7 @@ public class VISNodeController {
             consumer.run();
         }
     }
-    
+
     /**
      * Copy the selected nodes
      */
@@ -198,8 +207,8 @@ public class VISNodeController {
                 .map(view -> view.getModel())
                 .map(node -> new NodeCloner(node).fullClone().createEditNode())
                 .collect(Collectors.toList()));
-   }
-    
+    }
+
     /**
      * Paste de selected nodes
      */
@@ -216,7 +225,7 @@ public class VISNodeController {
                 model.getNetwork().add(newNode);
             }
         }
-        
+
     }
 
 }

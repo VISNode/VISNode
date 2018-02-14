@@ -3,7 +3,7 @@ package visnode.application;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import visnode.challenge.ChallengeProblemPanel;
-import visnode.challenge.ChallengeScope;
+import visnode.challenge.ChallengeController;
 import visnode.gui.IconFactory;
 
 /**
@@ -20,7 +20,7 @@ public class ActionChallengeProblem extends AbstractAction {
         Messages.get().message("challenge.problem").subscribe((msg) -> {
             putValue(NAME, msg);
         });
-        ChallengeScope.get().hasChallenge().subscribe((has) -> {
+        ChallengeController.get().hasChallenge().subscribe((has) -> {
             setEnabled(has);
         });        
     }

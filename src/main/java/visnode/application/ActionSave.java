@@ -3,7 +3,6 @@ package visnode.application;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
-import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.gui.IconFactory;
 
