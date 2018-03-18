@@ -2,6 +2,11 @@ package visnode.user;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javassist.tools.web.Webserver;
+import visnode.ws.HttpException;
+import visnode.ws.WebService;
 
 /**
  * The user controller
@@ -29,13 +34,21 @@ public class UserController {
     }
 
     /**
-     * Login
+     * Executes the Login
      *
      * @param user
+     * @param password
+     * @return boolean
      */
-    public void login(String user) {
-        this.user = user;
-        has.onNext(Boolean.TRUE);
+    public boolean login(String user, String password) {
+        try {
+            WebService.get().login(user, password);
+            this.user = user;
+            has.onNext(Boolean.TRUE);
+            return true;
+        } catch (HttpException ex) {
+            return false;
+        }
     }
 
     /**

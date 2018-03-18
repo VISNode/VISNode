@@ -1,8 +1,10 @@
-package visnode.challenge;
+package visnode.repository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import visnode.challenge.ChallengeUser;
+import visnode.challenge.ChallengeUserBuilder;
 
 /**
  * The challenge user repository

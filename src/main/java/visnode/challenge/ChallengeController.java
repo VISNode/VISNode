@@ -1,5 +1,6 @@
 package visnode.challenge;
 
+import visnode.repository.ChallengeUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import visnode.application.VISNode;

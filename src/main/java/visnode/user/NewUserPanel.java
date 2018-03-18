@@ -15,11 +15,13 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
+import visnode.repository.RepositoryException;
+import visnode.repository.UserRepository;
 
 /**
- * Login panel
+ * New user panel
  */
-public class LoginPanel extends JPanel {
+public class NewUserPanel extends JPanel {
 
     /** User */
     private JTextField user;
@@ -29,7 +31,7 @@ public class LoginPanel extends JPanel {
     /**
      * Creates a new login panel
      */
-    private LoginPanel() {
+    private NewUserPanel() {
         initGui();
     }
 
@@ -37,8 +39,8 @@ public class LoginPanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
-        WindowFactory.modal().title("Login").create((container) -> {
-            container.add(new LoginPanel());
+        WindowFactory.modal().title("User").create((container) -> {
+            container.add(new NewUserPanel());
         }).setVisible(true);
     }
 
@@ -61,15 +63,13 @@ public class LoginPanel extends JPanel {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         panel.add(Buttons.create("Create").onClick((ev) -> {
-            NewUserPanel.showDialog();
-        }));
-        panel.add(Buttons.create("Login").onClick((ev) -> {
-            String us = user.getText();
-            String pw = new String(password.getPassword());
-            if (UserController.get().login(us, pw)) {
+            try {
+                User model = new User(user.getText());
+                model.setPassword(new String(password.getPassword()));
+                UserRepository.get().create(model);
                 SwingUtilities.getWindowAncestor(this).dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Login incorreto!");
+            } catch (RepositoryException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
             }
         }));
         return panel;
@@ -99,7 +99,7 @@ public class LoginPanel extends JPanel {
         user = new JTextField();
         return user;
     }
-
+    
     /**
      * Builds the password field
      *

@@ -1,7 +1,11 @@
-package visnode.challenge;
+package visnode.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import visnode.challenge.Challenge;
+import visnode.challenge.ChallengeDifficulty;
+import visnode.challenge.ChallengeValue;
+import visnode.challenge.ChallengeValueType;
 
 /**
  * The challenge repository

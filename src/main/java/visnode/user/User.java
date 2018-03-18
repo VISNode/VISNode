@@ -12,6 +12,13 @@ public class User {
     /** Password */
     private String password;
 
+    public User() {
+    }
+    
+    public User(String name) {
+        this.name = name;
+    }
+    
     /**
      * Returns the email
      *
