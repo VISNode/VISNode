@@ -48,6 +48,9 @@ public class MultiFileInput implements ImageInput {
     }
 
     public File getFile() {
+        if (file.length == 0) {
+            return null;
+        }
         return file[index];
     }
 

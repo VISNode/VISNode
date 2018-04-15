@@ -53,13 +53,15 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         setLayout(new BorderLayout());
         Panel panelTypes = Panels.buttonGroup();
         panelTypes.put(Buttons.toggle()
-                .icon(IconFactory.get().create("fa:video-camera"))
-                .focusable(false)
-                .onClick((e) -> setValue(new WebcamInput())));
-        panelTypes.put(Buttons.toggle()
                 .icon(IconFactory.get().create("fa:picture-o"))
+                .hint("Select an image from the computer")
                 .focusable(false)
                 .onClick((e) -> setValue(new MultiFileInput())));
+        panelTypes.put(Buttons.toggle()
+                .icon(IconFactory.get().create("fa:video-camera"))
+                .hint("Show webcam video")
+                .focusable(false)
+                .onClick((e) -> setValue(new WebcamInput())));
         add(panelTypes, BorderLayout.NORTH);
         buildSpecificFields();
     }
@@ -170,8 +172,8 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
             slider.setMaximum(multiFile.getSize() - 1);
             slider.setValue(multiFile.getIndex());
             slider.setEnabled(true);
+            text.append(multiFile.getFile().getName());
         }
-        text.append(multiFile.getFile().getName());
         findId("multiFileName").as(TextField.class).value(text.toString());
     }
 

@@ -1,13 +1,13 @@
 package visnode.gui;
 
-import com.github.rxsling.Labels;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 import org.paim.commons.Image;
 import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
@@ -24,7 +24,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     /** Image */
     private Image value;
     /** Image */
-    private ImageIcon icon;
+    private BufferedImage image;
 
     /**
      * Creates a new image component
@@ -40,8 +40,8 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
      */
     private void initGui() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(buildImage());
         updateImage();
+        setPreferredSize(new Dimension(THUMBNAIL_SIZE, THUMBNAIL_SIZE));
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -53,36 +53,33 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     }
 
     /**
-     * Builds the image
-     *
-     * @return JComponent
+     * Updates the image
      */
-    private JComponent buildImage() {
-        this.icon = new ImageIcon();
-        return Labels.create(icon);
+    private void updateImage() {
+        updateImage(value);
     }
 
     /**
      * Updates the image
      */
-    private void updateImage() {
+    private void updateImage(Image value) {
         RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
-        BufferedImage image = ImageConverter.toBufferedImage(value, options);
-        int size = Math.max(image.getWidth(), image.getHeight());
-        int newWidth = THUMBNAIL_SIZE * image.getWidth() / size;
-        int newHeight = THUMBNAIL_SIZE * image.getHeight() / size;
+        BufferedImage original = ImageConverter.toBufferedImage(value, options);
+        int size = Math.max(original.getWidth(), original.getHeight());
+        int newWidth = THUMBNAIL_SIZE * original.getWidth() / size;
+        int newHeight = THUMBNAIL_SIZE * original.getHeight() / size;
         int x = (THUMBNAIL_SIZE - newWidth) / 2;
         int y = (THUMBNAIL_SIZE - newHeight) / 2;
         BufferedImage newImage = new BufferedImage(THUMBNAIL_SIZE, THUMBNAIL_SIZE, BufferedImage.TYPE_4BYTE_ABGR_PRE);
-        java.awt.Image scaledImage = image.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
+        java.awt.Image scaledImage = original.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
         newImage.getGraphics().drawImage(scaledImage, x, y, null);
-        icon.setImage(newImage);
+        image = newImage;
         repaint();
     }
 
     @Override
     public void paint(Graphics g) {
-        g.drawImage(icon.getImage(), 0, 0, this);
+        g.drawImage(image, 0, 0, this);
     }
 
     @Override
@@ -93,7 +90,9 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     @Override
     public void setValue(Image value) {
         this.value = value;
-        updateImage();
+        SwingUtilities.invokeLater(() -> {
+            updateImage(value);
+        });
     }
 
     @Override

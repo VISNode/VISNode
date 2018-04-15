@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import com.google.common.base.Objects;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.beans.PropertyChangeListener;
@@ -46,12 +47,14 @@ public class ProcessNode implements Node, AttacherNode {
     /** Listeners list */
     private final EventListenerList listenerList;
     /** The instance to run */
-    private Process process;
+    private Process lastProcess;
     /** If the process has been invalidated */
     private boolean invalidated;
     /** Process meta-data */
     private ProcessMetadata metadata;
-
+    /** Lock used for the output */
+    private final Object outputLock = new Object();
+    
     /**
      * Creates a new process node
      *
@@ -133,9 +136,11 @@ public class ProcessNode implements Node, AttacherNode {
     @Override
     public void setInput(String attribute, Object value) {
         Object oldValue = input.get(attribute);
-        input.put(attribute, value);
-        inputChangeSupport.firePropertyChange(attribute, oldValue, value);
-        invalidated = true;
+        if (!Objects.equal(value, oldValue)) {
+            input.put(attribute, value);
+            inputChangeSupport.firePropertyChange(attribute, oldValue, value);
+            invalidated = true;
+        }
     }
 
     @Override
@@ -143,27 +148,36 @@ public class ProcessNode implements Node, AttacherNode {
         BehaviorSubject subject = BehaviorSubject.create();
         if (invalidated) {
             process((p) -> {
-                Object value = getOutputValue(attribute);
+                lastProcess = p;
+                Object value = getOutputValue(p, attribute);
                 if (value != null) {
                     if (value instanceof Observable) {
                         ((Observable)value).subscribe((v) -> {
-                            subject.onNext(v);
+                            synchronized (outputLock) {
+                                subject.onNext(v);
+                            }
                         });
                     } else {
-                        subject.onNext(value);
+                        synchronized (outputLock) {
+                            subject.onNext(value);
+                        }
                     }
                 }
             });
             return subject;
         }
-        Object value = getOutputValue(attribute);
+        Object value = getOutputValue(lastProcess, attribute);
         if (value != null) {
             if (value instanceof Observable) {
                 ((Observable)value).subscribe((v) -> {
-                    subject.onNext(v);
+                    synchronized (outputLock) {
+                        subject.onNext(v);
+                    }
                 });
             } else {
-                subject.onNext(value);
+                synchronized (outputLock) {
+                    subject.onNext(value);
+                }
             }
         }
         return subject;
@@ -175,7 +189,7 @@ public class ProcessNode implements Node, AttacherNode {
      * @param attribute
      * @return Object
      */
-    private Object getOutputValue(String attribute) {
+    private Object getOutputValue(Process process, String attribute) {
         try {
             return processOutput.get(attribute).invoke(process);
         } catch (Exception e) {
@@ -193,14 +207,14 @@ public class ProcessNode implements Node, AttacherNode {
      *
      * @param callable
      */
-    public void process(Consumer callable) {
-        process = buildProcess();
+    public void process(Consumer<Process> callable) {
+        Process process = buildProcess();
         Thread th = new Thread(() -> {
             try {
                 process.process();
                 invalidated = false;
                 for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
-                    Object output = getOutputValue(entry.getKey());
+                    Object output = getOutputValue(process, entry.getKey());
                     if (output instanceof Observable) {
                         ((Observable) output).subscribe((value) -> {
                             outputChangeSupport.firePropertyChange(entry.getKey(), null, value);
@@ -209,7 +223,7 @@ public class ProcessNode implements Node, AttacherNode {
                         outputChangeSupport.firePropertyChange(entry.getKey(), null, output);
                     }
                 }
-                callable.accept(true);
+                callable.accept(process);
             } catch (Exception ex) {
                 ExceptionHandler.get().handle(ex);
             }
