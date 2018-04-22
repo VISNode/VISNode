@@ -152,7 +152,6 @@ public class ProcessNode implements Node, AttacherNode {
         BehaviorSubject subject = BehaviorSubject.create();
         if (invalidated) {
             process((p) -> {
-                lastProcess = p;
                 Object value = getOutputValue(p, attribute);
                 if (value != null) {
                     if (value instanceof Observable) {
@@ -227,6 +226,7 @@ public class ProcessNode implements Node, AttacherNode {
                         outputChangeSupport.firePropertyChange(entry.getKey(), null, output);
                     }
                 }
+                lastProcess = process;
                 callable.accept(process);
             } catch (Exception ex) {
                 ExceptionHandler.get().handle(ex);
