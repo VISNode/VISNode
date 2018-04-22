@@ -182,6 +182,8 @@ public class NodeView extends JNode {
      * @return JComponent
      */
     private JComponent buildLabel(String text) {
+        text = text.replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase();
+        text = text.substring(0, 1).toUpperCase() + text.substring(1);
         JLabel label = new JLabel(text, JLabel.LEFT);
         label.setBorder(new EmptyBorder(0, 15, 0, 0));
         label.setFont(new Font("Segoe UI", Font.PLAIN, 9));

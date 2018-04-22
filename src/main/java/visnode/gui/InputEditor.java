@@ -198,6 +198,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         if (changeOfClass) {
             buildSpecificFields();
         }
+        fireValueChanged();
     }
     
     /**

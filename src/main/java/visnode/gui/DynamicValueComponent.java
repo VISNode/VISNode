@@ -1,9 +1,9 @@
 package visnode.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JTextArea;
 import org.paim.commons.Image;
@@ -32,7 +32,7 @@ public class DynamicValueComponent extends JComponent implements ParameterCompon
      * Initializes the interface
      */
     private void initGui() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
         setPreferredSize(new Dimension(150, 150));
     }
 

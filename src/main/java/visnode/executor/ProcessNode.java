@@ -74,9 +74,6 @@ public class ProcessNode implements Node, AttacherNode {
         this.outputChangeSupport = new PropertyChangeSupport(this);
         this.listenerList = new EventListenerList();
         this.invalidated = true;
-        VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
-            metadata = ProcessMetadata.fromClass(process, locale);
-        });
     }
 
     /**
@@ -321,6 +318,10 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public String getName() {
+        System.out.println("shit");
+        VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
+            metadata = ProcessMetadata.fromClass(processType, locale);
+        });
         return metadata.getName();
     }
 
