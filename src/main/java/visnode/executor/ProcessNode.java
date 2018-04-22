@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.swing.event.EventListenerList;
@@ -30,6 +32,8 @@ import visnode.pdi.Process;
  */
 public class ProcessNode implements Node, AttacherNode {
 
+    /** Execution pool */
+    private static ExecutorService pool;
     /** Process class */
     private final Class<Process> processType;
     /** Process input */
@@ -209,7 +213,7 @@ public class ProcessNode implements Node, AttacherNode {
      */
     public void process(Consumer<Process> callable) {
         Process process = buildProcess();
-        Thread th = new Thread(() -> {
+        getPool().submit(() -> {
             try {
                 process.process();
                 invalidated = false;
@@ -228,8 +232,6 @@ public class ProcessNode implements Node, AttacherNode {
                 ExceptionHandler.get().handle(ex);
             }
         });
-        th.setDaemon(true);
-        th.start();
     }
 
     /**
@@ -250,6 +252,18 @@ public class ProcessNode implements Node, AttacherNode {
         } catch (IllegalArgumentException | ReflectiveOperationException ex) {
             throw new RuntimeException("Process build fail", ex);
         }
+    }
+    
+    /**
+     * Returns the thread pool for executing processes
+     * 
+     * @return ExecutorService
+     */
+    private static ExecutorService getPool() {
+        if (pool == null) {
+            pool = Executors.newWorkStealingPool();
+        }
+        return pool;
     }
 
     @Override
