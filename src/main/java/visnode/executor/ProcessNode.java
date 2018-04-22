@@ -318,7 +318,6 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public String getName() {
-        System.out.println("shit");
         VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
             metadata = ProcessMetadata.fromClass(processType, locale);
         });
