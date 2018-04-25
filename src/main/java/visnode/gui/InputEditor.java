@@ -164,7 +164,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
      * @param multiFile 
      */
     private void updateMultifileFields(MultiFileInput multiFile) {
-        if (slider == null) {
+        if (slider == null || findId("multiFileName") == null) {
             return;
         }
         StringBuilder text = new StringBuilder();

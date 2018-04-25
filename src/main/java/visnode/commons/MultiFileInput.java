@@ -36,11 +36,13 @@ public class MultiFileInput implements ImageInput {
     @Override
     public Observable<Image> getImageObservable() {
         try {
-            return BehaviorSubject.createDefault(new InputReader().read(getFile()));
+            if (getFile() != null) {
+                return BehaviorSubject.createDefault(new InputReader().read(getFile()));
+            }
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
-            return null;
         }
+        return BehaviorSubject.create();
     }
 
     public int getIndex() {
