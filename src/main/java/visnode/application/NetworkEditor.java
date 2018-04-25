@@ -200,6 +200,13 @@ public class NetworkEditor extends JComponent {
         List<NodeView> converted = selection.map((jnode) -> (NodeView) jnode).collect(Collectors.toList());
         return new Selection<>(converted);
     }
+    
+    /**
+     * Clears the selection
+     */
+    public void clearSelection() {
+        nodeContainer.clearSelection();
+    }
 
     /**
      * Node connection synchronizer

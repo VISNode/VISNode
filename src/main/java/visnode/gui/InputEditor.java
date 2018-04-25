@@ -156,7 +156,6 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         if (input instanceof MultiFileInput) {
             updateMultifileFields((MultiFileInput) input);
         }
-        
     }
     
     /**
@@ -165,6 +164,9 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
      * @param multiFile 
      */
     private void updateMultifileFields(MultiFileInput multiFile) {
+        if (slider == null) {
+            return;
+        }
         StringBuilder text = new StringBuilder();
         slider.setEnabled(false);
         if (multiFile.getSize() > 1) {

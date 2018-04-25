@@ -2,6 +2,7 @@ package visnode.executor;
 
 import com.google.common.base.Objects;
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -50,6 +51,8 @@ public class ProcessNode implements Node, AttacherNode {
     private final PropertyChangeSupport outputChangeSupport;
     /** Listeners list */
     private final EventListenerList listenerList;
+    /** Composite disposable for Observable subscriptions */
+    private final CompositeDisposable compositeDisposable;
     /** The instance to run */
     private Process lastProcess;
     /** If the process has been invalidated */
@@ -74,6 +77,7 @@ public class ProcessNode implements Node, AttacherNode {
         this.outputChangeSupport = new PropertyChangeSupport(this);
         this.listenerList = new EventListenerList();
         this.invalidated = true;
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     /**
@@ -318,9 +322,9 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public String getName() {
-        VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
+        compositeDisposable.add(VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
             metadata = ProcessMetadata.fromClass(processType, locale);
-        });
+        }));
         return metadata.getName();
     }
 
@@ -331,5 +335,10 @@ public class ProcessNode implements Node, AttacherNode {
 
     public Class getProcessType() {
         return processType;
+    }
+
+    @Override
+    public void dispose() {
+        compositeDisposable.dispose();
     }
 }

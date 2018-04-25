@@ -2,6 +2,10 @@ package visnode.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -21,6 +25,8 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
 
     /** Thumbnail size */
     private static final int THUMBNAIL_SIZE = 150;
+    /** Rendering options listener */
+    private final Runnable renderingOptionsListener;
     /** Image */
     private Image value;
     /** Image */
@@ -32,7 +38,14 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     public ImageNodeComponent() {
         this.value = ImageFactory.buildEmptyImage();
         initGui();
-        VISNode.get().getController().addRenderingOptionsListener(this::updateImage);
+        renderingOptionsListener = this::updateImage;
+        VISNode.get().getController().addRenderingOptionsListener(renderingOptionsListener);
+    }
+
+    @Override
+    public void removeNotify() {
+        super.removeNotify();
+        VISNode.get().getController().removeRenderingOptionsListener(renderingOptionsListener);
     }
 
     /**

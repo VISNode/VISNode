@@ -101,10 +101,7 @@ public class JNodeContainer extends JLayeredPane {
             @Override
             public void mouseClicked(MouseEvent e) {
                 requestFocusInWindow();
-                for (JNode oldNode : selection.copy()) {
-                    oldNode.repaint();
-                }
-                selection.clear();
+                clearSelection();
             }
         });
         MouseInterceptor.get().addDragListener(new DragSelectionListener());
@@ -283,6 +280,16 @@ public class JNodeContainer extends JLayeredPane {
      */
     public Selection<JNode> getSelection() {
         return selection;
+    }
+    
+    /**
+     * Clears the selecion
+     */
+    public void clearSelection() {
+        for (JNode oldNode : selection.copy()) {
+            oldNode.repaint();
+        }
+        selection.clear();
     }
 
     /**
