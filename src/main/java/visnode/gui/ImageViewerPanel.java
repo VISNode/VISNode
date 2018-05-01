@@ -5,8 +5,10 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
@@ -98,7 +100,7 @@ public class ImageViewerPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildImage() {
-        scrollPane = new JScrollPane(new ImageContainer());
+        scrollPane = ScrollFactory.pane(new ImageContainer()).create();
         scrollPane.setMaximumSize(VISNode.get().getMainPanel().getSize());
         return scrollPane;
     }
@@ -108,10 +110,10 @@ public class ImageViewerPanel extends JPanel {
      */
     private class ImageContainer extends JComponent {
 
-        /** Maximum zoom */
-        private static final float MAX_ZOOM = 20;
-        /** Minimum zoom */
-        private static final float MIN_ZOOM = 0.2f;
+        /** Zoom lookup table */
+        private final float[] ZOOM_TABLE = {
+            0.1f, 0.125f, 0.25f, 0.5f, 0.71f, 1, 1.5f, 2, 2.5f, 3.5f, 5, 7, 10,
+            13, 20, 25, 35, 50, 70 };
         /** Original image */
         private final BufferedImage buff;
         /** Container width */
@@ -119,14 +121,20 @@ public class ImageViewerPanel extends JPanel {
         /** Container height */
         private int height;
         /** Container zoom */
-        private float zoom;
-
+        private int zoom;
+        /** Zoom multiplication factor */
+        private double zoomFactor;
+        
+        /**
+         * Creates a new image container
+         */
         public ImageContainer() {
             RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
             buff = ImageConverter.toBufferedImage(image, options);
             width = image.getWidth();
             height = image.getHeight();
-            zoom = 1;
+            zoom = 5;
+            zoomFactor = factorFromValue(zoom);
             initGui();
             initEvents();
         }
@@ -142,68 +150,53 @@ public class ImageViewerPanel extends JPanel {
          * Initializes the events
          */
         private void initEvents() {
-            addMouseListener(new MouseListener() {
+            addMouseWheelListener((MouseWheelEvent e) -> {
+                Point point = e.getPoint();
+                if (e.isControlDown()) {
+                    addZoom(point, -e.getWheelRotation());
+                }
+            });
+            addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     Point point = e.getPoint();
                     if (e.isControlDown()) {
-                        removeZoom(point);
+                        addZoom(point, -1);
                     } else {
-                        addZoom(point);
+                        addZoom(point, 1);
                     }
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
                 }
             });
         }
 
         @Override
         public void paintComponent(Graphics g) {
-            Graphics2D g2D = (Graphics2D) g;
-            AffineTransform previousTransform = g2D.getTransform();
-            g2D.scale(zoom, zoom);
-            g2D.drawImage(buff, 0, 0, null);
-            g2D.setTransform(previousTransform);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.scale(zoomFactor, zoomFactor);
+            if (g2d.getClip() != null) {
+                int x = Math.max(0, (g2d.getClipBounds().width - buff.getWidth()) / 2);
+                int y = Math.max(0, (g2d.getClipBounds().height - buff.getHeight()) / 2);
+                g2d.translate(x, y);
+            }
+            g2d.drawImage(buff, 0, 0, null);
+            g2d.dispose();
         }
 
         /**
          * Update de image zoom
-         *
-         * @param point
          */
-        private void updateZoom(Point point) {
+        private void updateZoom() {
+            zoomFactor = factorFromValue(zoom);
             int oldWidth = width;
             int oldHeight = height;
-            width = (int) (buff.getWidth() * zoom);
-            height = (int) (buff.getHeight() * zoom);
+            Rectangle oldScroll = scrollPane.getViewport().getViewRect();
+            width = (int) (buff.getWidth() * zoomFactor);
+            height = (int) (buff.getHeight() * zoomFactor);
             setPreferredSize(new Dimension(width, height));
-            // Calc the new x position
-            int imagePosX = point.x;
-            int newImagePosX = imagePosX + (int) (imagePosX * (((double) (width - oldWidth)) / oldWidth));
-            int difX = newImagePosX - imagePosX;
-            // Calc the new y position
-            int imagePosY = point.y;
-            int newImagePosY = imagePosY + (int) (imagePosY * (((double) (height - oldHeight)) / oldHeight));
-            int difY = newImagePosY - imagePosY;
             // Calc the scrool point
             Point scrollPoint = scrollPane.getViewport().getViewPosition();
-            scrollPoint.x += difX;
-            scrollPoint.y += difY;
+            scrollPoint.x = (int) (((float)oldScroll.x / oldWidth) * width);
+            scrollPoint.y = (int) (((float)oldScroll.y / oldHeight) * height);
             scrollPane.getViewport().setViewPosition(scrollPoint);
             revalidate();
             repaint();
@@ -214,25 +207,25 @@ public class ImageViewerPanel extends JPanel {
          *
          * @param point
          */
-        public void addZoom(Point point) {
-            zoom += Math.pow(1, zoom);
-            if (zoom > MAX_ZOOM) {
-                zoom = MAX_ZOOM;
+        public void addZoom(Point point, int ammount) {
+            zoom += ammount;
+            if (zoom >= ZOOM_TABLE.length) {
+                zoom = ZOOM_TABLE.length - 1;
             }
-            updateZoom(point);
+            if (zoom < 0) {
+                zoom = 0;
+            }
+            updateZoom();
         }
 
         /**
-         * Removes zoom
-         *
-         * @param point
+         * Converts a zoom do the factor
+         * 
+         * @param value
+         * @return double
          */
-        public void removeZoom(Point point) {
-            zoom -= Math.pow(1, zoom);
-            if (zoom < MIN_ZOOM) {
-                zoom = MIN_ZOOM;
-            }
-            updateZoom(point);
+        private double factorFromValue(int value) {
+            return ZOOM_TABLE[value];
         }
 
     }
