@@ -41,8 +41,6 @@ public class MainPanel extends JPanel {
         toolbar.addSeparator();
         toolbar.add(new ActionChallengeRun());
         toolbar.add(new ActionChallengeProblem());
-        toolbar.addSeparator();
-        toolbar.add(new ActionUser());
         add(toolbar, BorderLayout.NORTH);
         add(buildDummyInterface());
     }    

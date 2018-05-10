@@ -21,6 +21,7 @@ public class ChallengeRepository {
         List<Challenge> challenges = new ArrayList<>();
         challenges.add(getObjectsSegmentation());
         challenges.add(getDayOrNight());
+        challenges.add(getCoin());
         return challenges;
     }
 
@@ -55,6 +56,23 @@ public class ChallengeRepository {
         challenge.setInput(getFile("/challenges/dayOrNight/input.jpg"));
         challenge.setOutput(value("1"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
+        return challenge;
+    }
+
+    /**
+     * Returns a coin
+     *
+     * @return Challenge
+     */
+    private Challenge getCoin() {
+        Challenge challenge = new Challenge();
+        challenge.setId(3);
+        challenge.setName("Valor monetário");
+        challenge.setDescription("Cálcule o valor das moedas");
+        challenge.setDifficulty(ChallengeDifficulty.HARD);
+        challenge.setInput(getFile("/challenges/coin/input.jpg"));
+        challenge.setOutput(value("R$ 1,90"));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
         return challenge;
     }
 

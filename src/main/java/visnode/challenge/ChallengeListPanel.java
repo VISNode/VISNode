@@ -83,8 +83,8 @@ public class ChallengeListPanel extends JPanel {
                     ChallengeSolvedListPanel.showDialog(challenge.getId());
                     return;
                 }
-                ChallengeController.get().start(challenge);
                 VISNode.get().getController().createNew();
+                ChallengeController.get().start(challenge);
                 VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(new File(challenge.getInput())));
                 ChallengeProblemPanel.showDialog();
             }

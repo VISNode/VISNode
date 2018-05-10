@@ -33,6 +33,10 @@ public class VISNodeController {
     private final List<Consumer<List<File>>> recentInputListeners;
     /** Rendering options listeners */
     private final List<Runnable> renderingOptionsListeners;
+    /** Open project listener */
+    private final List<Runnable> openedProjectListeners;
+    /** New project listener */
+    private final List<Runnable> newProjectListeners;
 
     /**
      * VISNode model
@@ -45,6 +49,8 @@ public class VISNodeController {
         this.recentProjectListeners = new ArrayList<>();
         this.recentInputListeners = new ArrayList<>();
         this.renderingOptionsListeners = new ArrayList<>();
+        this.openedProjectListeners = new ArrayList<>();
+        this.newProjectListeners = new ArrayList<>();
         model.addEventListener(PropertyEvent.class, (evt) -> {
             if (evt.getPropertyName().equals("userPreferences")) {
                 fireRecentProjects();
@@ -59,6 +65,7 @@ public class VISNodeController {
     public void createNew() {
         model.setNetwork(NodeNetworkFactory.create());
         model.setLinkedFile(null);
+        fireNewProjectListener();
     }
 
     /**
@@ -108,6 +115,7 @@ public class VISNodeController {
             model.setLinkedFile(file);
             model.getUserPreferences().addRecentProject(file);
             fireRecentProjects();
+            fireOpenedProjectListener();
         } catch (IOException ex) {
             throw new InvalidOpenFileException(ex);
         }
@@ -120,6 +128,7 @@ public class VISNodeController {
      */
     public void open(String content) {
         model.setNetwork(parser.fromJson(content));
+        fireOpenedProjectListener();
     }
 
     /**
@@ -185,6 +194,38 @@ public class VISNodeController {
      */
     public void addRenderingOptionsListener(Runnable listener) {
         renderingOptionsListeners.add(listener);
+    }
+
+    /**
+     * Adds a opened project listener
+     *
+     * @param listener
+     */
+    public void addOpenedProjectListener(Runnable listener) {
+        openedProjectListeners.add(listener);
+    }
+
+    /**
+     * Fire the opened project listener
+     */
+    public void fireOpenedProjectListener() {
+        openedProjectListeners.forEach((it) -> it.run());
+    }
+
+    /**
+     * Adds a new project listener
+     *
+     * @param listener
+     */
+    public void addNewProjectListener(Runnable listener) {
+        newProjectListeners.add(listener);
+    }
+
+    /**
+     * Fire the new project listener
+     */
+    public void fireNewProjectListener() {
+        newProjectListeners.forEach((it) -> it.run());
     }
 
     /**
