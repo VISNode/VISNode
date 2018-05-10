@@ -279,3 +279,10 @@ pre tt::after {
     background: #f6f8fa;
     border-top: 0
 }
+
+img[alt="equation"] {
+    background: #FFF;
+    padding: 15px;
+    display:block;
+    margin: 0 auto;
+}

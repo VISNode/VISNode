@@ -6,4 +6,4 @@ Busca informações da imagem.
 * __image:__ Imagem
 
 #### Saída
-* __image:__ Imagem
+* __average:__ Retorna a média dos pixels da imagem

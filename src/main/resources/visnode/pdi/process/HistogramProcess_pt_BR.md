@@ -6,4 +6,5 @@ Histogram.
 * __image:__ Imagem
 
 #### Saída
-* __image:__ Imagem
+* __valueWithLeastOccurrnces:__
+* __valueWithMaxOccurrnces:__ 
