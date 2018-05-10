@@ -229,6 +229,15 @@ public class VISNodeController {
     }
 
     /**
+     * Rendering options listener
+     * 
+     * @param listener 
+     */
+    public void removeRenderingOptionsListener(Runnable listener) {
+        renderingOptionsListeners.remove(listener);
+    }
+    
+    /**
      * Repaint the image previews
      */
     public void repaintImagePreviews() {

@@ -1,11 +1,12 @@
 package visnode.application;
 
+import com.github.rxsling.Labels;
+import com.github.rxsling.enums.HAlign;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import javax.swing.AbstractAction;
 import javax.swing.JFormattedTextField;
-import javax.swing.JLabel;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 
@@ -33,9 +34,9 @@ public class ActionSelectWindow extends AbstractAction {
             fieldWindowWidth = new JFormattedTextField(new DecimalFormat("#0"));
             fieldWindowWidth.setValue(VISNode.get().getModel().getUserPreferences().getRenderingOptions().getDicomWindowWidth());
             panel.setLayout(new GridLayout(0, 2, 5, 0));
-            panel.add(new JLabel("Window level", JLabel.RIGHT));
+            panel.add(Labels.create("Window level", HAlign.RIGHT));
             panel.add(fieldWindowLevel);
-            panel.add(new JLabel("Window width", JLabel.RIGHT));
+            panel.add(Labels.create("Window width", HAlign.RIGHT));
             panel.add(fieldWindowWidth);
         }).setVisible(true);
     }

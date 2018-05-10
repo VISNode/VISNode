@@ -36,7 +36,7 @@ public class ObjectExtractionProcess implements Process {
      */
     public ObjectExtractionProcess(@Input("objectList") ObjectList objectList, @Input("script") ScriptValue script) {
         this.objectList = objectList;
-        this.objectListOut = objectList;
+        this.objectListOut = objectList != null ? new ObjectList(objectList) : objectList;
         this.scriptRunner = new ScriptRunner(script);
         this.resultImage = ImageFactory.buildBinaryImage(1, 1);
     }

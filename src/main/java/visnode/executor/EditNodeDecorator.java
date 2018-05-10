@@ -141,4 +141,9 @@ public class EditNodeDecorator implements Node, AttacherNode {
         ((AttacherNode)decorated).addConnectionChangeListener(listener);
     }
 
+    @Override
+    public void dispose() {
+        decorated.dispose();
+    }
+
 }

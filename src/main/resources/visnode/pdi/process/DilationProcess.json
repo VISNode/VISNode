@@ -1,8 +1,8 @@
 {
     "name_en_US": "Dilation",
     "name_pt_BR": "Dilatação",
-    "description_en_US": "Dilation operator",
-    "description_pt_BR": "Executa a operação de dilatação",
+    "description_en_US": "Mathematial morphology - Dilation",
+    "description_pt_BR": "Morfologia matemática - Dilatação",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DilationProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/DilationProcess.java"

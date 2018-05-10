@@ -1,8 +1,8 @@
 {
     "name_en_US": "Closing",
     "name_pt_BR": "Fechamento",
-    "description_en_US": "Closing operator",
-    "description_pt_BR": "Executa a operação de fechamento",
+    "description_en_US": "Mathematial morphology - Closing",
+    "description_pt_BR": "Morfologia matemática - Fechamento",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ClosingProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/ClosingProcess.java"

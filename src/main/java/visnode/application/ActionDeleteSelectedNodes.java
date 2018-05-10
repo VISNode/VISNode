@@ -35,6 +35,7 @@ public class ActionDeleteSelectedNodes extends AbstractAction {
                             !(node.getDecorated() instanceof OutputNode)).
                 collect(Collectors.toList());
         VISNode.get().getModel().getNetwork().remove(nodes);
+        VISNode.get().getNetworkEditor().clearSelection();
     }
 
 }

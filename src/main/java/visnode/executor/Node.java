@@ -90,4 +90,9 @@ public interface Node {
      */
     public void removeOutputChangeListener(PropertyChangeListener listener);
     
+    /**
+     * Disposes the node
+     */
+    public void dispose();
+    
 }

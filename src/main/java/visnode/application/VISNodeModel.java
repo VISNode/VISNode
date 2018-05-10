@@ -36,6 +36,7 @@ public class VISNodeModel implements Model {
     public void setNetwork(NodeNetwork network) {
         NodeNetwork oldValue = this.network;
         this.network = network;
+        oldValue.dispose();
         fireEvent(new PropertyEvent("network", oldValue, network));
     }
 

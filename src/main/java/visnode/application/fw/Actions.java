@@ -78,13 +78,6 @@ public class Actions {
         });
         rendering.add(get(ActionSelectWindow.class));
         view.add(rendering);
-        JMenu challenge = new JMenu();
-        Messages.get().message("challenge").subscribe((msg) -> {
-            challenge.setText(msg);
-        });
-        challenge.add(get(ActionChallenge.class));
-        challenge.add(get(ActionChallengeRun.class));
-        challenge.add(get(ActionChallengeProblem.class));
         JMenu help = new JMenu();
         Messages.get().message("help").subscribe((msg) -> {
             help.setText(msg);
@@ -94,7 +87,6 @@ public class Actions {
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(view);
-        menuBar.add(challenge);
         menuBar.add(help);
         return menuBar;
     }

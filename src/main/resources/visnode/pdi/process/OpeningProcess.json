@@ -1,8 +1,8 @@
 {
     "name_en_US": "Opening",
     "name_pt_BR": "Abertura",
-    "description_en_US": "Opening operator",
-    "description_pt_BR": "Executa operação de abertura",
+    "description_en_US": "Mathematial morphology - Opening",
+    "description_pt_BR": "Morfologia matemática - Abertura",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/OpeningProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/OpeningProcess.java"

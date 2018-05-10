@@ -45,6 +45,7 @@ public class NodeNetwork implements Model {
     public void remove(List<EditNodeDecorator> list) {
         nodes.removeAll(list);
         for (EditNodeDecorator node : list) {
+            node.dispose();
             fireEvent(new ListRemoveEvent("nodes", nodes, node));
         }
     }
@@ -105,4 +106,14 @@ public class NodeNetwork implements Model {
         }
         return -1;
     }
+    
+    /**
+     * Disposes all nodes in the network
+     */
+    public void dispose() {
+        for (EditNodeDecorator node : nodes) {
+            node.dispose();
+        }
+    }
+    
 }

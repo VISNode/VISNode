@@ -1,6 +1,8 @@
 package visnode.executor;
 
+import com.google.common.base.Objects;
 import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -13,6 +15,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.swing.event.EventListenerList;
@@ -29,6 +33,8 @@ import visnode.pdi.Process;
  */
 public class ProcessNode implements Node, AttacherNode {
 
+    /** Execution pool */
+    private static ExecutorService pool;
     /** Process class */
     private final Class<Process> processType;
     /** Process input */
@@ -45,13 +51,17 @@ public class ProcessNode implements Node, AttacherNode {
     private final PropertyChangeSupport outputChangeSupport;
     /** Listeners list */
     private final EventListenerList listenerList;
+    /** Composite disposable for Observable subscriptions */
+    private final CompositeDisposable compositeDisposable;
     /** The instance to run */
-    private Process process;
+    private Process lastProcess;
     /** If the process has been invalidated */
     private boolean invalidated;
     /** Process meta-data */
     private ProcessMetadata metadata;
-
+    /** Lock used for the output */
+    private final Object outputLock = new Object();
+    
     /**
      * Creates a new process node
      *
@@ -67,9 +77,7 @@ public class ProcessNode implements Node, AttacherNode {
         this.outputChangeSupport = new PropertyChangeSupport(this);
         this.listenerList = new EventListenerList();
         this.invalidated = true;
-        VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
-            metadata = ProcessMetadata.fromClass(process, locale);
-        });
+        this.compositeDisposable = new CompositeDisposable();
     }
 
     /**
@@ -133,9 +141,11 @@ public class ProcessNode implements Node, AttacherNode {
     @Override
     public void setInput(String attribute, Object value) {
         Object oldValue = input.get(attribute);
-        input.put(attribute, value);
-        inputChangeSupport.firePropertyChange(attribute, oldValue, value);
-        invalidated = true;
+        if (!Objects.equal(value, oldValue)) {
+            input.put(attribute, value);
+            inputChangeSupport.firePropertyChange(attribute, oldValue, value);
+            invalidated = true;
+        }
     }
 
     @Override
@@ -143,27 +153,35 @@ public class ProcessNode implements Node, AttacherNode {
         BehaviorSubject subject = BehaviorSubject.create();
         if (invalidated) {
             process((p) -> {
-                Object value = getOutputValue(attribute);
+                Object value = getOutputValue(p, attribute);
                 if (value != null) {
                     if (value instanceof Observable) {
                         ((Observable)value).subscribe((v) -> {
-                            subject.onNext(v);
+                            synchronized (outputLock) {
+                                subject.onNext(v);
+                            }
                         });
                     } else {
-                        subject.onNext(value);
+                        synchronized (outputLock) {
+                            subject.onNext(value);
+                        }
                     }
                 }
             });
             return subject;
         }
-        Object value = getOutputValue(attribute);
+        Object value = getOutputValue(lastProcess, attribute);
         if (value != null) {
             if (value instanceof Observable) {
                 ((Observable)value).subscribe((v) -> {
-                    subject.onNext(v);
+                    synchronized (outputLock) {
+                        subject.onNext(v);
+                    }
                 });
             } else {
-                subject.onNext(value);
+                synchronized (outputLock) {
+                    subject.onNext(value);
+                }
             }
         }
         return subject;
@@ -175,7 +193,7 @@ public class ProcessNode implements Node, AttacherNode {
      * @param attribute
      * @return Object
      */
-    private Object getOutputValue(String attribute) {
+    private Object getOutputValue(Process process, String attribute) {
         try {
             return processOutput.get(attribute).invoke(process);
         } catch (Exception e) {
@@ -193,14 +211,14 @@ public class ProcessNode implements Node, AttacherNode {
      *
      * @param callable
      */
-    public void process(Consumer callable) {
-        process = buildProcess();
-        Thread th = new Thread(() -> {
+    public void process(Consumer<Process> callable) {
+        Process process = buildProcess();
+        getPool().submit(() -> {
             try {
                 process.process();
                 invalidated = false;
                 for (Map.Entry<String, Method> entry : processOutput.entrySet()) {
-                    Object output = getOutputValue(entry.getKey());
+                    Object output = getOutputValue(process, entry.getKey());
                     if (output instanceof Observable) {
                         ((Observable) output).subscribe((value) -> {
                             outputChangeSupport.firePropertyChange(entry.getKey(), null, value);
@@ -209,13 +227,12 @@ public class ProcessNode implements Node, AttacherNode {
                         outputChangeSupport.firePropertyChange(entry.getKey(), null, output);
                     }
                 }
-                callable.accept(true);
+                lastProcess = process;
+                callable.accept(process);
             } catch (Exception ex) {
                 ExceptionHandler.get().handle(ex);
             }
         });
-        th.setDaemon(true);
-        th.start();
     }
 
     /**
@@ -236,6 +253,18 @@ public class ProcessNode implements Node, AttacherNode {
         } catch (IllegalArgumentException | ReflectiveOperationException ex) {
             throw new RuntimeException("Process build fail", ex);
         }
+    }
+    
+    /**
+     * Returns the thread pool for executing processes
+     * 
+     * @return ExecutorService
+     */
+    private static ExecutorService getPool() {
+        if (pool == null) {
+            pool = Executors.newWorkStealingPool();
+        }
+        return pool;
     }
 
     @Override
@@ -293,6 +322,9 @@ public class ProcessNode implements Node, AttacherNode {
 
     @Override
     public String getName() {
+        compositeDisposable.add(VISNode.get().getModel().getUserPreferences().getLocaleSubject().subscribe((locale) -> {
+            metadata = ProcessMetadata.fromClass(processType, locale);
+        }));
         return metadata.getName();
     }
 
@@ -303,5 +335,10 @@ public class ProcessNode implements Node, AttacherNode {
 
     public Class getProcessType() {
         return processType;
+    }
+
+    @Override
+    public void dispose() {
+        compositeDisposable.dispose();
     }
 }

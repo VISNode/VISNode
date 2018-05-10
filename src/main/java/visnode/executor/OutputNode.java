@@ -119,4 +119,8 @@ public class OutputNode implements Node, AttacherNode {
         listenerList.add(ConnectionChangeListener.class, listener);
     }
 
+    @Override
+    public void dispose() {
+    }
+
 }
