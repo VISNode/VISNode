@@ -4,7 +4,6 @@ import visnode.repository.ChallengeUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import visnode.application.VISNode;
-import visnode.application.VISNodeController;
 import visnode.commons.DynamicValue;
 import visnode.user.UserController;
 
@@ -25,9 +24,6 @@ public class ChallengeController {
     private ChallengeController() {
         this.has = BehaviorSubject.createDefault(Boolean.FALSE);
         this.comparator = new ChallengeComparator();
-        VISNode.get().getController().addOpenedProjectListener(() -> {
-            end();
-        });
         VISNode.get().getController().addNewProjectListener(() -> {
             end();
         });
