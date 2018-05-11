@@ -39,6 +39,7 @@ public class ScriptRunner {
         ScriptEngine engine = factory.getEngineByName("JavaScript");
         try {
             if (hasScript()) {
+                engine.eval("var ImageFactory = Java.type('org.paim.commons.ImageFactory')");
                 engine.eval(script.getValue());
                 inv = (Invocable) engine;
             }

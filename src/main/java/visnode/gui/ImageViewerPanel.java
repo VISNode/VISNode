@@ -1,6 +1,7 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -9,7 +10,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -33,6 +33,8 @@ public class ImageViewerPanel extends JPanel {
     private final Image image;
     /** Image scroll pane */
     private JScrollPane scrollPane;
+    /** Pixel hover */
+    private JLabel pixelSelected;
 
     /**
      * Creates a new image viewer dialog
@@ -83,6 +85,8 @@ public class ImageViewerPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildInfo() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
         JLabel info = new JLabel();
         info.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
         info.setText(String.format("%sx%s pixels     range(%s/%s)",
@@ -91,9 +95,26 @@ public class ImageViewerPanel extends JPanel {
                 image.getPixelValueRange().getLower(),
                 image.getPixelValueRange().getHigher()
         ));
-        return info;
+        pixelSelected = new JLabel();
+        panel.add(info, BorderLayout.CENTER);
+        panel.add(pixelSelected, BorderLayout.EAST);
+        return panel;
     }
-
+    
+    /**
+     * Returns the pixel selected RGB
+     * 
+     * @param color
+     * @return String
+     */
+    private String getPixelSelectedRGB(Color color) {
+        return String.format("rgb(%s, %s, %s)", 
+                color.getRed(),
+                color.getGreen(),
+                color.getBlue()
+        );
+    }
+    
     /**
      * Builds the image component
      *
@@ -113,18 +134,22 @@ public class ImageViewerPanel extends JPanel {
         /** Zoom lookup table */
         private final float[] ZOOM_TABLE = {
             0.1f, 0.125f, 0.25f, 0.5f, 0.71f, 1, 1.5f, 2, 2.5f, 3.5f, 5, 7, 10,
-            13, 20, 25, 35, 50, 70 };
+            13, 20, 25, 35, 50, 70};
         /** Original image */
         private final BufferedImage buff;
         /** Container width */
         private int width;
         /** Container height */
         private int height;
+        /** Image x */
+        private int x;
+        /** Image y */
+        private int y;
         /** Container zoom */
         private int zoom;
         /** Zoom multiplication factor */
         private double zoomFactor;
-        
+
         /**
          * Creates a new image container
          */
@@ -159,13 +184,15 @@ public class ImageViewerPanel extends JPanel {
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    Point point = e.getPoint();
-                    if (e.isControlDown()) {
-                        addZoom(point, -1);
-                    } else {
-                        addZoom(point, 1);
-                    }
+                    BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
+                    Graphics2D g2d = (Graphics2D) buffer.createGraphics();
+                    g2d.scale(zoomFactor, zoomFactor);
+                    g2d.translate(x, y);
+                    g2d.drawImage(buff, 0, 0, null);
+                    g2d.dispose();
+                    pixelSelected.setText(getPixelSelectedRGB(new Color(buffer.getRGB(e.getX(), e.getY()))));
                 }
+
             });
         }
 
@@ -173,9 +200,10 @@ public class ImageViewerPanel extends JPanel {
         public void paintComponent(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
             g2d.scale(zoomFactor, zoomFactor);
+            x = y = 0; 
             if (g2d.getClip() != null) {
-                int x = Math.max(0, (g2d.getClipBounds().width - buff.getWidth()) / 2);
-                int y = Math.max(0, (g2d.getClipBounds().height - buff.getHeight()) / 2);
+                x = Math.max(0, (g2d.getClipBounds().width - buff.getWidth()) / 2);
+                y = Math.max(0, (g2d.getClipBounds().height - buff.getHeight()) / 2);
                 g2d.translate(x, y);
             }
             g2d.drawImage(buff, 0, 0, null);
@@ -195,8 +223,8 @@ public class ImageViewerPanel extends JPanel {
             setPreferredSize(new Dimension(width, height));
             // Calc the scrool point
             Point scrollPoint = scrollPane.getViewport().getViewPosition();
-            scrollPoint.x = (int) (((float)oldScroll.x / oldWidth) * width);
-            scrollPoint.y = (int) (((float)oldScroll.y / oldHeight) * height);
+            scrollPoint.x = (int) (((float) oldScroll.x / oldWidth) * width);
+            scrollPoint.y = (int) (((float) oldScroll.y / oldHeight) * height);
             scrollPane.getViewport().setViewPosition(scrollPoint);
             revalidate();
             repaint();
@@ -220,7 +248,7 @@ public class ImageViewerPanel extends JPanel {
 
         /**
          * Converts a zoom do the factor
-         * 
+         *
          * @param value
          * @return double
          */

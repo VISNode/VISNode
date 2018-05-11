@@ -21,7 +21,7 @@ public class OutputNode implements Node, AttacherNode {
     private final EventListenerList listenerList;
     /** Value */
     private DynamicValue value;
-    
+
     /**
      * Creates a new output node
      */
@@ -43,22 +43,24 @@ public class OutputNode implements Node, AttacherNode {
     @Override
     public void setInput(String attribute, Object value) {
         if (attribute.equals("value")) {
-            this.value = new DynamicValue(value);
+            this.value = value instanceof DynamicValue ? 
+                    (DynamicValue) value : 
+                    new DynamicValue(value);
             propertyChangeSupport.firePropertyChange(attribute, null, value);
             return;
         }
         throw new InvalidAttributeException(attribute);
     }
-    
+
     /**
      * Returns the output image
-     * 
+     *
      * @return DynamicValue
      */
     public DynamicValue getValue() {
         return value;
     }
-    
+
     @Override
     public Observable getOutput(String attribute) {
         throw new InvalidAttributeException(attribute);
@@ -68,7 +70,7 @@ public class OutputNode implements Node, AttacherNode {
     public void setOutput(String attribute, Object value) {
         throw new InvalidAttributeException(attribute);
     }
-    
+
     @Override
     public void addConnection(final String attribute, Node node, String attributeNode) {
         connector.addConnection(attribute, node, attributeNode);
@@ -95,16 +97,16 @@ public class OutputNode implements Node, AttacherNode {
     public NodeConnector getConnector() {
         return connector;
     }
-    
+
     @Override
     public void addInputChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
-    
+
     @Override
     public void addOutputChangeListener(PropertyChangeListener listener) {
     }
-    
+
     @Override
     public void removeOutputChangeListener(PropertyChangeListener listener) {
     }
