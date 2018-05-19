@@ -11,6 +11,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.commons.ScriptValue;
 import com.github.rxsling.Buttons;
 import com.github.rxsling.Panel;
+import java.awt.Font;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 
@@ -23,7 +24,9 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
     private ScriptValue value;
     /** Value listener */
     private ValueListener valueListener;
-
+    /** Font */
+    private static Font font;
+    
     /**
      * Creates a dynamic node value editor
      */
@@ -129,6 +132,12 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
                 public void keyReleased(KeyEvent e) {
                 }
             });
+            this.textArea.addMouseWheelListener((ev) -> {
+                if (ev.isControlDown()) {
+                    textArea.increaseFont(-ev.getWheelRotation());
+                    font = textArea.getFont();
+                }
+            });
         }
 
         /**
@@ -156,9 +165,12 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
          * @return JComponent
          */
         private JComponent buildCodePane() {
-            this.textArea = new CodeEditor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
-            this.textArea.setText(getInitText());
-            return this.textArea;
+            textArea = new CodeEditor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+            textArea.setText(getInitText());
+            if (font != null) {
+                textArea.setFont(font);
+            }
+            return textArea;
         }
 
         /**
