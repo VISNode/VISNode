@@ -1,5 +1,6 @@
 package visnode.executor;
 
+import java.lang.annotation.Annotation;
 import java.util.Objects;
 
 /**
@@ -11,10 +12,17 @@ public class NodeParameter {
     private final String name;
     /** Type */
     private final Class type;
+    /** Annotations */
+    private final Annotation[] annotations;
 
     public NodeParameter(String name, Class type) {
+        this(name, type, new Annotation[0]);
+    }
+
+    public NodeParameter(String name, Class type, Annotation[] annotations) {
         this.name = name;
         this.type = type;
+        this.annotations = annotations;
     }
 
     public String getName() {
@@ -23,6 +31,23 @@ public class NodeParameter {
 
     public Class getType() {
         return type;
+    }
+
+    public Annotation[] getAnnotations() {
+        return annotations;
+    }
+    
+    public <T extends Annotation> T getAnnotation(Class<T> type) {
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType().equals(type)) {
+                return (T) annotation;
+            }
+        }
+        return null;
+    }
+    
+    public boolean hasAnnotation(Class<? extends Annotation> type) {
+        return getAnnotation(type) != null;
     }
 
     @Override

@@ -14,9 +14,10 @@ public class TypeConverter {
 
     public TypeConverter() {
         this.converters = new ArrayList<>();
-        this.converters.add(new TypeConverterGeneric());
         this.converters.add(new TypeConverterThreshold());
         this.converters.add(new TypeConverterAngle());
+        this.converters.add(new TypeConverterGeneric());
+        this.converters.add(new TypeConverterGenericNumber());
         this.converters.add(new TypeConverterDynamicValue());
     }
 
