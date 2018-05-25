@@ -1,0 +1,13 @@
+{
+    "name_en_US": "Blend",
+    "name_pt_BR": "Blend",
+    "description_en_US": "Blend",
+    "description_pt_BR": "Blend",
+    "tags": ["adjusts"],
+    "author": "VISNode team",
+    "defaults": {
+        "weight": "0.5"
+    },
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/BrightnessProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/BrightnessProcess.java"
+}

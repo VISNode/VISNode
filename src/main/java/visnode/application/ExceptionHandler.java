@@ -17,6 +17,8 @@ public class ExceptionHandler {
     private final JDialog exceptionDialog;
     /** Exception dialog */
     private ExceptionPanel exceptionPanel;
+    /** Quiet exception handling */
+    private boolean quiet;
     
     /**
      * Returns the singleton instance
@@ -34,6 +36,7 @@ public class ExceptionHandler {
      * Exception handler
      */
     private ExceptionHandler() {
+        quiet = false;
         exceptionDialog = WindowFactory.modal().title("Error").create((container) -> {
             exceptionPanel = new ExceptionPanel();
             container.add(exceptionPanel);
@@ -46,6 +49,10 @@ public class ExceptionHandler {
      * @param e 
      */
     public void handle(Exception e) {
+        if (quiet) {
+            e.printStackTrace();
+            return;
+        }
         SwingUtilities.invokeLater(() -> {
             if (exceptionDialog.isVisible()) {
                 exceptionPanel.add(e);
@@ -65,6 +72,15 @@ public class ExceptionHandler {
      */
     public void handle(InvalidOpenFileException e) {
         JOptionPane.showMessageDialog(null, e.getMessage());
+    }
+
+    /**
+     * Sets if the exception handling is quiet
+     * 
+     * @param quiet 
+     */
+    public void setQuiet(boolean quiet) {
+        this.quiet = quiet;
     }
     
 }

@@ -5,6 +5,7 @@ import java.io.File;
 import org.paim.commons.Image;
 import visnode.commons.Angle;
 import visnode.commons.DynamicValue;
+import visnode.commons.Percentage;
 import visnode.commons.ScriptValue;
 import visnode.gui.ImageNodeComponent;
 import visnode.commons.Threshold;
@@ -22,6 +23,7 @@ import visnode.gui.ScriptValueEditor;
 import visnode.gui.IntegerEditor;
 import visnode.gui.NotImplementedParameterComponent;
 import visnode.gui.ParameterComponent;
+import visnode.gui.PercentageEditor;
 import visnode.gui.ThresholdEditor;
 import visnode.pdi.process.ImageInput;
 
@@ -58,7 +60,11 @@ public class ParameterComponentFactory {
             return new ScriptValueEditor();
         }
         if (parameter.getType().equals(Double.class) && type == ConnectionType.INPUT) {
-            return new DoubleEditor();
+            if (parameter.hasAnnotation(Percentage.class)) {
+                return new PercentageEditor();
+            } else {
+                return new DoubleEditor();
+            }
         }
         if (parameter.getType().equals(Integer.class) && type == ConnectionType.INPUT) {
             return new IntegerEditor();
