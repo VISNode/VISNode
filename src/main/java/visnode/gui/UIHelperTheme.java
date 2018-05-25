@@ -7,7 +7,7 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 /**
  * UI Helper Skin
  */
-public interface UIHelperSkin {
+public interface UIHelperTheme {
     
     /**
      * Returns the markdown style

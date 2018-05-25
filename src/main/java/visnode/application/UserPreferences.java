@@ -1,6 +1,6 @@
 package visnode.application;
 
-import visnode.gui.Skin;
+import visnode.gui.Theme;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.io.File;
@@ -30,10 +30,10 @@ public class UserPreferences {
     private transient BehaviorSubject<Locale> localeSubject;
     /** System locale */
     private Locale locale;
-    /** System skin subject */
-    private transient BehaviorSubject<Skin> skinSubject;
-    /** Skin */
-    private Skin skin;
+    /** System theme subject */
+    private transient BehaviorSubject<Theme> themeSubject;
+    /** Theme */
+    private Theme theme;
 
     /**
      * Creates a new set of user preferences
@@ -43,7 +43,7 @@ public class UserPreferences {
         this.recentInputFiles = new ArrayList<>();
         this.renderingOptions = new RenderingOptions();
         this.locale = getDefaultLocale();
-        this.skin = Skin.GRAPHITE;
+        this.theme = Theme.GRAPHITE;
     }
 
     /**
@@ -151,34 +151,34 @@ public class UserPreferences {
     }
 
     /**
-     * Returns the skin
+     * Returns the theme
      *
      * @return String
      */
-    public Skin getSkin() {
-        return skin;
+    public Theme getTheme() {
+        return theme;
     }
 
     /**
-     * Returns the system Skin
+     * Returns the system Theme
      *
-     * @return {@code Observable<Skin> }
+     * @return {@code Observable<Theme> }
      */
-    public Observable<Skin> getSkinSubject() {
-        if (skinSubject == null) {
-            skinSubject = BehaviorSubject.createDefault(getSkin());
+    public Observable<Theme> getThemeSubject() {
+        if (themeSubject == null) {
+            themeSubject = BehaviorSubject.createDefault(getTheme());
         }
-        return skinSubject;
+        return themeSubject;
     }
 
     /**
      * Sets the skin
      *
-     * @param skin
+     * @param theme
      */
-    public void setSkin(Skin skin) {
-        this.skin = skin;
-        this.skinSubject.onNext(skin);
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+        this.themeSubject.onNext(theme);
     }
 
 }

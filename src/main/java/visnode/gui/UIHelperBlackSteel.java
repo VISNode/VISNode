@@ -11,7 +11,7 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 /**
  * UI Helper Skin Black Steel
  */
-public class UIHelperBlackSteel implements UIHelperSkin {
+public class UIHelperBlackSteel implements UIHelperTheme {
 
     /**
      * Returns the color scheme used by the interface

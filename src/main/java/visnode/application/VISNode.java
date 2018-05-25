@@ -71,10 +71,10 @@ public class VISNode {
      * Sets up the LookAndFeel
      */
     private void setupLookAndFeel() {
-        model.getUserPreferences().getSkinSubject().subscribe((skin) -> {
+        model.getUserPreferences().getThemeSubject().subscribe((skin) -> {
             try {
                 UIManager.setLookAndFeel(new SubstanceLookAndFeel(
-                        (SubstanceSkin) skin.getSkin().newInstance()
+                        (SubstanceSkin) skin.getTheme().newInstance()
                 ) {
                 });
                 if (frame != null) {

@@ -7,21 +7,21 @@ import org.pushingpixels.substance.api.skin.GraphiteSkin;
 /**
  * Application
  */
-public enum Skin {
+public enum Theme {
 
     GRAPHITE("Graphite", GraphiteSkin.class, new UIHelperGraphite()),
     BLACK_STEEL("Black Steel", BusinessBlackSteelSkin.class, new UIHelperBlackSteel());
 
     /** Name */
     private final String name;
-    /** Skin */
-    private final Class skin;
-    /** Skin helper */
-    private final UIHelperSkin helper;
+    /** Theme */
+    private final Class theme;
+    /** Theme helper */
+    private final UIHelperTheme helper;
 
-    private Skin(String name, Class<? extends SubstanceSkin> skin, UIHelperSkin helper) {
+    private Theme(String name, Class<? extends SubstanceSkin> them, UIHelperTheme helper) {
         this.name = name;
-        this.skin = skin;
+        this.theme = them;
         this.helper = helper;
     }
 
@@ -35,26 +35,26 @@ public enum Skin {
     }
 
     /**
-     * Returns the skin class
+     * Returns the theme class
      *
      * @return Class
      */
-    public Class getSkin() {
-        return skin;
+    public Class getTheme() {
+        return theme;
     }
 
     /**
-     * Returns the skin helper
+     * Returns the theme helper
      *
      * @return UiHelperSkin
      */
-    public UIHelperSkin getHelper() {
+    public UIHelperTheme getHelper() {
         return helper;
     }
 
-    public static Skin valueOf(Class<? extends SubstanceSkin> skin) {
-        for (Skin s : values()) {
-            if (s.skin.equals(skin)) {
+    public static Theme valueOf(Class<? extends SubstanceSkin> theme) {
+        for (Theme s : values()) {
+            if (s.theme.equals(theme)) {
                 return s;
             }
         }

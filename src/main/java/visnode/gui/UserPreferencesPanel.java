@@ -24,8 +24,8 @@ public class UserPreferencesPanel extends Panel implements VISNodeConstants {
 
     /** Langue field */
     private JComboBox<String> language;
-    /** Skin */
-    private JComboBox<Skin> skin;
+    /** Theme */
+    private JComboBox<Theme> theme;
 
     /**
      * Creates the user preferences panel
@@ -72,7 +72,7 @@ public class UserPreferencesPanel extends Panel implements VISNodeConstants {
             String[] ln = ((String) language.getSelectedItem()).split("_");
             Locale locale = new Locale(ln[0], ln[1]);
             VISNode.get().getModel().getUserPreferences().setLocale(locale);
-            VISNode.get().getModel().getUserPreferences().setSkin((Skin) skin.getSelectedItem());
+            VISNode.get().getModel().getUserPreferences().setTheme((Theme) theme.getSelectedItem());
             SwingUtilities.getWindowAncestor(this).dispose();
         }));
         return panel;
@@ -88,7 +88,7 @@ public class UserPreferencesPanel extends Panel implements VISNodeConstants {
         panel.setLayout(new GridLayout(0, 1));
         panel.add(Labels.create().text(Messages.get().message("language")));
         panel.add(buildLanguage());
-        panel.add(Labels.create().text("Skin"));
+        panel.add(Labels.create().text("Theme"));
         panel.add(buildSkin());
         return panel;
     }
@@ -114,12 +114,12 @@ public class UserPreferencesPanel extends Panel implements VISNodeConstants {
      * @return JComponent
      */
     private JComponent buildSkin() {
-        skin = new JComboBox<>();
-        for (Skin s : Skin.values()) {
-            skin.addItem(s);
+        theme = new JComboBox<>();
+        for (Theme s : Theme.values()) {
+            theme.addItem(s);
         }
-        skin.getModel().setSelectedItem(VISNode.get().getModel().getUserPreferences().getSkin());
-        return skin;
+        theme.getModel().setSelectedItem(VISNode.get().getModel().getUserPreferences().getTheme());
+        return theme;
     }
 
 }

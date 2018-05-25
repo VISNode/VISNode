@@ -26,7 +26,7 @@ public class UIHelper {
      * @return String
      */
     public static String getMarkdown() {
-        return getSkin(SubstanceLookAndFeel.getCurrentSkin()).
+        return getTheme(SubstanceLookAndFeel.getCurrentSkin()).
                 getHelper().
                 getMarkdown();
     }
@@ -37,7 +37,7 @@ public class UIHelper {
      * @return String
      */
     public static String getCodeEditor() {
-        return getSkin(SubstanceLookAndFeel.getCurrentSkin()).
+        return getTheme(SubstanceLookAndFeel.getCurrentSkin()).
                 getHelper().
                 getCodeEditor();
     }
@@ -49,13 +49,13 @@ public class UIHelper {
      * @return {@code Map<String, Color>}
      */
     private static Map<String, Color> getColors(SubstanceSkin skin) {
-        return getSkin(skin).getHelper().getColors(skin);
+        return getTheme(skin).getHelper().getColors(skin);
     }
 
-    private static Skin getSkin(SubstanceSkin skin) {
-        Skin skinObj = Skin.valueOf(skin.getClass());
+    private static Theme getTheme(SubstanceSkin skin) {
+        Theme skinObj = Theme.valueOf(skin.getClass());
         if (skinObj == null) {
-            skinObj = Skin.GRAPHITE;
+            skinObj = Theme.GRAPHITE;
         }
         return skinObj;
     }

@@ -11,7 +11,7 @@ import org.pushingpixels.substance.api.SubstanceSkin;
 /**
  * UI Helper Skin Graphite
  */
-public class UIHelperGraphite implements UIHelperSkin {
+public class UIHelperGraphite implements UIHelperTheme {
 
     /**
      * Returns the color scheme used by the interface
