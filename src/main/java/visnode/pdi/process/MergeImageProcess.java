@@ -5,6 +5,7 @@ import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
 import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
+import org.paim.commons.Range;
 import org.paim.pdi.PixelProcess;
 import visnode.commons.Input;
 import visnode.commons.Output;
@@ -14,8 +15,6 @@ import visnode.commons.Output;
  */
 public class MergeImageProcess extends PixelProcess<Image> implements visnode.pdi.Process {
 
-    /** Background image */
-    private final Image background;
     /** Image base */
     private final Image imageBase;
     /** The image mask */
@@ -24,8 +23,7 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
     private final int[] color;
     
     public MergeImageProcess(@Input("background") Image background, @Input("mask") BinaryImage mask, @Input("image") Image image, @Input("color") Color color) {
-        super(background == null ? ImageFactory.buildEmptyImage() : background);
-        this.background = ImageFactory.buildRGBImage(ImageConverter.toBufferedImage(background == null ? ImageFactory.buildEmptyImage() : background));
+        super(ImageFactory.buildRGBImage(ImageConverter.toBufferedImage(background == null ? ImageFactory.buildEmptyImage() : background)));
         this.imageBase = image;
         this.color = buildColor(color);
         this.mask = mask;
@@ -35,11 +33,11 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
     protected void process(int channel, int x, int y, int value) {
         if (mask != null && mask.has(0, x, y) && mask.get(x, y)) {
             if (color != null) {
-                background.set(channel, x, y, color[channel]);
+                image.set(channel, x, y, color[channel]);
             } else if (imageBase != null && imageBase.has(channel, x, y)) {
-                background.set(channel, x, y, imageBase.get(channel, x, y));
+                image.set(channel, x, y, imageBase.get(channel, x, y));
             }
-        }        
+        }       
     }
 
     /**
@@ -66,7 +64,7 @@ public class MergeImageProcess extends PixelProcess<Image> implements visnode.pd
      */
     @Output("image")
     public Image getImage() {
-        return background;
+        return image;
     }
 
 }

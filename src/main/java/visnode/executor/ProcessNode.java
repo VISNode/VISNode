@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.swing.event.EventListenerList;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.paim.commons.ImageFactory;
 import visnode.application.ExceptionHandler;
 import visnode.application.ProcessMetadata;
 import visnode.application.VISNode;
@@ -91,7 +92,7 @@ public class ProcessNode implements Node, AttacherNode {
         return Arrays.stream(constructor.getParameters()).filter((p) -> {
             return p.isAnnotationPresent(Input.class);
         }).map((p) -> {
-            NodeParameter param = new NodeParameter(p.getAnnotation(Input.class).value(), p.getType());
+            NodeParameter param = new NodeParameter(p.getAnnotation(Input.class).value(), p.getType(), p.getAnnotations());
             dafaultInput(meta, param);
             return param;
         }).collect(Collectors.toList());
@@ -198,6 +199,9 @@ public class ProcessNode implements Node, AttacherNode {
             return processOutput.get(attribute).invoke(process);
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
+        }
+        if (attribute.equals("image")) {
+            return ImageFactory.buildEmptyImage();
         }
         return null;
     }

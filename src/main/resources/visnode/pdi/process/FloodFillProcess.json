@@ -1,0 +1,9 @@
+{
+    "name_en_US": "Flood Fill",
+    "name_pt_BR": "Preenchimento Enchente",
+    "description_en_US": "Fills and area using the Flood Fill algorithm",
+    "description_pt_BR": "Define um blur para imagem utilizando a média",
+    "author": "VISNode team",
+    "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/AverageBlurProcess.md",
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/AverageBlurProcess.java"
+}

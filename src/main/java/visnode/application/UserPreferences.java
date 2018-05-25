@@ -1,5 +1,6 @@
 package visnode.application;
 
+import visnode.gui.Theme;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.io.File;
@@ -29,6 +30,10 @@ public class UserPreferences {
     private transient BehaviorSubject<Locale> localeSubject;
     /** System locale */
     private Locale locale;
+    /** System theme subject */
+    private transient BehaviorSubject<Theme> themeSubject;
+    /** Theme */
+    private Theme theme;
 
     /**
      * Creates a new set of user preferences
@@ -38,11 +43,12 @@ public class UserPreferences {
         this.recentInputFiles = new ArrayList<>();
         this.renderingOptions = new RenderingOptions();
         this.locale = getDefaultLocale();
+        this.theme = Theme.GRAPHITE;
     }
-    
+
     /**
      * Returns the default locale
-     * 
+     *
      * @return Locale
      */
     private Locale getDefaultLocale() {
@@ -142,6 +148,37 @@ public class UserPreferences {
             localeSubject = BehaviorSubject.createDefault(getLocale());
         }
         return localeSubject;
+    }
+
+    /**
+     * Returns the theme
+     *
+     * @return String
+     */
+    public Theme getTheme() {
+        return theme;
+    }
+
+    /**
+     * Returns the system Theme
+     *
+     * @return {@code Observable<Theme> }
+     */
+    public Observable<Theme> getThemeSubject() {
+        if (themeSubject == null) {
+            themeSubject = BehaviorSubject.createDefault(getTheme());
+        }
+        return themeSubject;
+    }
+
+    /**
+     * Sets the skin
+     *
+     * @param theme
+     */
+    public void setTheme(Theme theme) {
+        this.theme = theme;
+        this.themeSubject.onNext(theme);
     }
 
 }

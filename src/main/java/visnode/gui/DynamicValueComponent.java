@@ -55,8 +55,8 @@ public class DynamicValueComponent extends JComponent implements ParameterCompon
         field.setText(value == null ? "" : String.valueOf(value));
         field.setEditable(false);
         field.setFocusable(false);
-        field.setForeground(new Color(0x999999));
-        field.setBackground(new Color(0x333333));
+        field.setForeground(UIHelper.getColor("DynamicValue.foreground"));
+        field.setBackground(UIHelper.getColor("DynamicValue.background"));
         field.setMargin(new Insets(2,5,2,5));
         add(field);
         revalidate();
