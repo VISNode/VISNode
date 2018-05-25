@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseWheelListener;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.swing.JComponent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -12,6 +13,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import visnode.application.ExceptionHandler;
+import visnode.gui.UIHelper;
 
 /**
  * Code editor
@@ -59,7 +61,9 @@ public class CodeEditor extends JComponent {
         textArea.setSyntaxEditingStyle(syntaxStyle);
         textArea.setCodeFoldingEnabled(true);
         try {
-            Theme theme = Theme.load(getClass().getResourceAsStream("CodeEditorTheme.xml"));
+            InputStream is = getClass().
+                    getResourceAsStream(UIHelper.getCodeEditor());
+            Theme theme = Theme.load(is);
             theme.apply(textArea);
         } catch (IOException e) {
             ExceptionHandler.get().handle(e);
@@ -102,7 +106,7 @@ public class CodeEditor extends JComponent {
     public Font getFont() {
         return textArea.getFont();
     }
-    
+
     /**
      * Sets the code text
      *

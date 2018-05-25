@@ -12,6 +12,7 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import visnode.commons.http.Http;
+import visnode.gui.UIHelper;
 
 /**
  * Markdown viewer
@@ -37,7 +38,10 @@ public class MarkdownViewer extends JPanel {
         jfxPanel.setPreferredSize(new Dimension(800, 600));
         Platform.runLater(() -> {
             webView = new WebView();
-            webView.getEngine().setUserStyleSheetLocation(MarkdownViewer.class.getResource("MarkdownViewer.css").toExternalForm());
+            String style = MarkdownViewer.class.
+                    getResource(UIHelper.getMarkdown()).
+                    toExternalForm();
+            webView.getEngine().setUserStyleSheetLocation(style);
             Scene scene = new Scene(webView);
             jfxPanel.setScene(scene);
         });

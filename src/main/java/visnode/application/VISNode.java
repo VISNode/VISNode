@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
-import org.pushingpixels.substance.api.skin.GraphiteSkin;
+import org.pushingpixels.substance.api.SubstanceSkin;
 import visnode.application.fw.Actions;
 import visnode.commons.swing.WindowFactory;
 
@@ -25,7 +25,9 @@ public class VISNode {
     private Actions actions;
     /** Main window */
     private MainPanel panel;
-
+    /** Frame */
+    private JFrame frame;
+    
     /**
      * Creates a new application
      */
@@ -60,8 +62,8 @@ public class VISNode {
      * @param args
      */
     public void start(String[] args) {
-        setupLookAndFeel();
         model.setUserPreferences(new UserPreferencesPersistor().load());
+        setupLookAndFeel();
         buildAndShowWindow();
     }
 
@@ -69,12 +71,19 @@ public class VISNode {
      * Sets up the LookAndFeel
      */
     private void setupLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(new SubstanceLookAndFeel(new GraphiteSkin()) {
-            });
-        } catch (UnsupportedLookAndFeelException e) {
-            ExceptionHandler.get().handle(e);
-        }
+        model.getUserPreferences().getSkinSubject().subscribe((skin) -> {
+            try {
+                UIManager.setLookAndFeel(new SubstanceLookAndFeel(
+                        (SubstanceSkin) skin.getSkin().newInstance()
+                ) {
+                });
+                if (frame != null) {
+                    frame.repaint();
+                }
+            } catch (UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
+                ExceptionHandler.get().handle(e);
+            }
+        });
     }
 
     /**
@@ -90,20 +99,20 @@ public class VISNode {
      * Builds the main window
      */
     private JFrame buildWindow() {
-        JFrame frame = WindowFactory.mainFrame()
-            .title("VISNode")
-            .menu(VISNode.get().getActions().buildMenuBar())
-            .size(1024, 768)
-            .maximized()
-            .interceptClose(() -> {
-                new UserPreferencesPersistor().persist(model.getUserPreferences());
-                int result = JOptionPane.showConfirmDialog(panel, Messages.get().singleMessage("app.closing"), null, JOptionPane.YES_NO_OPTION);
-                return result == JOptionPane.YES_OPTION;
-            })
-            .create((container) -> {
-                panel = new MainPanel(model);
-                container.add(panel);
-            });
+        frame = WindowFactory.mainFrame()
+                .title("VISNode")
+                .menu(VISNode.get().getActions().buildMenuBar())
+                .size(1024, 768)
+                .maximized()
+                .interceptClose(() -> {
+                    new UserPreferencesPersistor().persist(model.getUserPreferences());
+                    int result = JOptionPane.showConfirmDialog(panel, Messages.get().singleMessage("app.closing"), null, JOptionPane.YES_NO_OPTION);
+                    return result == JOptionPane.YES_OPTION;
+                })
+                .create((container) -> {
+                    panel = new MainPanel(model);
+                    container.add(panel);
+                });
         return frame;
     }
 
@@ -136,10 +145,10 @@ public class VISNode {
     public NetworkEditor getNetworkEditor() {
         return panel.getNetworkEditor();
     }
-    
+
     /**
      * Returns the main window
-     * 
+     *
      * @return MainPanel
      */
     public MainPanel getMainPanel() {

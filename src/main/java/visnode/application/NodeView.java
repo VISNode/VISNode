@@ -1,7 +1,6 @@
 package visnode.application;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ComponentEvent;
@@ -26,6 +25,7 @@ import visnode.gui.EventHelper;
 import visnode.gui.IconFactory;
 import visnode.gui.JNode;
 import visnode.gui.Selection;
+import visnode.gui.UIHelper;
 
 /**
  * View for the node
@@ -158,15 +158,15 @@ public class NodeView extends JNode {
     }
 
     /**
-     * Builds a separator for the node parâmetros
+     * Builds a separator for the node parameters
      *
      * @return JComponent
      */
     private JComponent buildSeparator() {
         JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
         separator.setBorder(new EmptyBorder(0, 0, 0, 25));
-        separator.setForeground(new Color(0xAAAAAA));
-        separator.setBackground(new Color(0xAAAAAA));
+        separator.setForeground(UIHelper.getColor("Node.separetor"));
+        separator.setBackground(UIHelper.getColor("Node.separetor"));
         JPanel container = new JPanel(new BorderLayout());
         container.setBorder(new EmptyBorder(0, 10, 0, 10));
         container.add(separator);

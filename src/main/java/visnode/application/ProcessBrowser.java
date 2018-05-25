@@ -23,6 +23,7 @@ import com.github.rxsling.Labels;
 import visnode.gui.IconFactory;
 import visnode.gui.ProcessInformationPane;
 import visnode.gui.ScrollFactory;
+import visnode.gui.UIHelper;
 import visnode.pdi.Process;
 import visnode.pdi.process.ProcessLoader;
 
@@ -179,10 +180,10 @@ public class ProcessBrowser extends JComponent {
             component.setLayout(new BorderLayout());
             component.setBorder(BorderFactory.createEmptyBorder(3, 0, 3, 0));
             if (isSelected) {
-                component.setBackground(new Color(0xEDEDED));
+                component.setBackground(UIHelper.getColor("ProcessBrowser.odd"));
             } else {
                 if (index % 2 == 0) {
-                    component.setBackground(new Color(0x555555));
+                    component.setBackground(UIHelper.getColor("ProcessBrowser.even"));
                 }
             }
             component.add(label);

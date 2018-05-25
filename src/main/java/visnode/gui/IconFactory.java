@@ -1,7 +1,6 @@
 
 package visnode.gui;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +16,6 @@ public class IconFactory {
 
     /** Pattern for Font-Awesome icons */
     private static final Pattern PATTERN_FONT_AWESOME = Pattern.compile("(fa:.*)");
-    /** Default color */
-    private static final Color DEFAULT_COLOR = new Color(0xDEDEDE);
     /** Default size */
     private static final int DEFAULT_SIZE = 16;
     /** Font for Font-Awesome */
@@ -78,7 +75,7 @@ public class IconFactory {
             return null;
         }
         String name = matcher.group(1);
-        return new VectorIcon(fontAwesome, DEFAULT_COLOR, DEFAULT_SIZE, mapping.get(name));
+        return new VectorIcon(fontAwesome, UIHelper.getColor("Icon"), DEFAULT_SIZE, mapping.get(name));
         
     }
 
@@ -108,12 +105,8 @@ public class IconFactory {
         map.put("fa:user", "\uf007");
         map.put("fa:film", "\uf008");
         map.put("fa:th-large", "\uf009");
-/*        map.put("fa:th", "\uf00a");*/
         map.put("fa:th-list", "\uf00b");
         map.put("fa:check", "\uf00c");
-/*        map.put("fa:remove", "\uf00d");
-//        map.put("fa:close", "\uf00d");
-//        map.put("fa:times", "\uf00d");*/
         map.put("fa:search-plus", "\uf00e");
         map.put("fa:search-minus", "\uf010");
         map.put("fa:power-off", "\uf011");
@@ -133,7 +126,6 @@ public class IconFactory {
         map.put("fa:rotate-right", "\uf01e");
         map.put("fa:repeat", "\uf01e");
         map.put("fa:refresh", "\uf021");
-//        map.put("fa:list-alt", "\uf022");
         map.put("fa:lock", "\uf023");
         map.put("fa:flag", "\uf024");
         map.put("fa:headphones", "\uf025");
@@ -193,7 +185,6 @@ public class IconFactory {
         map.put("fa:question-circle", "\uf059");
         map.put("fa:info-circle", "\uf05a");
         map.put("fa:crosshairs", "\uf05b");
-//        map.put("fa:times-circle-o", "\uf05c");
         map.put("fa:check-circle-o", "\uf05d");
         map.put("fa:ban", "\uf05e");
         map.put("fa:arrow-left", "\uf060");

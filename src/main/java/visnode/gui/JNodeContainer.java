@@ -252,7 +252,7 @@ public class JNodeContainer extends JLayeredPane {
         super.paintComponent(g2d);
         int gridSize = 10;
         int majorGridSize = 100;
-        g2d.setColor(new Color(0x484848));
+        g2d.setColor(UIHelper.getColor("Node.container.c1"));
         for (int i = 0; i < Math.max(getWidth(), getHeight()); i += gridSize) {
             if (i < getWidth()) {
                 g2d.drawLine(i, 0, i, getHeight());
@@ -261,7 +261,7 @@ public class JNodeContainer extends JLayeredPane {
                 g2d.drawLine(0, i, getWidth(), i);
             }
         }
-        g2d.setColor(new Color(0x585858));
+        g2d.setColor(UIHelper.getColor("Node.container.c2"));
         for (int i = 0; i < Math.max(getWidth(), getHeight()); i += majorGridSize) {
             if (i < getWidth()) {
                 g2d.drawLine(i, 0, i, getHeight());
