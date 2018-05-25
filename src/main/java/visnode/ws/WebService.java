@@ -9,6 +9,9 @@ import java.util.Map;
  */
 public class WebService {
 
+    /** Host name */
+    public static final String HOSTNAME = "http://localhost:8180/VISNodeWS/v1/";
+
     /** The web service instance */
     private static WebService instace;
     /** Gson */
@@ -27,7 +30,7 @@ public class WebService {
      */
     public void post(String entity, Object data) throws HttpException {
         Http.get().
-                url("http://localhost:8080/v1/" + entity).
+                url(HOSTNAME + entity).
                 post(gson.toJson(data));
     }
 
@@ -43,7 +46,7 @@ public class WebService {
         data.put("user", user);
         data.put("password", password);
         Http.get().
-                url("http://localhost:8080/v1/login").
+                url(HOSTNAME + "login").
                 post(gson.toJson(data));
     }
 

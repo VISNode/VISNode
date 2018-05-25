@@ -18,8 +18,7 @@ public class UserController {
     private final BehaviorSubject<Boolean> has;
 
     private UserController() {
-        has = BehaviorSubject.createDefault(Boolean.TRUE);
-        user = "jonata";
+        has = BehaviorSubject.createDefault(Boolean.FALSE);
     }
 
     /**

@@ -71,7 +71,7 @@ public class ChallengeRepository {
         challenge.setDescription("Cálcule o valor das moedas");
         challenge.setDifficulty(ChallengeDifficulty.HARD);
         challenge.setInput(getFile("/challenges/coin/input.jpg"));
-        challenge.setOutput(value("R$ 1,90"));
+        challenge.setOutput(value("R$ 2,90"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
         return challenge;
     }
