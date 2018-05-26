@@ -134,13 +134,13 @@ public class JNodeContainer extends JLayeredPane {
      * @return JConnectorPoint
      */
     private JConnectorPoint getConnectorPointAtRecursive(Component parent, Point point) {
-        point = new Point(point);
-        point.translate(-parent.getX(), -parent.getY());
         Component at = parent.getComponentAt(point);
         if (at instanceof JConnectorPoint) {
             return (JConnectorPoint) at;
         }
         if (at instanceof JNode || at instanceof JNodeConnector) {
+            point = new Point(point);
+            point.translate(-at.getX(), -at.getY());
             return getConnectorPointAtRecursive(at, point);
         }
         return null;
