@@ -167,6 +167,27 @@ public class JNodeContainer extends JLayeredPane {
         }
         return null;
     }
+    
+    /**
+     * Returns the connection between two connector points, or {@code null} if
+     * none.
+     *
+     * @param start
+     * @param end
+     * @return JNodeConnection
+     */
+    public JNodeConnection getConnectionEndingAt(JConnectorPoint end) {
+        for (int i = 0; i < getComponentCount(); i++) {
+            Component child = getComponent(i);
+            if (child instanceof JNodeConnection) {
+                JNodeConnection connection = (JNodeConnection) child;
+                if (connection.getSecond() == end) {
+                    return connection;
+                }
+            }
+        }
+        return null;
+    }
 
     /**
      * Returns the connections of a node

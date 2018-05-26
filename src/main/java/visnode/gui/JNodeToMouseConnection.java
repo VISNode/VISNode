@@ -62,20 +62,44 @@ public class JNodeToMouseConnection extends JNodeConnection implements DragListe
     private void createConnectionIfDroppedOnConnector() {
         JConnectorPoint endPoint = container.getConnectorPointAt(container.getMousePosition(true));
         if (endPoint != null && endPoint != connectorPoint) {
-            JNodeConnection connection = container.getConnection(connectorPoint, endPoint);
-            if (connection == null) {
-                connection = new JNodeConnection(connectorPoint, endPoint);
-                container.add(connection);
-                try {
-                    container.fireConnectionCreated(connection);
-                } catch (IllegalArgumentException e) {
-                    container.removeConnection(connection);
-                }
-            } else {
-                container.removeConnection(connection);
-                container.fireConnectionRemoved(connection);
+            if (removeConnection(container.getConnection(connectorPoint, endPoint))) {
+                return;
             }
+            removeConnection(container.getConnectionEndingAt(endPoint));
+            createConnection(new JNodeConnection(connectorPoint, endPoint));
         }
+    }
+    
+    /**
+     * Removes a connection
+     * 
+     * @param connection 
+     * @return {@code true} if connection was removed
+     */
+    private boolean removeConnection(JNodeConnection connection) {
+        if (connection != null) {
+            container.removeConnection(connection);
+            container.fireConnectionRemoved(connection);
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Create a connection
+     * 
+     * @param connection 
+     * @return {@code true} if connection was removed
+     */
+    private boolean createConnection(JNodeConnection connection) {
+        container.add(connection);
+        try {
+            container.fireConnectionCreated(connection);
+            return true;
+        } catch (IllegalArgumentException e) {
+            container.removeConnection(connection);
+        }
+        return false;
     }
 
     /**
