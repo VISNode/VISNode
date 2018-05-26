@@ -12,7 +12,7 @@ public class TypeConverterDynamicValue implements TypeConverterExecutor {
 
     @Override
     public <D> boolean can(Class sourceType, Class<D> destinyType) {
-        return true;
+        return destinyType.equals(DynamicValue.class);
     }
 
 }

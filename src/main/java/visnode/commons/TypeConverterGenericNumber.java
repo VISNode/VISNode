@@ -1,9 +1,5 @@
 package visnode.commons;
 
-import java.io.File;
-import org.paim.commons.BinaryImage;
-import org.paim.commons.Image;
-
 /**
  * Generic type converter
  */
@@ -29,7 +25,19 @@ public class TypeConverterGenericNumber implements TypeConverterExecutor {
 
     @Override
     public <D> boolean can(Class sourceType, Class<D> destinyType) {
-        return (Number.class.isAssignableFrom(sourceType)) && (Number.class.isAssignableFrom(destinyType));
+        return isNumber(sourceType) && isNumber(destinyType);
+    }
+
+    /**
+     * Returns if a type is anumber
+     * 
+     * @param type
+     * @return boolean
+     */
+    public boolean isNumber(Class type) {
+        return Number.class.isAssignableFrom(type) || type.equals(int.class) || 
+                type.equals(double.class) || type.equals(float.class) || 
+                type.equals(long.class);
     }
 
 }
