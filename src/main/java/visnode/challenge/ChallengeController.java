@@ -3,8 +3,11 @@ package visnode.challenge;
 import visnode.repository.ChallengeUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import visnode.application.VISNode;
 import visnode.commons.DynamicValue;
+import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
@@ -58,12 +61,17 @@ public class ChallengeController {
         if (!comparator.comparate(challenge, ouput)) {
             return false;
         }
-        ChallengeUserRepository.get().put(ChallengeUserBuilder.create().
-                user(UserController.get().getUser()).
-                challenge(getChallenge().getId()).
-                submission(VISNode.get().getModel().getNetwork()).
-                build());
-        return true;
+        try {
+            ChallengeUserRepository.get().put(ChallengeUserBuilder.create().
+                    user(UserController.get().getUser()).
+                    challenge(getChallenge().getId()).
+                    submission(VISNode.get().getModel().getNetwork()).
+                    build());
+            return true;
+        } catch (RepositoryException ex) {
+            Logger.getLogger(ChallengeController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     /**

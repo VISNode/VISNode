@@ -2,6 +2,7 @@ package visnode.user;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import visnode.application.VISNode;
 import visnode.ws.HttpException;
 import visnode.ws.WebService;
 
@@ -18,7 +19,8 @@ public class UserController {
     private final BehaviorSubject<Boolean> has;
 
     private UserController() {
-        has = BehaviorSubject.createDefault(Boolean.FALSE);
+        user = VISNode.get().getModel().getUserPreferences().getUser();
+        has = BehaviorSubject.createDefault(user != null);
     }
 
     /**
@@ -41,6 +43,7 @@ public class UserController {
         try {
             WebService.get().login(user, password);
             this.user = user;
+            VISNode.get().getModel().getUserPreferences().setUser(user);
             has.onNext(Boolean.TRUE);
             return true;
         } catch (HttpException ex) {

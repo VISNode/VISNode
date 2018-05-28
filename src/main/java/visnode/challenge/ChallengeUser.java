@@ -8,7 +8,7 @@ public class ChallengeUser {
     /** User */
     private String user;
     /** Challenge */
-    private int challenge;
+    private int idChallenge;
     /** Submission */
     private String submission;
 
@@ -36,7 +36,7 @@ public class ChallengeUser {
      * @return int
      */
     public int getChallenge() {
-        return challenge;
+        return idChallenge;
     }
 
     /**
@@ -45,7 +45,7 @@ public class ChallengeUser {
      * @param challenge
      */
     public void setChallenge(int challenge) {
-        this.challenge = challenge;
+        this.idChallenge = challenge;
     }
 
     /**
