@@ -9,6 +9,7 @@ import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
 import visnode.application.ActionChallenge;
 import visnode.application.ActionChallengeProblem;
+import visnode.application.ActionChallengeRanking;
 import visnode.application.ActionChallengeRun;
 import visnode.application.ActionCopyNode;
 import visnode.application.ActionDeleteSelectedNodes;
@@ -85,6 +86,7 @@ public class Actions {
         challenge.add(get(ActionChallenge.class));
         challenge.add(get(ActionChallengeRun.class));
         challenge.add(get(ActionChallengeProblem.class));
+        challenge.add(get(ActionChallengeRanking.class));
         JMenu help = new JMenu();
         Messages.get().message("help").subscribe((msg) -> {
             help.setText(msg);
@@ -136,6 +138,7 @@ public class Actions {
         actions.put(ActionChallenge.class, new ActionChallenge());
         actions.put(ActionChallengeRun.class, new ActionChallengeRun());
         actions.put(ActionChallengeProblem.class, new ActionChallengeProblem());
+        actions.put(ActionChallengeRanking.class, new ActionChallengeRanking());
     }
     
     /**

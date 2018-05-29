@@ -35,8 +35,9 @@ public class ChallengeUserBuilder {
      * @param challenge
      * @return ChallengeUserBuilder
      */
-    public ChallengeUserBuilder challenge(int challenge) {
-        challengeUser.setChallenge(challenge);
+    public ChallengeUserBuilder challenge(Challenge challenge) {
+        challengeUser.setChallenge(challenge.getId());
+        challengeUser.setXp(challenge.getXp());
         return this;
     }
 

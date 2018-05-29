@@ -23,6 +23,8 @@ public class Challenge {
     private ChallengeValue output;
     /** Problem */
     private String problem;
+    /** Point */
+    private int xp;
 
     /**
      * Returns the owner
@@ -166,6 +168,24 @@ public class Challenge {
      */
     public void setProblem(String problem) {
         this.problem = problem;
+    }
+
+    /**
+     * Returns the points
+     *
+     * @return int
+     */
+    public int getXp() {
+        return xp;
+    }
+
+    /**
+     * Sets the points
+     *
+     * @param xp
+     */
+    public void setXp(int xp) {
+        this.xp = xp;
     }
 
 }

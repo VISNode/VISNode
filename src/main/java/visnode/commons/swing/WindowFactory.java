@@ -100,6 +100,16 @@ public class WindowFactory {
             return this;
         }
 
+        /**
+         * Sets a dialog as undecorated
+         *
+         * @return DialogBuilder
+         */
+        public DialogBuilder undecorated() {
+            window.setUndecorated(true);
+            return this;
+        }
+
         @Override
         public JDialog create(Consumer<JPanel> consumer) {
             try {
@@ -140,6 +150,16 @@ public class WindowFactory {
         @Override
         public FrameBuilder menu(JMenuBar menu) {
             window.setJMenuBar(menu);
+            return this;
+        }
+
+        /**
+         * Sets a dialog as undecorated
+         *
+         * @return DialogBuilder
+         */
+        public FrameBuilder undecorated() {
+            window.setUndecorated(true);
             return this;
         }
 

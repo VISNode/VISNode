@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -21,6 +23,7 @@ import visnode.application.VISNode;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
+import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
@@ -84,9 +87,13 @@ public class ChallengeSolvedListPanel extends JPanel {
         });
         list.setCellRenderer(new CellRenderer(list.getCellRenderer()));
         DefaultListModel<ChallengeUser> model = new DefaultListModel();
-        ChallengeUserRepository.get().get(challenge).forEach((obj) -> {
-            model.addElement(obj);
-        });
+        try {
+            ChallengeUserRepository.get().get(challenge).forEach((obj) -> {
+                model.addElement(obj);
+            });
+        } catch (RepositoryException ex) {
+            Logger.getLogger(ChallengeSolvedListPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
         list.setModel(model);
         return ScrollFactory.pane(list).create();
     }
@@ -98,7 +105,12 @@ public class ChallengeSolvedListPanel extends JPanel {
      * @return boolean
      */
     private boolean solved(Challenge value) {
-        return ChallengeUserRepository.get().has(UserController.get().getUser(), value.getId());
+        try {
+            return ChallengeUserRepository.get().has(UserController.get().getUser(), value.getId());
+        } catch (RepositoryException ex) {
+            Logger.getLogger(ChallengeSolvedListPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     private class CellRenderer implements ListCellRenderer<ChallengeUser> {

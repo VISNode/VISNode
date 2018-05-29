@@ -33,6 +33,15 @@ public class UserController {
     }
 
     /**
+     * Logout
+     */
+    public void logout() {
+        user = null;
+        VISNode.get().getModel().getUserPreferences().setUser(null);
+        has.onNext(Boolean.FALSE);
+    }
+    
+    /**
      * Executes the Login
      *
      * @param user

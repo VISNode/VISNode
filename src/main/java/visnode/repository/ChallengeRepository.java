@@ -39,6 +39,7 @@ public class ChallengeRepository {
         challenge.setInput(getFile("/challenges/objectsSegmentation/input.png"));
         challenge.setOutput(valueImage(getFile("/challenges/objectsSegmentation/output.png")));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
+        challenge.setXp(50);
         return challenge;
     }
   
@@ -56,6 +57,7 @@ public class ChallengeRepository {
         challenge.setInput(getFile("/challenges/dayOrNight/input.jpg"));
         challenge.setOutput(value("1"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
+        challenge.setXp(75);
         return challenge;
     }
 
@@ -73,6 +75,7 @@ public class ChallengeRepository {
         challenge.setInput(getFile("/challenges/coin/input.jpg"));
         challenge.setOutput(value("R$ 2,90"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
+        challenge.setXp(100);
         return challenge;
     }
 

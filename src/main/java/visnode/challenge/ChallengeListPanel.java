@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ import visnode.commons.MultiFileInput;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
+import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
@@ -106,7 +109,12 @@ public class ChallengeListPanel extends JPanel {
      * @return boolean
      */
     private boolean solved(Challenge value) {
-        return ChallengeUserRepository.get().has(UserController.get().getUser(), value.getId());
+        try {
+            return ChallengeUserRepository.get().has(UserController.get().getUser(), value.getId());
+        } catch (RepositoryException ex) {
+            Logger.getLogger(ChallengeListPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     private class CellRenderer implements ListCellRenderer<Challenge> {

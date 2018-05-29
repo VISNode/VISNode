@@ -11,7 +11,9 @@ public class User {
     private String name;
     /** Password */
     private String password;
-
+    /** Points */
+    private int xp;
+    
     public User() {
     }
     
@@ -72,5 +74,23 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    /**
+     * Returns the points
+     * 
+     * @return int
+     */
+    public int getXp() {
+        return xp;
+    }
 
+    /**
+     * Sets the points
+     * 
+     * @param xp 
+     */
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+    
 }

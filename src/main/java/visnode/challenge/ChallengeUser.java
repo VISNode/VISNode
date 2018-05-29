@@ -11,6 +11,8 @@ public class ChallengeUser {
     private int idChallenge;
     /** Submission */
     private String submission;
+    /** Points */
+    private int xp;
 
     /**
      * Returns the user
@@ -66,4 +68,21 @@ public class ChallengeUser {
         this.submission = submission;
     }
 
+    /**
+     * Returns the points
+     *
+     * @return int
+     */
+    public int getXp() {
+        return xp;
+    }
+
+    /**
+     * Sets the points
+     *
+     * @param xp
+     */
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
 }

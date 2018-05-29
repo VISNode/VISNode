@@ -64,7 +64,7 @@ public class ChallengeController {
         try {
             ChallengeUserRepository.get().put(ChallengeUserBuilder.create().
                     user(UserController.get().getUser()).
-                    challenge(getChallenge().getId()).
+                    challenge(getChallenge()).
                     submission(VISNode.get().getModel().getNetwork()).
                     build());
             return true;
