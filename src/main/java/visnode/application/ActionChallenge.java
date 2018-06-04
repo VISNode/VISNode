@@ -30,7 +30,11 @@ public class ActionChallenge extends AbstractAction {
                 return;
             }
             LoginPanel.showDialog();
-            ChallengeListPanel.showDialog();
+            UserController.get().isLogged().subscribe((logged) -> {
+                if (logged) {
+                    ChallengeListPanel.showDialog();
+                }
+            }).dispose();
         });
     }
 

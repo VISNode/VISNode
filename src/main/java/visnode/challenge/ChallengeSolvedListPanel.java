@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.application.VISNode;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
@@ -138,20 +139,15 @@ public class ChallengeSolvedListPanel extends JPanel {
                 open.setText(msg);
             });
             // Builds the component
-            JPanel componentBorder = new JPanel();
-            componentBorder.setLayout(new BorderLayout());
-            componentBorder.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
-            JPanel componentBox = new JPanel();
-            componentBox.setLayout(new BorderLayout());
-            componentBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            
             JPanel component = new JPanel();
             component.setLayout(new BorderLayout());
             component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             component.add(label);
             component.add(open, BorderLayout.EAST);
-            componentBorder.add(component);
-            componentBox.add(componentBorder);
-            return componentBox;
+            ListItemComponent itemComponent = new ListItemComponent();
+            itemComponent.add(component);
+            return itemComponent;
         }
 
     }

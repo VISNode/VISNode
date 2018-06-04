@@ -15,8 +15,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
 import visnode.repository.UserRepository;
 import visnode.user.User;
@@ -108,21 +108,15 @@ public class ChallengeRankingPane extends JPanel {
             // Xp
             JLabel xp = new JLabel(String.format("%s xp", value.getXp()));
             // Builds the component
-            JPanel componentBorder = new JPanel();
-            componentBorder.setLayout(new BorderLayout());
-            componentBorder.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
-            JPanel componentBox = new JPanel();
-            componentBox.setLayout(new BorderLayout());
-            componentBox.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             JPanel component = new JPanel();
             component.setLayout(new FlowLayout());
             component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             component.add(position);
             component.add(name);
             component.add(xp);
-            componentBorder.add(component, BorderLayout.WEST);
-            componentBox.add(componentBorder);
-            return componentBox;
+            ListItemComponent itemComponent = new ListItemComponent();
+            itemComponent.add(component,  BorderLayout.WEST);
+            return itemComponent;
         }
 
     }
