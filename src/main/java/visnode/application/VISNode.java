@@ -1,5 +1,6 @@
 package visnode.application;
 
+import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -65,6 +66,18 @@ public class VISNode {
         model.setUserPreferences(new UserPreferencesPersistor().load());
         setupLookAndFeel();
         buildAndShowWindow();
+        parseArgs(args);
+    }
+
+    /**
+     * Parse the args
+     * 
+     * @param args 
+     */
+    private void parseArgs(String[] args) {
+        if (args.length > 0) {
+            getController().open(new File(args[0]));
+        }
     }
 
     /**
