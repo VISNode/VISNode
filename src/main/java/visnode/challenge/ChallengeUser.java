@@ -1,5 +1,7 @@
 package visnode.challenge;
 
+import java.util.Date;
+
 /**
  * Challenge user relationship
  */
@@ -13,6 +15,10 @@ public class ChallengeUser {
     private String submission;
     /** Points */
     private int xp;
+    /** Date initial */
+    private Date dateInitial;
+    /** Date final */
+    private Date dateFinal;
 
     /**
      * Returns the user
@@ -84,5 +90,41 @@ public class ChallengeUser {
      */
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    /**
+     * Returns the initial date
+     *
+     * @return Date
+     */
+    public Date getDateInitial() {
+        return dateInitial;
+    }
+
+    /**
+     * Sets the initial date
+     *
+     * @param dateInitial
+     */
+    public void setDateInitial(Date dateInitial) {
+        this.dateInitial = dateInitial;
+    }
+
+    /**
+     * Returns the final date
+     *
+     * @return Date
+     */
+    public Date getDateFinal() {
+        return dateFinal;
+    }
+
+    /**
+     * Sets the final date
+     *
+     * @param dateFinal
+     */
+    public void setDateFinal(Date dateFinal) {
+        this.dateFinal = dateFinal;
     }
 }

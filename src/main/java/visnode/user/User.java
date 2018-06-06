@@ -13,14 +13,16 @@ public class User {
     private String password;
     /** Points */
     private int xp;
-    
+    /** Institution */
+    private String institution;
+
     public User() {
     }
-    
+
     public User(String name) {
         this.name = name;
     }
-    
+
     /**
      * Returns the email
      *
@@ -74,10 +76,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     /**
      * Returns the points
-     * 
+     *
      * @return int
      */
     public int getXp() {
@@ -86,11 +88,29 @@ public class User {
 
     /**
      * Sets the points
-     * 
-     * @param xp 
+     *
+     * @param xp
      */
     public void setXp(int xp) {
         this.xp = xp;
     }
-    
+
+    /**
+     * Returns the institution
+     *
+     * @return String
+     */
+    public String getInstitution() {
+        return institution;
+    }
+
+    /**
+     * Sets the institution
+     *
+     * @param institution
+     */
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
 }

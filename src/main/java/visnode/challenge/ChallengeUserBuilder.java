@@ -1,5 +1,6 @@
 package visnode.challenge;
 
+import java.util.Date;
 import visnode.application.NodeNetwork;
 import visnode.application.parser.NodeNetworkParser;
 
@@ -53,6 +54,28 @@ public class ChallengeUserBuilder {
     }
 
     /**
+     * Sets the initial date
+     *
+     * @param dataInitial
+     * @return ChallengeUserBuilder
+     */
+    public ChallengeUserBuilder dateInitial(Date dataInitial) {
+        challengeUser.setDateInitial(dataInitial);
+        return this;
+    }
+
+    /**
+     * Sets the final date
+     *
+     * @param dataFinal
+     * @return ChallengeUserBuilder
+     */
+    public ChallengeUserBuilder dateFinal(Date dataFinal) {
+        challengeUser.setDateFinal(dataFinal);
+        return this;
+    }
+
+    /**
      * Sets the submission
      *
      * @param submission
@@ -65,7 +88,7 @@ public class ChallengeUserBuilder {
 
     /**
      * Builds the user
-     * 
+     *
      * @return ChallengeUser
      */
     public ChallengeUser build() {

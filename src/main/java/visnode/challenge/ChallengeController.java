@@ -3,6 +3,7 @@ package visnode.challenge;
 import visnode.repository.ChallengeUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import visnode.application.VISNode;
@@ -23,6 +24,8 @@ public class ChallengeController {
     private final BehaviorSubject<Boolean> has;
     /** The challenge run */
     private final ChallengeComparator comparator;
+    /** Initial date */
+    private Date dateInitial;
 
     private ChallengeController() {
         this.has = BehaviorSubject.createDefault(Boolean.FALSE);
@@ -48,6 +51,7 @@ public class ChallengeController {
      */
     public void start(Challenge challenge) {
         this.challenge = challenge;
+        this.dateInitial = new Date();
         has.onNext(Boolean.TRUE);
     }
 
@@ -66,6 +70,8 @@ public class ChallengeController {
                     user(UserController.get().getUser()).
                     challenge(getChallenge()).
                     submission(VISNode.get().getModel().getNetwork()).
+                    dateInitial(dateInitial).
+                    dateFinal(new Date()).
                     build());
             return true;
         } catch (RepositoryException ex) {

@@ -36,6 +36,8 @@ public class ActionChallengeRun extends AbstractAction {
         }
         if (ChallengeController.get().comparate(ouput)) {
             JOptionPane.showMessageDialog(null, "The output is correct! :)");
+            VISNode.get().getController().createNew();
+            ChallengeController.get().end();
         } else {
             JOptionPane.showMessageDialog(null, "The output is incorrect! :(");
         }
