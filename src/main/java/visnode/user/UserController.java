@@ -3,7 +3,7 @@ package visnode.user;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import visnode.application.VISNode;
-import visnode.ws.HttpException;
+import visnode.ws.WebServiceException;
 import visnode.ws.WebService;
 
 /**
@@ -55,7 +55,7 @@ public class UserController {
             VISNode.get().getModel().getUserPreferences().setUser(user);
             has.onNext(Boolean.TRUE);
             return true;
-        } catch (HttpException ex) {
+        } catch (WebServiceException ex) {
             return false;
         }
     }

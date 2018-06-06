@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Web service integration
@@ -27,12 +28,15 @@ public class WebService {
      *
      * @param entity
      * @param data
-     * @throws HttpException
+     * @throws WebServiceException
      */
-    public void post(String entity, Object data) throws HttpException {
-        Http.create().
-                url(HOSTNAME + entity).
-                post(gson.toJson(data));
+    public void post(String entity, Object data) throws WebServiceException {
+        try {
+            new visnode.commons.http.Http().
+                    post(gson.toJson(data), HOSTNAME + entity).get();
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new WebServiceException(ex);
+        }
     }
 
     /**
@@ -40,29 +44,31 @@ public class WebService {
      *
      * @param entity
      * @return WebServiceResponse
-     * @throws HttpException
+     * @throws WebServiceException
      */
-    public WebServiceResponse get(String entity) throws HttpException {
+    public WebServiceResponse get(String entity) throws WebServiceException {
         return get(entity, null);
     }
-    
+
     /**
      * Execute a get request
      *
      * @param entity
      * @param query
      * @return WebServiceResponse
-     * @throws HttpException
+     * @throws WebServiceException
      */
-    public WebServiceResponse get(String entity, WebServiceQuery query) throws HttpException {
+    public WebServiceResponse get(String entity, WebServiceQuery query) throws WebServiceException {
         StringBuilder url = new StringBuilder(HOSTNAME + entity);
         if (query != null) {
             url.append("?query=").
                     append(URLEncoder.encode(query.toString()));
         }
-        return new WebServiceResponse(Http.create().
-                url(url.toString()).
-                get());
+        try {
+            return new WebServiceResponse(new visnode.commons.http.Http().get(url.toString()).get());
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new WebServiceException(ex);
+        }
     }
 
     /**
@@ -70,15 +76,18 @@ public class WebService {
      *
      * @param user
      * @param password
-     * @throws HttpException
+     * @throws WebServiceException
      */
-    public void login(String user, String password) throws HttpException {
+    public void login(String user, String password) throws WebServiceException {
         Map data = new HashMap();
         data.put("user", user);
         data.put("password", password);
-        Http.create().
-                url(HOSTNAME + "login").
-                post(gson.toJson(data));
+        try {
+            new visnode.commons.http.Http().
+                    post(gson.toJson(data), HOSTNAME + "login").get();
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new WebServiceException(ex);
+        }
     }
 
     /**

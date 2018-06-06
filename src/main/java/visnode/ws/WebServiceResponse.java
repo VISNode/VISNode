@@ -2,38 +2,39 @@ package visnode.ws;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import visnode.commons.http.HttpResult;
 
 /**
  * Web Service response
  */
 public class WebServiceResponse {
-    
-    /** Http response */
-    private final HttpResponse httpResponse;
 
-    public WebServiceResponse(HttpResponse httpResponse) {
-        this.httpResponse = httpResponse;
+    /** Http response */
+    private final HttpResult httpResult;
+
+    public WebServiceResponse(HttpResult httpResponse) {
+        this.httpResult = httpResponse;
     }
-    
+
     /**
      * Returns the http value
-     * 
+     *
      * @param <T>
      * @param type
      * @return T
      */
     public <T> T get(TypeToken<T> type) {
         Gson gson = new Gson();
-        return gson.fromJson(httpResponse.getBody(), type.getType());
+        return gson.fromJson(httpResult.asString(), type.getType());
     }
-    
+
     /**
-     * Returns the http response
-     * 
-     * @return HttpResponse
+     * Returns the HTTP result
+     *
+     * @return HttpResult
      */
-    public HttpResponse getHttpResponse() {
-        return httpResponse;
+    public HttpResult getHttpResult() {
+        return httpResult;
     }
-    
+
 }

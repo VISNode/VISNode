@@ -3,7 +3,7 @@ package visnode.repository;
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import visnode.challenge.ChallengeUser;
-import visnode.ws.HttpException;
+import visnode.ws.WebServiceException;
 import visnode.ws.WebService;
 import visnode.ws.WebServiceQuery;
 
@@ -24,7 +24,7 @@ public class ChallengeUserRepository {
     public void put(ChallengeUser challengeUser) throws RepositoryException {
         try {
             WebService.get().post("challengeuser", challengeUser);
-        } catch (HttpException ex) {
+        } catch (WebServiceException ex) {
             throw new RepositoryException("Não foi possível gravar registro!", ex);
         }
     }
@@ -59,7 +59,7 @@ public class ChallengeUserRepository {
                     ).
                     get(new TypeToken<List<ChallengeUser>>() {
                     });
-        } catch (HttpException ex) {
+        } catch (WebServiceException ex) {
             throw new RepositoryException("Não foi possível gravar registro!", ex);
         }
     }
