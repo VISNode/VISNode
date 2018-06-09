@@ -22,6 +22,7 @@ public class ChallengeRepository {
         challenges.add(getObjectsSegmentation());
         challenges.add(getDayOrNight());
         challenges.add(getCoin());
+        challenges.add(getFungusPlant());
         return challenges;
     }
 
@@ -62,7 +63,7 @@ public class ChallengeRepository {
     }
 
     /**
-     * Returns a coin
+     * Returns a challenge
      *
      * @return Challenge
      */
@@ -75,6 +76,24 @@ public class ChallengeRepository {
         challenge.setInput(getFile("/challenges/coin/input.jpg"));
         challenge.setOutput(value("R$ 2,90"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
+        challenge.setXp(100);
+        return challenge;
+    }
+  
+    /**
+     * Returns a challenge
+     *
+     * @return Challenge
+     */
+    private Challenge getFungusPlant() {
+        Challenge challenge = new Challenge();
+        challenge.setId(4);
+        challenge.setName("Detecção de tratamento para fungos em plantas");
+        challenge.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
+        challenge.setDifficulty(ChallengeDifficulty.HARD);
+        challenge.setInput(getFile("/challenges/fungusPlant/ft1.png"));
+        challenge.setOutput(value("1234"));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
         challenge.setXp(100);
         return challenge;
     }
