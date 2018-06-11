@@ -4,6 +4,7 @@ import visnode.repository.ChallengeUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import visnode.application.VISNode;
@@ -58,26 +59,31 @@ public class ChallengeController {
     /**
      * Execute the challenge comparation
      *
-     * @param ouput
      * @return boolean
      */
-    public boolean comparate(DynamicValue ouput) {
-        if (!comparator.comparate(challenge, ouput)) {
-            return false;
-        }
-        try {
-            ChallengeUserRepository.get().put(ChallengeUserBuilder.create().
-                    user(UserController.get().getUser()).
-                    challenge(getChallenge()).
-                    submission(VISNode.get().getModel().getNetwork()).
-                    dateInitial(dateInitial).
-                    dateFinal(new Date()).
-                    build());
-            return true;
-        } catch (RepositoryException ex) {
-            Logger.getLogger(ChallengeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+    public CompletableFuture<Boolean> comparate() {
+        CompletableFuture<Boolean> future = new CompletableFuture();
+        ChallengeUser challengeUser = ChallengeUserBuilder.create().
+                user(UserController.get().getUser()).
+                challenge(getChallenge()).
+                submission(VISNode.get().getModel().getNetwork()).
+                dateInitial(dateInitial).
+                dateFinal(new Date()).
+                build();
+        comparator.comparate(challenge, challengeUser).thenAccept((accepted) -> {
+            try {
+                if (!accepted) {
+                    future.complete(false);
+                    return;
+                }
+                ChallengeUserRepository.get().put(challengeUser);
+                future.complete(true);
+            } catch (RepositoryException ex) {
+                Logger.getLogger(ChallengeController.class.getName()).log(Level.SEVERE, null, ex);
+                future.complete(false);
+            }
+        });
+        return future;
     }
 
     /**

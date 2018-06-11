@@ -63,4 +63,13 @@ public class NodeConnector {
         return new HashMap<>(connections);
     }
 
+    /**
+     * Returns true if there is any one connection
+     * 
+     * @return 
+     */
+    public boolean hasConnection() {
+        return !connections.isEmpty();
+    }
+    
 }

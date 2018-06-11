@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -89,10 +90,12 @@ public class ChallengeListPanel extends JPanel {
                 }
                 VISNode.get().getController().createNew();
                 ChallengeController.get().start(challenge);
-                VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(new File(challenge.getInput())));
+                File[] files = challenge.getInput().stream().map((file) -> {
+                    return new File(file);
+                }).collect(Collectors.toList()).toArray(new File[challenge.getInput().size()]);
+                VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(files));
                 ChallengeProblemPanel.showDialog();
             }
-
         });
         list.setCellRenderer(new CellRenderer(list.getCellRenderer()));
         DefaultListModel<Challenge> model = new DefaultListModel();

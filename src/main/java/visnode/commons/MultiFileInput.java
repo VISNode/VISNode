@@ -28,6 +28,10 @@ public class MultiFileInput implements ImageInput {
         this(new File[] {file}, 0);
     }
 
+    public MultiFileInput(File[] file) {
+        this(file, 0);
+    }
+
     public MultiFileInput(File[] file, int index) {
         this.file = file;
         this.index = index;

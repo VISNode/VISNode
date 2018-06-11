@@ -2,31 +2,50 @@ package visnode.challenge;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import org.paim.commons.Image;
 import visnode.application.ExceptionHandler;
 import visnode.application.InputReader;
+import visnode.application.NodeNetwork;
+import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.DynamicValue;
+import visnode.executor.OutputNode;
 
 /**
  * Executes the challenge comparation
  */
 public class ChallengeComparator {
 
+    /** Node network parser */
+    private final NodeNetworkParser parser;
+
+    public ChallengeComparator() {
+        this.parser = new NodeNetworkParser();
+    }
+
     /**
      * Execute the challenge comparation
      *
      * @param challange
-     * @param output
      * @return boolean
      */
-    public boolean comparate(Challenge challange, DynamicValue output) {
-        if (output == null) {
-            return false;
-        }
-        if (challange.getOutput().isTypeImage()) {
-            return comparateImage(challange, output);
-        }
-        return comprateObject(challange, output);
+    public CompletableFuture<Boolean> comparate(Challenge challange, ChallengeUser challengeUser) {
+        CompletableFuture<Boolean> future = new CompletableFuture();
+        NodeNetwork nodeNetwork = parser.fromJson(challengeUser.getSubmission());
+        OutputNode outputNode = nodeNetwork.getOutputNode();
+        outputNode.execute().thenAccept((output) -> {
+            if (output == null) {
+                future.complete(false);
+                return;
+            }
+            if (challange.getOutput().isTypeImage()) {
+                future.complete(comparateImage(challange, output));
+                return;
+            }
+            future.complete(comprateObject(challange, output));
+
+        });
+        return future;
     }
 
     /**

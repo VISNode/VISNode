@@ -65,10 +65,19 @@ public class NodeNetwork implements Model {
      * @return DynamicValue
      */
     public DynamicValue getOutput() {
-        OutputNode decorator = (OutputNode) nodes.get(getOutputIndex()).getDecorated();
+        OutputNode decorator = getOutputNode();
         return decorator.getValue();
     }
 
+    /**
+     * Returns the output node
+     * 
+     * @return 
+     */
+    public OutputNode getOutputNode() {
+        return (OutputNode) nodes.get(getOutputIndex()).getDecorated();
+    }
+    
     /**
      * Sets the input image
      *

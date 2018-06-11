@@ -1,5 +1,8 @@
 package visnode.challenge;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import visnode.user.User;
 
 /**
@@ -18,13 +21,17 @@ public class Challenge {
     /** Difficulty */
     private ChallengeDifficulty difficulty;
     /** Input */
-    private String input;
+    private final List<String> input;
     /** Output */
     private ChallengeValue output;
     /** Problem */
     private String problem;
     /** Point */
     private int xp;
+
+    public Challenge() {
+        this.input = new ArrayList<>();
+    }
 
     /**
      * Returns the owner
@@ -119,19 +126,19 @@ public class Challenge {
     /**
      * Returns the challenge input
      *
-     * @return String
+     * @return {@code List<String>}
      */
-    public String getInput() {
-        return input;
+    public List<String> getInput() {
+        return Collections.unmodifiableList(input);
     }
 
     /**
-     * Sets the challenge input
+     * Adds the challenge input
      *
      * @param input
      */
-    public void setInput(String input) {
-        this.input = input;
+    public void addInput(String input) {
+        this.input.add(input);
     }
 
     /**

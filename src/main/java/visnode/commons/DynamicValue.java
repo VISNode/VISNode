@@ -1,6 +1,5 @@
 package visnode.commons;
 
-import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
 
 /**
@@ -51,6 +50,19 @@ public class DynamicValue<T> {
             return false;
         }
         return Image.class.isAssignableFrom(value.getClass());
+    }
+   
+    /**
+     * Returns true if the value type is correct
+     *
+     * @param type
+     * @return boolean
+     */
+    public boolean is(Class type) {
+        if (value == null) {
+            return false;
+        }
+        return type.isAssignableFrom(value.getClass());
     }
 
     @Override

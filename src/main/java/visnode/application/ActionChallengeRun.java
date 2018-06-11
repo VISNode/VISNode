@@ -5,6 +5,7 @@ import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import static javax.swing.Action.SMALL_ICON;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import visnode.challenge.ChallengeController;
 import visnode.commons.DynamicValue;
 import visnode.gui.IconFactory;
@@ -34,13 +35,17 @@ public class ActionChallengeRun extends AbstractAction {
         if (ouput == null) {
             return;
         }
-        if (ChallengeController.get().comparate(ouput)) {
-            JOptionPane.showMessageDialog(null, "The output is correct! :)");
-            VISNode.get().getController().createNew();
-            ChallengeController.get().end();
-        } else {
-            JOptionPane.showMessageDialog(null, "The output is incorrect! :(");
-        }
+        ChallengeController.get().comparate().thenAccept((accepted) -> {
+            SwingUtilities.invokeLater(() -> {
+                if (accepted) {
+                    JOptionPane.showMessageDialog(null, "The output is correct! :)");
+                    VISNode.get().getController().createNew();
+                    ChallengeController.get().end();
+                } else {
+                    JOptionPane.showMessageDialog(null, "The output is incorrect! :(");
+                }
+            });
+        });
     }
 
 }

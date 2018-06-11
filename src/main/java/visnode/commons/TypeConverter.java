@@ -53,6 +53,12 @@ public class TypeConverter {
             if (destinyType.isAssignableFrom(sourceType)) {
                 return (D) value;
             }
+            if (sourceType.equals(DynamicValue.class)) {
+                Object dynamicValue = ((DynamicValue) value).get();
+                return converters.stream().
+                        filter((converter) -> converter.can(dynamicValue.getClass(), destinyType)).
+                        findFirst().get().convert(dynamicValue, destinyType);
+            }
             return converters.stream().
                     filter((converter) -> converter.can(sourceType, destinyType)).
                     findFirst().get().convert(value, destinyType);
