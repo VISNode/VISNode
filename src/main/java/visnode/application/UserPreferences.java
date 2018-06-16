@@ -36,6 +36,8 @@ public class UserPreferences {
     private Theme theme;
     /** User */
     private String user;
+    /** User token */
+    private String userToken;
 
     /**
      * Creates a new set of user preferences
@@ -199,6 +201,24 @@ public class UserPreferences {
      */
     public void setUser(String user) {
         this.user = user;
+    }
+
+    /**
+     * Returns the user token
+     *
+     * @return String
+     */
+    public String getUserToken() {
+        return userToken;
+    }
+
+    /**
+     * Sets the user token
+     *
+     * @param userToken
+     */
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 
 }

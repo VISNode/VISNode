@@ -15,10 +15,14 @@ public class WebServiceException extends Exception {
     @Override
     public String getMessage() {
         if (getCause().getCause() instanceof HttpException) {
-            return new Gson().fromJson(
-                    ((HttpException) getCause().getCause()).getHttpResult().asString(),
-                    Message.class
-            ).message;
+            try {
+                return new Gson().fromJson(
+                        ((HttpException) getCause().getCause()).getHttpResult().asString(),
+                        Message.class
+                ).message;
+            } catch (Exception e) {
+                return ((HttpException) getCause().getCause()).getHttpResult().asString();
+            }
         }
         return "Service unavailable";
     }

@@ -22,13 +22,13 @@ public class UserRepository {
      */
     public void create(User user) throws RepositoryException {
         try {
-            WebService.get().post("user", user);
+            WebService.get().post("user/create", user);
         } catch (WebServiceException ex) {
             throw new RepositoryException(ex);
         }
     }
-    
-      /**
+
+    /**
      * Returns the challenge
      *
      * @return {@code List<User>}

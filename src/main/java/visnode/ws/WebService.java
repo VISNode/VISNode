@@ -1,10 +1,13 @@
 package visnode.ws;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import visnode.application.VISNode;
+import visnode.commons.http.Http;
 
 /**
  * Web service integration
@@ -13,6 +16,8 @@ public class WebService {
 
     /** Host name */
     public static final String HOSTNAME = "http://localhost:8180/VISNodeWS/v1/";
+    /** Token */
+    public static final String TOKEN = "visnode-token";
 
     /** The web service instance */
     private static WebService instace;
@@ -32,7 +37,12 @@ public class WebService {
      */
     public void post(String entity, Object data) throws WebServiceException {
         try {
-            new visnode.commons.http.Http().
+            new Http().
+                    addHeader(
+                            TOKEN,
+                            VISNode.get().getModel().
+                                    getUserPreferences().getUserToken()
+                    ).
                     post(gson.toJson(data), HOSTNAME + entity).get();
         } catch (InterruptedException | ExecutionException ex) {
             throw new WebServiceException(ex);
@@ -65,7 +75,13 @@ public class WebService {
                     append(URLEncoder.encode(query.toString()));
         }
         try {
-            return new WebServiceResponse(new visnode.commons.http.Http().get(url.toString()).get());
+            return new WebServiceResponse(new Http().
+                    addHeader(
+                            TOKEN,
+                            VISNode.get().getModel().
+                                    getUserPreferences().getUserToken()
+                    ).
+                    get(url.toString()).get());
         } catch (InterruptedException | ExecutionException ex) {
             throw new WebServiceException(ex);
         }
@@ -76,15 +92,18 @@ public class WebService {
      *
      * @param user
      * @param password
+     * @return String
      * @throws WebServiceException
      */
-    public void login(String user, String password) throws WebServiceException {
+    public String login(String user, String password) throws WebServiceException {
         Map data = new HashMap();
         data.put("user", user);
         data.put("password", password);
         try {
-            new visnode.commons.http.Http().
-                    post(gson.toJson(data), HOSTNAME + "login").get();
+            return (String) new WebServiceResponse(new Http().
+                    post(gson.toJson(data), HOSTNAME + "login").get()).
+                    get(TypeToken.get(Map.class)).
+                    get(TOKEN);
         } catch (InterruptedException | ExecutionException ex) {
             throw new WebServiceException(ex);
         }

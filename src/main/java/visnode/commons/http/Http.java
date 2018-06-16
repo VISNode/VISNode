@@ -5,16 +5,46 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 
 /**
  * HTTP helper class
  */
 public class Http {
+
+    /** Headers */
+    private final Map<String, String> headers;
+
+    public Http() {
+        this.headers = new HashMap<>();
+    }
+
+    /**
+     * Adds a HTTP header
+     *
+     * @param key
+     * @param value
+     * @return Http
+     */
+    public Http addHeader(String key, String value) {
+        headers.put(key, value);
+        return this;
+    }
+
+    /**
+     * Sets headers into a connection
+     * 
+     * @param conn 
+     */
+    private void setHeadersConnection(HttpURLConnection conn) {
+        headers.forEach((key, value) -> {
+            conn.addRequestProperty(key, value);
+        });
+    }
 
     /**
      * Makes a GET request and returns the result
@@ -85,6 +115,7 @@ public class Http {
         try {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
+            setHeadersConnection(conn);
             HttpResult result = new HttpResult(
                     conn.getResponseCode(),
                     IOUtils.toByteArray(conn.getInputStream())
@@ -116,6 +147,7 @@ public class Http {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            setHeadersConnection(conn);
             conn.setDoOutput(true);
             try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
                 wr.write(String.valueOf(data).getBytes());

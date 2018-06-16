@@ -38,6 +38,7 @@ public class UserController {
     public void logout() {
         user = null;
         VISNode.get().getModel().getUserPreferences().setUser(null);
+        VISNode.get().getModel().getUserPreferences().setUserToken(null);
         has.onNext(Boolean.FALSE);
     }
     
@@ -50,9 +51,10 @@ public class UserController {
      */
     public boolean login(String user, String password) {
         try {
-            WebService.get().login(user, password);
+            String token = WebService.get().login(user, password);
             this.user = user;
             VISNode.get().getModel().getUserPreferences().setUser(user);
+            VISNode.get().getModel().getUserPreferences().setUserToken(token);
             has.onNext(Boolean.TRUE);
             return true;
         } catch (WebServiceException ex) {
