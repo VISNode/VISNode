@@ -8,8 +8,12 @@ A contaminação é medida da seguinte forma:
 
     1) Se houver apenas uma mancha, maior do que 20 pixels, é denominada INICIAL e poderá ser tratada com chá de alho, um tratamento caseiro e simples.
     2) Se houver de duas a três manchas, maiores do que 20 pixels, é denominada MÉDIA e poderá ser tratada com pó de calcário dissolvido em 1 litro de água.
-    3) Se houver mais de três manchas, é considerado grave. A folha deverá ser arrancada e a planta deve ser pulverizada com Aerosol anti-ferrugem botânica.
+    3) Se houver mais de três manchas, é considerado GRAVE. A folha deverá ser arrancada e a planta deve ser pulverizada com Aerosol anti-ferrugem botânica.
 
 #### Saída
-* __texto:__ Tratamento ideal para cada folha
+* __texto:__ 
+        NAO CONTAMINADA: não possui manchas
+        INICIAL: apenas uma mancha; 
+        MEDIA: de duas a três manchas;
+        GRAVE: mais de três manchas.
 

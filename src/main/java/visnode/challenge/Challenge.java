@@ -23,7 +23,7 @@ public class Challenge {
     /** Input */
     private final List<String> input;
     /** Output */
-    private ChallengeValue output;
+    private final List<ChallengeValue> output;
     /** Problem */
     private String problem;
     /** Point */
@@ -31,6 +31,7 @@ public class Challenge {
 
     public Challenge() {
         this.input = new ArrayList<>();
+        this.output = new ArrayList<>();
     }
 
     /**
@@ -144,19 +145,19 @@ public class Challenge {
     /**
      * Returns the challenge output
      *
-     * @return ChallengeValue
+     * @return {@code List<ChallengeValue>}
      */
-    public ChallengeValue getOutput() {
-        return output;
+    public List<ChallengeValue> getOutput() {
+        return Collections.unmodifiableList(output);
     }
 
     /**
-     * Sets the challenge output
+     * Adds a new challenge output
      *
      * @param output
      */
-    public void setOutput(ChallengeValue output) {
-        this.output = output;
+    public void addOutput(ChallengeValue output) {
+        this.output.add(output);
     }
 
     /**

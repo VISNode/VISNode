@@ -157,7 +157,7 @@ public class OutputNode implements Node, AttacherNode {
         } else {
             processNode.getOutput("image").subscribe((it) -> {
                 future.complete(null);
-            }).dispose();
+            });
         }
         return future;
     }

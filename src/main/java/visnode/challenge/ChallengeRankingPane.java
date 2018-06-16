@@ -69,7 +69,7 @@ public class ChallengeRankingPane extends JPanel {
         try {
             UserRepository.get().getAll().stream().
                     sorted((it, it2) -> {
-                        return it.getXp() > it2.getXp() ? 1 : -1;
+                        return it.getXp() > it2.getXp() ? -1 : 1;
                     }).
                     forEach((obj) -> {
                         model.addElement(obj);

@@ -38,7 +38,7 @@ public class ChallengeRepository {
         challenge.setDescription("Execute a segmentação de objetos de uma imagem");
         challenge.setDifficulty(ChallengeDifficulty.EASY);
         challenge.addInput(getFile("/challenges/objectsSegmentation/input.png"));
-        challenge.setOutput(valueImage(getFile("/challenges/objectsSegmentation/output.png")));
+        challenge.addOutput(valueImage(getFile("/challenges/objectsSegmentation/output.png")));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
         challenge.setXp(50);
         return challenge;
@@ -56,7 +56,9 @@ public class ChallengeRepository {
         challenge.setDescription("Duscubra se é dia ou noite");
         challenge.setDifficulty(ChallengeDifficulty.EASY);
         challenge.addInput(getFile("/challenges/dayOrNight/input.jpg"));
-        challenge.setOutput(value("1"));
+        challenge.addInput(getFile("/challenges/dayOrNight/night.jpg"));
+        challenge.addOutput(value("1"));
+        challenge.addOutput(value("2"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
         challenge.setXp(75);
         return challenge;
@@ -74,7 +76,7 @@ public class ChallengeRepository {
         challenge.setDescription("Cálcule o valor das moedas");
         challenge.setDifficulty(ChallengeDifficulty.HARD);
         challenge.addInput(getFile("/challenges/coin/input.jpg"));
-        challenge.setOutput(value("R$ 2,90"));
+        challenge.addOutput(value("R$ 2,90"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
         challenge.setXp(100);
         return challenge;
@@ -95,7 +97,10 @@ public class ChallengeRepository {
         challenge.addInput(getFile("/challenges/fungusPlant/ft2.png"));
         challenge.addInput(getFile("/challenges/fungusPlant/ft3.png"));
         challenge.addInput(getFile("/challenges/fungusPlant/ft4.png"));
-        challenge.setOutput(value("1234"));
+        challenge.addOutput(value("MEDIA"));
+        challenge.addOutput(value("MEDIA"));
+        challenge.addOutput(value("INICIAL"));
+        challenge.addOutput(value("GRAVE"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
         challenge.setXp(100);
         return challenge;

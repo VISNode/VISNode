@@ -3,23 +3,18 @@ package visnode.challenge;
 import visnode.repository.ChallengeUserRepository;
 import visnode.repository.ChallengeRepository;
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.GridLayout;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.application.VISNode;
@@ -27,7 +22,6 @@ import visnode.commons.MultiFileInput;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
@@ -38,8 +32,6 @@ public class ChallengeListPanel extends JPanel {
 
     /** Challenge repository */
     private final ChallengeRepository repository;
-    /** Challenge list */
-    private JList<Challenge> list;
 
     /**
      * Creates a new challenge list panel
@@ -77,33 +69,77 @@ public class ChallengeListPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildList() {
-        list = new JList<>();
-        list.addMouseListener(new MouseAdapter() {
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
-                Challenge challenge = list.getSelectedValue();
-                if (solved(challenge)) {
-                    ChallengeSolvedListPanel.showDialog(challenge.getId());
-                    return;
-                }
-                VISNode.get().getController().createNew();
-                ChallengeController.get().start(challenge);
-                File[] files = challenge.getInput().stream().map((file) -> {
-                    return new File(file);
-                }).collect(Collectors.toList()).toArray(new File[challenge.getInput().size()]);
-                VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(files));
-                ChallengeProblemPanel.showDialog();
-            }
-        });
-        list.setCellRenderer(new CellRenderer(list.getCellRenderer()));
-        DefaultListModel<Challenge> model = new DefaultListModel();
+        JPanel list = new JPanel();
+        list.setLayout(new GridLayout(0, 1));
         repository.getChallenges().forEach((challenge) -> {
-            model.addElement(challenge);
+            list.add(buildListItem(challenge));
         });
-        list.setModel(model);
-        return ScrollFactory.pane(list).create();
+        JPanel container = new JPanel();
+        container.setLayout(new BorderLayout());
+        container.add(list, BorderLayout.NORTH);
+        return ScrollFactory.pane(container).create();
+    }
+
+    /**
+     * Creates the challenge list item
+     *
+     * @return JComponent
+     */
+    private JComponent buildListItem(Challenge challenge) {
+        // Title label
+        JLabel label = new JLabel();
+        label.setText(challenge.getName());
+        label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        // Description label
+        JLabel description = new JLabel(challenge.getDescription());
+        description.setForeground(description.getForeground());
+        description.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
+        description.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        // Description panel
+        JPanel descriptionPanel = new JPanel();
+        descriptionPanel.setLayout(new GridLayout(2, 1));
+        descriptionPanel.add(label);
+        descriptionPanel.add(description);
+        // Solve challenge
+        JButton solve = new JButton();
+        Messages.get().message("challenge.solve").subscribe((msg) -> {
+            solve.setText(msg);
+        });
+        solve.addActionListener((ev) -> {
+            SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
+            VISNode.get().getController().createNew();
+            ChallengeController.get().start(challenge);
+            File[] files = challenge.getInput().stream().map((file) -> {
+                return new File(file);
+            }).collect(Collectors.toList()).toArray(new File[challenge.getInput().size()]);
+            VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(files));
+            ChallengeProblemPanel.showDialog();
+        });
+        JButton solutions = new JButton();
+        Messages.get().message("challenge.solutions").subscribe((msg) -> {
+            solutions.setText(msg);
+        });
+        solutions.addActionListener((ev) -> {
+            SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
+            ChallengeSolvedListPanel.showDialog(challenge.getId());
+        });
+        // Bottons
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BorderLayout());
+        buttonsPanel.add(solve, BorderLayout.NORTH);
+        if (solved(challenge)) {
+            buttonsPanel.add(solutions, BorderLayout.SOUTH);
+        }
+        // Builds the component
+        JPanel component = new JPanel();
+        component.setLayout(new BorderLayout());
+        component.setPreferredSize(new Dimension(0, 70));
+        component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        component.add(descriptionPanel);
+        component.add(buttonsPanel, BorderLayout.EAST);
+        ListItemComponent itemComponent = new ListItemComponent();
+        itemComponent.add(component);
+        return itemComponent;
     }
 
     /**
@@ -119,57 +155,5 @@ public class ChallengeListPanel extends JPanel {
             Logger.getLogger(ChallengeListPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-    }
-
-    private class CellRenderer implements ListCellRenderer<Challenge> {
-
-        /** Renderer to base background and foreground color */
-        private final ListCellRenderer defaultRenderer;
-
-        /**
-         * Creates
-         *
-         * @param defaultRenderer
-         */
-        public CellRenderer(ListCellRenderer defaultRenderer) {
-            this.defaultRenderer = defaultRenderer;
-        }
-
-        @Override
-        public Component getListCellRendererComponent(JList<? extends Challenge> list, Challenge value, int index, boolean isSelected, boolean cellHasFocus) {
-            // Title label
-            JLabel label = (JLabel) defaultRenderer.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
-            label.setText(value.getName());
-            label.setFont(new Font("Segoe UI", Font.BOLD, 18));
-            // Description label
-            JLabel description = new JLabel(value.getDescription());
-            description.setForeground(description.getForeground());
-            description.setBorder(BorderFactory.createEmptyBorder(1, 10, 3, 3));
-            description.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-            // Solve challenge
-            JButton solve = new JButton();
-            Messages.get().message("challenge.solve").subscribe((msg) -> {
-                solve.setText(msg);
-            });
-            JButton solutions = new JButton();
-            Messages.get().message("challenge.solutions").subscribe((msg) -> {
-                solutions.setText(msg);
-            });
-            // Builds the component
-            JPanel component = new JPanel();
-            component.setLayout(new BorderLayout());
-            component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            component.add(label);
-            component.add(description, BorderLayout.SOUTH);
-            if (solved(value)) {
-                component.add(solutions, BorderLayout.EAST);
-            } else {
-                component.add(solve, BorderLayout.EAST);
-            }
-            ListItemComponent itemComponent = new ListItemComponent();
-            itemComponent.add(component);
-            return itemComponent;
-        }
-
     }
 }

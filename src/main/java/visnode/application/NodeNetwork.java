@@ -88,6 +88,15 @@ public class NodeNetwork implements Model {
     }
 
     /**
+     * Returns the input node
+     * 
+     * @return 
+     */
+    public ProcessNode getInputNode() {
+        return (ProcessNode) nodes.get(getInputIndex()).getDecorated();
+    }
+    
+    /**
      * Finds the index of the input node
      *
      * @return int
