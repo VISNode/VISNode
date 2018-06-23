@@ -5,15 +5,19 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import visnode.commons.ImageScale;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
@@ -26,6 +30,9 @@ import visnode.user.User;
  */
 public class ChallengeRankingPane extends JPanel {
 
+    /** Thumbnail size */
+    private static final int THUMBNAIL_SIZE = 64;
+    
     /** Challenge list */
     private JList<User> list;
 
@@ -97,6 +104,9 @@ public class ChallengeRankingPane extends JPanel {
 
         @Override
         public Component getListCellRendererComponent(JList<? extends User> list, User value, int index, boolean isSelected, boolean cellHasFocus) {
+            BufferedImage image = ImageScale.scale(value.getImageBuffered(), THUMBNAIL_SIZE);
+            JPanel imagePanel = new JPanel();
+            imagePanel.add(new JLabel(new ImageIcon(image))); 
             // Position
             JLabel position = new JLabel();
             position.setText(String.format("%sº", index + 1));
@@ -107,13 +117,23 @@ public class ChallengeRankingPane extends JPanel {
             name.setFont(new Font("Segoe UI", Font.BOLD, 18));
             // Xp
             JLabel xp = new JLabel(String.format("%s xp", value.getXp()));
+            xp.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+            // Header
+            JPanel header = new JPanel();
+            header.setLayout(new FlowLayout());
+            header.add(position);
+            header.add(name);            
+            // Container
+            JPanel container = new JPanel();
+            container.setLayout(new GridLayout(2, 1));
+            container.add(header);
+            container.add(xp);
             // Builds the component
             JPanel component = new JPanel();
             component.setLayout(new FlowLayout());
             component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-            component.add(position);
-            component.add(name);
-            component.add(xp);
+            component.add(imagePanel);
+            component.add(container);
             ListItemComponent itemComponent = new ListItemComponent();
             itemComponent.add(component,  BorderLayout.WEST);
             return itemComponent;

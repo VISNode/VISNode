@@ -150,7 +150,7 @@ public class ChallengeListPanel extends JPanel {
      */
     private boolean solved(Challenge value) {
         try {
-            return ChallengeUserRepository.get().has(UserController.get().getUser(), value.getId());
+            return ChallengeUserRepository.get().has(UserController.get().getUserName(), value.getId());
         } catch (RepositoryException ex) {
             Logger.getLogger(ChallengeListPanel.class.getName()).log(Level.SEVERE, null, ex);
         }

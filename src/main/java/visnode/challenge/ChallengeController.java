@@ -64,7 +64,7 @@ public class ChallengeController {
     public CompletableFuture<Boolean> comparate() {
         CompletableFuture<Boolean> future = new CompletableFuture();
         ChallengeUser challengeUser = ChallengeUserBuilder.create().
-                user(UserController.get().getUser()).
+                user(UserController.get().getUserName()).
                 challenge(getChallenge()).
                 submission(VISNode.get().getModel().getNetwork()).
                 dateInitial(dateInitial).

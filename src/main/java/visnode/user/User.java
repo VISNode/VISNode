@@ -1,10 +1,16 @@
 package visnode.user;
 
+import java.awt.image.BufferedImage;
+
 /**
  * The user
  */
 public class User {
 
+    /** User image */
+    private final transient UserImage userImage;
+    /** User id */
+    private long id;
     /** Email */
     private String email;
     /** Name */
@@ -15,12 +21,34 @@ public class User {
     private int xp;
     /** Institution */
     private String institution;
+    /** Image */
+    private String image;
 
     public User() {
+        this(null);
     }
 
     public User(String name) {
         this.name = name;
+        this.userImage = new UserImage();
+    }
+
+    /**
+     * Returns the user id
+     *
+     * @return long
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the user id
+     *
+     * @param id
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -111,6 +139,42 @@ public class User {
      */
     public void setInstitution(String institution) {
         this.institution = institution;
+    }
+
+    /**
+     * Returns the image
+     *
+     * @return String
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * Returns the image buffered
+     *
+     * @return BufferedImage
+     */
+    public BufferedImage getImageBuffered() {
+        return userImage.fromBase64(getImage());
+    }
+
+    /**
+     * Sets the image
+     *
+     * @param image
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    /**
+     * Sets the image buffered
+     * 
+     * @param image
+     */
+    public void setImageBuffered(BufferedImage image) {
+        setImage(userImage.toBase64(image));
     }
 
 }

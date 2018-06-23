@@ -2,10 +2,6 @@ package visnode.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.HierarchyEvent;
-import java.awt.event.HierarchyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -17,6 +13,7 @@ import org.paim.commons.ImageConverter;
 import org.paim.commons.ImageFactory;
 import org.paim.commons.RenderingOptions;
 import visnode.application.VISNode;
+import visnode.commons.ImageScale;
 
 /**
  * Image component
@@ -78,15 +75,7 @@ public class ImageNodeComponent extends JComponent implements ParameterComponent
     private void updateImage(Image value) {
         RenderingOptions options = VISNode.get().getModel().getUserPreferences().getRenderingOptions();
         BufferedImage original = ImageConverter.toBufferedImage(value, options);
-        int size = Math.max(original.getWidth(), original.getHeight());
-        int newWidth = THUMBNAIL_SIZE * original.getWidth() / size;
-        int newHeight = THUMBNAIL_SIZE * original.getHeight() / size;
-        int x = (THUMBNAIL_SIZE - newWidth) / 2;
-        int y = (THUMBNAIL_SIZE - newHeight) / 2;
-        BufferedImage newImage = new BufferedImage(THUMBNAIL_SIZE, THUMBNAIL_SIZE, BufferedImage.TYPE_4BYTE_ABGR_PRE);
-        java.awt.Image scaledImage = original.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
-        newImage.getGraphics().drawImage(scaledImage, x, y, null);
-        image = newImage;
+        image = ImageScale.scale(original, THUMBNAIL_SIZE);
         repaint();
     }
 
