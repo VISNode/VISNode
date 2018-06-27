@@ -2,7 +2,9 @@ package visnode.repository;
 
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
+import visnode.challenge.Challenge;
 import visnode.challenge.ChallengeUser;
+import visnode.user.User;
 import visnode.ws.WebServiceException;
 import visnode.ws.WebService;
 import visnode.ws.WebServiceQuery;
@@ -37,9 +39,23 @@ public class ChallengeUserRepository {
      * @return boolean
      * @throws RepositoryException
      */
+    public boolean has(User user, Challenge challenge) throws RepositoryException {
+        return has(user.getName(), challenge.getId());
+    }
+    
+    /**
+     * Returns true if has a value
+     *
+     * @param user
+     * @param challenge
+     * @return boolean
+     * @throws RepositoryException
+     */
     public boolean has(String user, int challenge) throws RepositoryException {
         return get(challenge).stream().
-                anyMatch((it) -> it.getUser().equals(user) && it.getChallenge() == challenge);
+                anyMatch((it) -> it.getUser().getName().equals(user)
+                && it.getChallenge() == challenge
+                && it.isStatusSuccess());
     }
 
     /**
@@ -55,7 +71,8 @@ public class ChallengeUserRepository {
                     get(
                             "challengeuser",
                             WebServiceQuery.create().
-                                    put("idChallenge", challenge)
+                                    put("idChallenge", challenge).
+                                    put("status", ChallengeUser.STATUS_SUCESS)
                     ).
                     get(new TypeToken<List<ChallengeUser>>() {
                     });

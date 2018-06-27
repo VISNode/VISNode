@@ -8,7 +8,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import visnode.application.VISNode;
-import visnode.commons.DynamicValue;
 import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
@@ -64,7 +63,7 @@ public class ChallengeController {
     public CompletableFuture<Boolean> comparate() {
         CompletableFuture<Boolean> future = new CompletableFuture();
         ChallengeUser challengeUser = ChallengeUserBuilder.create().
-                user(UserController.get().getUserName()).
+                user(UserController.get().getUser()).
                 challenge(getChallenge()).
                 submission(VISNode.get().getModel().getNetwork()).
                 dateInitial(dateInitial).
@@ -73,9 +72,12 @@ public class ChallengeController {
         comparator.comparate(challenge, challengeUser).thenAccept((accepted) -> {
             try {
                 if (!accepted) {
+                    challengeUser.setStatusError();
+                    ChallengeUserRepository.get().put(challengeUser);
                     future.complete(false);
                     return;
                 }
+                challengeUser.setStatusSuccess();
                 ChallengeUserRepository.get().put(challengeUser);
                 future.complete(true);
             } catch (RepositoryException ex) {

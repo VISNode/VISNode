@@ -7,6 +7,9 @@ import java.awt.image.BufferedImage;
  */
 public class User {
 
+    private transient static final int ROLE_EDITOR = 1;
+    private transient static final int ROLE_VISITOR = 2;
+
     /** User image */
     private final transient UserImage userImage;
     /** User id */
@@ -23,6 +26,8 @@ public class User {
     private String institution;
     /** Image */
     private String image;
+    /** Role */
+    private int role;
 
     public User() {
         this(null);
@@ -170,11 +175,19 @@ public class User {
 
     /**
      * Sets the image buffered
-     * 
+     *
      * @param image
      */
     public void setImageBuffered(BufferedImage image) {
         setImage(userImage.toBase64(image));
     }
 
+    /**
+     * Returns true if the user is editor
+     *
+     * @return boolean
+     */
+    public boolean isUserEditor() {
+        return role == ROLE_EDITOR;
+    }
 }

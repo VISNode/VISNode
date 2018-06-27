@@ -1,14 +1,18 @@
 package visnode.challenge;
 
 import java.util.Date;
+import visnode.user.User;
 
 /**
  * Challenge user relationship
  */
 public class ChallengeUser {
 
+    public static transient final int STATUS_SUCESS = 1;
+    public static transient final int STATUS_ERROR = 2;
+
     /** User */
-    private String user;
+    private User user;
     /** Challenge */
     private int idChallenge;
     /** Submission */
@@ -19,13 +23,15 @@ public class ChallengeUser {
     private Date dateInitial;
     /** Date final */
     private Date dateFinal;
+    /** Status */
+    private int status;
 
     /**
      * Returns the user
      *
-     * @return String
+     * @return User
      */
-    public String getUser() {
+    public User getUser() {
         return user;
     }
 
@@ -34,7 +40,7 @@ public class ChallengeUser {
      *
      * @param user
      */
-    public void setUser(String user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -127,4 +133,37 @@ public class ChallengeUser {
     public void setDateFinal(Date dateFinal) {
         this.dateFinal = dateFinal;
     }
+
+    /**
+     * Returns the status
+     *
+     * @return int
+     */
+    public int getStatus() {
+        return status;
+    }
+
+    /**
+     * Sets the status error
+     */
+    public void setStatusError() {
+        this.status = STATUS_ERROR;
+    }
+
+    /**
+     * Sets the status success
+     */
+    public void setStatusSuccess() {
+        this.status = STATUS_SUCESS;
+    }
+
+    /**
+     * Returns true if the status is success
+     *
+     * @return boolean
+     */
+    public boolean isStatusSuccess() {
+        return this.status == STATUS_SUCESS;
+    }
+
 }

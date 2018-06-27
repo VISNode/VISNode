@@ -3,6 +3,7 @@ package visnode.challenge;
 import java.util.Date;
 import visnode.application.NodeNetwork;
 import visnode.application.parser.NodeNetworkParser;
+import visnode.user.User;
 
 /**
  * Challenge user factory
@@ -25,7 +26,7 @@ public class ChallengeUserBuilder {
      * @param user
      * @return ChallengeUserBuilder
      */
-    public ChallengeUserBuilder user(String user) {
+    public ChallengeUserBuilder user(User user) {
         challengeUser.setUser(user);
         return this;
     }

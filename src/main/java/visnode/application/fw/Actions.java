@@ -7,10 +7,6 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import visnode.application.ActionAboutVisnode;
-import visnode.application.ActionChallenge;
-import visnode.application.ActionChallengeProblem;
-import visnode.application.ActionChallengeRanking;
-import visnode.application.ActionChallengeRun;
 import visnode.application.ActionCopyNode;
 import visnode.application.ActionDeleteSelectedNodes;
 import visnode.application.ActionDirectOpen;
@@ -24,6 +20,7 @@ import visnode.application.ActionSelectWindow;
 import visnode.application.ActionUserPreferences;
 import visnode.application.Messages;
 import visnode.application.VISNode;
+import visnode.challenge.ChallengeMenu;
 
 /**
  * Application actions
@@ -32,12 +29,15 @@ public class Actions {
 
     /** Actions */
     private final Map<Class, Action> actions;
-
+    /** Challenge menu */
+    private final ChallengeMenu challengeMenu;
+    
     /**
      * Creates the actions
      */
     public Actions() {
         actions = new HashMap<>();
+        challengeMenu = new ChallengeMenu();
         loadActions();
     }
     
@@ -83,10 +83,9 @@ public class Actions {
         Messages.get().message("challenge").subscribe((msg) -> {
             challenge.setText(msg);
         });
-        challenge.add(get(ActionChallenge.class));
-        challenge.add(get(ActionChallengeRun.class));
-        challenge.add(get(ActionChallengeProblem.class));
-        challenge.add(get(ActionChallengeRanking.class));
+        challengeMenu.getMenu().forEach((item) -> {
+            challenge.add(item);
+        });
         JMenu help = new JMenu();
         Messages.get().message("help").subscribe((msg) -> {
             help.setText(msg);
@@ -135,10 +134,6 @@ public class Actions {
         actions.put(ActionPasteNode.class, new ActionPasteNode());
         actions.put(ActionAboutVisnode.class, new ActionAboutVisnode());
         actions.put(ActionSelectWindow.class, new ActionSelectWindow());
-        actions.put(ActionChallenge.class, new ActionChallenge());
-        actions.put(ActionChallengeRun.class, new ActionChallengeRun());
-        actions.put(ActionChallengeProblem.class, new ActionChallengeProblem());
-        actions.put(ActionChallengeRanking.class, new ActionChallengeRanking());
     }
     
     /**
