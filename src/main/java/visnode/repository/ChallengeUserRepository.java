@@ -80,6 +80,30 @@ public class ChallengeUserRepository {
             throw new RepositoryException("Não foi possível gravar registro!", ex);
         }
     }
+    
+    /**
+     * Returns the challenge from a user
+     *
+     * @param user
+     * @param challenge
+     * @return {@code List<ChallengeUser>}
+     * @throws RepositoryException
+     */
+    public List<ChallengeUser> get(User user, Challenge challenge) throws RepositoryException {
+        try {
+            return WebService.get().
+                    get(
+                            "challengeuser",
+                            WebServiceQuery.create().
+                                    put("user.id", user.getId()).
+                                    put("idChallenge", challenge.getId())
+                    ).
+                    get(new TypeToken<List<ChallengeUser>>() {
+                    });
+        } catch (WebServiceException ex) {
+            throw new RepositoryException("Não foi possível gravar registro!", ex);
+        }
+    }
 
     /**
      * Returns the challenge user repository instance

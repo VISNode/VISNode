@@ -121,6 +121,7 @@ public class ChallengeSolvedListPanel extends JPanel {
             label.setFont(new Font("Segoe UI", Font.BOLD, 18));
             info.add(label);
             info.add(new JLabel(String.format("xp: %s", value.getXp())));
+            info.add(new JLabel(String.format("Data: %s", value.getDateFinalFormat())));
             // Buttons
             JPanel buttons = new JPanel();
             JButton open = new JButton();

@@ -92,14 +92,18 @@ public class ChallengeListPanel extends JPanel {
         label.setFont(new Font("Segoe UI", Font.BOLD, 18));
         // Description label
         JLabel description = new JLabel(challenge.getDescription());
-        description.setForeground(description.getForeground());
         description.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         description.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        // MaxScore
+        JLabel maxScore = new JLabel("Max Score: " + challenge.getXp());
+        maxScore.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
+        maxScore.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // Description panel
         JPanel descriptionPanel = new JPanel();
-        descriptionPanel.setLayout(new GridLayout(2, 1));
+        descriptionPanel.setLayout(new GridLayout(3, 1));
         descriptionPanel.add(label);
         descriptionPanel.add(description);
+        descriptionPanel.add(maxScore);
         // Solve challenge
         JButton solve = new JButton();
         Messages.get().message("challenge.solve").subscribe((msg) -> {

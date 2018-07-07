@@ -14,10 +14,13 @@ public class ChallengeUserBuilder {
     private final NodeNetworkParser parser;
     /** Challenge user instance */
     private final ChallengeUser challengeUser;
-
+    /** Challenge experience calculator */
+    private final ChallengeXpCalculator calculator;
+    
     private ChallengeUserBuilder() {
         this.parser = new NodeNetworkParser();
         this.challengeUser = new ChallengeUser();
+        this.calculator = new ChallengeXpCalculator();
     }
 
     /**
@@ -39,7 +42,7 @@ public class ChallengeUserBuilder {
      */
     public ChallengeUserBuilder challenge(Challenge challenge) {
         challengeUser.setChallenge(challenge.getId());
-        challengeUser.setXp(challenge.getXp());
+        challengeUser.setXp(calculator.calculate(challengeUser.getUser(), challenge));
         return this;
     }
 

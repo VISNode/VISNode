@@ -1,5 +1,6 @@
 package visnode.challenge;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import visnode.user.User;
 
@@ -123,6 +124,16 @@ public class ChallengeUser {
      */
     public Date getDateFinal() {
         return dateFinal;
+    }
+
+    /**
+     * Returns the date final format
+     *
+     * @return String
+     */
+    public String getDateFinalFormat() {
+        SimpleDateFormat dt1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return dt1.format(getDateFinal());
     }
 
     /**
