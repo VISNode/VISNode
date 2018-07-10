@@ -7,29 +7,22 @@ import visnode.user.User;
 /**
  * Challenge user relationship
  */
-public class ChallengeUser {
+public class MissionUser {
 
     public static transient final int STATUS_SUCESS = 1;
-    public static transient final int STATUS_ERROR = 2;
 
     /** User */
     private User user;
-    /** Challenge */
-    private long idChallenge;
     /** Mission */
-    private long idMission;
+    private int idMission;
     /** Submission */
     private String submission;
     /** Points */
     private int xp;
-    /** Date initial */
-    private Date dateInitial;
     /** Date final */
     private Date dateFinal;
     /** Status */
     private int status;
-    /** Level */
-    private int level;
 
     /**
      * Returns the user
@@ -50,29 +43,11 @@ public class ChallengeUser {
     }
 
     /**
-     * Returns the challenge
-     *
-     * @return long
-     */
-    public long getChallenge() {
-        return idChallenge;
-    }
-
-    /**
-     * Sets the challenge
-     *
-     * @param challenge
-     */
-    public void setChallenge(long challenge) {
-        this.idChallenge = challenge;
-    }
-
-    /**
      * Returns the mission id
      *
-     * @return long
+     * @return int
      */
-    public long getIdMission() {
+    public int getIdMission() {
         return idMission;
     }
 
@@ -81,7 +56,7 @@ public class ChallengeUser {
      *
      * @param idMission
      */
-    public void setIdMission(long idMission) {
+    public void setIdMission(int idMission) {
         this.idMission = idMission;
     }
 
@@ -122,24 +97,6 @@ public class ChallengeUser {
     }
 
     /**
-     * Returns the initial date
-     *
-     * @return Date
-     */
-    public Date getDateInitial() {
-        return dateInitial;
-    }
-
-    /**
-     * Sets the initial date
-     *
-     * @param dateInitial
-     */
-    public void setDateInitial(Date dateInitial) {
-        this.dateInitial = dateInitial;
-    }
-
-    /**
      * Returns the final date
      *
      * @return Date
@@ -177,20 +134,6 @@ public class ChallengeUser {
     }
 
     /**
-     * Sets the status error
-     */
-    public void setStatusError() {
-        this.status = STATUS_ERROR;
-    }
-
-    /**
-     * Sets the status success
-     */
-    public void setStatusSuccess() {
-        this.status = STATUS_SUCESS;
-    }
-
-    /**
      * Returns true if the status is success
      *
      * @return boolean
@@ -199,21 +142,4 @@ public class ChallengeUser {
         return this.status == STATUS_SUCESS;
     }
 
-    /**
-     * Returns the level
-     *
-     * @return int
-     */
-    public int getLevel() {
-        return level;
-    }
-
-    /**
-     * Sets the level
-     *
-     * @param level
-     */
-    public void setLevel(int level) {
-        this.level = level;
-    }
 }

@@ -42,6 +42,8 @@ public class ChallengeUserBuilder {
      */
     public ChallengeUserBuilder challenge(Challenge challenge) {
         challengeUser.setChallenge(challenge.getId());
+        challengeUser.setIdMission(challenge.getMission().getId());
+        challengeUser.setLevel(challenge.getLevel());
         challengeUser.setXp(calculator.calculate(challengeUser.getUser(), challenge));
         return this;
     }

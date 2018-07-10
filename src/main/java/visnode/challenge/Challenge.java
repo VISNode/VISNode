@@ -13,7 +13,9 @@ public class Challenge {
     /** Owner */
     private User owner;
     /** Id */
-    private int id;
+    private long id;
+    /** Mission */
+    private Mission mission;
     /** Name */
     private String name;
     /** Description */
@@ -28,6 +30,8 @@ public class Challenge {
     private String problem;
     /** Point */
     private int xp;
+    /** Level */
+    private int level;
 
     public Challenge() {
         this.input = new ArrayList<>();
@@ -55,9 +59,9 @@ public class Challenge {
     /**
      * Returns the challenge id
      *
-     * @return int
+     * @return long
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -66,8 +70,26 @@ public class Challenge {
      *
      * @param id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * Returns the mission id
+     *
+     * @return Mission
+     */
+    public Mission getMission() {
+        return mission;
+    }
+
+    /**
+     * Sets the mission
+     *
+     * @param mission
+     */
+    public void setMission(Mission mission) {
+        this.mission = mission;
     }
 
     /**
@@ -194,6 +216,33 @@ public class Challenge {
      */
     public void setXp(int xp) {
         this.xp = xp;
+    }
+
+    /**
+     * Returns the level
+     *
+     * @return int
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * Returns true if is the first level
+     *
+     * @return boolean
+     */
+    public boolean isFirtLevel() {
+        return level == 1;
+    }
+
+    /**
+     * Sets the level
+     *
+     * @param level
+     */
+    public void setLevel(int level) {
+        this.level = level;
     }
 
 }

@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import visnode.challenge.Challenge;
 import visnode.challenge.ChallengeUser;
+import visnode.challenge.Mission;
 import visnode.user.User;
 import visnode.ws.WebServiceException;
 import visnode.ws.WebService;
@@ -51,7 +52,7 @@ public class ChallengeUserRepository {
      * @return boolean
      * @throws RepositoryException
      */
-    public boolean has(String user, int challenge) throws RepositoryException {
+    public boolean has(String user, long challenge) throws RepositoryException {
         return get(challenge).stream().
                 anyMatch((it) -> it.getUser().getName().equals(user)
                 && it.getChallenge() == challenge
@@ -65,7 +66,7 @@ public class ChallengeUserRepository {
      * @return {@code List<ChallengeUser>}
      * @throws RepositoryException
      */
-    public List<ChallengeUser> get(int challenge) throws RepositoryException {
+    public List<ChallengeUser> get(long challenge) throws RepositoryException {
         try {
             return WebService.get().
                     get(
@@ -97,6 +98,57 @@ public class ChallengeUserRepository {
                             WebServiceQuery.create().
                                     put("user.id", user.getId()).
                                     put("idChallenge", challenge.getId())
+                    ).
+                    get(new TypeToken<List<ChallengeUser>>() {
+                    });
+        } catch (WebServiceException ex) {
+            throw new RepositoryException("Não foi possível gravar registro!", ex);
+        }
+    }
+  
+    /**
+     * Returns the challenge from a user
+     *
+     * @param user
+     * @param mission
+     * @param level
+     * @return {@code List<ChallengeUser>}
+     * @throws RepositoryException
+     */
+    public List<ChallengeUser> get(User user, Mission mission, int level) throws RepositoryException {
+        try {
+            return WebService.get().
+                    get(
+                            "challengeuser",
+                            WebServiceQuery.create().
+                                    put("user.id", user.getId()).
+                                    put("idMission", mission.getId()).
+                                    put("level", level)
+                    ).
+                    get(new TypeToken<List<ChallengeUser>>() {
+                    });
+        } catch (WebServiceException ex) {
+            throw new RepositoryException("Não foi possível gravar registro!", ex);
+        }
+    }
+    
+    /**
+     * Returns the challenge from a user
+     *
+     * @param user
+     * @param mission
+     * @return {@code List<ChallengeUser>}
+     * @throws RepositoryException
+     */
+    public List<ChallengeUser> get(User user, Mission mission) throws RepositoryException {
+        try {
+            return WebService.get().
+                    get(
+                            "challengeuser",
+                            WebServiceQuery.create().
+                                    put("user.id", user.getId()).
+                                    put("idMission", mission.getId()).
+                                    put("status", 1)
                     ).
                     get(new TypeToken<List<ChallengeUser>>() {
                     });
