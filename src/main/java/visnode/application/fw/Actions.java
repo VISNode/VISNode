@@ -95,7 +95,6 @@ public class Actions {
         menuBar.add(file);
         menuBar.add(edit);
         menuBar.add(view);
-        menuBar.add(challenge);
         menuBar.add(help);
         return menuBar;
     }
