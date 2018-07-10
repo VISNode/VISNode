@@ -38,9 +38,15 @@ public class MainPanel extends JPanel {
         toolbar.add(new ActionNew());
         toolbar.add(new ActionOpen());
         toolbar.add(new ActionSave());
+        toolbar.addSeparator();
+        toolbar.add(new ActionChallengeRun());
+        toolbar.add(new ActionChallengeProblem());
+        toolbar.addSeparator();
+        toolbar.add(new ActionUser());
         add(toolbar, BorderLayout.NORTH);
         add(buildDummyInterface());
     }    
+    
     /**
      * Builds the network editor component
      * 

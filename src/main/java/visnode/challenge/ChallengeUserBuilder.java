@@ -1,7 +1,9 @@
 package visnode.challenge;
 
+import java.util.Date;
 import visnode.application.NodeNetwork;
 import visnode.application.parser.NodeNetworkParser;
+import visnode.user.User;
 
 /**
  * Challenge user factory
@@ -12,10 +14,13 @@ public class ChallengeUserBuilder {
     private final NodeNetworkParser parser;
     /** Challenge user instance */
     private final ChallengeUser challengeUser;
-
+    /** Challenge experience calculator */
+    private final ChallengeXpCalculator calculator;
+    
     private ChallengeUserBuilder() {
         this.parser = new NodeNetworkParser();
         this.challengeUser = new ChallengeUser();
+        this.calculator = new ChallengeXpCalculator();
     }
 
     /**
@@ -24,7 +29,7 @@ public class ChallengeUserBuilder {
      * @param user
      * @return ChallengeUserBuilder
      */
-    public ChallengeUserBuilder user(String user) {
+    public ChallengeUserBuilder user(User user) {
         challengeUser.setUser(user);
         return this;
     }
@@ -35,8 +40,11 @@ public class ChallengeUserBuilder {
      * @param challenge
      * @return ChallengeUserBuilder
      */
-    public ChallengeUserBuilder challenge(int challenge) {
-        challengeUser.setChallenge(challenge);
+    public ChallengeUserBuilder challenge(Challenge challenge) {
+        challengeUser.setChallenge(challenge.getId());
+        challengeUser.setIdMission(challenge.getMission().getId());
+        challengeUser.setLevel(challenge.getLevel());
+        challengeUser.setXp(calculator.calculate(challengeUser.getUser(), challenge));
         return this;
     }
 
@@ -48,6 +56,28 @@ public class ChallengeUserBuilder {
      */
     public ChallengeUserBuilder submission(NodeNetwork network) {
         challengeUser.setSubmission(parser.toJson(network));
+        return this;
+    }
+
+    /**
+     * Sets the initial date
+     *
+     * @param dataInitial
+     * @return ChallengeUserBuilder
+     */
+    public ChallengeUserBuilder dateInitial(Date dataInitial) {
+        challengeUser.setDateInitial(dataInitial);
+        return this;
+    }
+
+    /**
+     * Sets the final date
+     *
+     * @param dataFinal
+     * @return ChallengeUserBuilder
+     */
+    public ChallengeUserBuilder dateFinal(Date dataFinal) {
+        challengeUser.setDateFinal(dataFinal);
         return this;
     }
 
@@ -64,7 +94,7 @@ public class ChallengeUserBuilder {
 
     /**
      * Builds the user
-     * 
+     *
      * @return ChallengeUser
      */
     public ChallengeUser build() {

@@ -62,6 +62,9 @@ public class LoginPanel extends JPanel {
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         panel.add(Buttons.create("Create").onClick((ev) -> {
             NewUserPanel.showDialog();
+            UserController.get().isLogged().subscribe((logged) -> {
+                SwingUtilities.getWindowAncestor(this).dispose();
+            }).dispose();
         }));
         panel.add(Buttons.create("Login").onClick((ev) -> {
             String us = user.getText();

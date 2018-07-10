@@ -3,9 +3,12 @@ package visnode.challenge;
 import visnode.repository.ChallengeUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import java.util.Date;
+import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import visnode.application.VISNode;
-import visnode.application.VISNodeController;
-import visnode.commons.DynamicValue;
+import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
@@ -21,13 +24,12 @@ public class ChallengeController {
     private final BehaviorSubject<Boolean> has;
     /** The challenge run */
     private final ChallengeComparator comparator;
+    /** Initial date */
+    private Date dateInitial;
 
     private ChallengeController() {
         this.has = BehaviorSubject.createDefault(Boolean.FALSE);
         this.comparator = new ChallengeComparator();
-        VISNode.get().getController().addOpenedProjectListener(() -> {
-            end();
-        });
         VISNode.get().getController().addNewProjectListener(() -> {
             end();
         });
@@ -49,25 +51,41 @@ public class ChallengeController {
      */
     public void start(Challenge challenge) {
         this.challenge = challenge;
+        this.dateInitial = new Date();
         has.onNext(Boolean.TRUE);
     }
 
     /**
      * Execute the challenge comparation
      *
-     * @param ouput
      * @return boolean
      */
-    public boolean comparate(DynamicValue ouput) {
-        if (!comparator.comparate(challenge, ouput)) {
-            return false;
-        }
-        ChallengeUserRepository.get().put(ChallengeUserBuilder.create().
+    public CompletableFuture<Boolean> comparate() {
+        CompletableFuture<Boolean> future = new CompletableFuture();
+        ChallengeUser challengeUser = ChallengeUserBuilder.create().
                 user(UserController.get().getUser()).
-                challenge(getChallenge().getId()).
+                challenge(getChallenge()).
                 submission(VISNode.get().getModel().getNetwork()).
-                build());
-        return true;
+                dateInitial(dateInitial).
+                dateFinal(new Date()).
+                build();
+        comparator.comparate(challenge, challengeUser).thenAccept((accepted) -> {
+            try {
+                if (!accepted) {
+                    challengeUser.setStatusError();
+                    ChallengeUserRepository.get().put(challengeUser);
+                    future.complete(false);
+                    return;
+                }
+                challengeUser.setStatusSuccess();
+                ChallengeUserRepository.get().put(challengeUser);
+                future.complete(true);
+            } catch (RepositoryException ex) {
+                Logger.getLogger(ChallengeController.class.getName()).log(Level.SEVERE, null, ex);
+                future.complete(false);
+            }
+        });
+        return future;
     }
 
     /**

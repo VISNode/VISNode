@@ -27,6 +27,8 @@ public class NewUserPanel extends JPanel {
     private JTextField user;
     /** Password */
     private JPasswordField password;
+    /** Institution */
+    private JTextField institution;
 
     /**
      * Creates a new login panel
@@ -39,7 +41,7 @@ public class NewUserPanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
-        WindowFactory.modal().title("User").create((container) -> {
+        WindowFactory.modal().title("New user").create((container) -> {
             container.add(new NewUserPanel());
         }).setVisible(true);
     }
@@ -49,7 +51,7 @@ public class NewUserPanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(300, 150));
+        setPreferredSize(new Dimension(300, 200));
         add(buildPreferences(), BorderLayout.NORTH);
         add(buildButtons(), BorderLayout.SOUTH);
     }
@@ -66,7 +68,9 @@ public class NewUserPanel extends JPanel {
             try {
                 User model = new User(user.getText());
                 model.setPassword(new String(password.getPassword()));
+                model.setInstitution(institution.getText());
                 UserRepository.get().create(model);
+                UserController.get().login(model.getName(), model.getPassword());
                 SwingUtilities.getWindowAncestor(this).dispose();
             } catch (RepositoryException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -87,6 +91,8 @@ public class NewUserPanel extends JPanel {
         panel.add(buildUser());
         panel.add(Labels.create().text(Messages.get().message("password")));
         panel.add(buildPassword());
+        panel.add(Labels.create().text(Messages.get().message("institution")));
+        panel.add(buildInstitution());
         return panel;
     }
 
@@ -99,7 +105,7 @@ public class NewUserPanel extends JPanel {
         user = new JTextField();
         return user;
     }
-    
+
     /**
      * Builds the password field
      *
@@ -108,5 +114,15 @@ public class NewUserPanel extends JPanel {
     private JComponent buildPassword() {
         password = new JPasswordField();
         return password;
+    }
+    
+    /**
+     * Builds the institution field
+     *
+     * @return JComponent
+     */
+    private JComponent buildInstitution() {
+        institution = new JTextField();
+        return institution;
     }
 }

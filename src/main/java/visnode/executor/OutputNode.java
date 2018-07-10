@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import javax.swing.event.EventListenerList;
 import visnode.commons.DynamicValue;
 
@@ -43,9 +44,9 @@ public class OutputNode implements Node, AttacherNode {
     @Override
     public void setInput(String attribute, Object value) {
         if (attribute.equals("value")) {
-            this.value = value instanceof DynamicValue ? 
-                    (DynamicValue) value : 
-                    new DynamicValue(value);
+            this.value = value instanceof DynamicValue
+                    ? (DynamicValue) value
+                    : new DynamicValue(value);
             propertyChangeSupport.firePropertyChange(attribute, null, value);
             return;
         }
@@ -125,4 +126,39 @@ public class OutputNode implements Node, AttacherNode {
     public void dispose() {
     }
 
+    public CompletableFuture<DynamicValue> execute() {
+        CompletableFuture future = new CompletableFuture();
+        NodeConnection nodeConnection = getConnector().getConnection("value");
+        ProcessNode node = (ProcessNode) nodeConnection.getLeftNode();
+        process(node).thenAcceptAsync((i) -> {
+            node.getOutput(nodeConnection.getLeftAttribute()).subscribe((it) -> {
+                future.complete(getValue());
+            });
+        });
+        return future;
+    }
+
+    private CompletableFuture process(ProcessNode processNode) {
+        CompletableFuture future = new CompletableFuture();
+        NodeConnector nodeConnector = processNode.getConnector();
+        if (nodeConnector.hasConnection()) {
+            List<CompletableFuture> list = new ArrayList<>();
+            nodeConnector.getConnections().values().forEach((it) -> {
+                list.add(process((ProcessNode) it.getLeftNode()));
+            });
+            CompletableFuture.allOf(list.toArray(new CompletableFuture[list.size()])).thenAccept((i) -> {
+                processNode.process((call) -> {
+                    nodeConnector.getConnections().values().forEach((it) -> {
+                        processNode.setInput(it.getRightAttribute(), it.getLeftNode().getOutput(it.getLeftAttribute()).blockingFirst());
+                    });
+                    future.complete(null);
+                });
+            });
+        } else {
+            processNode.getOutput("image").subscribe((it) -> {
+                future.complete(null);
+            });
+        }
+        return future;
+    }
 }
