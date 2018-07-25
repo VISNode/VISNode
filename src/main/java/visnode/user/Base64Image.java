@@ -3,6 +3,7 @@ package visnode.user;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import javax.imageio.ImageIO;
@@ -12,11 +13,11 @@ import visnode.commons.ImageScale;
 /**
  * User image converter
  */
-public class UserImage {
-    
+public class Base64Image {
+
     /** The image max size */
     private static final int MAX_SIZE = 256;
-    
+
     /**
      * Convert a Base64 image to a buffered image
      *
@@ -40,9 +41,9 @@ public class UserImage {
         return null;
     }
 
-    /** 
+    /**
      * Convert a buffered image to a Base64
-     * 
+     *
      * @param image
      * @return String
      */
@@ -50,6 +51,23 @@ public class UserImage {
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
             ImageIO.write(ImageScale.scale(image, MAX_SIZE), "JPG", os);
+            return Base64.getEncoder().encodeToString(os.toByteArray());
+        } catch (IOException ioe) {
+            ExceptionHandler.get().handle(ioe);
+        }
+        return null;
+    }
+
+    /**
+     * Convert a buffered image to a Base64
+     *
+     * @param image
+     * @return String
+     */
+    public String toBase64(File image) {
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(ImageIO.read(image), "JPG", os);
             return Base64.getEncoder().encodeToString(os.toByteArray());
         } catch (IOException ioe) {
             ExceptionHandler.get().handle(ioe);

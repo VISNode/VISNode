@@ -11,7 +11,7 @@ public class User {
     private transient static final int ROLE_VISITOR = 2;
 
     /** User image */
-    private final transient UserImage userImage;
+    private final transient Base64Image userImage;
     /** User id */
     private long id;
     /** Email */
@@ -35,7 +35,7 @@ public class User {
 
     public User(String name) {
         this.name = name;
-        this.userImage = new UserImage();
+        this.userImage = new Base64Image();
     }
 
     /**

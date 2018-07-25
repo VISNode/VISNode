@@ -1,7 +1,5 @@
 package visnode.repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import visnode.challenge.Challenge;
 import visnode.challenge.ChallengeDifficulty;
 import visnode.challenge.ChallengeValue;
@@ -26,7 +24,7 @@ public class ChallengeRepository {
         challenge.setName("Segmentação de objetos");
         challenge.setDescription("Execute a segmentação de objetos de uma imagem");
         challenge.setDifficulty(ChallengeDifficulty.EASY);
-        challenge.addInput(getFile("/challenges/objectsSegmentation/input.png"));
+        challenge.addInput(valueImage(getFile("/challenges/objectsSegmentation/input.png")));
         challenge.addOutput(valueImage(getFile("/challenges/objectsSegmentation/output.png")));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
         challenge.setXp(50);
@@ -47,8 +45,8 @@ public class ChallengeRepository {
         challenge.setName("Dia ou noite");
         challenge.setDescription("Duscubra se é dia ou noite");
         challenge.setDifficulty(ChallengeDifficulty.EASY);
-        challenge.addInput(getFile("/challenges/dayOrNight/input.jpg"));
-        challenge.addInput(getFile("/challenges/dayOrNight/night.jpg"));
+        challenge.addInput(valueImage(getFile("/challenges/dayOrNight/input.jpg")));
+        challenge.addInput(valueImage(getFile("/challenges/dayOrNight/night.jpg")));
         challenge.addOutput(value("1"));
         challenge.addOutput(value("2"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
@@ -70,7 +68,7 @@ public class ChallengeRepository {
         challenge.setName("Valor monetário");
         challenge.setDescription("Cálcule o valor das moedas");
         challenge.setDifficulty(ChallengeDifficulty.HARD);
-        challenge.addInput(getFile("/challenges/coin/input.jpg"));
+        challenge.addInput(valueImage(getFile("/challenges/coin/input.jpg")));
         challenge.addOutput(value("R$ 2,90"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
         challenge.setXp(100);
@@ -91,7 +89,7 @@ public class ChallengeRepository {
         challenge.setName("Detecção de tratamento para fungos em plantas");
         challenge.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
         challenge.setDifficulty(ChallengeDifficulty.HARD);
-        challenge.addInput(getFile("/challenges/fungusPlant/ft1.png"));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft1.png")));
         challenge.addOutput(value("MEDIA"));
         challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
         challenge.setXp(75);
@@ -112,10 +110,10 @@ public class ChallengeRepository {
         challenge.setName("Detecção de tratamento para fungos em plantas");
         challenge.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
         challenge.setDifficulty(ChallengeDifficulty.HARD);
-        challenge.addInput(getFile("/challenges/fungusPlant/ft1.png"));
-        challenge.addInput(getFile("/challenges/fungusPlant/ft2.png"));
-        challenge.addInput(getFile("/challenges/fungusPlant/ft3.png"));
-        challenge.addInput(getFile("/challenges/fungusPlant/ft4.png"));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft1.png")));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft2.png")));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft3.png")));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft4.png")));
         challenge.addOutput(value("MEDIA"));
         challenge.addOutput(value("MEDIA"));
         challenge.addOutput(value("INICIAL"));

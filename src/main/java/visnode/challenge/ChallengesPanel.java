@@ -151,7 +151,7 @@ public class ChallengesPanel extends JPanel {
         }
         ChallengeController.get().start(challenge);
         File[] files = challenge.getInput().stream().map((file) -> {
-            return new File(file);
+            return new File(file.getValue());
         }).collect(Collectors.toList()).toArray(new File[challenge.getInput().size()]);
         VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(files));
         ChallengeProblemPanel.showDialog();

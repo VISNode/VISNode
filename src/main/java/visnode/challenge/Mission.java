@@ -120,7 +120,7 @@ public class Mission {
 
     /**
      * Returns the mission level
-     * 
+     *
      * @return int
      */
     public int getLevel() {
@@ -129,13 +129,13 @@ public class Mission {
 
     /**
      * Sets the mission level
-     * 
-     * @param level 
+     *
+     * @param level
      */
     public void setLevel(int level) {
         this.level = level;
     }
-    
+
     /**
      * Returns the challenges
      *
@@ -151,7 +151,23 @@ public class Mission {
      * @param challenge
      */
     public void addChallange(Challenge challenge) {
+        challenge.setMission(this);
         this.challenges.add(challenge);
+        this.xp += challenge.getXp();
+        this.level++;
+    }
+
+    /**
+     * Removes the challenge
+     *
+     * @param challenge
+     */
+    public void removeChallenge(Challenge challenge) {
+        challenges.remove(challenge);
+        int l = 1;
+        for (Challenge it : challenges) {
+            it.setLevel(l++);
+        }
     }
 
     /**

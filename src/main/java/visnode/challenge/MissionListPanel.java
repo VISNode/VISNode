@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -64,18 +62,52 @@ public class MissionListPanel extends JPanel {
      */
     private JComponent buildList() {
         JPanel container = new JPanel();
+        container.setLayout(new BorderLayout());
+        container.add(buildButtons(), BorderLayout.NORTH);
+        container.add(buildListComponent());
+        return ScrollFactory.pane(container).create();
+    }
+
+    /**
+     * Builds the buttons container
+     *
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton();
+        Messages.get().message("challenge.new").subscribe((msg) -> {
+            button.setText(msg);
+        });
+        button.addActionListener((ev) -> {
+            MissionFormPanel.showDialog();
+        });
+        JComponent component = new JPanel();
+        component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        component.setLayout(new BorderLayout());
+        component.add(button, BorderLayout.EAST);
+        return component;
+    }
+
+    /**
+     * Returns the list component
+     *
+     * @return JComponent
+     */
+    private JComponent buildListComponent() {
         try {
             JPanel list = new JPanel();
             list.setLayout(new GridLayout(0, 1));
             MissionRepository.get().getAll().forEach((mission) -> {
                 list.add(buildListItem(mission));
             });
+            JPanel container = new JPanel();
             container.setLayout(new BorderLayout());
             container.add(list, BorderLayout.NORTH);
+            return container;
         } catch (RepositoryException ex) {
             ExceptionHandler.get().handle(ex);
         }
-        return ScrollFactory.pane(container).create();
+        return new JPanel();
     }
 
     /**
@@ -97,7 +129,7 @@ public class MissionListPanel extends JPanel {
         maxScore.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         maxScore.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // Challenges
-        JLabel challenges = new JLabel(getChallenges(mission) + "/"  + mission.getLevel());
+        JLabel challenges = new JLabel(getChallenges(mission) + "/" + mission.getLevel());
         challenges.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         challenges.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // Description panel
@@ -142,10 +174,10 @@ public class MissionListPanel extends JPanel {
         itemComponent.add(component);
         return itemComponent;
     }
-    
+
     /**
      * Returns the amount of challenges completes
-     * 
+     *
      * @param mission
      * @return int
      */

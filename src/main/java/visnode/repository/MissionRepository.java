@@ -1,8 +1,10 @@
 package visnode.repository;
 
-import java.util.ArrayList;
+import com.google.gson.reflect.TypeToken;
 import java.util.List;
 import visnode.challenge.Mission;
+import visnode.ws.WebService;
+import visnode.ws.WebServiceException;
 
 /**
  * Mission repository
@@ -20,12 +22,14 @@ public class MissionRepository {
      * @throws RepositoryException
      */
     public List<Mission> getAll() throws RepositoryException {
-        List<Mission> list = new ArrayList<>();
-        list.add(getObjectsSegmentation());
-        list.add(getDayOrNight());
-        list.add(getCoin());
-        list.add(getFungusPlant());
-        return list;
+        try {
+            return WebService.get().
+                    get("mission").
+                    get(new TypeToken<List<Mission>>() {
+                    });
+        } catch (WebServiceException ex) {
+            throw new RepositoryException(ex);
+        }
     }
 
     /**
@@ -39,8 +43,6 @@ public class MissionRepository {
         mission.setName("Segmentação de objetos");
         mission.setDescription("Execute a segmentação de objetos de uma imagem");
         mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
-        mission.setXp(50);
-        mission.setLevel(1);
         mission.addChallange(challengeRepository.getObjectsSegmentation(mission));
         return mission;
     }
@@ -56,8 +58,6 @@ public class MissionRepository {
         mission.setName("Dia ou noite");
         mission.setDescription("Duscubra se é dia ou noite");
         mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
-        mission.setXp(75);
-        mission.setLevel(1);
         mission.addChallange(challengeRepository.getDayOrNight(mission));
         return mission;
     }
@@ -73,8 +73,6 @@ public class MissionRepository {
         mission.setName("Valor monetário");
         mission.setDescription("Cálcule o valor das moedas");
         mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
-        mission.setXp(100);
-        mission.setLevel(1);
         mission.addChallange(challengeRepository.getCoin(mission));
         return mission;
     }
@@ -90,11 +88,23 @@ public class MissionRepository {
         mission.setName("Detecção de tratamento para fungos em plantas");
         mission.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
         mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
-        mission.setXp(100);
-        mission.setLevel(2);
         mission.addChallange(challengeRepository.getFungusPlant1(mission));
         mission.addChallange(challengeRepository.getFungusPlant2(mission));
         return mission;
+    }
+
+    /**
+     * Save a new mission
+     *
+     * @param mission
+     * @throws RepositoryException
+     */
+    public void save(Mission mission) throws RepositoryException {
+        try {
+            WebService.get().post("mission", mission);
+        } catch (WebServiceException ex) {
+            throw new RepositoryException(ex);
+        }
     }
 
     /**

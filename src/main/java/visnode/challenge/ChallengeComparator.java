@@ -36,7 +36,7 @@ public class ChallengeComparator {
     public CompletableFuture<Boolean> comparate(Challenge challenge, ChallengeUser challengeUser) {
         CompletableFuture<Boolean> future = new CompletableFuture();
         File[] files = challenge.getInput().stream().map((file) -> {
-            return new File(file);
+            return new File(file.getValue());
         }).toArray(File[]::new);
         List<CompletableFuture<Boolean>> stream = challenge.
                 getOutput().

@@ -15,7 +15,7 @@ public class Challenge {
     /** Id */
     private long id;
     /** Mission */
-    private Mission mission;
+    private transient Mission mission;
     /** Name */
     private String name;
     /** Description */
@@ -23,7 +23,7 @@ public class Challenge {
     /** Difficulty */
     private ChallengeDifficulty difficulty;
     /** Input */
-    private final List<String> input;
+    private final List<ChallengeValue> input;
     /** Output */
     private final List<ChallengeValue> output;
     /** Problem */
@@ -149,10 +149,19 @@ public class Challenge {
     /**
      * Returns the challenge input
      *
-     * @return {@code List<String>}
+     * @return {@code List<ChallengeValue>}
      */
-    public List<String> getInput() {
+    public List<ChallengeValue> getInput() {
         return Collections.unmodifiableList(input);
+    }
+
+    /**
+     * Removes the input
+     *
+     * @param value
+     */
+    public void removeInput(ChallengeValue value) {
+        input.remove(value);
     }
 
     /**
@@ -160,7 +169,7 @@ public class Challenge {
      *
      * @param input
      */
-    public void addInput(String input) {
+    public void addInput(ChallengeValue input) {
         this.input.add(input);
     }
 
@@ -174,6 +183,15 @@ public class Challenge {
     }
 
     /**
+     * Removes the output
+     *
+     * @param value
+     */
+    public void removeOutput(ChallengeValue value) {
+        output.remove(value);
+    }
+
+    /**
      * Adds a new challenge output
      *
      * @param output
@@ -183,7 +201,7 @@ public class Challenge {
     }
 
     /**
-     * Returns the problem md file
+     * Returns the problem
      *
      * @return String
      */
@@ -192,12 +210,21 @@ public class Challenge {
     }
 
     /**
-     * Sets the problem md file
+     * Sets the problem
      *
      * @param problem
      */
     public void setProblem(String problem) {
         this.problem = problem;
+    }
+
+    /**
+     * Returns true if the problem is a url
+     *
+     * @return boolean
+     */
+    public boolean isProblemUrl() {
+        return problem != null && problem.startsWith("http");
     }
 
     /**
@@ -245,4 +272,35 @@ public class Challenge {
         this.level = level;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 37 * hash + this.level;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Challenge other = (Challenge) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.level != other.level) {
+            return false;
+        }
+        return true;
+    }
+
+    
+    
 }
