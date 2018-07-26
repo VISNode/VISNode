@@ -13,6 +13,7 @@ import javax.swing.SwingUtilities;
 import visnode.application.ExceptionHandler;
 import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
 import visnode.repository.ChallengeUserRepository;
@@ -76,6 +77,7 @@ public class MissionListPanel extends JPanel {
     private JComponent buildButtons() {
         JButton button = new JButton();
         Messages.get().message("challenge.new").subscribe((msg) -> {
+            button.setIcon(IconFactory.get().create("fa:plus"));
             button.setText(msg);
         });
         button.addActionListener((ev) -> {
@@ -142,6 +144,7 @@ public class MissionListPanel extends JPanel {
         // Solve challenge
         JButton solve = new JButton();
         Messages.get().message("challenge.solve").subscribe((msg) -> {
+            solve.setIcon(IconFactory.get().create("fa:play"));
             solve.setText(msg);
         });
         solve.addActionListener((ev) -> {
@@ -150,6 +153,7 @@ public class MissionListPanel extends JPanel {
         });
         JButton solutions = new JButton();
         Messages.get().message("challenge.solutions").subscribe((msg) -> {
+            solutions.setIcon(IconFactory.get().create("fa:clipboard"));
             solutions.setText(msg);
         });
         solutions.addActionListener((ev) -> {

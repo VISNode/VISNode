@@ -24,6 +24,7 @@ import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
+import visnode.gui.UIHelper;
 import visnode.repository.MissionRepository;
 import visnode.repository.RepositoryException;
 
@@ -68,8 +69,8 @@ public class MissionFormPanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600));
-        add(buildPreferences(), BorderLayout.NORTH);
+        setPreferredSize(new Dimension(800, 500));
+        add(buildPreferences());
         add(buildButtons(), BorderLayout.SOUTH);
     }
 
@@ -107,16 +108,30 @@ public class MissionFormPanel extends JPanel {
     private JComponent buildButtons() {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        panel.add(Buttons.create("Create").onClick((ev) -> {
+        JButton button = Buttons.create("Create").onClick((ev) -> {
             try {
                 mission.setName(name.getText());
                 mission.setDescription(description.getText());
+                if (mission.getName().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Name is required");
+                    return;
+                }
+                if (mission.getDescription().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Description is required");
+                    return;
+                }
+                if (mission.getChallenges().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Challenges are required");
+                    return;
+                }
                 MissionRepository.get().save(mission);
                 SwingUtilities.getWindowAncestor(this).dispose();
             } catch (RepositoryException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
             }
-        }));
+        });
+        button.setIcon(IconFactory.get().create("fa:check"));
+        panel.add(button);
         return panel;
     }
 
@@ -136,9 +151,12 @@ public class MissionFormPanel extends JPanel {
                 Labels.create().text(Messages.get().message("challenge.description")),
                 buildDescription())
         );
-        panel.add(buildBoxChallenges());
-
-        return panel;
+        JPanel container = new JPanel();
+        container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        container.setLayout(new BorderLayout());
+        container.add(panel, BorderLayout.NORTH);
+        container.add(buildBoxChallenges());
+        return ScrollFactory.pane(container).create();
     }
 
     /**
@@ -153,6 +171,7 @@ public class MissionFormPanel extends JPanel {
         panel.setLayout(new BorderLayout());
         panel.add(label, BorderLayout.NORTH);
         panel.add(component);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         return panel;
     }
 
@@ -184,6 +203,7 @@ public class MissionFormPanel extends JPanel {
         addChallenge = new JButton();
         Messages.get().message("challenge.new").subscribe((msg) -> {
             addChallenge.setText(msg);
+            addChallenge.setIcon(IconFactory.get().create("fa:plus"));
         });
         JPanel buttons = new JPanel();
         buttons.setLayout(new BorderLayout());
@@ -205,6 +225,7 @@ public class MissionFormPanel extends JPanel {
         componentItems = new JPanel();
         componentItems.setLayout(new BorderLayout());
         componentItems.add(buildPanelItens(), BorderLayout.NORTH);
+        componentItems.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
         return componentItems;
     }
 
@@ -214,12 +235,11 @@ public class MissionFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildPanelItens() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 1));
+        panelItems = new JPanel();
+        panelItems.setLayout(new GridLayout(0, 1));
         mission.getChallenges().forEach((challenge) -> {
-            panel.add(buildChallengesItem(challenge));
+            panelItems.add(buildChallengesItem(challenge));
         });
-        panelItems = ScrollFactory.pane(panel).create();
         return panelItems;
     }
 
@@ -248,7 +268,7 @@ public class MissionFormPanel extends JPanel {
         component.setLayout(new BorderLayout());
         component.setPreferredSize(new Dimension(0, 40));
         component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        component.add(new JLabel(String.valueOf(challenge.getLevel())));
+        component.add(new JLabel("Level: " + String.valueOf(challenge.getLevel())));
         component.add(buttons, BorderLayout.EAST);
         ListItemComponent itemComponent = new ListItemComponent();
         itemComponent.add(component);

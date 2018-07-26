@@ -32,6 +32,7 @@ import visnode.commons.swing.components.CodeEditor;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
+import visnode.gui.UIHelper;
 
 /**
  * New mission panel
@@ -83,8 +84,8 @@ public class MissionChallengeFormPanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 600));
-        add(buildPreferences(), BorderLayout.NORTH);
+        setPreferredSize(new Dimension(800, 500));
+        add(buildPreferences());
         add(buildButtons(), BorderLayout.SOUTH);
     }
 
@@ -93,14 +94,14 @@ public class MissionChallengeFormPanel extends JPanel {
      */
     private void initEvents() {
         parameterButton.addActionListener((ev) -> {
-            WindowFactory.modal().title("Parameter").create((container) -> {
+            WindowFactory.modal().title("Parâmetros").create((container) -> {
                 container.add(new ChallengeParameterPanel());
             }).setVisible(true);
             reloadItems();
         });
         problemButton.addActionListener((ev) -> {
             ChallengeProblemPanel panel = new ChallengeProblemPanel();
-            WindowFactory.modal().title("Problem").create((container) -> {
+            WindowFactory.modal().title("Problemas").create((container) -> {
                 container.add(panel);
             }).setVisible(true);
             challenge.setProblem(panel.getCode());
@@ -126,11 +127,27 @@ public class MissionChallengeFormPanel extends JPanel {
     private JComponent buildButtons() {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        panel.add(Buttons.create("Create").onClick((ev) -> {
-            challenge.setXp(Integer.parseInt(xp.getText()));
+        JButton button = Buttons.create("Ok").onClick((ev) -> {
+            if (!xp.getText().isEmpty()) {
+                challenge.setXp(Integer.parseInt(xp.getText()));
+            }
+            if (challenge.getXp() == 0) {
+                JOptionPane.showMessageDialog(null, "Xp is required");
+                return;
+            }
+            if (challenge.getProblem() == null || challenge.getProblem().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Problem is required");
+                return;
+            }
+            if (challenge.getInput().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Parameters are required");
+                return;
+            }
             challengeOutput = challenge;
             SwingUtilities.getWindowAncestor(this).dispose();
-        }));
+        });
+        button.setIcon(IconFactory.get().create("fa:check"));
+        panel.add(button);
         return panel;
     }
 
@@ -147,8 +164,12 @@ public class MissionChallengeFormPanel extends JPanel {
                 buildXp())
         );
         panel.add(buildProblem());
-        panel.add(buildBoxChallenges("Parameters"));
-        return panel;
+        JPanel container = new JPanel();
+        container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        container.setLayout(new BorderLayout());
+        container.add(panel, BorderLayout.NORTH);
+        container.add(buildBoxChallenges("Parâmetros"));
+        return ScrollFactory.pane(container).create();
     }
 
     /**
@@ -163,6 +184,7 @@ public class MissionChallengeFormPanel extends JPanel {
         panel.setLayout(new BorderLayout());
         panel.add(label, BorderLayout.NORTH);
         panel.add(component);
+        panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
         return panel;
     }
 
@@ -172,7 +194,8 @@ public class MissionChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildProblem() {
-        problemButton = new JButton("Problem");
+        problemButton = new JButton("Problema");
+        problemButton.setIcon(IconFactory.get().create("fa:font"));
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(problemButton, BorderLayout.WEST);
@@ -205,6 +228,7 @@ public class MissionChallengeFormPanel extends JPanel {
         parameterButton = new JButton();
         Messages.get().message("challenge.new").subscribe((msg) -> {
             parameterButton.setText(msg);
+            parameterButton.setIcon(IconFactory.get().create("fa:plus"));
         });
         JPanel buttons = new JPanel();
         buttons.setLayout(new BorderLayout());
@@ -224,8 +248,9 @@ public class MissionChallengeFormPanel extends JPanel {
      */
     private JComponent buildChallenges() {
         componentItems = new JPanel();
+        componentItems.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
         componentItems.setLayout(new BorderLayout());
-        componentItems.add(buildPanelItens(), BorderLayout.NORTH);
+        componentItems.add(buildPanelItens());
         return componentItems;
     }
 
@@ -235,13 +260,11 @@ public class MissionChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildPanelItens() {
-        JPanel itens = new JPanel();
-        itens.setLayout(new GridLayout(0, 1));
+        panelItems = new JPanel();
+        panelItems.setLayout(new GridLayout(0, 1));
         challenge.getInput().forEach((item) -> {
-            itens.add(buildChallengesItem(item));
+            panelItems.add(buildChallengesItem(item));
         });
-        panelItems = ScrollFactory.pane(itens).create();
-        panelItems.setPreferredSize(new Dimension(0, 300));
         return panelItems;
     }
 
@@ -267,7 +290,7 @@ public class MissionChallengeFormPanel extends JPanel {
         buttons.add(delete);
         JPanel component = new JPanel();
         component.setLayout(new BorderLayout());
-        component.setPreferredSize(new Dimension(0, 40));
+        component.setPreferredSize(new Dimension(0, 90));
         component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         try {
             component.add(new JLabel(getIcon(file)), BorderLayout.WEST);
@@ -276,7 +299,7 @@ public class MissionChallengeFormPanel extends JPanel {
         }
         component.add(buttons, BorderLayout.EAST);
         ListItemComponent itemComponent = new ListItemComponent();
-        itemComponent.add(component);
+        itemComponent.add(component, BorderLayout.NORTH);
         return itemComponent;
 
     }
@@ -334,7 +357,7 @@ public class MissionChallengeFormPanel extends JPanel {
          */
         private void initGui() {
             setLayout(new BorderLayout());
-            setPreferredSize(new Dimension(800, 600));
+            setPreferredSize(new Dimension(300, 200));
             add(buildPreferences(), BorderLayout.NORTH);
             add(buildButtons(), BorderLayout.SOUTH);
         }
@@ -363,7 +386,7 @@ public class MissionChallengeFormPanel extends JPanel {
         private JComponent buildButtons() {
             Panel panel = new Panel();
             panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-            panel.add(Buttons.create("Ok").onClick((ev) -> {
+            JButton button = Buttons.create("Ok").onClick((ev) -> {
                 if (inputFile == null) {
                     JOptionPane.showMessageDialog(null, "Input is required");
                     return;
@@ -375,7 +398,9 @@ public class MissionChallengeFormPanel extends JPanel {
                 challenge.addInput(new ChallengeValue(inputFile));
                 challenge.addOutput(buildChallengeValue());
                 SwingUtilities.getWindowAncestor(this).dispose();
-            }));
+            });
+            button.setIcon(IconFactory.get().create("fa:check"));
+            panel.add(button);
             return panel;
         }
 
@@ -424,7 +449,11 @@ public class MissionChallengeFormPanel extends JPanel {
          */
         private JComponent buildInput() {
             inputButton = new JButton("Input");
-            return inputButton;
+            inputButton.setIcon(IconFactory.get().create("fa:sign-in"));
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
+            panel.add(inputButton, BorderLayout.WEST);
+            return panel;
         }
 
         /**
@@ -434,7 +463,11 @@ public class MissionChallengeFormPanel extends JPanel {
          */
         private JComponent buildOutput() {
             outputButton = new JButton("Output");
-            return outputButton;
+            outputButton.setIcon(IconFactory.get().create("fa:sign-out"));
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
+            panel.add(outputButton, BorderLayout.WEST);
+            return panel;
         }
 
         /**
