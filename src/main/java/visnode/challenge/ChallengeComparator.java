@@ -1,13 +1,11 @@
 package visnode.challenge;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import org.paim.commons.Image;
-import visnode.application.ExceptionHandler;
-import visnode.application.InputReader;
+import org.paim.commons.ImageFactory;
 import visnode.application.NodeNetwork;
 import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.DynamicValue;
@@ -35,17 +33,17 @@ public class ChallengeComparator {
      */
     public CompletableFuture<Boolean> comparate(Challenge challenge, ChallengeUser challengeUser) {
         CompletableFuture<Boolean> future = new CompletableFuture();
-        File[] files = challenge.getInput().stream().map((file) -> {
-            return new File(file.getValue());
+        File[] files = challenge.getInputFiles().stream().map((file) -> {
+            return file;
         }).toArray(File[]::new);
         List<CompletableFuture<Boolean>> stream = challenge.
                 getOutput().
                 stream().
                 map((value) -> comparate(
-                        files[challenge.getOutput().indexOf(value)], 
-                        value, 
-                        challengeUser
-                )).
+                files[challenge.getOutput().indexOf(value)],
+                value,
+                challengeUser
+        )).
                 collect(Collectors.toList());
         CompletableFuture.allOf(
                 stream.stream().toArray(CompletableFuture[]::new)
@@ -98,24 +96,19 @@ public class ChallengeComparator {
         if (!output.isImage()) {
             return false;
         }
-        try {
-            Image base = new InputReader().read(new File(challengeValue.getValue()));
-            int[][][] expected = base.getData();
-            int[][][] result = output.get(Image.class).getData();
-            for (int channel = 0; channel < expected.length; channel++) {
-                for (int x = 0; x < expected[channel].length; x++) {
-                    for (int y = 0; y < expected[channel][x].length; y++) {
-                        if (expected[channel][x][y] != result[channel][x][y]) {
-                            return false;
-                        }
+        Image base = ImageFactory.buildRGBImage(challengeValue.getValueBufferedImage());
+        int[][][] expected = base.getData();
+        int[][][] result = output.get(Image.class).getData();
+        for (int channel = 0; channel < expected.length; channel++) {
+            for (int x = 0; x < expected[channel].length; x++) {
+                for (int y = 0; y < expected[channel][x].length; y++) {
+                    if (expected[channel][x][y] != result[channel][x][y]) {
+                        return false;
                     }
                 }
             }
-            return true;
-        } catch (IOException ex) {
-            ExceptionHandler.get().handle(ex);
         }
-        return false;
+        return true;
     }
 
     /**

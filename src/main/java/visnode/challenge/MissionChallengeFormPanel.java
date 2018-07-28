@@ -55,6 +55,8 @@ public class MissionChallengeFormPanel extends JPanel {
     private JComponent panelItems;
     /** Items component */
     private JComponent componentItems;
+    /** Box component */
+    private JComponent boxComponent;
 
     /**
      * Creates a mission
@@ -116,6 +118,7 @@ public class MissionChallengeFormPanel extends JPanel {
             componentItems.remove(panelItems);
             componentItems.add(buildPanelItens(), BorderLayout.NORTH);
             componentItems.revalidate();
+            boxComponent.repaint();
         });
     }
 
@@ -169,6 +172,7 @@ public class MissionChallengeFormPanel extends JPanel {
         container.setLayout(new BorderLayout());
         container.add(panel, BorderLayout.NORTH);
         container.add(buildBoxChallenges("Parâmetros"));
+        boxComponent = container;
         return ScrollFactory.pane(container).create();
     }
 
@@ -250,7 +254,7 @@ public class MissionChallengeFormPanel extends JPanel {
         componentItems = new JPanel();
         componentItems.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
         componentItems.setLayout(new BorderLayout());
-        componentItems.add(buildPanelItens());
+        componentItems.add(buildPanelItens(), BorderLayout.NORTH);
         return componentItems;
     }
 

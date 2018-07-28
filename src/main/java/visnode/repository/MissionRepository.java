@@ -2,6 +2,7 @@ package visnode.repository;
 
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
+import java.util.stream.Collectors;
 import visnode.challenge.Mission;
 import visnode.ws.WebService;
 import visnode.ws.WebServiceException;
@@ -26,7 +27,12 @@ public class MissionRepository {
             return WebService.get().
                     get("mission").
                     get(new TypeToken<List<Mission>>() {
-                    });
+                    }).stream().map((mission) -> {
+                         mission.getChallenges().stream().forEach((challenge) -> {
+                            challenge.setMission(mission);
+                        });
+                        return mission;
+                    }).collect(Collectors.toList());
         } catch (WebServiceException ex) {
             throw new RepositoryException(ex);
         }
@@ -102,6 +108,20 @@ public class MissionRepository {
     public void save(Mission mission) throws RepositoryException {
         try {
             WebService.get().post("mission", mission);
+        } catch (WebServiceException ex) {
+            throw new RepositoryException(ex);
+        }
+    }
+
+    /**
+     * Save a new mission
+     *
+     * @param mission
+     * @throws RepositoryException
+     */
+    public void update(Mission mission) throws RepositoryException {
+        try {
+            WebService.get().post("mission/" + mission.getId(), mission);
         } catch (WebServiceException ex) {
             throw new RepositoryException(ex);
         }

@@ -27,6 +27,11 @@ import visnode.user.UserController;
  */
 public class MissionListPanel extends JPanel {
 
+    /** Items container */
+    private JComponent containerItems;
+    /** Items panel */
+    private JComponent panelItems;
+    
     /**
      * Creates a new mission list panel
      */
@@ -55,6 +60,17 @@ public class MissionListPanel extends JPanel {
         setPreferredSize(new Dimension(800, 500));
         add(buildList());
     }
+        
+    /**
+     * Reload the items
+     */
+    private void reloadItems() {
+        SwingUtilities.invokeLater(() -> {
+            containerItems.remove(panelItems);
+            containerItems.add(buildListComponent());
+            containerItems.revalidate();
+        });
+    }
 
     /**
      * Creates the mission list
@@ -62,11 +78,11 @@ public class MissionListPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildList() {
-        JPanel container = new JPanel();
-        container.setLayout(new BorderLayout());
-        container.add(buildButtons(), BorderLayout.NORTH);
-        container.add(buildListComponent());
-        return ScrollFactory.pane(container).create();
+        containerItems = new JPanel();
+        containerItems.setLayout(new BorderLayout());
+        containerItems.add(buildButtons(), BorderLayout.NORTH);
+        containerItems.add(buildListComponent());
+        return ScrollFactory.pane(containerItems).create();
     }
 
     /**
@@ -82,6 +98,7 @@ public class MissionListPanel extends JPanel {
         });
         button.addActionListener((ev) -> {
             MissionFormPanel.showDialog();
+            reloadItems();
         });
         JComponent component = new JPanel();
         component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -102,10 +119,10 @@ public class MissionListPanel extends JPanel {
             MissionRepository.get().getAll().forEach((mission) -> {
                 list.add(buildListItem(mission));
             });
-            JPanel container = new JPanel();
-            container.setLayout(new BorderLayout());
-            container.add(list, BorderLayout.NORTH);
-            return container;
+            panelItems = new JPanel();
+            panelItems.setLayout(new BorderLayout());
+            panelItems.add(list, BorderLayout.NORTH);
+            return panelItems;
         } catch (RepositoryException ex) {
             ExceptionHandler.get().handle(ex);
         }
@@ -160,6 +177,15 @@ public class MissionListPanel extends JPanel {
             SwingUtilities.getWindowAncestor(MissionListPanel.this).dispose();
             MissionSolvedListPanel.showDialog(mission);
         });
+        JButton update = new JButton();
+        Messages.get().message("challenge.update").subscribe((msg) -> {
+            update.setIcon(IconFactory.get().create("fa:pencil"));
+            update.setText(msg);
+        });
+        update.addActionListener((ev) -> {
+            MissionFormPanel.showDialog(mission);
+            reloadItems();
+        });
         // Buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
@@ -167,13 +193,21 @@ public class MissionListPanel extends JPanel {
         if (solved(mission)) {
             buttonsPanel.add(solutions, BorderLayout.SOUTH);
         }
+        JPanel actions = new JPanel();
+        actions.setLayout(new BorderLayout());
+        actions.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
+        actions.add(update, BorderLayout.NORTH);
+        JPanel rightComponent = new JPanel();
+        rightComponent.setLayout(new BorderLayout());
+        rightComponent.add(actions, BorderLayout.WEST);
+        rightComponent.add(buttonsPanel, BorderLayout.EAST);
         // Builds the component
         JPanel component = new JPanel();
         component.setLayout(new BorderLayout());
         component.setPreferredSize(new Dimension(0, 75));
         component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         component.add(descriptionPanel);
-        component.add(buttonsPanel, BorderLayout.EAST);
+        component.add(rightComponent, BorderLayout.EAST);
         ListItemComponent itemComponent = new ListItemComponent();
         itemComponent.add(component);
         return itemComponent;

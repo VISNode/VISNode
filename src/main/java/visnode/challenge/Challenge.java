@@ -1,8 +1,15 @@
 package visnode.challenge;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.paim.commons.ImageExporter;
+import org.paim.commons.ImageFactory;
+import visnode.application.ExceptionHandler;
 import visnode.user.User;
 
 /**
@@ -156,6 +163,26 @@ public class Challenge {
     }
 
     /**
+     * Returns the challenge input files
+     *
+     * @return {@code List<File>}
+     */
+    public List<File> getInputFiles() {
+        List<File> list = new ArrayList<>();
+        int index = 0;
+        try {
+            for (ChallengeValue value : input) {
+                File file = new File(System.getProperty("user.home") + "/.visnode/" + getId() + "_" + index++ + ".jpg");
+                ImageExporter.exportBufferedImage(ImageFactory.buildRGBImage(value.getValueBufferedImage()), file);
+                list.add(file);
+            }
+        } catch (IOException ex) {
+            ExceptionHandler.get().handle(ex);
+        }
+        return list;
+    }
+
+    /**
      * Removes the input
      *
      * @param value
@@ -301,6 +328,4 @@ public class Challenge {
         return true;
     }
 
-    
-    
 }

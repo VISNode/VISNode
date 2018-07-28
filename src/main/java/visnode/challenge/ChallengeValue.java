@@ -15,7 +15,7 @@ public class ChallengeValue {
     /** Value */
     private final String value;
     /** Base64 to image */
-    private final Base64Image base64Image;
+    private Base64Image base64Image;
     
     
     /**
@@ -27,7 +27,6 @@ public class ChallengeValue {
     public ChallengeValue(ChallengeValueType type, String value) {
         this.type = type;
         this.value = value;
-        this.base64Image = new Base64Image();
     }
     
     /**
@@ -36,9 +35,8 @@ public class ChallengeValue {
      * @param value
      */
     public ChallengeValue(File value) {
-        this.base64Image = new Base64Image();
         this.type = ChallengeValueType.IMAGE;
-        this.value = base64Image.toBase64(value);
+        this.value = getbBase64Image().toBase64(value);
     }
 
     /**
@@ -77,7 +75,14 @@ public class ChallengeValue {
         if (!isTypeImage()) {
             return null;
         }
-        return base64Image.fromBase64(value);
+        return getbBase64Image().fromBase64(value);
+    }
+    
+    private Base64Image getbBase64Image() {
+        if (base64Image == null) {
+            base64Image = new Base64Image();
+        }
+        return base64Image;
     }
 
     @Override

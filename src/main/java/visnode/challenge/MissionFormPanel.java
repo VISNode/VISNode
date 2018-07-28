@@ -45,12 +45,14 @@ public class MissionFormPanel extends JPanel {
     private JComponent panelItems;
     /** Component items */
     private JComponent componentItems;
+    /** Box component */
+    private JComponent boxComponent;
 
     /**
      * Creates a mission
      */
-    private MissionFormPanel() {
-        this.mission = new Mission();
+    private MissionFormPanel(Mission mission) {
+        this.mission = mission;
         initGui();
         initEvents();
     }
@@ -59,8 +61,17 @@ public class MissionFormPanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
+        showDialog(new Mission());
+    }
+
+    /**
+     * Shows the dialog
+     *
+     * @param mission
+     */
+    public static void showDialog(Mission mission) {
         WindowFactory.modal().title("New mission").create((container) -> {
-            container.add(new MissionFormPanel());
+            container.add(new MissionFormPanel(mission));
         }).setVisible(true);
     }
 
@@ -97,6 +108,7 @@ public class MissionFormPanel extends JPanel {
             componentItems.remove(panelItems);
             componentItems.add(buildPanelItens(), BorderLayout.NORTH);
             componentItems.revalidate();
+            boxComponent.repaint();
         });
     }
 
@@ -124,7 +136,11 @@ public class MissionFormPanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "Challenges are required");
                     return;
                 }
-                MissionRepository.get().save(mission);
+                if (mission.getId() == 0) {
+                    MissionRepository.get().save(mission);
+                } else {
+                    MissionRepository.get().update(mission);
+                }
                 SwingUtilities.getWindowAncestor(this).dispose();
             } catch (RepositoryException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -156,6 +172,7 @@ public class MissionFormPanel extends JPanel {
         container.setLayout(new BorderLayout());
         container.add(panel, BorderLayout.NORTH);
         container.add(buildBoxChallenges());
+        boxComponent = container;
         return ScrollFactory.pane(container).create();
     }
 
@@ -282,6 +299,7 @@ public class MissionFormPanel extends JPanel {
      */
     private JComponent buildName() {
         name = new JTextField();
+        name.setText(mission.getName());
         return name;
     }
 
@@ -292,6 +310,7 @@ public class MissionFormPanel extends JPanel {
      */
     private JComponent buildDescription() {
         description = new JTextArea(5, 20);
+        description.setText(mission.getDescription());
         return new JScrollPane(description);
     }
 
