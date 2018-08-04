@@ -11,7 +11,12 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.commons.ScriptValue;
 import com.github.rxsling.Buttons;
 import com.github.rxsling.Panel;
+import java.awt.Dimension;
 import java.awt.Font;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 
@@ -26,7 +31,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
     private ValueListener valueListener;
     /** Font */
     private static Font font;
-    
+
     /**
      * Creates a dynamic node value editor
      */
@@ -85,7 +90,11 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
 
         /** The code editor */
         private CodeEditor textArea;
-
+        /** Log */
+        private JTextArea log;
+        /** Panel log */
+        private JComponent panelLog;
+        
         public Editor() {
             super();
             initGui();
@@ -99,6 +108,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             setLayout(new BorderLayout());
             add(buildToolbar(), BorderLayout.NORTH);
             add(buildCodePane());
+            add(buildLog(), BorderLayout.SOUTH);
         }
 
         /**
@@ -109,6 +119,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
         private JComponent buildToolbar() {
             JToolBar toolbar = new JToolBar();
             toolbar.add(new ActionExecute());
+            toolbar.add(new ActionLog());
             return toolbar;
         }
 
@@ -137,6 +148,17 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
                     textArea.increaseFont(-ev.getWheelRotation());
                     font = textArea.getFont();
                 }
+            });
+            ScriptValueEditorLog.get().observable().subscribe((logText) -> {
+                if (logText == null || logText.isEmpty()) {
+                    return;
+                }
+                if (!panelLog.isVisible()) {
+                    SwingUtilities.invokeLater(() -> {
+                        panelLog.setVisible(true);
+                    });
+                }
+                this.log.append(logText);
             });
         }
 
@@ -174,6 +196,23 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
         }
 
         /**
+         * Build the log field
+         *
+         * @return JComponent
+         */
+        private JComponent buildLog() {
+            log = new JTextArea();
+            log.setEditable(false);
+            log.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            panelLog = new JPanel();
+            panelLog.setLayout(new BorderLayout());
+            panelLog.setPreferredSize(new Dimension(0, 150));
+            panelLog.add(ScrollFactory.pane(log).create());
+            panelLog.setVisible(false);           
+            return panelLog;
+        }
+
+        /**
          * Action for execute the script
          */
         private class ActionExecute extends AbstractAction {
@@ -185,6 +224,22 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             @Override
             public void actionPerformed(ActionEvent e) {
                 executeScript();
+            }
+
+        }
+       
+        /**
+         * Action for open the log
+         */
+        private class ActionLog extends AbstractAction {
+
+            public ActionLog() {
+                super("Output console", IconFactory.get().create("fa:window-restore"));
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panelLog.setVisible(!panelLog.isVisible());
             }
 
         }
