@@ -1,13 +1,17 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import java.io.File;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.application.ProcessMetadata;
 import visnode.application.VISNode;
+import visnode.commons.MultiFileInput;
 import visnode.commons.http.Http;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
@@ -36,6 +40,7 @@ public class ProcessInformationPane extends JPanel {
         this.type = type;
         this.metadata = ProcessMetadata.fromClass(type, VISNode.get().getModel().getUserPreferences().getLocale());
         initGui();
+        initEvents();
     }
 
     /**
@@ -44,6 +49,22 @@ public class ProcessInformationPane extends JPanel {
     private void initGui() {
         setLayout(new BorderLayout());
         add(buildTabs());
+    }
+
+    /**
+     * Initializes the events
+     */
+    private void initEvents() {
+        openProject.addActionListener((evt) -> {
+            new Http().get(metadata.getProjectUrl()).thenAccept((result) -> {
+                VISNode.get().getController().open(result.asString());
+                File file = new File(getClass().
+                        getResource("/visnode/pdi/process/image/Lenna.png").getFile());
+                VISNode.get().getModel().getNetwork().
+                        setInput(new MultiFileInput(new File[]{file}));
+                SwingUtilities.getWindowAncestor(ProcessInformationPane.this).dispose();
+            });
+        });
     }
 
     /**
@@ -93,8 +114,8 @@ public class ProcessInformationPane extends JPanel {
      * @return JComponent
      */
     private JComponent buildScriptPane() {
-        CodeEditor textArea = new CodeEditor();
-        new Http().get(metadata.getCodeUrl()).thenAccept((result) -> {
+        CodeEditor textArea = new CodeEditor(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        new Http().get(metadata.getScriptUrl()).thenAccept((result) -> {
             textArea.setText(result.asString());
         });
         textArea.setEditable(false);
