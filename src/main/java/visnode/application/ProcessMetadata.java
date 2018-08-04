@@ -30,6 +30,10 @@ public class ProcessMetadata {
     private String helpUrl;
     /** Code URL */
     private String codeUrl;
+    /** Script URL */
+    private String scriptUrl;
+    /** Project URL */
+    private String projectUrl;
     /** Defaults */
     private final Map<String, String> defaults;
 
@@ -94,15 +98,15 @@ public class ProcessMetadata {
 
     /**
      * Returns true if the name contains a filter
-     * 
+     *
      * @param filter
      * @return boolean
      */
     public boolean containsName(String filter) {
-        return name_pt_BR.toLowerCase().contains(filter) ||
-                name_en_US.toLowerCase().contains(filter);
+        return name_pt_BR.toLowerCase().contains(filter)
+                || name_en_US.toLowerCase().contains(filter);
     }
-    
+
     /**
      * Returns the description
      *
@@ -111,16 +115,16 @@ public class ProcessMetadata {
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * Returns true if the description contains a filter
-     * 
+     *
      * @param filter
      * @return boolean
      */
     public boolean containsDescription(String filter) {
-        return description_pt_BR.toLowerCase().contains(filter) ||
-                description_pt_BR.toLowerCase().contains(filter);
+        return description_pt_BR.toLowerCase().contains(filter)
+                || description_pt_BR.toLowerCase().contains(filter);
     }
 
     /**
@@ -139,6 +143,24 @@ public class ProcessMetadata {
      */
     public String getCodeUrl() {
         return codeUrl;
+    }
+
+    /**
+     * Returns the script URL
+     *
+     * @return String
+     */
+    public String getScriptUrl() {
+        return scriptUrl;
+    }
+
+    /**
+     * Returns the project URL
+     *
+     * @return String
+     */
+    public String getProjectUrl() {
+        return projectUrl;
     }
 
     public String getDefault(String key) {

@@ -1,6 +1,8 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -21,6 +23,8 @@ public class ProcessInformationPane extends JPanel {
     private final Class<? extends Process> type;
     /** Process meta-data */
     private final ProcessMetadata metadata;
+    /** Action open project */
+    private JButton openProject;
 
     /**
      * Creates a new Process Info panel
@@ -50,6 +54,7 @@ public class ProcessInformationPane extends JPanel {
     private JComponent buildTabs() {
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Information", buildInformationPane());
+        tabs.add("Script", buildScriptPane());
         tabs.add("Code", buildCodePane());
         return tabs;
     }
@@ -80,6 +85,38 @@ public class ProcessInformationPane extends JPanel {
         });
         textArea.setEditable(false);
         return textArea;
+    }
+
+    /**
+     * Builds the script pane
+     *
+     * @return JComponent
+     */
+    private JComponent buildScriptPane() {
+        CodeEditor textArea = new CodeEditor();
+        new Http().get(metadata.getCodeUrl()).thenAccept((result) -> {
+            textArea.setText(result.asString());
+        });
+        textArea.setEditable(false);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(buildScriptPaneButtons(), BorderLayout.NORTH);
+        panel.add(textArea);
+        return panel;
+    }
+
+    /**
+     * Builds the script pane
+     *
+     * @return JComponent
+     */
+    private JComponent buildScriptPaneButtons() {
+        openProject = new JButton("Open", IconFactory.get().create("fa:folder-open"));
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new BorderLayout());
+        buttons.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+        buttons.add(openProject, BorderLayout.EAST);
+        return buttons;
     }
 
     /**

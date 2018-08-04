@@ -58,7 +58,7 @@ public class ScriptRunner {
                 ScriptValueEditorLog.get().next(writer.toString());
                 return obj;
             } catch (NoSuchMethodException | ScriptException e) {
-                ExceptionHandler.get().handle(e);
+                ScriptValueEditorLog.get().next(e.getMessage());
             }
         }
         return null;
