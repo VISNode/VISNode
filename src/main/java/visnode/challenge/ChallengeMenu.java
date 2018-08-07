@@ -7,6 +7,7 @@ import visnode.application.ActionChallenge;
 import visnode.application.ActionChallengeProblem;
 import visnode.application.ActionChallengeRanking;
 import visnode.application.ActionChallengeRun;
+import visnode.application.ActionChallengeUser;
 
 /**
  * Returns the challenge menu item
@@ -24,6 +25,7 @@ public class ChallengeMenu {
         actions.add(new ActionChallengeRun());
         actions.add(new ActionChallengeProblem());
         actions.add(new ActionChallengeRanking());
+        actions.add(new ActionChallengeUser());
         return actions;
     }
 

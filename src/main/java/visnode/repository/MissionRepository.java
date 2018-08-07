@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import visnode.challenge.Mission;
 import visnode.ws.WebService;
 import visnode.ws.WebServiceException;
+import visnode.ws.WebServiceQuery;
 
 /**
  * Mission repository
@@ -33,6 +34,31 @@ public class MissionRepository {
                         });
                         return mission;
                     }).collect(Collectors.toList());
+        } catch (WebServiceException ex) {
+            throw new RepositoryException(ex);
+        }
+    }
+
+    /**
+     * Returns all missions
+     *
+     * @param idMission
+     * @return Mission
+     * @throws RepositoryException
+     */
+    public Mission get(int idMission) throws RepositoryException {
+        try {
+            return WebService.get().
+                    get("mission",
+                            WebServiceQuery.create().
+                                    put("id", idMission)).
+                    get(new TypeToken<List<Mission>>() {
+                    }).stream().map((mission) -> {
+                         mission.getChallenges().stream().forEach((challenge) -> {
+                            challenge.setMission(mission);
+                        });
+                        return mission;
+                    }).collect(Collectors.toList()).get(0);
         } catch (WebServiceException ex) {
             throw new RepositoryException(ex);
         }
