@@ -4,6 +4,7 @@
     "description_en_US": "Process extracted objects",
     "description_pt_BR": "Extrai objetos da imagem",
     "author": "VISNode team",
+    "snippet": "function process(objectList) {\n    return objectList\n}",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ObjectExtractionProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/java/visnode/pdi/process/ObjectExtractionProcess.java"
 }

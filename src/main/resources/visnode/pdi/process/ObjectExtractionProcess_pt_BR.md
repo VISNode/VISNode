@@ -2,10 +2,19 @@
 
 Este proceso tem como objetivo possibilitar a extração de objetos de uma imagem.
 
-#### Exemplo:
+## Exemplo de filtragem de objetos
+
+No exemplo abaixo é demonstrado um script que realiza um filtro nos objetos extraidos da image. Neste exemplo, somente os objetos com tamanho superior a 250 pixels são retornados.
+
 ```javascript
 function process(objectList) {
-  return objectList[0];
+    var list = []
+    for (var i = 0; i < objectList.lengh; i++) {
+        if (objectList[i].size() > 250) {
+            list.push(objectList[i])
+        }
+    }
+    return list;
 }
 ```
 

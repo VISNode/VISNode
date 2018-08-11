@@ -14,11 +14,16 @@ import com.github.rxsling.Panel;
 import java.awt.Dimension;
 import java.awt.Font;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
+import visnode.commons.swing.components.MarkdownViewer;
 
 /**
  * Dynamic node value editor
@@ -31,12 +36,17 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
     private ValueListener valueListener;
     /** Font */
     private static Font font;
+    /** Documentation */
+    private final ScriptValueEditorDocumentation documentation;
 
     /**
      * Creates a dynamic node value editor
+     *
+     * @param documentation
      */
-    public ScriptValueEditor() {
-        value = buildDefault();
+    public ScriptValueEditor(ScriptValueEditorDocumentation documentation) {
+        this.value = buildDefault();
+        this.documentation = documentation;
         initGui();
     }
 
@@ -94,7 +104,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
         private JTextArea log;
         /** Panel log */
         private JComponent panelLog;
-        
+
         public Editor() {
             super();
             initGui();
@@ -120,6 +130,9 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             JToolBar toolbar = new JToolBar();
             toolbar.add(new ActionExecute());
             toolbar.add(new ActionLog());
+            if (documentation.getProcess() != null) {
+                toolbar.add(new ActionInformation());
+            }
             return toolbar;
         }
 
@@ -178,7 +191,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             if (value != null && value.hasValue()) {
                 return value.getValue();
             }
-            return "function process() {\n\n}";
+            return documentation.getSnippet();
         }
 
         /**
@@ -192,7 +205,42 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             if (font != null) {
                 textArea.setFont(font);
             }
-            return textArea;
+            JPanel panel = new JPanel();
+            panel.setLayout(new BorderLayout());
+            if (!documentation.getInputDocumentation().isEmpty()) {
+                panel.add(buildParameter(), BorderLayout.NORTH);
+            }
+            panel.add(textArea);
+            return panel;
+        }
+        
+        /**
+         * Build parameters Component
+         * 
+         * @return JComponent
+         */
+        private JComponent buildParameter() {
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+            panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+            documentation.getInputDocumentation().forEach((key, value) -> {
+                JButton button = new JButton(key);
+                if (value == null || value.isEmpty()) {
+                    button.setEnabled(false);
+                }
+                button.addActionListener((evt) -> {
+                    WindowFactory.frame().create((container) -> {
+                        container.add(new InformationPane(value));
+                    }).setVisible(true);
+                });
+                JLabel label = new JLabel();
+                Messages.get().message("arguments").subscribe((msg) -> {
+                    label.setText(msg + ": ");
+                });
+                panel.add(label);
+                panel.add(button);
+            });
+            return panel;
         }
 
         /**
@@ -208,7 +256,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             panelLog.setLayout(new BorderLayout());
             panelLog.setPreferredSize(new Dimension(0, 150));
             panelLog.add(ScrollFactory.pane(log).create());
-            panelLog.setVisible(false);           
+            panelLog.setVisible(false);
             return panelLog;
         }
 
@@ -227,7 +275,7 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
             }
 
         }
-       
+
         /**
          * Action for open the log
          */
@@ -242,6 +290,59 @@ public class ScriptValueEditor extends Panel implements ParameterComponent<Scrip
                 panelLog.setVisible(!panelLog.isVisible());
             }
 
+        }
+
+        /**
+         * Action for open information
+         */
+        private class ActionInformation extends AbstractAction {
+
+            public ActionInformation() {
+                super("Information", IconFactory.get().create("fa:info-circle"));
+            }
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ProcessInformationPane.showDialog(documentation.getProcess());
+            }
+
+        }
+    }
+
+    /**
+     * Panel with information about the process
+     */
+    public class InformationPane extends JPanel {
+
+        private final String url;
+
+        /**
+         * Creates a new Process Info panel
+         *
+         * @param url
+         */
+        public InformationPane(String url) {
+            this.url = url;
+            initGui();
+        }
+
+        /**
+         * Initializes the interface
+         */
+        private void initGui() {
+            setLayout(new BorderLayout());
+            add(buildCodePane());
+        }
+
+        /**
+         * Builds the code pane
+         *
+         * @return JComponent
+         */
+        private JComponent buildCodePane() {
+            MarkdownViewer viewer = new MarkdownViewer();
+            viewer.loadUrl(url);
+            return viewer;
         }
 
     }

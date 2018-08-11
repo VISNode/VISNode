@@ -14,6 +14,8 @@ import visnode.pdi.Process;
  */
 public class ProcessMetadata {
 
+    /** Process */
+    private Class process;
     /** Name */
     private String name;
     /** Name en-US */
@@ -36,7 +38,9 @@ public class ProcessMetadata {
     private String projectUrl;
     /** Defaults */
     private final Map<String, String> defaults;
-
+    /** Snippet */
+    private String snippet;
+    
     public ProcessMetadata() {
         name = "";
         name_en_US = "";
@@ -68,6 +72,7 @@ public class ProcessMetadata {
         try {
             InputStream stream = ProcessMetadata.class.getResourceAsStream('/' + process.getName().replace('.', '/') + ".json");
             ProcessMetadata meta = new GsonBuilder().create().fromJson(new InputStreamReader(stream, Charset.forName("utf-8")), ProcessMetadata.class);
+            meta.process = process;
             meta.name = meta.name_en_US;
             meta.description = meta.description_en_US;
             if (locale.getLanguage().equals("pt")) {
@@ -79,12 +84,22 @@ public class ProcessMetadata {
             return meta;
         } catch (Exception e) {
             ProcessMetadata metadata = new ProcessMetadata();
+            metadata.process = process;
             String name = process.getSimpleName();
             name = name.replaceFirst("Process$", "");
             name = name.replaceAll("([a-z])([A-Z])", "$1 $2");
             metadata.name = name;
             return metadata;
         }
+    }
+    
+    /**
+     * Returns the process class
+     * 
+     * @return Class
+     */
+    public Class getProcess() {
+        return process;
     }
 
     /**
@@ -163,8 +178,22 @@ public class ProcessMetadata {
         return projectUrl;
     }
 
+    /**
+     * Returns the defaults parameters
+     * 
+     * @param key
+     * @return String
+     */
     public String getDefault(String key) {
         return this.defaults.get(key);
     }
 
+    /**
+     * Returns the snippet
+     * 
+     * @return String
+     */
+    public String getSnippet() {
+        return snippet;
+    }
 }

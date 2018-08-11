@@ -28,7 +28,7 @@ public class ProcessInformationPane extends JPanel {
     /** Process meta-data */
     private final ProcessMetadata metadata;
     /** Action open project */
-    private JButton openProject;
+    private JButton openProject = new JButton();
 
     /**
      * Creates a new Process Info panel
@@ -75,8 +75,12 @@ public class ProcessInformationPane extends JPanel {
     private JComponent buildTabs() {
         JTabbedPane tabs = new JTabbedPane();
         tabs.add("Information", buildInformationPane());
-        tabs.add("Script", buildScriptPane());
-        tabs.add("Code", buildCodePane());
+        if (metadata.getScriptUrl() != null) {
+            tabs.add("Script", buildScriptPane());
+        }
+        if (metadata.getCodeUrl() != null) {
+            tabs.add("Code", buildCodePane());
+        }
         return tabs;
     }
 
