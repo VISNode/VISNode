@@ -3,7 +3,7 @@ package visnode.challenge;
 /**
  * Challenge value type
  */
-public enum ChallengeValueType {
+public enum MissionValueType {
 
     IMAGE,
     TEXT;

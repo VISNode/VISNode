@@ -37,7 +37,7 @@ import visnode.gui.UIHelper;
 /**
  * New mission panel
  */
-public class MissionChallengeFormPanel extends JPanel {
+public class ChallengeMissionFormPanel extends JPanel {
 
     private static final int THUMBNAIL_SIZE = 100;
 
@@ -47,10 +47,10 @@ public class MissionChallengeFormPanel extends JPanel {
     private JButton parameterButton;
     /** Problem */
     private JButton problemButton;
-    /** Challenge */
-    private final Challenge challenge;
-    /** Challenge output */
-    private Challenge challengeOutput;
+    /** Mission */
+    private final Mission challenge;
+    /** Mission output */
+    private Mission missionOutput;
     /** Items panel */
     private JComponent panelItems;
     /** Items component */
@@ -61,8 +61,8 @@ public class MissionChallengeFormPanel extends JPanel {
     /**
      * Creates a mission
      */
-    private MissionChallengeFormPanel(Challenge challenge) {
-        this.challenge = challenge == null ? new Challenge() : challenge;
+    private ChallengeMissionFormPanel(Mission mission) {
+        this.challenge = mission == null ? new Mission() : mission;
         initGui();
         initEvents();
     }
@@ -70,15 +70,15 @@ public class MissionChallengeFormPanel extends JPanel {
     /**
      * Shows the dialog
      *
-     * @param challenge
-     * @return Challenge
+     * @param mission
+     * @return Mission
      */
-    public static Challenge showDialog(Challenge challenge) {
-        MissionChallengeFormPanel panel = new MissionChallengeFormPanel(challenge);
-        WindowFactory.modal().title("New challenge").create((container) -> {
+    public static Mission showDialog(Mission mission) {
+        ChallengeMissionFormPanel panel = new ChallengeMissionFormPanel(mission);
+        WindowFactory.modal().title("New mission").create((container) -> {
             container.add(panel);
         }).setVisible(true);
-        return panel.challengeOutput;
+        return panel.missionOutput;
     }
 
     /**
@@ -97,12 +97,12 @@ public class MissionChallengeFormPanel extends JPanel {
     private void initEvents() {
         parameterButton.addActionListener((ev) -> {
             WindowFactory.modal().title("Parâmetros").create((container) -> {
-                container.add(new ChallengeParameterPanel());
+                container.add(new MissionParameterPanel());
             }).setVisible(true);
             reloadItems();
         });
         problemButton.addActionListener((ev) -> {
-            ChallengeProblemPanel panel = new ChallengeProblemPanel();
+            MissionProblemPanel panel = new MissionProblemPanel();
             WindowFactory.modal().title("Problemas").create((container) -> {
                 container.add(panel);
             }).setVisible(true);
@@ -146,7 +146,7 @@ public class MissionChallengeFormPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Parameters are required");
                 return;
             }
-            challengeOutput = challenge;
+            missionOutput = challenge;
             SwingUtilities.getWindowAncestor(this).dispose();
         });
         button.setIcon(IconFactory.get().create("fa:check"));
@@ -278,7 +278,7 @@ public class MissionChallengeFormPanel extends JPanel {
      * @param file
      * @return JComponent
      */
-    private JComponent buildChallengesItem(ChallengeValue file) {
+    private JComponent buildChallengesItem(MissionValue file) {
         JButton delete = new JButton();
         delete.setIcon(IconFactory.get().create("fa:trash-o"));
         delete.addActionListener((ev) -> {
@@ -313,7 +313,7 @@ public class MissionChallengeFormPanel extends JPanel {
      *
      * @return ImageIcon
      */
-    private ImageIcon getIcon(ChallengeValue value) throws IOException {
+    private ImageIcon getIcon(MissionValue value) throws IOException {
         return new ImageIcon(
                 ImageScale.scale(value.getValueBufferedImage(), THUMBNAIL_SIZE)
         );
@@ -333,9 +333,9 @@ public class MissionChallengeFormPanel extends JPanel {
     }
 
     /**
-     * Challenge parameter panel
+     * Mission parameter panel
      */
-    private class ChallengeParameterPanel extends JComponent {
+    private class MissionParameterPanel extends JComponent {
 
         /** Input button */
         private JButton inputButton;
@@ -351,7 +351,7 @@ public class MissionChallengeFormPanel extends JPanel {
         /**
          * Creates a mission
          */
-        private ChallengeParameterPanel() {
+        private MissionParameterPanel() {
             initGui();
             initEvents();
         }
@@ -399,8 +399,8 @@ public class MissionChallengeFormPanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "Ouput is required");
                     return;
                 }
-                challenge.addInput(new ChallengeValue(inputFile));
-                challenge.addOutput(buildChallengeValue());
+                challenge.addInput(new MissionValue(inputFile));
+                challenge.addOutput(buildMissionValue());
                 SwingUtilities.getWindowAncestor(this).dispose();
             });
             button.setIcon(IconFactory.get().create("fa:check"));
@@ -409,18 +409,18 @@ public class MissionChallengeFormPanel extends JPanel {
         }
 
         /**
-         * builds the challenge value
+         * builds the mission value
          *
-         * @return ChallengeValue
+         * @return MissionValue
          */
-        private ChallengeValue buildChallengeValue() {
+        private MissionValue buildMissionValue() {
             if (!outputText.getText().isEmpty()) {
-                return new ChallengeValue(
-                        ChallengeValueType.TEXT,
+                return new MissionValue(
+                        MissionValueType.TEXT,
                         outputText.getText()
                 );
             }
-            return new ChallengeValue(outputFile);
+            return new MissionValue(outputFile);
         }
 
         /**
@@ -487,14 +487,14 @@ public class MissionChallengeFormPanel extends JPanel {
     }
 
     /**
-     * Challenge parameter panel
+     * Mission parameter panel
      */
-    private class ChallengeProblemPanel extends JComponent {
+    private class MissionProblemPanel extends JComponent {
 
         /** The code editor */
         private CodeEditor textArea;
 
-        public ChallengeProblemPanel() {
+        public MissionProblemPanel() {
             super();
             initGui();
         }

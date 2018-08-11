@@ -27,7 +27,7 @@ import visnode.user.User;
 /**
  * The challenge user panel
  */
-public class ChallengeUserPanel extends JPanel {
+public class MissionUserPanel extends JPanel {
 
     /** Thumbnail size */
     private static final int THUMBNAIL_SIZE = 64;
@@ -35,7 +35,7 @@ public class ChallengeUserPanel extends JPanel {
     /**
      * Creates a new mission list panel
      */
-    private ChallengeUserPanel() {
+    private MissionUserPanel() {
         super();
         initGui();
     }
@@ -47,7 +47,7 @@ public class ChallengeUserPanel extends JPanel {
         Messages.get().message("user").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new ChallengeUserPanel());
+                container.add(new MissionUserPanel());
             }).setVisible(true);
         });
     }
@@ -109,8 +109,8 @@ public class ChallengeUserPanel extends JPanel {
             solve.setText(msg);
         });
         solve.addActionListener((ev) -> {
-            SwingUtilities.getWindowAncestor(ChallengeUserPanel.this).dispose();
-            ChallengeUserChallengePanel.showDialog(user);
+            SwingUtilities.getWindowAncestor(MissionUserPanel.this).dispose();
+            MissionUserChallengePanel.showDialog(user);
         });
         // Buttons
         JPanel buttonsPanel = new JPanel();

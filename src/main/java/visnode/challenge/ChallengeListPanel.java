@@ -16,16 +16,16 @@ import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.repository.ChallengeUserRepository;
-import visnode.repository.MissionRepository;
 import visnode.repository.MissionUserRepository;
+import visnode.repository.ChallengeRepository;
+import visnode.repository.ChallengeUserRepository;
 import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
- * The mission list panel
+ * The challenge list panel
  */
-public class MissionListPanel extends JPanel {
+public class ChallengeListPanel extends JPanel {
 
     /** Items container */
     private JComponent containerItems;
@@ -35,7 +35,7 @@ public class MissionListPanel extends JPanel {
     /**
      * Creates a new mission list panel
      */
-    private MissionListPanel() {
+    private ChallengeListPanel() {
         super();
         initGui();
     }
@@ -47,7 +47,7 @@ public class MissionListPanel extends JPanel {
         Messages.get().message("challenge.mission").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new MissionListPanel());
+                container.add(new ChallengeListPanel());
             }).setVisible(true);
         });
     }
@@ -97,7 +97,7 @@ public class MissionListPanel extends JPanel {
             button.setText(msg);
         });
         button.addActionListener((ev) -> {
-            MissionFormPanel.showDialog();
+            ChallengeFormPanel.showDialog();
             reloadItems();
         });
         JComponent component = new JPanel();
@@ -116,7 +116,7 @@ public class MissionListPanel extends JPanel {
         try {
             JPanel list = new JPanel();
             list.setLayout(new GridLayout(0, 1));
-            MissionRepository.get().getAll().forEach((mission) -> {
+            ChallengeRepository.get().getAll().forEach((mission) -> {
                 list.add(buildListItem(mission));
             });
             panelItems = new JPanel();
@@ -134,21 +134,21 @@ public class MissionListPanel extends JPanel {
      *
      * @return JComponent
      */
-    private JComponent buildListItem(Mission mission) {
+    private JComponent buildListItem(Challenge challenge) {
         // Title label
         JLabel label = new JLabel();
-        label.setText(mission.getName());
+        label.setText(challenge.getName());
         label.setFont(new Font("Segoe UI", Font.BOLD, 18));
         // Description label
-        JLabel description = new JLabel(mission.getDescription());
+        JLabel description = new JLabel(challenge.getDescription());
         description.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         description.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // MaxScore
-        JLabel maxScore = new JLabel("Max Score: " + mission.getXp());
+        JLabel maxScore = new JLabel("Max Score: " + challenge.getXp());
         maxScore.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         maxScore.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // Challenges
-        JLabel challenges = new JLabel(getChallenges(mission) + "/" + mission.getLevel());
+        JLabel challenges = new JLabel(getChallenges(challenge) + "/" + challenge.getLevel());
         challenges.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         challenges.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // Description panel
@@ -165,8 +165,8 @@ public class MissionListPanel extends JPanel {
             solve.setText(msg);
         });
         solve.addActionListener((ev) -> {
-            SwingUtilities.getWindowAncestor(MissionListPanel.this).dispose();
-            ChallengesPanel.showDialog(mission);
+            SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
+            MissionsPanel.showDialog(challenge);
         });
         JButton solutions = new JButton();
         Messages.get().message("challenge.solutions").subscribe((msg) -> {
@@ -174,8 +174,8 @@ public class MissionListPanel extends JPanel {
             solutions.setText(msg);
         });
         solutions.addActionListener((ev) -> {
-            SwingUtilities.getWindowAncestor(MissionListPanel.this).dispose();
-            MissionSolvedListPanel.showDialog(mission);
+            SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
+            ChallengeSolvedListPanel.showDialog(challenge);
         });
         JButton update = new JButton();
         Messages.get().message("challenge.update").subscribe((msg) -> {
@@ -183,14 +183,14 @@ public class MissionListPanel extends JPanel {
             update.setText(msg);
         });
         update.addActionListener((ev) -> {
-            MissionFormPanel.showDialog(mission);
+            ChallengeFormPanel.showDialog(challenge);
             reloadItems();
         });
         // Buttons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
         buttonsPanel.add(solve, BorderLayout.NORTH);
-        if (solved(mission)) {
+        if (solved(challenge)) {
             buttonsPanel.add(solutions, BorderLayout.SOUTH);
         }
         JPanel actions = new JPanel();
@@ -219,9 +219,9 @@ public class MissionListPanel extends JPanel {
      * @param mission
      * @return int
      */
-    private int getChallenges(Mission mission) {
+    private int getChallenges(Challenge mission) {
         try {
-            int amount = ChallengeUserRepository.get().
+            int amount = MissionUserRepository.get().
                     get(UserController.get().getUser(), mission).
                     size();
             if (amount > mission.getLevel()) {
@@ -240,9 +240,9 @@ public class MissionListPanel extends JPanel {
      * @param value
      * @return boolean
      */
-    private boolean solved(Mission value) {
+    private boolean solved(Challenge value) {
         try {
-            return MissionUserRepository.get().
+            return ChallengeUserRepository.get().
                     has(UserController.get().getUser(), value);
         } catch (RepositoryException ex) {
             ExceptionHandler.get().handle(ex);

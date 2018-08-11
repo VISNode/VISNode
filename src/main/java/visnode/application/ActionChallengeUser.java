@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import static javax.swing.Action.SMALL_ICON;
-import visnode.challenge.ChallengeUserPanel;
+import visnode.challenge.MissionUserPanel;
 import visnode.gui.IconFactory;
 
 /**
@@ -25,7 +25,7 @@ public class ActionChallengeUser extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ChallengeUserPanel.showDialog();
+        MissionUserPanel.showDialog();
     }
 
 }

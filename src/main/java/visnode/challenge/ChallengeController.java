@@ -1,6 +1,6 @@
 package visnode.challenge;
 
-import visnode.repository.ChallengeUserRepository;
+import visnode.repository.MissionUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
 import java.util.Date;
@@ -12,17 +12,17 @@ import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
- * The challenge scope
+ * The mission scope
  */
 public class ChallengeController {
 
     /** The scope instance */
     private static ChallengeController instance;
-    /** The challenge data */
-    private Challenge challenge;
-    /** Has challenge */
+    /** The mission data */
+    private Mission mission;
+    /** Has mission */
     private final BehaviorSubject<Boolean> has;
-    /** The challenge run */
+    /** The mission run */
     private final ChallengeComparator comparator;
     /** Initial date */
     private Date dateInitial;
@@ -36,49 +36,49 @@ public class ChallengeController {
     }
 
     /**
-     * Returns true if had a challenge
+     * Returns true if had a mission
      *
      * @return Observable
      */
-    public Observable<Boolean> hasChallenge() {
+    public Observable<Boolean> hasMission() {
         return has;
     }
 
     /**
-     * Starts a challenge
+     * Starts a mission
      *
-     * @param challenge
+     * @param mission
      */
-    public void start(Challenge challenge) {
-        this.challenge = challenge;
+    public void start(Mission mission) {
+        this.mission = mission;
         this.dateInitial = new Date();
         has.onNext(Boolean.TRUE);
     }
 
     /**
-     * Execute the challenge comparation
+     * Execute the mission comparation
      *
      * @return boolean
      */
     public CompletableFuture<Boolean> comparate() {
         CompletableFuture<Boolean> future = new CompletableFuture();
-        ChallengeUser challengeUser = ChallengeUserBuilder.create().
+        MissionUser missionUser = MissionUserBuilder.create().
                 user(UserController.get().getUser()).
-                challenge(getChallenge()).
+                challenge(getMission()).
                 submission(VISNode.get().getModel().getNetwork()).
                 dateInitial(dateInitial).
                 dateFinal(new Date()).
                 build();
-        comparator.comparate(challenge, challengeUser).thenAccept((accepted) -> {
+        comparator.comparate(mission, missionUser).thenAccept((accepted) -> {
             try {
                 if (!accepted) {
-                    challengeUser.setStatusError();
-                    ChallengeUserRepository.get().put(challengeUser);
+                    missionUser.setStatusError();
+                    MissionUserRepository.get().put(missionUser);
                     future.complete(false);
                     return;
                 }
-                challengeUser.setStatusSuccess();
-                ChallengeUserRepository.get().put(challengeUser);
+                missionUser.setStatusSuccess();
+                MissionUserRepository.get().put(missionUser);
                 future.complete(true);
             } catch (RepositoryException ex) {
                 Logger.getLogger(ChallengeController.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,21 +89,21 @@ public class ChallengeController {
     }
 
     /**
-     * Ends a challenge
+     * Ends a mission
      *
      */
     public void end() {
-        this.challenge = null;
+        this.mission = null;
         has.onNext(Boolean.FALSE);
     }
 
     /**
-     * Returns the challenge
+     * Returns the mission
      *
-     * @return Challenge
+     * @return Mission
      */
-    public Challenge getChallenge() {
-        return challenge;
+    public Mission getMission() {
+        return mission;
     }
 
     /**

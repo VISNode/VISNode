@@ -18,15 +18,15 @@ import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.repository.MissionRepository;
-import visnode.repository.MissionUserRepository;
+import visnode.repository.ChallengeRepository;
+import visnode.repository.ChallengeUserRepository;
 import visnode.repository.RepositoryException;
 import visnode.user.User;
 
 /**
  * The challenge user panel
  */
-public class ChallengeUserChallengePanel extends JPanel {
+public class MissionUserChallengePanel extends JPanel {
 
     /** User */
     private final User user;
@@ -36,7 +36,7 @@ public class ChallengeUserChallengePanel extends JPanel {
      *
      * @param user
      */
-    private ChallengeUserChallengePanel(User user) {
+    private MissionUserChallengePanel(User user) {
         super();
         this.user = user;
         initGui();
@@ -51,7 +51,7 @@ public class ChallengeUserChallengePanel extends JPanel {
         Messages.get().message("user").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new ChallengeUserChallengePanel(user));
+                container.add(new MissionUserChallengePanel(user));
             }).setVisible(true);
         });
     }
@@ -86,9 +86,9 @@ public class ChallengeUserChallengePanel extends JPanel {
         try {
             JPanel list = new JPanel();
             list.setLayout(new GridLayout(0, 1));
-            MissionUserRepository.get().get(user).forEach((missionUser) -> {
+            ChallengeUserRepository.get().get(user).forEach((missionUser) -> {
                 try {
-                    list.add(buildListItem(missionUser, MissionRepository.get().get(missionUser.getIdMission())));
+                    list.add(buildListItem(missionUser, ChallengeRepository.get().get(missionUser.getIdChallenge())));
                 } catch (RepositoryException ex) {
                     ExceptionHandler.get().handle(ex);
                 }
@@ -108,7 +108,7 @@ public class ChallengeUserChallengePanel extends JPanel {
      *
      * @return JComponent
      */
-    private JComponent buildListItem(MissionUser missionUser, Mission mission) {
+    private JComponent buildListItem(ChallengeUser missionUser, Challenge mission) {
         // Solve challenge
         JButton open = new JButton();
         Messages.get().message("open").subscribe((msg) -> {
@@ -116,7 +116,7 @@ public class ChallengeUserChallengePanel extends JPanel {
             open.setText(msg);
         });
         open.addActionListener((ev) -> {
-            SwingUtilities.getWindowAncestor(ChallengeUserChallengePanel.this).dispose();
+            SwingUtilities.getWindowAncestor(MissionUserChallengePanel.this).dispose();
             VISNode.get().getController().open(missionUser.getSubmission());
         });
         // Buttons

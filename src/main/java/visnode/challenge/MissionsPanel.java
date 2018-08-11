@@ -19,39 +19,39 @@ import visnode.commons.MultiFileInput;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.repository.ChallengeUserRepository;
+import visnode.repository.MissionUserRepository;
 import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
 /**
  * The challenge list panel
  */
-public class ChallengesPanel extends JPanel {
+public class MissionsPanel extends JPanel {
 
     /** The mission identifier */
-    private final Mission mission;
+    private final Challenge challenge;
 
     /**
      * Creates a new challenge list panel
      *
-     * @param mission
+     * @param challenge
      */
-    private ChallengesPanel(Mission mission) {
+    private MissionsPanel(Challenge challenge) {
         super();
-        this.mission = mission;
+        this.challenge = challenge;
         initGui();
     }
 
     /**
      * Shows the dialog
      *
-     * @param mission
+     * @param challenge
      */
-    public static void showDialog(Mission mission) {
+    public static void showDialog(Challenge challenge) {
         Messages.get().message("challenge").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new ChallengesPanel(mission));
+                container.add(new MissionsPanel(challenge));
             }).setVisible(true);
         });
     }
@@ -74,8 +74,8 @@ public class ChallengesPanel extends JPanel {
         JPanel container = new JPanel();
         JPanel list = new JPanel();
         list.setLayout(new GridLayout(0, 1));
-        mission.getChallenges().forEach((challenge) -> {
-            list.add(buildListItem(challenge));
+        challenge.getMissions().forEach((mission) -> {
+            list.add(buildListItem(mission));
         });
         container.setLayout(new BorderLayout());
         container.add(list, BorderLayout.NORTH);
@@ -87,13 +87,13 @@ public class ChallengesPanel extends JPanel {
      *
      * @return JComponent
      */
-    private JComponent buildListItem(Challenge challenge) {
+    private JComponent buildListItem(Mission mission) {
         // Title label
         JLabel label = new JLabel();
-        label.setText("Level: " + challenge.getLevel());
+        label.setText("Level: " + mission.getLevel());
         label.setFont(new Font("Segoe UI", Font.BOLD, 18));
         // MaxScore
-        JLabel maxScore = new JLabel("Max Score: " + challenge.getXp());
+        JLabel maxScore = new JLabel("Max Score: " + mission.getXp());
         maxScore.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         maxScore.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         // Description panel
@@ -107,13 +107,13 @@ public class ChallengesPanel extends JPanel {
             solve.setText(msg);
         });
         solve.addActionListener((ev) -> {
-            SwingUtilities.getWindowAncestor(ChallengesPanel.this).dispose();
-            start(challenge);
+            SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
+            start(mission);
         });
         // Bottons
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
-        if (!solved(challenge)) {
+        if (!solved(mission)) {
             buttonsPanel.add(solve, BorderLayout.NORTH);
         }
         // Builds the component
@@ -131,17 +131,16 @@ public class ChallengesPanel extends JPanel {
     /**
      * Starts the challenge
      *
-     * @param challenge
+     * @param mission
      */
-    private void start(Challenge challenge) {
+    private void start(Mission mission) {
         VISNode.get().getController().createNew();
-        if (!challenge.isFirtLevel()) {
+        if (!mission.isFirtLevel()) {
             try {
-                VISNode.get().getController().open(
-                        ChallengeUserRepository.get().
+                VISNode.get().getController().open(MissionUserRepository.get().
                                 get(UserController.get().getUser(),
-                                        challenge.getMission(),
-                                        challenge.getLevel() - 1).
+                                        mission.getChallenge(),
+                                        mission.getLevel() - 1).
                                 get(0).
                                 getSubmission()
                 );
@@ -149,10 +148,10 @@ public class ChallengesPanel extends JPanel {
                 ExceptionHandler.get().handle(ex);
             }
         }
-        ChallengeController.get().start(challenge);
-        File[] files = challenge.getInputFiles().stream().map((file) -> {
+        ChallengeController.get().start(mission);
+        File[] files = mission.getInputFiles().stream().map((file) -> {
             return file;
-        }).collect(Collectors.toList()).toArray(new File[challenge.getInput().size()]);
+        }).collect(Collectors.toList()).toArray(new File[mission.getInput().size()]);
         VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(files));
         ChallengeProblemPanel.showDialog();
     }
@@ -163,9 +162,9 @@ public class ChallengesPanel extends JPanel {
      * @param value
      * @return boolean
      */
-    private boolean solved(Challenge value) {
+    private boolean solved(Mission value) {
         try {
-            return ChallengeUserRepository.get().
+            return MissionUserRepository.get().
                     has(UserController.get().getUser(), value);
         } catch (RepositoryException ex) {
             ExceptionHandler.get().handle(ex);

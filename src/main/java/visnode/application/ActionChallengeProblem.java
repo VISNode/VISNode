@@ -20,7 +20,7 @@ public class ActionChallengeProblem extends AbstractAction {
         Messages.get().message("challenge.problem").subscribe((msg) -> {
             putValue(NAME, msg);
         });
-        ChallengeController.get().hasChallenge().subscribe((has) -> {
+        ChallengeController.get().hasMission().subscribe((has) -> {
             setEnabled(has);
         });        
     }

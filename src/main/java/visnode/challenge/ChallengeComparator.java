@@ -31,7 +31,7 @@ public class ChallengeComparator {
      * @param challengeUser
      * @return boolean
      */
-    public CompletableFuture<Boolean> comparate(Challenge challenge, ChallengeUser challengeUser) {
+    public CompletableFuture<Boolean> comparate(Mission challenge, MissionUser challengeUser) {
         CompletableFuture<Boolean> future = new CompletableFuture();
         File[] files = challenge.getInputFiles().stream().map((file) -> {
             return file;
@@ -63,7 +63,7 @@ public class ChallengeComparator {
      * @param challengeUser
      * @return boolean
      */
-    private CompletableFuture<Boolean> comparate(File input, ChallengeValue challengeValue, ChallengeUser challengeUser) {
+    private CompletableFuture<Boolean> comparate(File input, MissionValue challengeValue, MissionUser challengeUser) {
         CompletableFuture<Boolean> future = new CompletableFuture();
         NodeNetwork nodeNetwork = parser.fromJson(challengeUser.getSubmission());
         nodeNetwork.getInputNode().getOutput("image").subscribe((it) -> {
@@ -92,7 +92,7 @@ public class ChallengeComparator {
      * @param output
      * @return boolean
      */
-    public boolean comparateImage(ChallengeValue challengeValue, DynamicValue<Object> output) {
+    public boolean comparateImage(MissionValue challengeValue, DynamicValue<Object> output) {
         if (!output.isImage()) {
             return false;
         }
@@ -118,7 +118,7 @@ public class ChallengeComparator {
      * @param output
      * @return boolean
      */
-    private boolean comprateObject(ChallengeValue challangeValue, DynamicValue output) {
+    private boolean comprateObject(MissionValue challangeValue, DynamicValue output) {
         return challangeValue.getValue().equals(String.valueOf(output.get()));
     }
 

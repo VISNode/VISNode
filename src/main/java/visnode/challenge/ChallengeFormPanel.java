@@ -19,28 +19,32 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
+import visnode.commons.swing.components.CodeEditor;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
-import visnode.repository.MissionRepository;
+import visnode.repository.ChallengeRepository;
 import visnode.repository.RepositoryException;
 
 /**
- * New mission panel
+ * New challenge panel
  */
-public class MissionFormPanel extends JPanel {
+public class ChallengeFormPanel extends JPanel {
 
     /** Name */
     private JTextField name;
     /** Description */
     private JTextArea description;
-    /** Add challenge button */
-    private JButton addChallenge;
-    /** Mission */
-    private final Mission mission;
+    /** Add mission button */
+    private JButton addMission;
+    /** Problem */
+    private JButton problemButton;
+    /** Challenge */
+    private final Challenge challenge;
     /** Panel items */
     private JComponent panelItems;
     /** Component items */
@@ -49,10 +53,10 @@ public class MissionFormPanel extends JPanel {
     private JComponent boxComponent;
 
     /**
-     * Creates a mission
+     * Creates a challenge
      */
-    private MissionFormPanel(Mission mission) {
-        this.mission = mission;
+    private ChallengeFormPanel(Challenge challenge) {
+        this.challenge = challenge;
         initGui();
         initEvents();
     }
@@ -61,17 +65,17 @@ public class MissionFormPanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
-        showDialog(new Mission());
+        showDialog(new Challenge());
     }
 
     /**
      * Shows the dialog
      *
-     * @param mission
+     * @param challenge
      */
-    public static void showDialog(Mission mission) {
-        WindowFactory.modal().title("New mission").create((container) -> {
-            container.add(new MissionFormPanel(mission));
+    public static void showDialog(Challenge challenge) {
+        WindowFactory.modal().title("New challenge").create((container) -> {
+            container.add(new ChallengeFormPanel(challenge));
         }).setVisible(true);
     }
 
@@ -89,14 +93,21 @@ public class MissionFormPanel extends JPanel {
      * Initializes the events
      */
     private void initEvents() {
-        addChallenge.addActionListener((ev) -> {
-            Challenge challenge = new Challenge();
-            challenge.setLevel(mission.size() + 1);
-            Challenge edited = MissionChallengeFormPanel.showDialog(challenge);
+        addMission.addActionListener((ev) -> {
+            Mission mission = new Mission();
+            mission.setLevel(challenge.size() + 1);
+            Mission edited = ChallengeMissionFormPanel.showDialog(mission);
             if (edited != null) {
-                mission.addChallange(challenge);
+                challenge.addMission(mission);
                 reloadItems();
             }
+        });
+        problemButton.addActionListener((ev) -> {
+            ChallengeProblemPanel panel = new ChallengeProblemPanel();
+            WindowFactory.modal().title("Problemas").create((container) -> {
+                container.add(panel);
+            }).setVisible(true);
+            challenge.setProblem(panel.getCode());
         });
     }
 
@@ -122,24 +133,24 @@ public class MissionFormPanel extends JPanel {
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         JButton button = Buttons.create("Create").onClick((ev) -> {
             try {
-                mission.setName(name.getText());
-                mission.setDescription(description.getText());
-                if (mission.getName().isEmpty()) {
+                challenge.setName(name.getText());
+                challenge.setDescription(description.getText());
+                if (challenge.getName().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Name is required");
                     return;
                 }
-                if (mission.getDescription().isEmpty()) {
+                if (challenge.getDescription().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Description is required");
                     return;
                 }
-                if (mission.getChallenges().isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Challenges are required");
+                if (challenge.getMissions().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Missions are required");
                     return;
                 }
-                if (mission.getId() == 0) {
-                    MissionRepository.get().save(mission);
+                if (challenge.getId() == 0) {
+                    ChallengeRepository.get().save(challenge);
                 } else {
-                    MissionRepository.get().update(mission);
+                    ChallengeRepository.get().update(challenge);
                 }
                 SwingUtilities.getWindowAncestor(this).dispose();
             } catch (RepositoryException ex) {
@@ -167,6 +178,7 @@ public class MissionFormPanel extends JPanel {
                 Labels.create().text(Messages.get().message("challenge.description")),
                 buildDescription())
         );
+        panel.add(buildProblem());
         JPanel container = new JPanel();
         container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         container.setLayout(new BorderLayout());
@@ -189,6 +201,20 @@ public class MissionFormPanel extends JPanel {
         panel.add(label, BorderLayout.NORTH);
         panel.add(component);
         panel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+        return panel;
+    }
+
+    /**
+     * Builds the problem
+     *
+     * @return JComponent
+     */
+    private JComponent buildProblem() {
+        problemButton = new JButton("Problema");
+        problemButton.setIcon(IconFactory.get().create("fa:font"));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(problemButton, BorderLayout.WEST);
         return panel;
     }
 
@@ -217,15 +243,15 @@ public class MissionFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildBoxChallengesContainer() {
-        addChallenge = new JButton();
+        addMission = new JButton();
         Messages.get().message("challenge.new").subscribe((msg) -> {
-            addChallenge.setText(msg);
-            addChallenge.setIcon(IconFactory.get().create("fa:plus"));
+            addMission.setText(msg);
+            addMission.setIcon(IconFactory.get().create("fa:plus"));
         });
         JPanel buttons = new JPanel();
         buttons.setLayout(new BorderLayout());
         buttons.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
-        buttons.add(addChallenge, BorderLayout.WEST);
+        buttons.add(addMission, BorderLayout.WEST);
         JComponent component = new JPanel();
         component.setLayout(new BorderLayout());
         component.add(buttons, BorderLayout.NORTH);
@@ -254,7 +280,7 @@ public class MissionFormPanel extends JPanel {
     private JComponent buildPanelItens() {
         panelItems = new JPanel();
         panelItems.setLayout(new GridLayout(0, 1));
-        mission.getChallenges().forEach((challenge) -> {
+        challenge.getMissions().forEach((challenge) -> {
             panelItems.add(buildChallengesItem(challenge));
         });
         return panelItems;
@@ -265,17 +291,17 @@ public class MissionFormPanel extends JPanel {
      *
      * @return JComponent
      */
-    private JComponent buildChallengesItem(Challenge challenge) {
+    private JComponent buildChallengesItem(Mission mission) {
         JButton delete = new JButton();
         delete.setIcon(IconFactory.get().create("fa:trash-o"));
         delete.addActionListener((ev) -> {
-            mission.removeChallenge(challenge);
+            challenge.removeMission(mission);
             reloadItems();
         });
         JButton edit = new JButton();
         edit.setIcon(IconFactory.get().create("fa:pencil"));
         edit.addActionListener((ev) -> {
-            MissionChallengeFormPanel.showDialog(challenge);
+            ChallengeMissionFormPanel.showDialog(mission);
         });
         JPanel buttons = new JPanel();
         buttons.setLayout(new FlowLayout());
@@ -285,7 +311,7 @@ public class MissionFormPanel extends JPanel {
         component.setLayout(new BorderLayout());
         component.setPreferredSize(new Dimension(0, 40));
         component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        component.add(new JLabel("Level: " + String.valueOf(challenge.getLevel())));
+        component.add(new JLabel("Level: " + String.valueOf(mission.getLevel())));
         component.add(buttons, BorderLayout.EAST);
         ListItemComponent itemComponent = new ListItemComponent();
         itemComponent.add(component);
@@ -299,7 +325,7 @@ public class MissionFormPanel extends JPanel {
      */
     private JComponent buildName() {
         name = new JTextField();
-        name.setText(mission.getName());
+        name.setText(challenge.getName());
         return name;
     }
 
@@ -310,8 +336,51 @@ public class MissionFormPanel extends JPanel {
      */
     private JComponent buildDescription() {
         description = new JTextArea(5, 20);
-        description.setText(mission.getDescription());
+        description.setText(challenge.getDescription());
         return new JScrollPane(description);
+    }
+
+    /**
+     * Challenge parameter panel
+     */
+    private class ChallengeProblemPanel extends JComponent {
+
+        /** The code editor */
+        private CodeEditor textArea;
+
+        public ChallengeProblemPanel() {
+            super();
+            initGui();
+        }
+
+        /**
+         * Initialize the interface
+         */
+        private void initGui() {
+            setLayout(new BorderLayout());
+            add(buildCodePane());
+        }
+
+        /**
+         * Builds the code pane
+         *
+         * @return JComponent
+         */
+        private JComponent buildCodePane() {
+            textArea = new CodeEditor(SyntaxConstants.SYNTAX_STYLE_MAKEFILE);
+            textArea.setText(challenge.getProblem());
+            return textArea;
+        }
+
+        /**
+         * Returns the code
+         *
+         * @return String
+         */
+        public String getCode() {
+            return textArea.getText();
+        }
+
     }
 
 }

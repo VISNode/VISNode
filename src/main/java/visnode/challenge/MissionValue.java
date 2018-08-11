@@ -8,10 +8,10 @@ import visnode.user.Base64Image;
 /**
  * Challenge value
  */
-public class ChallengeValue {
+public class MissionValue {
 
     /** Type */
-    private final ChallengeValueType type;
+    private final MissionValueType type;
     /** Value */
     private final String value;
     /** Base64 to image */
@@ -24,7 +24,7 @@ public class ChallengeValue {
      * @param type
      * @param value
      */
-    public ChallengeValue(ChallengeValueType type, String value) {
+    public MissionValue(MissionValueType type, String value) {
         this.type = type;
         this.value = value;
     }
@@ -34,8 +34,8 @@ public class ChallengeValue {
      *
      * @param value
      */
-    public ChallengeValue(File value) {
-        this.type = ChallengeValueType.IMAGE;
+    public MissionValue(File value) {
+        this.type = MissionValueType.IMAGE;
         this.value = getbBase64Image().toBase64(value);
     }
 
@@ -44,7 +44,7 @@ public class ChallengeValue {
      *
      * @return ChallengeType
      */
-    public ChallengeValueType getType() {
+    public MissionValueType getType() {
         return type;
     }
 
@@ -54,7 +54,7 @@ public class ChallengeValue {
      * @return boolean
      */
     public boolean isTypeImage() {
-        return type.equals(ChallengeValueType.IMAGE);
+        return type.equals(MissionValueType.IMAGE);
     }
 
     /**
@@ -103,7 +103,7 @@ public class ChallengeValue {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final ChallengeValue other = (ChallengeValue) obj;
+        final MissionValue other = (MissionValue) obj;
         if (!Objects.equals(this.value, other.value)) {
             return false;
         }

@@ -48,10 +48,10 @@ public class ChallengeProblemPanel extends JPanel {
      */
     private JComponent buildContainer() {
         MarkdownViewer viewer = new MarkdownViewer();
-        if (ChallengeController.get().getChallenge().isProblemUrl()) {
-            viewer.loadUrl(ChallengeController.get().getChallenge().getProblem());
+        if (ChallengeController.get().getMission().isProblemUrl()) {
+            viewer.loadUrl(ChallengeController.get().getMission().getProblem());
         } else {
-            viewer.load(ChallengeController.get().getChallenge().getProblem());
+            viewer.load(ChallengeController.get().getMission().getProblem());
         }
         return viewer;
     }

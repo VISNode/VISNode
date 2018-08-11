@@ -26,26 +26,26 @@ import visnode.commons.ImageScale;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.repository.MissionUserRepository;
+import visnode.repository.ChallengeUserRepository;
 import visnode.repository.RepositoryException;
 
 /**
  * The challenge solved list panel
  */
-public class MissionSolvedListPanel extends JPanel {
+public class ChallengeSolvedListPanel extends JPanel {
 
     /** Thumbnail size */
     private static final int THUMBNAIL_SIZE = 64;
 
-    /** Mission list */
-    private JList<MissionUser> list;
-    /** Mission */
-    private final Mission mission;
+    /** Challenge list */
+    private JList<ChallengeUser> list;
+    /** Challenge */
+    private final Challenge mission;
 
     /**
      * Creates a new challenge list panel
      */
-    private MissionSolvedListPanel(Mission mission) {
+    private ChallengeSolvedListPanel(Challenge mission) {
         super();
         this.mission = mission;
         initGui();
@@ -56,10 +56,10 @@ public class MissionSolvedListPanel extends JPanel {
      *
      * @param mission
      */
-    public static void showDialog(Mission mission) {
+    public static void showDialog(Challenge mission) {
         WindowFactory.modal().title("Soluções").create((container) -> {
             container.setBorder(null);
-            container.add(new MissionSolvedListPanel(mission));
+            container.add(new ChallengeSolvedListPanel(mission));
         }).setVisible(true);
     }
 
@@ -83,31 +83,31 @@ public class MissionSolvedListPanel extends JPanel {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                SwingUtilities.getWindowAncestor(MissionSolvedListPanel.this).dispose();
-                MissionUser mission = list.getSelectedValue();
+                SwingUtilities.getWindowAncestor(ChallengeSolvedListPanel.this).dispose();
+                ChallengeUser mission = list.getSelectedValue();
                 VISNode.get().getController().open(mission.getSubmission());
             }
 
         });
         list.setCellRenderer(new CellRenderer());
-        DefaultListModel<MissionUser> model = new DefaultListModel();
+        DefaultListModel<ChallengeUser> model = new DefaultListModel();
         try {
-            MissionUserRepository.get().get(mission).stream().
+            ChallengeUserRepository.get().get(mission).stream().
                     sorted((a, b) -> b.getXp() - a.getXp()).
                     forEach((obj) -> {
                         model.addElement(obj);
                     });
         } catch (RepositoryException ex) {
-            Logger.getLogger(MissionSolvedListPanel.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChallengeSolvedListPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         list.setModel(model);
         return ScrollFactory.pane(list).create();
     }
 
-    private class CellRenderer implements ListCellRenderer<MissionUser> {
+    private class CellRenderer implements ListCellRenderer<ChallengeUser> {
 
         @Override
-        public Component getListCellRendererComponent(JList<? extends MissionUser> list, MissionUser value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends ChallengeUser> list, ChallengeUser value, int index, boolean isSelected, boolean cellHasFocus) {
             JPanel imagePanel = new JPanel();
             BufferedImage image = ImageScale.scale(value.getUser().getImageBuffered(), THUMBNAIL_SIZE);
             imagePanel.add(new JLabel(new ImageIcon(image)));
