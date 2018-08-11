@@ -2,7 +2,7 @@ package visnode.application;
 
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
-import visnode.challenge.ChallengeProblemPanel;
+import visnode.challenge.MissionProblemPanel;
 import visnode.challenge.ChallengeController;
 import visnode.gui.IconFactory;
 
@@ -27,6 +27,6 @@ public class ActionChallengeProblem extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        ChallengeProblemPanel.showDialog();
+        MissionProblemPanel.showDialog();
     }
 }

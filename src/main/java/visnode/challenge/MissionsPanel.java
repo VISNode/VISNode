@@ -4,19 +4,23 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.stream.Collectors;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import visnode.application.ExceptionHandler;
 import visnode.application.Messages;
 import visnode.application.VISNode;
 import visnode.commons.MultiFileInput;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
 import visnode.repository.MissionUserRepository;
@@ -48,12 +52,32 @@ public class MissionsPanel extends JPanel {
      * @param challenge
      */
     public static void showDialog(Challenge challenge) {
+        if (challenge.getMissions().isEmpty()) {
+            return;
+        }
+        Mission mission = challenge.getMissions().get(0);
+        if (!solved(mission)) {
+            openChallenge(challenge);
+        }
+        if (challenge.getMissions().size() == 1) {
+            start(mission);
+            return;
+        }
         Messages.get().message("challenge").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
                 container.add(new MissionsPanel(challenge));
             }).setVisible(true);
         });
+    }
+    
+    /**
+     * Open challenge problem
+     * 
+     * @param challenge 
+     */
+    private static void openChallenge(Challenge challenge) {
+        ChallengeProblemPanel.showDialog(challenge);
     }
 
     /**
@@ -62,7 +86,19 @@ public class MissionsPanel extends JPanel {
     private void initGui() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 500));
+        add(buildToolbar(), BorderLayout.NORTH);
         add(buildList());
+    }
+
+    /**
+     * Builds the tool bar
+     *
+     * @return
+     */
+    private JComponent buildToolbar() {
+        JToolBar toolbar = new JToolBar();
+        toolbar.add(new ActionOpenChallenge());
+        return toolbar;
     }
 
     /**
@@ -133,16 +169,16 @@ public class MissionsPanel extends JPanel {
      *
      * @param mission
      */
-    private void start(Mission mission) {
+    private static void start(Mission mission) {
         VISNode.get().getController().createNew();
         if (!mission.isFirtLevel()) {
             try {
                 VISNode.get().getController().open(MissionUserRepository.get().
-                                get(UserController.get().getUser(),
-                                        mission.getChallenge(),
-                                        mission.getLevel() - 1).
-                                get(0).
-                                getSubmission()
+                        get(UserController.get().getUser(),
+                                mission.getChallenge(),
+                                mission.getLevel() - 1).
+                        get(0).
+                        getSubmission()
                 );
             } catch (RepositoryException ex) {
                 ExceptionHandler.get().handle(ex);
@@ -153,7 +189,7 @@ public class MissionsPanel extends JPanel {
             return file;
         }).collect(Collectors.toList()).toArray(new File[mission.getInput().size()]);
         VISNode.get().getModel().getNetwork().setInput(new MultiFileInput(files));
-        ChallengeProblemPanel.showDialog();
+        MissionProblemPanel.showDialog();
     }
 
     /**
@@ -162,7 +198,7 @@ public class MissionsPanel extends JPanel {
      * @param value
      * @return boolean
      */
-    private boolean solved(Mission value) {
+    private static boolean solved(Mission value) {
         try {
             return MissionUserRepository.get().
                     has(UserController.get().getUser(), value);
@@ -170,6 +206,22 @@ public class MissionsPanel extends JPanel {
             ExceptionHandler.get().handle(ex);
         }
         return false;
+    }
+
+    /**
+     * Action for open the challenge
+     */
+    private class ActionOpenChallenge extends AbstractAction {
+
+        public ActionOpenChallenge() {
+            super("Challenge", IconFactory.get().create("fa:play"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            openChallenge(challenge);
+        }
+
     }
 
 }

@@ -11,31 +11,23 @@ import visnode.commons.swing.components.MarkdownViewer;
 /**
  * Challenge problem panel
  */
-public class ChallengeProblemPanel extends JPanel {
-
-    /** Challenge */
-    private final Challenge challenge;
+public class MissionProblemPanel extends JPanel {
 
     /**
      * Creates a new problem panel
-     *
-     * @param challenge
      */
-    private ChallengeProblemPanel(Challenge challenge) {
-        this.challenge = challenge;
+    private MissionProblemPanel() {
         initGui();
     }
 
     /**
      * Shows the dialog
-     *
-     * @param challenge
      */
-    public static void showDialog(Challenge challenge) {
+    public static void showDialog() {
         Messages.get().message("challenge").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new ChallengeProblemPanel(challenge));
+                container.add(new MissionProblemPanel());
             }).setVisible(true);
         });
     }
@@ -56,7 +48,11 @@ public class ChallengeProblemPanel extends JPanel {
      */
     private JComponent buildContainer() {
         MarkdownViewer viewer = new MarkdownViewer();
-        viewer.load(challenge.getProblem());
+        if (ChallengeController.get().getMission().isProblemUrl()) {
+            viewer.loadUrl(ChallengeController.get().getMission().getProblem());
+        } else {
+            viewer.load(ChallengeController.get().getMission().getProblem());
+        }
         return viewer;
     }
 
