@@ -45,7 +45,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         this.listeners = new ArrayList<>();
         initGui();
     }
-    
+
     /**
      * Initializes the interface
      */
@@ -56,16 +56,26 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
                 .icon(IconFactory.get().create("fa:picture-o"))
                 .hint("Select an image from the computer")
                 .focusable(false)
-                .onClick((e) -> setValue(new MultiFileInput())));
+                .onClick((e) -> {
+                    if (input != null) {
+                        input.stop();
+                    }
+                    setValue(new MultiFileInput());
+                }));
         panelTypes.put(Buttons.toggle()
                 .icon(IconFactory.get().create("fa:video-camera"))
                 .hint("Show webcam video")
                 .focusable(false)
-                .onClick((e) -> setValue(new WebcamInput())));
+                .onClick((e) -> {
+                    if (input != null) {
+                        input.stop();
+                    }
+                    setValue(new WebcamInput());
+                }));
         add(panelTypes, BorderLayout.NORTH);
         buildSpecificFields();
     }
-    
+
     /**
      * Builds the specific fields for the selected input method
      */
@@ -89,10 +99,10 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
             revalidate();
         });
     }
-    
+
     /**
      * Creates the editor for the MultiFile input
-     * 
+     *
      * @return Component
      */
     private Component buildMultiFile() {
@@ -125,10 +135,10 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         SwingUtilities.invokeLater(() -> updateMultifileFields((MultiFileInput) input));
         return panel;
     }
-    
+
     /**
      * Creates the image slider component
-     * 
+     *
      * @return JComponent
      */
     private JComponent buidSlider() {
@@ -148,7 +158,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         });
         return slider;
     }
-    
+
     /**
      * Update the value of the fields
      */
@@ -157,11 +167,11 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
             updateMultifileFields((MultiFileInput) input);
         }
     }
-    
+
     /**
      * Update the value for the MultiFile fields
-     * 
-     * @param multiFile 
+     *
+     * @param multiFile
      */
     private void updateMultifileFields(MultiFileInput multiFile) {
         if (slider == null || findId("multiFileName") == null) {
@@ -202,7 +212,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         }
         fireValueChanged();
     }
-    
+
     /**
      * Fires a value change event
      */

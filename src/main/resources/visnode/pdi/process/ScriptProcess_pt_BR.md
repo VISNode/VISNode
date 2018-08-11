@@ -7,7 +7,7 @@ Com este processo é possível realizar qualquer manipulação com qualquer tipo
 No exemplo abaixo é demonstrado um script para o cálculo da média de pixels de uma imagem
 
 ```javascript
-function(image) {
+function process(image) {
     var average = 0
     for (var c = 0; c < image.getChannelCount(); c++) {
         for (var x = 0; x < image.getWidth(); x++) {

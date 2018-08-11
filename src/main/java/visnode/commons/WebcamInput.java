@@ -26,5 +26,10 @@ public class WebcamInput implements ImageInput {
         });
         return subject;
     }
-    
+
+    @Override
+    public void stop() {
+        WebCamCapture.get().stop();
+    }
+
 }

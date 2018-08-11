@@ -26,6 +26,9 @@ public class WebCamCapture {
      * @param captureable
      */
     public void capture(Captureable captureable) {
+        if (isRunning()) {
+            return;
+        }
         stopCamera = false;
         if (Webcam.getWebcams().isEmpty()) {
             return;
