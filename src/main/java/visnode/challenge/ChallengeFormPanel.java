@@ -8,6 +8,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,7 +24,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import visnode.application.ExceptionHandler;
 import visnode.application.Messages;
+import visnode.commons.swing.FileChooserFactory;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
 import visnode.gui.IconFactory;
@@ -43,6 +49,8 @@ public class ChallengeFormPanel extends JPanel {
     private JButton addMission;
     /** Problem */
     private JButton problemButton;
+    /** Payment */
+    private JButton paymentButton;
     /** Challenge */
     private final Challenge challenge;
     /** Panel items */
@@ -109,6 +117,17 @@ public class ChallengeFormPanel extends JPanel {
             }).setVisible(true);
             challenge.setProblem(panel.getCode());
         });
+        paymentButton.addActionListener((ev) -> {
+            FileChooserFactory.openImage().accept((file) -> {
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write(ImageIO.read(file), "JPG", os);
+                    challenge.setPayment(Base64.getEncoder().encodeToString(os.toByteArray()));
+                } catch (IOException ioe) {
+                    ExceptionHandler.get().handle(ioe);
+                }
+            });
+        });
     }
 
     /**
@@ -147,6 +166,7 @@ public class ChallengeFormPanel extends JPanel {
                     JOptionPane.showMessageDialog(null, "Missions are required");
                     return;
                 }
+                challenge.setPuzzle(ChallengePuzzleFactory.create(challenge.getLevel()));
                 if (challenge.getId() == 0) {
                     ChallengeRepository.get().save(challenge);
                 } else {
@@ -179,6 +199,7 @@ public class ChallengeFormPanel extends JPanel {
                 buildDescription())
         );
         panel.add(buildProblem());
+        panel.add(buildPaymentButton());
         JPanel container = new JPanel();
         container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         container.setLayout(new BorderLayout());
@@ -215,6 +236,21 @@ public class ChallengeFormPanel extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(problemButton, BorderLayout.WEST);
+        return panel;
+    }
+
+    /**
+     * Builds the payment button
+     *
+     * @return JComponent
+     */
+    private JComponent buildPaymentButton() {
+        paymentButton = new JButton("Recompensa");
+        paymentButton.setIcon(IconFactory.get().create("fa:dollar"));
+        JPanel panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        panel.setLayout(new BorderLayout());
+        panel.add(paymentButton, BorderLayout.WEST);
         return panel;
     }
 

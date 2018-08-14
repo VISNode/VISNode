@@ -35,14 +35,14 @@ public class MissionUserBuilder {
     }
 
     /**
-     * Sets the challenge
+     * Sets the mission
      *
      * @param mission
      * @return MissionUserBuilder
      */
-    public MissionUserBuilder challenge(Mission mission) {
-        missionUser.setChallenge(mission.getId());
-        missionUser.setIdMission(mission.getChallenge().getId());
+    public MissionUserBuilder mission(Mission mission) {
+        missionUser.setChallenge(mission.getChallenge().getId());
+        missionUser.setIdMission(mission.getId());
         missionUser.setLevel(mission.getLevel());
         missionUser.setXp(calculator.calculate(missionUser.getUser(), mission));
         return this;

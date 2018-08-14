@@ -4,10 +4,11 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import static javax.swing.Action.SMALL_ICON;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import visnode.challenge.Mission;
 import visnode.challenge.ChallengeController;
+import visnode.challenge.ChallengeErrorMessagePanel;
+import visnode.challenge.ChallengeSuccessMessagePanel;
 import visnode.challenge.MissionsPanel;
 import visnode.commons.DynamicValue;
 import visnode.gui.IconFactory;
@@ -40,15 +41,15 @@ public class ActionChallengeRun extends AbstractAction {
         ChallengeController.get().comparate().thenAccept((accepted) -> {
             SwingUtilities.invokeLater(() -> {
                 if (accepted) {
-                    JOptionPane.showMessageDialog(null, "The output is correct! :)");
-                    Mission challenge = ChallengeController.get().getMission();
+                    Mission mission = ChallengeController.get().getMission();
+                    ChallengeSuccessMessagePanel.showDialog(mission);
                     ChallengeController.get().end();                   
                     VISNode.get().getController().createNew();
-                    if (challenge.getChallenge().getLevel() > challenge.getLevel()) {
-                        MissionsPanel.showDialog(challenge.getChallenge());
+                    if (mission.getChallenge().getLevel() > mission.getLevel()) {
+                        MissionsPanel.showDialog(mission.getChallenge());
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "The output is incorrect! :(");
+                    ChallengeErrorMessagePanel.showDialog();
                 }
             });
         });

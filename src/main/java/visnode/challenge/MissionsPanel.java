@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -34,6 +35,8 @@ public class MissionsPanel extends JPanel {
 
     /** The mission identifier */
     private final Challenge challenge;
+    /** Mission completed */
+    private int missionCompleted = 0;
 
     /**
      * Creates a new challenge list panel
@@ -70,11 +73,11 @@ public class MissionsPanel extends JPanel {
             }).setVisible(true);
         });
     }
-    
+
     /**
      * Open challenge problem
-     * 
-     * @param challenge 
+     *
+     * @param challenge
      */
     private static void openChallenge(Challenge challenge) {
         ChallengeProblemPanel.showDialog(challenge);
@@ -98,6 +101,7 @@ public class MissionsPanel extends JPanel {
     private JComponent buildToolbar() {
         JToolBar toolbar = new JToolBar();
         toolbar.add(new ActionOpenChallenge());
+        toolbar.add(new ActionOpenPayments());
         return toolbar;
     }
 
@@ -151,6 +155,11 @@ public class MissionsPanel extends JPanel {
         buttonsPanel.setLayout(new BorderLayout());
         if (!solved(mission)) {
             buttonsPanel.add(solve, BorderLayout.NORTH);
+        } else {
+            missionCompleted++;
+        }
+        if (mission.getLevel() > missionCompleted + 1) {
+            solve.setEnabled(false);
         }
         // Builds the component
         JPanel component = new JPanel();
@@ -171,18 +180,20 @@ public class MissionsPanel extends JPanel {
      */
     private static void start(Mission mission) {
         VISNode.get().getController().createNew();
-        if (!mission.isFirtLevel()) {
-            try {
-                VISNode.get().getController().open(MissionUserRepository.get().
-                        get(UserController.get().getUser(),
-                                mission.getChallenge(),
-                                mission.getLevel() - 1).
-                        get(0).
+        try {
+            List<MissionUser> missionUser = MissionUserRepository.get().
+                    get(UserController.get().getUser(),
+                            mission.getChallenge(),
+                            mission.getLevel());
+            if (!missionUser.isEmpty()) {
+                VISNode.get().getController().open(missionUser.
+                        get(missionUser.size() - 1).
                         getSubmission()
-                );
-            } catch (RepositoryException ex) {
-                ExceptionHandler.get().handle(ex);
+                );            
             }
+
+        } catch (RepositoryException ex) {
+            ExceptionHandler.get().handle(ex);
         }
         ChallengeController.get().start(mission);
         File[] files = mission.getInputFiles().stream().map((file) -> {
@@ -220,6 +231,22 @@ public class MissionsPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             openChallenge(challenge);
+        }
+
+    }
+
+    /**
+     * Action open payments
+     */
+    private class ActionOpenPayments extends AbstractAction {
+
+        public ActionOpenPayments() {
+            super("Paymant", IconFactory.get().create("fa:dollar"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ChallengePuzzlePane.showDialog(challenge, missionCompleted);
         }
 
     }
