@@ -35,6 +35,7 @@ import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
 import visnode.repository.ChallengeRepository;
 import visnode.repository.RepositoryException;
+import visnode.user.Base64Image;
 
 /**
  * New challenge panel
@@ -119,13 +120,8 @@ public class ChallengeFormPanel extends JPanel {
         });
         paymentButton.addActionListener((ev) -> {
             FileChooserFactory.openImage().accept((file) -> {
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                try {
-                    ImageIO.write(ImageIO.read(file), "JPG", os);
-                    challenge.setPayment(Base64.getEncoder().encodeToString(os.toByteArray()));
-                } catch (IOException ioe) {
-                    ExceptionHandler.get().handle(ioe);
-                }
+                Base64Image base64Image = new Base64Image();
+                challenge.setPayment(base64Image.toBase64(file));
             });
         });
     }

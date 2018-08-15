@@ -17,6 +17,8 @@ import visnode.executor.OutputNode;
  */
 public class ChallengeComparator {
 
+    /** Max image error */
+    private static final int MAX_ERROR = 1;
     /** Node network parser */
     private final NodeNetworkParser parser;
 
@@ -99,14 +101,18 @@ public class ChallengeComparator {
         Image base = ImageFactory.buildRGBImage(challengeValue.getValueBufferedImage());
         int[][][] expected = base.getData();
         int[][][] result = output.get(Image.class).getData();
+        int error = 0;
         for (int channel = 0; channel < expected.length; channel++) {
             for (int x = 0; x < expected[channel].length; x++) {
                 for (int y = 0; y < expected[channel][x].length; y++) {
-                    if (expected[channel][x][y] != result[channel][x][y]) {
-                        return false;
+                    if (Math.abs(expected[channel][x][y] - result[channel][x][y]) > 30) {
+                        error++;
                     }
                 }
             }
+        }
+        if (error > MAX_ERROR) {
+            return false;
         }
         return true;
     }

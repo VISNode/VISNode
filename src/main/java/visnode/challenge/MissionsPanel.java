@@ -241,7 +241,7 @@ public class MissionsPanel extends JPanel {
     private class ActionOpenPayments extends AbstractAction {
 
         public ActionOpenPayments() {
-            super("Paymant", IconFactory.get().create("fa:dollar"));
+            super("Paymant", IconFactory.get().create("fa:question"));
         }
 
         @Override
