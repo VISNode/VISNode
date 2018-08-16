@@ -196,7 +196,10 @@ public class ProcessNode implements Node, AttacherNode {
      */
     private Object getOutputValue(Process process, String attribute) {
         try {
-            return processOutput.get(attribute).invoke(process);
+            Method m = processOutput.get(attribute);
+            if (m != null && process != null) {
+                return m.invoke(process);
+            }
         } catch (Exception e) {
             ExceptionHandler.get().handle(e);
         }

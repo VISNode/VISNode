@@ -7,9 +7,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 
 /**
  * Challenge Puzzle Pane
@@ -50,6 +54,7 @@ public class ChallengePuzzlePane extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 500));
         add(buildPreferences());
+        add(buildButtons(), BorderLayout.SOUTH);
     }
 
     /**
@@ -58,7 +63,24 @@ public class ChallengePuzzlePane extends JPanel {
     private void initEvents() {
 
     }
-
+    
+    /**
+     * Build the buttons
+     * 
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton("Ir para o desafio", IconFactory.get().create("fa:forward"));
+        button.addActionListener((evt) -> {
+            SwingUtilities.getWindowAncestor(ChallengePuzzlePane.this).dispose();
+        });
+        JComponent panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setLayout(new BorderLayout());
+        panel.add(button, BorderLayout.EAST);
+        return panel;
+    }
+    
     /**
      * Builds the preferences panel
      *
@@ -68,7 +90,9 @@ public class ChallengePuzzlePane extends JPanel {
         if (!challenge.isPaymentAvailable()) {
             return new JPanel();
         }
-        return new Panel(challenge.getPuzzle(), challenge.getPaymentBuffered());
+        BufferedImage image = challenge.getPaymentBuffered();
+        setPreferredSize(new Dimension(image.getWidth(), image.getHeight() + 45));
+        return new Panel(challenge.getPuzzle(), image);
     }
 
     /**

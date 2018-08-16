@@ -79,6 +79,7 @@ public class MarkdownViewer extends JPanel {
     public void load(String buffer) {
         String asHtml = markdownToHtml(buffer);
         Platform.runLater(() -> {
+            System.out.println(asHtml);
             webView.getEngine().loadContent(asHtml);
         });
     }

@@ -4,18 +4,27 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 
 /**
- * Challenge error success
+ * Challenge message success
  */
 public class ChallengeSuccessMessagePanel extends JPanel {
 
+    /** Window width */
+    private static final int PAGE_WIDTH = 400;
     /** Mission */
     private final Mission mission;
 
@@ -44,11 +53,12 @@ public class ChallengeSuccessMessagePanel extends JPanel {
      */
     private void initGui() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(800, 500));
+        setPreferredSize(new Dimension(PAGE_WIDTH, 515));
         add(buildPreferences(), BorderLayout.NORTH);
         if (mission.getChallenge().isPaymentAvailable()) {
             add(new Panel(mission.getChallenge().getPuzzle(), mission.getChallenge().getPaymentBuffered()));
         }
+        add(buildButtons(), BorderLayout.SOUTH);
     }
 
     /**
@@ -59,12 +69,39 @@ public class ChallengeSuccessMessagePanel extends JPanel {
     }
 
     /**
+     * Build the buttons
+     *
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton("Voltar para o desafio", IconFactory.get().create("fa:forward"));
+        button.addActionListener((evt) -> {
+            SwingUtilities.getWindowAncestor(ChallengeSuccessMessagePanel.this).dispose();
+        });
+        JComponent panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setLayout(new BorderLayout());
+        panel.add(button, BorderLayout.EAST);
+        return panel;
+    }
+
+    /**
      * Builds the preferences panel
      *
      * @return JComponent
      */
     private JComponent buildPreferences() {
-        return new JLabel("The output is correct! :)");
+        JLabel icon = new JLabel(IconFactory.get().create("fa:smile-o", 110), SwingConstants.CENTER);
+        icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        JPanel text = new JPanel();
+        text.setLayout(new GridLayout(2, 1));
+        text.add(new JLabel("Parabens! Missão realizada com sucesso!", SwingConstants.CENTER));
+        text.add(new JLabel("Abaixo está sua recompensa por finalizar esta missão!", SwingConstants.CENTER));
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(icon, BorderLayout.NORTH);
+        panel.add(text);
+        return panel;
     }
 
     /**
@@ -85,9 +122,8 @@ public class ChallengeSuccessMessagePanel extends JPanel {
         @Override
         public void paint(Graphics g) {
             Graphics2D g2d = (Graphics2D) g;
-
             int posX;
-            int posY = 0;
+            int posY = 30;
             for (int y = 0; y < puzzle.getPieces()[0].length; y++) {
                 posX = 0;
                 int height = 0;
@@ -98,14 +134,13 @@ public class ChallengeSuccessMessagePanel extends JPanel {
                     }
                     int width = (int) Math.floor(piece.getWidth() * buff.getWidth());
                     height = (int) Math.floor(piece.getHeight() * buff.getHeight());
-
                     if (piece.getLabel() == mission.getLevel()) {
-                        Polygon p = ChallengePuzzleFactory.createPolygon(piece, width, height, 0, 0);
+                        int center = (PAGE_WIDTH / 2) - (width / 2);
+                        Polygon p = ChallengePuzzleFactory.createPolygon(piece, width, height, center, 30);
                         g2d.setClip(p);
                         g2d.drawImage(buff, -posX, -posY, this);
                         return;
                     }
-
                     posX += width;
                 }
                 posY += height;

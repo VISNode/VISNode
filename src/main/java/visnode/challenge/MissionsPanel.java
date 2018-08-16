@@ -225,7 +225,7 @@ public class MissionsPanel extends JPanel {
     private class ActionOpenChallenge extends AbstractAction {
 
         public ActionOpenChallenge() {
-            super("Challenge", IconFactory.get().create("fa:play"));
+            super("Challenge", IconFactory.get().create("fa:question"));
         }
 
         @Override
@@ -241,7 +241,7 @@ public class MissionsPanel extends JPanel {
     private class ActionOpenPayments extends AbstractAction {
 
         public ActionOpenPayments() {
-            super("Paymant", IconFactory.get().create("fa:question"));
+            super("Paymant", IconFactory.get().create("fa:dollar"));
         }
 
         @Override
