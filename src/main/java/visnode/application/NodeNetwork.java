@@ -65,10 +65,19 @@ public class NodeNetwork implements Model {
      * @return DynamicValue
      */
     public DynamicValue getOutput() {
-        OutputNode decorator = (OutputNode) nodes.get(getOutputIndex()).getDecorated();
+        OutputNode decorator = getOutputNode();
         return decorator.getValue();
     }
 
+    /**
+     * Returns the output node
+     * 
+     * @return 
+     */
+    public OutputNode getOutputNode() {
+        return (OutputNode) nodes.get(getOutputIndex()).getDecorated();
+    }
+    
     /**
      * Sets the input image
      *
@@ -78,6 +87,15 @@ public class NodeNetwork implements Model {
         nodes.get(getInputIndex()).getDecorated().setInput("file", image);
     }
 
+    /**
+     * Returns the input node
+     * 
+     * @return 
+     */
+    public ProcessNode getInputNode() {
+        return (ProcessNode) nodes.get(getInputIndex()).getDecorated();
+    }
+    
     /**
      * Finds the index of the input node
      *

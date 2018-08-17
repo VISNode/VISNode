@@ -1,10 +1,12 @@
 package visnode.application;
 
+import java.io.StringWriter;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import visnode.commons.ScriptValue;
+import visnode.gui.ScriptValueEditorLog;
 
 /**
  * Script runner
@@ -14,14 +16,14 @@ public class ScriptRunner {
     /** Script */
     private final ScriptValue script;
     /** Script invocable */
-    private Invocable inv;    
-    
+    private Invocable inv;
+
     public ScriptRunner(ScriptValue script) {
         this.script = script;
         buildInvocable();
     }
 
-     /**
+    /**
      * Returns true if there is a script
      *
      * @return boolean
@@ -29,8 +31,7 @@ public class ScriptRunner {
     private boolean hasScript() {
         return script != null && script.hasValue();
     }
-    
-    
+
     /**
      * Builds the script invocable
      */
@@ -47,18 +48,20 @@ public class ScriptRunner {
             ExceptionHandler.get().handle(e);
         }
     }
-    
-    
+
     public Object invokeFunction(String function, Object... values) {
         if (hasScript() && inv != null) {
             try {
-                return inv.invokeFunction(function, values);
+                StringWriter writer = new StringWriter();
+                ((ScriptEngine) inv).getContext().setWriter(writer);   
+                Object obj = inv.invokeFunction(function, values);
+                ScriptValueEditorLog.get().next(writer.toString());
+                return obj;
             } catch (NoSuchMethodException | ScriptException e) {
-                ExceptionHandler.get().handle(e);
+                ScriptValueEditorLog.get().next(e.getMessage());
             }
         }
         return null;
     }
-    
-    
+
 }

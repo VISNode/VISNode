@@ -1,24 +1,61 @@
 package visnode.user;
 
+import java.awt.image.BufferedImage;
+
 /**
  * The user
  */
 public class User {
 
+    private transient static final int ROLE_EDITOR = 1;
+    private transient static final int ROLE_VISITOR = 2;
+
+    /** User image */
+    private final transient UserImage userImage;
+    /** User id */
+    private long id;
     /** Email */
     private String email;
     /** Name */
     private String name;
     /** Password */
     private String password;
+    /** Points */
+    private int xp;
+    /** Institution */
+    private String institution;
+    /** Image */
+    private String image;
+    /** Role */
+    private int role;
 
     public User() {
+        this(null);
     }
-    
+
     public User(String name) {
         this.name = name;
+        this.userImage = new UserImage();
     }
-    
+
+    /**
+     * Returns the user id
+     *
+     * @return long
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * Sets the user id
+     *
+     * @param id
+     */
+    public void setId(long id) {
+        this.id = id;
+    }
+
     /**
      * Returns the email
      *
@@ -73,4 +110,84 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Returns the points
+     *
+     * @return int
+     */
+    public int getXp() {
+        return xp;
+    }
+
+    /**
+     * Sets the points
+     *
+     * @param xp
+     */
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    /**
+     * Returns the institution
+     *
+     * @return String
+     */
+    public String getInstitution() {
+        return institution;
+    }
+
+    /**
+     * Sets the institution
+     *
+     * @param institution
+     */
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    /**
+     * Returns the image
+     *
+     * @return String
+     */
+    public String getImage() {
+        return image;
+    }
+
+    /**
+     * Returns the image buffered
+     *
+     * @return BufferedImage
+     */
+    public BufferedImage getImageBuffered() {
+        return userImage.fromBase64(getImage());
+    }
+
+    /**
+     * Sets the image
+     *
+     * @param image
+     */
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    /**
+     * Sets the image buffered
+     *
+     * @param image
+     */
+    public void setImageBuffered(BufferedImage image) {
+        setImage(userImage.toBase64(image));
+    }
+
+    /**
+     * Returns true if the user is editor
+     *
+     * @return boolean
+     */
+    public boolean isUserEditor() {
+        return role == ROLE_EDITOR;
+    }
 }

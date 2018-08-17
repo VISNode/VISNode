@@ -31,9 +31,9 @@ public class ScriptProcess implements visnode.pdi.Process {
 
     @Override
     public void process() {
-        
-        
-        value = new DynamicValue(scriptRunner.invokeFunction("process", input));
+        if (input != null) {
+            value = new DynamicValue(scriptRunner.invokeFunction("process", input.get()));
+        }
     }
 
     @Output("value")

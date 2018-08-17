@@ -2,7 +2,11 @@ package visnode.user;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
-import visnode.ws.HttpException;
+import visnode.application.ExceptionHandler;
+import visnode.application.VISNode;
+import visnode.repository.RepositoryException;
+import visnode.repository.UserRepository;
+import visnode.ws.WebServiceException;
 import visnode.ws.WebService;
 
 /**
@@ -12,14 +16,16 @@ public class UserController {
 
     /** Instance */
     private static UserController intance;
+    /** User name */
+    private String userName;
     /** User */
-    private String user;
+    private User user;
     /** Has challenge */
     private final BehaviorSubject<Boolean> has;
 
     private UserController() {
-        has = BehaviorSubject.createDefault(Boolean.TRUE);
-        user = "jonata";
+        userName = VISNode.get().getModel().getUserPreferences().getUser();
+        has = BehaviorSubject.createDefault(userName != null);
     }
 
     /**
@@ -32,6 +38,17 @@ public class UserController {
     }
 
     /**
+     * Logout
+     */
+    public void logout() {
+        userName = null;
+        user = null;
+        VISNode.get().getModel().getUserPreferences().setUser(null);
+        VISNode.get().getModel().getUserPreferences().setUserToken(null);
+        has.onNext(Boolean.FALSE);
+    }
+    
+    /**
      * Executes the Login
      *
      * @param user
@@ -40,21 +57,39 @@ public class UserController {
      */
     public boolean login(String user, String password) {
         try {
-            WebService.get().login(user, password);
-            this.user = user;
+            String token = WebService.get().login(user, password);
+            this.userName = user;
+            VISNode.get().getModel().getUserPreferences().setUser(user);
+            VISNode.get().getModel().getUserPreferences().setUserToken(token);
             has.onNext(Boolean.TRUE);
             return true;
-        } catch (HttpException ex) {
+        } catch (WebServiceException ex) {
             return false;
         }
     }
 
     /**
-     * Returns the user
+     * Returns the user name
      *
      * @return String
      */
-    public String getUser() {
+    public String getUserName() {
+        return userName;
+    }
+    
+    /**
+     * Returns the user information
+     * 
+     * @return User
+     */
+    public User getUser() {
+        if (user == null) {
+            try {
+                user = UserRepository.get().get(userName);
+            } catch (RepositoryException ex) {
+                ExceptionHandler.get().handle(ex);
+            }
+        }
         return user;
     }
 

@@ -5,6 +5,7 @@ import io.reactivex.subjects.BehaviorSubject;
 import java.io.File;
 import java.util.Arrays;
 import org.paim.commons.Image;
+import org.paim.commons.ImageFactory;
 import visnode.application.ExceptionHandler;
 import visnode.application.InputReader;
 import visnode.pdi.process.ImageInput;
@@ -28,6 +29,10 @@ public class MultiFileInput implements ImageInput {
         this(new File[] {file}, 0);
     }
 
+    public MultiFileInput(File[] file) {
+        this(file, 0);
+    }
+
     public MultiFileInput(File[] file, int index) {
         this.file = file;
         this.index = index;
@@ -40,7 +45,7 @@ public class MultiFileInput implements ImageInput {
                 return BehaviorSubject.createDefault(new InputReader().read(getFile()));
             }
         } catch (Exception e) {
-            ExceptionHandler.get().handle(e);
+            return BehaviorSubject.createDefault(ImageFactory.buildEmptyImage());
         }
         return BehaviorSubject.create();
     }

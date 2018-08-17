@@ -1,5 +1,8 @@
 package visnode.challenge;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import visnode.user.User;
 
 /**
@@ -10,7 +13,9 @@ public class Challenge {
     /** Owner */
     private User owner;
     /** Id */
-    private int id;
+    private long id;
+    /** Mission */
+    private Mission mission;
     /** Name */
     private String name;
     /** Description */
@@ -18,11 +23,20 @@ public class Challenge {
     /** Difficulty */
     private ChallengeDifficulty difficulty;
     /** Input */
-    private String input;
+    private final List<String> input;
     /** Output */
-    private ChallengeValue output;
+    private final List<ChallengeValue> output;
     /** Problem */
     private String problem;
+    /** Point */
+    private int xp;
+    /** Level */
+    private int level;
+
+    public Challenge() {
+        this.input = new ArrayList<>();
+        this.output = new ArrayList<>();
+    }
 
     /**
      * Returns the owner
@@ -45,9 +59,9 @@ public class Challenge {
     /**
      * Returns the challenge id
      *
-     * @return int
+     * @return long
      */
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -56,8 +70,26 @@ public class Challenge {
      *
      * @param id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    /**
+     * Returns the mission id
+     *
+     * @return Mission
+     */
+    public Mission getMission() {
+        return mission;
+    }
+
+    /**
+     * Sets the mission
+     *
+     * @param mission
+     */
+    public void setMission(Mission mission) {
+        this.mission = mission;
     }
 
     /**
@@ -117,37 +149,37 @@ public class Challenge {
     /**
      * Returns the challenge input
      *
-     * @return String
+     * @return {@code List<String>}
      */
-    public String getInput() {
-        return input;
+    public List<String> getInput() {
+        return Collections.unmodifiableList(input);
     }
 
     /**
-     * Sets the challenge input
+     * Adds the challenge input
      *
      * @param input
      */
-    public void setInput(String input) {
-        this.input = input;
+    public void addInput(String input) {
+        this.input.add(input);
     }
 
     /**
      * Returns the challenge output
      *
-     * @return ChallengeValue
+     * @return {@code List<ChallengeValue>}
      */
-    public ChallengeValue getOutput() {
-        return output;
+    public List<ChallengeValue> getOutput() {
+        return Collections.unmodifiableList(output);
     }
 
     /**
-     * Sets the challenge output
+     * Adds a new challenge output
      *
      * @param output
      */
-    public void setOutput(ChallengeValue output) {
-        this.output = output;
+    public void addOutput(ChallengeValue output) {
+        this.output.add(output);
     }
 
     /**
@@ -166,6 +198,51 @@ public class Challenge {
      */
     public void setProblem(String problem) {
         this.problem = problem;
+    }
+
+    /**
+     * Returns the points
+     *
+     * @return int
+     */
+    public int getXp() {
+        return xp;
+    }
+
+    /**
+     * Sets the points
+     *
+     * @param xp
+     */
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    /**
+     * Returns the level
+     *
+     * @return int
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     * Returns true if is the first level
+     *
+     * @return boolean
+     */
+    public boolean isFirtLevel() {
+        return level == 1;
+    }
+
+    /**
+     * Sets the level
+     *
+     * @param level
+     */
+    public void setLevel(int level) {
+        this.level = level;
     }
 
 }

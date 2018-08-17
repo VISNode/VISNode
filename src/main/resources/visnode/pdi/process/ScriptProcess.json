@@ -4,6 +4,7 @@
     "description_en_US": "Script Process",
     "description_pt_BR": "Script Process",
     "author": "VISNode team",
+    "snippet": "function process(input) {\n    var obj = input.get()\n    return obj\n}",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ScriptProcess.md",
     "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/ScriptProcess.java"
 }

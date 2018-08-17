@@ -24,6 +24,7 @@ import visnode.gui.IntegerEditor;
 import visnode.gui.NotImplementedParameterComponent;
 import visnode.gui.ParameterComponent;
 import visnode.gui.PercentageEditor;
+import visnode.gui.ScriptValueEditorDocumentationFactory;
 import visnode.gui.ThresholdEditor;
 import visnode.pdi.process.ImageInput;
 
@@ -57,7 +58,9 @@ public class ParameterComponentFactory {
             return new InputEditor();
         }
         if (parameter.getType().equals(ScriptValue.class) && type == ConnectionType.INPUT) {
-            return new ScriptValueEditor();
+            return new ScriptValueEditor(
+                    ScriptValueEditorDocumentationFactory.create(node)
+            );
         }
         if (parameter.getType().equals(Double.class) && type == ConnectionType.INPUT) {
             if (parameter.hasAnnotation(Percentage.class)) {

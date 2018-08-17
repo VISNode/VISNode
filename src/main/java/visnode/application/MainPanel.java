@@ -41,6 +41,7 @@ public class MainPanel extends JPanel {
         add(toolbar, BorderLayout.NORTH);
         add(buildDummyInterface());
     }    
+    
     /**
      * Builds the network editor component
      * 

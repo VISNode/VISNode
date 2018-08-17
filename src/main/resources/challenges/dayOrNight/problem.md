@@ -1,7 +1,7 @@
 # Dia ou Noite
 
-Considerando uma imagem descubra se está de dia ou está de noite.
+Considerando uma imagem colorida, descubra se conteudo da imagem representa um dia ensolarado ou noite.
 
 #### Saída
-* __texto:__ 1 ou 2 (1-Dia, 2-Noite)
+* __texto:__ 1 ou 2 (1-Sol, 2-Noite)
 

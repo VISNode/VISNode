@@ -14,6 +14,8 @@ import visnode.pdi.Process;
  */
 public class ProcessMetadata {
 
+    /** Process */
+    private Class process;
     /** Name */
     private String name;
     /** Name en-US */
@@ -30,9 +32,15 @@ public class ProcessMetadata {
     private String helpUrl;
     /** Code URL */
     private String codeUrl;
+    /** Script URL */
+    private String scriptUrl;
+    /** Project URL */
+    private String projectUrl;
     /** Defaults */
     private final Map<String, String> defaults;
-
+    /** Snippet */
+    private String snippet;
+    
     public ProcessMetadata() {
         name = "";
         name_en_US = "";
@@ -64,6 +72,7 @@ public class ProcessMetadata {
         try {
             InputStream stream = ProcessMetadata.class.getResourceAsStream('/' + process.getName().replace('.', '/') + ".json");
             ProcessMetadata meta = new GsonBuilder().create().fromJson(new InputStreamReader(stream, Charset.forName("utf-8")), ProcessMetadata.class);
+            meta.process = process;
             meta.name = meta.name_en_US;
             meta.description = meta.description_en_US;
             if (locale.getLanguage().equals("pt")) {
@@ -75,12 +84,22 @@ public class ProcessMetadata {
             return meta;
         } catch (Exception e) {
             ProcessMetadata metadata = new ProcessMetadata();
+            metadata.process = process;
             String name = process.getSimpleName();
             name = name.replaceFirst("Process$", "");
             name = name.replaceAll("([a-z])([A-Z])", "$1 $2");
             metadata.name = name;
             return metadata;
         }
+    }
+    
+    /**
+     * Returns the process class
+     * 
+     * @return Class
+     */
+    public Class getProcess() {
+        return process;
     }
 
     /**
@@ -94,15 +113,15 @@ public class ProcessMetadata {
 
     /**
      * Returns true if the name contains a filter
-     * 
+     *
      * @param filter
      * @return boolean
      */
     public boolean containsName(String filter) {
-        return name_pt_BR.toLowerCase().contains(filter) ||
-                name_en_US.toLowerCase().contains(filter);
+        return name_pt_BR.toLowerCase().contains(filter)
+                || name_en_US.toLowerCase().contains(filter);
     }
-    
+
     /**
      * Returns the description
      *
@@ -111,16 +130,16 @@ public class ProcessMetadata {
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * Returns true if the description contains a filter
-     * 
+     *
      * @param filter
      * @return boolean
      */
     public boolean containsDescription(String filter) {
-        return description_pt_BR.toLowerCase().contains(filter) ||
-                description_pt_BR.toLowerCase().contains(filter);
+        return description_pt_BR.toLowerCase().contains(filter)
+                || description_pt_BR.toLowerCase().contains(filter);
     }
 
     /**
@@ -141,8 +160,40 @@ public class ProcessMetadata {
         return codeUrl;
     }
 
+    /**
+     * Returns the script URL
+     *
+     * @return String
+     */
+    public String getScriptUrl() {
+        return scriptUrl;
+    }
+
+    /**
+     * Returns the project URL
+     *
+     * @return String
+     */
+    public String getProjectUrl() {
+        return projectUrl;
+    }
+
+    /**
+     * Returns the defaults parameters
+     * 
+     * @param key
+     * @return String
+     */
     public String getDefault(String key) {
         return this.defaults.get(key);
     }
 
+    /**
+     * Returns the snippet
+     * 
+     * @return String
+     */
+    public String getSnippet() {
+        return snippet;
+    }
 }

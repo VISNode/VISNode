@@ -65,9 +65,6 @@ public class UserPreferencesPanel extends Panel implements VISNodeConstants {
     private JComponent buildButtons() {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        panel.add(Buttons.create("Ok").onClick((ev) -> {
-            SwingUtilities.getWindowAncestor(this).dispose();
-        }));
         panel.add(Buttons.create().text(Messages.get().message("apply")).onClick((ev) -> {
             String[] ln = ((String) language.getSelectedItem()).split("_");
             Locale locale = new Locale(ln[0], ln[1]);

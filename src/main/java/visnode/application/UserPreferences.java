@@ -34,6 +34,10 @@ public class UserPreferences {
     private transient BehaviorSubject<Theme> themeSubject;
     /** Theme */
     private Theme theme;
+    /** User */
+    private String user;
+    /** User token */
+    private String userToken;
 
     /**
      * Creates a new set of user preferences
@@ -179,6 +183,42 @@ public class UserPreferences {
     public void setTheme(Theme theme) {
         this.theme = theme;
         this.themeSubject.onNext(theme);
+    }
+
+    /**
+     * Returns the user
+     *
+     * @return String
+     */
+    public String getUser() {
+        return user;
+    }
+
+    /**
+     * Sets the user
+     *
+     * @param user
+     */
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    /**
+     * Returns the user token
+     *
+     * @return String
+     */
+    public String getUserToken() {
+        return userToken;
+    }
+
+    /**
+     * Sets the user token
+     *
+     * @param userToken
+     */
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 
 }

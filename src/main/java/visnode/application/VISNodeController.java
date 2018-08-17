@@ -110,7 +110,10 @@ public class VISNodeController {
                     sb.append(s);
                     s = br.readLine();
                 }
-                model.setNetwork(parser.fromJson(sb.toString()));
+                NodeNetwork network = parser.fromJson(sb.toString());
+                network.getOutputNode().execute().thenAccept((value) -> {
+                    model.setNetwork(network);
+                });
             }
             model.setLinkedFile(file);
             model.getUserPreferences().addRecentProject(file);
@@ -255,7 +258,10 @@ public class VISNodeController {
                 .stream()
                 .filter(view -> view.getModel().getDecorated() instanceof ProcessNode)
                 .map(view -> view.getModel())
-                .map(node -> new NodeCloner(node).fullClone().createEditNode())
+                .map(node -> new NodeCloner(node).
+                        cloneProcess().
+                        cloneInputs().
+                        createEditNode())
                 .collect(Collectors.toList()));
     }
 
