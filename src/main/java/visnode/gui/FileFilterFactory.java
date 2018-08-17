@@ -31,7 +31,7 @@ public class FileFilterFactory {
      */
     public static FileFilterList inputFileFilter() {
         return new FileFilterList(
-            byExtension("Input files", "jpg", "png", "gif", "dcm")
+            byExtension("Input files", "jpg", "png", "gif", "bmp", "dcm")
         );
     }
 
