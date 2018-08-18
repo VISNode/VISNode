@@ -12,13 +12,18 @@ import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
+import visnode.application.Messages;
 import visnode.commons.ImageScale;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
 import visnode.repository.RepositoryException;
@@ -62,8 +67,30 @@ public class ChallengeRankingPane extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 500));
         add(buildList());
+        add(buildButtons(), BorderLayout.SOUTH);
     }
 
+    /**
+     * Build the buttons
+     *
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton();
+        Messages.get().message("next").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:check"));
+        });
+        button.addActionListener((evt) -> {
+            SwingUtilities.getWindowAncestor(ChallengeRankingPane.this).dispose();
+        });
+        JComponent panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setLayout(new BorderLayout());
+        panel.add(button, BorderLayout.EAST);
+        return panel;
+    }    
+    
     /**
      * Creates the challenge list
      *
@@ -85,7 +112,9 @@ public class ChallengeRankingPane extends JPanel {
             Logger.getLogger(ChallengeRankingPane.class.getName()).log(Level.SEVERE, null, ex);
         }
         list.setModel(model);
-        return ScrollFactory.pane(list).create();
+        JScrollPane scrollPane = ScrollFactory.pane(list).create();
+        scrollPane.setBorder(null);
+        return scrollPane;
     }
 
     private class CellRenderer implements ListCellRenderer<User> {

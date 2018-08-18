@@ -18,16 +18,27 @@ public class ChallengePuzzleImagePane extends JPanel {
     private final BufferedImage buff;
     /** Mission completed */
     private final int missionCompleted;
+    /** Max width */
+    private final int maxWidth;
     
     public ChallengePuzzleImagePane(ChallengePuzzle puzzle, BufferedImage buff, int missionCompleted) {
+        this(puzzle, buff, missionCompleted, buff.getWidth());
+    }
+  
+    public ChallengePuzzleImagePane(ChallengePuzzle puzzle, BufferedImage buff, int missionCompleted, int maxWidth) {
         this.puzzle = puzzle;
         this.buff = buff;
         this.missionCompleted = missionCompleted;
+        this.maxWidth = maxWidth;
     }
 
     @Override
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
+        if (buff.getWidth() > maxWidth) {
+            float scale = (float) maxWidth / buff.getWidth();
+            g2d.scale(scale, scale);
+        }
         g2d.drawImage(buff, 0, 0, this);
         int posX;
         int posY = 0;

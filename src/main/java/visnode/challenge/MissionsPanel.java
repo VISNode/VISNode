@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import visnode.application.ExceptionHandler;
@@ -121,16 +123,22 @@ public class MissionsPanel extends JPanel {
         });
         container.setLayout(new BorderLayout());
         container.add(list, BorderLayout.NORTH);
-        return ScrollFactory.pane(container).create();
+        JScrollPane scrollPane = ScrollFactory.pane(container).create();
+        scrollPane.setBorder(null);
+        return scrollPane;
     }
 
     /**
      * Build the buttons
-     * 
+     *
      * @return JComponent
      */
     private JComponent buildButtons() {
-        JButton button = new JButton("Prosseguir", IconFactory.get().create("fa:check"));
+        JButton button = new JButton();
+        Messages.get().message("next").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:check"));
+        });
         button.addActionListener((evt) -> {
             SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
         });
@@ -140,13 +148,17 @@ public class MissionsPanel extends JPanel {
         panel.add(button, BorderLayout.EAST);
         return panel;
     }
-    
+
     /**
      * Creates the challenge list item
      *
      * @return JComponent
      */
     private JComponent buildListItem(Mission mission) {
+        boolean missionSolved = solved(mission);
+        if (missionSolved) {
+            missionCompleted++;
+        }
         // Title label
         JLabel label = new JLabel();
         label.setText("Level: " + mission.getLevel());
@@ -170,17 +182,33 @@ public class MissionsPanel extends JPanel {
             SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
             start(mission);
         });
-        // Bottons
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new BorderLayout());
-        if (!solved(mission)) {
-            buttonsPanel.add(solve, BorderLayout.NORTH);
-        } else {
-            missionCompleted++;
-        }
+        JButton solutions = new JButton();
+        Messages.get().message("challenge.solutions").subscribe((msg) -> {
+            solutions.setIcon(IconFactory.get().create("fa:clipboard"));
+            solutions.setText(msg);
+        });
+        solutions.addActionListener((ev) -> {
+            SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
+            ChallengeSolvedListPanel.showDialog(mission);
+        });
         if (mission.getLevel() > missionCompleted + 1) {
             solve.setEnabled(false);
         }
+        // Actions
+        GridLayout actionsLayout = new GridLayout(2, 1);
+        actionsLayout.setVgap(5);
+        JPanel actions = new JPanel();
+        actions.setLayout(actionsLayout);
+        if (!missionSolved) {
+            actions.add(solve);
+        }
+        if (missionSolved) {
+            actions.add(solutions);
+        }
+        // Buttons
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BorderLayout());
+        buttonsPanel.add(actions, BorderLayout.NORTH);
         // Builds the component
         JPanel component = new JPanel();
         component.setLayout(new BorderLayout());
@@ -209,7 +237,7 @@ public class MissionsPanel extends JPanel {
                 VISNode.get().getController().open(missionUser.
                         get(missionUser.size() - 1).
                         getSubmission()
-                );            
+                );
             }
 
         } catch (RepositoryException ex) {

@@ -170,15 +170,6 @@ public class ChallengeListPanel extends JPanel {
             SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
             MissionsPanel.showDialog(challenge);
         });
-        JButton solutions = new JButton();
-        Messages.get().message("challenge.solutions").subscribe((msg) -> {
-            solutions.setIcon(IconFactory.get().create("fa:clipboard"));
-            solutions.setText(msg);
-        });
-        solutions.addActionListener((ev) -> {
-            SwingUtilities.getWindowAncestor(ChallengeListPanel.this).dispose();
-            ChallengeSolvedListPanel.showDialog(challenge);
-        });
         JButton update = new JButton();
         Messages.get().message("challenge.update").subscribe((msg) -> {
             update.setIcon(IconFactory.get().create("fa:pencil"));
@@ -192,9 +183,6 @@ public class ChallengeListPanel extends JPanel {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
         buttonsPanel.add(solve, BorderLayout.NORTH);
-        if (solved(challenge)) {
-            buttonsPanel.add(solutions, BorderLayout.SOUTH);
-        }
         JPanel actions = new JPanel();
         actions.setLayout(new BorderLayout());
         actions.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));

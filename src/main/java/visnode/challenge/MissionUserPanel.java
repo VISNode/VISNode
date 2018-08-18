@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import visnode.application.ExceptionHandler;
 import visnode.application.Messages;
@@ -59,8 +60,30 @@ public class MissionUserPanel extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 500));
         add(buildList());
+        add(buildButtons(), BorderLayout.SOUTH);
     }
-
+    
+    /**
+     * Build the buttons
+     *
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton();
+        Messages.get().message("next").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:check"));
+        });
+        button.addActionListener((evt) -> {
+            SwingUtilities.getWindowAncestor(MissionUserPanel.this).dispose();
+        });
+        JComponent panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setLayout(new BorderLayout());
+        panel.add(button, BorderLayout.EAST);
+        return panel;
+    }  
+    
     /**
      * Creates the mission list
      *
@@ -70,7 +93,9 @@ public class MissionUserPanel extends JPanel {
         JComponent containerItems = new JPanel();
         containerItems.setLayout(new BorderLayout());
         containerItems.add(buildListComponent());
-        return ScrollFactory.pane(containerItems).create();
+        JScrollPane scrollPane = ScrollFactory.pane(containerItems).create();
+        scrollPane.setBorder(null);
+        return scrollPane;
     }
 
     /**
@@ -101,7 +126,6 @@ public class MissionUserPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildListItem(User user) {
-      
         // Solve challenge
         JButton solve = new JButton();
         Messages.get().message("challenge").subscribe((msg) -> {
@@ -112,10 +136,25 @@ public class MissionUserPanel extends JPanel {
             SwingUtilities.getWindowAncestor(MissionUserPanel.this).dispose();
             MissionUserChallengePanel.showDialog(user);
         });
+        // Conquests challenge
+        JButton conquest = new JButton();
+        Messages.get().message("challenge.conquest").subscribe((msg) -> {
+            conquest.setIcon(IconFactory.get().create("fa:dollar"));
+            conquest.setText(msg);
+        });
+        conquest.addActionListener((ev) -> {
+            ChallengeConquestPanel.showDialog(user);
+        });
         // Buttons
+        GridLayout buttonsActionsLayout = new GridLayout(2, 1);
+        buttonsActionsLayout.setVgap(5);
+        JPanel buttonsActions = new JPanel();
+        buttonsActions.setLayout(buttonsActionsLayout);
+        buttonsActions.add(solve);
+        buttonsActions.add(conquest);
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new BorderLayout());
-        buttonsPanel.add(solve, BorderLayout.NORTH);
+        buttonsPanel.add(buttonsActions, BorderLayout.NORTH);
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 5));
         // Image
         BufferedImage image = ImageScale.scale(user.getImageBuffered(), THUMBNAIL_SIZE);

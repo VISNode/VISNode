@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
 import visnode.application.ActionChallenge;
+import visnode.application.ActionChallengeConquest;
 import visnode.application.ActionChallengeProblem;
 import visnode.application.ActionChallengeRanking;
 import visnode.application.ActionChallengeRun;
@@ -26,6 +27,7 @@ public class ChallengeMenu {
         actions.add(new ActionChallengeRun());
         actions.add(new ActionChallengeProblem());
         actions.add(new ActionChallengeRanking());
+        actions.add(new ActionChallengeConquest());
         if (UserController.get().getUser().isUserEditor()) {
             actions.add(new ActionChallengeUser());
         }

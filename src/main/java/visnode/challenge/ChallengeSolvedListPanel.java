@@ -18,15 +18,17 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.application.VISNode;
 import visnode.commons.ImageScale;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
-import visnode.repository.ChallengeUserRepository;
+import visnode.repository.MissionUserRepository;
 import visnode.repository.RepositoryException;
 
 /**
@@ -38,14 +40,14 @@ public class ChallengeSolvedListPanel extends JPanel {
     private static final int THUMBNAIL_SIZE = 64;
 
     /** Challenge list */
-    private JList<ChallengeUser> list;
+    private JList<MissionUser> list;
     /** Challenge */
-    private final Challenge mission;
+    private final Mission mission;
 
     /**
      * Creates a new challenge list panel
      */
-    private ChallengeSolvedListPanel(Challenge mission) {
+    private ChallengeSolvedListPanel(Mission mission) {
         super();
         this.mission = mission;
         initGui();
@@ -56,7 +58,7 @@ public class ChallengeSolvedListPanel extends JPanel {
      *
      * @param mission
      */
-    public static void showDialog(Challenge mission) {
+    public static void showDialog(Mission mission) {
         WindowFactory.modal().title("Soluções").create((container) -> {
             container.setBorder(null);
             container.add(new ChallengeSolvedListPanel(mission));
@@ -70,6 +72,7 @@ public class ChallengeSolvedListPanel extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 500));
         add(buildList());
+        add(buildButtons(), BorderLayout.SOUTH);
     }
 
     /**
@@ -84,15 +87,15 @@ public class ChallengeSolvedListPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 SwingUtilities.getWindowAncestor(ChallengeSolvedListPanel.this).dispose();
-                ChallengeUser mission = list.getSelectedValue();
+                MissionUser mission = list.getSelectedValue();
                 VISNode.get().getController().open(mission.getSubmission());
             }
 
         });
         list.setCellRenderer(new CellRenderer());
-        DefaultListModel<ChallengeUser> model = new DefaultListModel();
+        DefaultListModel<MissionUser> model = new DefaultListModel();
         try {
-            ChallengeUserRepository.get().get(mission).stream().
+            MissionUserRepository.get().get(mission.getId()).stream().
                     sorted((a, b) -> b.getXp() - a.getXp()).
                     forEach((obj) -> {
                         model.addElement(obj);
@@ -101,13 +104,36 @@ public class ChallengeSolvedListPanel extends JPanel {
             Logger.getLogger(ChallengeSolvedListPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
         list.setModel(model);
-        return ScrollFactory.pane(list).create();
+        JScrollPane scrollPane = ScrollFactory.pane(list).create();
+        scrollPane.setBorder(null);
+        return scrollPane;
     }
-
-    private class CellRenderer implements ListCellRenderer<ChallengeUser> {
+    
+    /**
+     * Build the buttons
+     *
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton();
+        Messages.get().message("next").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:check"));
+        });
+        button.addActionListener((evt) -> {
+            SwingUtilities.getWindowAncestor(ChallengeSolvedListPanel.this).dispose();
+        });
+        JComponent panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setLayout(new BorderLayout());
+        panel.add(button, BorderLayout.EAST);
+        return panel;
+    }
+    
+    private class CellRenderer implements ListCellRenderer<MissionUser> {
 
         @Override
-        public Component getListCellRendererComponent(JList<? extends ChallengeUser> list, ChallengeUser value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<? extends MissionUser> list, MissionUser value, int index, boolean isSelected, boolean cellHasFocus) {
             JPanel imagePanel = new JPanel();
             BufferedImage image = ImageScale.scale(value.getUser().getImageBuffered(), THUMBNAIL_SIZE);
             imagePanel.add(new JLabel(new ImageIcon(image)));
@@ -126,6 +152,7 @@ public class ChallengeSolvedListPanel extends JPanel {
             JButton open = new JButton();
             Messages.get().message("open").subscribe((msg) -> {
                 open.setText(msg);
+                open.setIcon(IconFactory.get().create("fa:folder-open"));
             });
             buttons.add(open);
             // Builds the component

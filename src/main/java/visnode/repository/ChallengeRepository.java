@@ -46,7 +46,7 @@ public class ChallengeRepository {
      * @return Challenge
      * @throws RepositoryException
      */
-    public Challenge get(int idChallenge) throws RepositoryException {
+    public Challenge get(long idChallenge) throws RepositoryException {
         try {
             return WebService.get().
                     get("challenge",
