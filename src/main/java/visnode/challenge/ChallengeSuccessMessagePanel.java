@@ -2,19 +2,16 @@ package visnode.challenge;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import visnode.commons.ImageScale;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 
@@ -23,6 +20,8 @@ import visnode.gui.IconFactory;
  */
 public class ChallengeSuccessMessagePanel extends JPanel {
 
+    /** Image width */
+    private static final int IMAGE_WIDTH = 300;
     /** Window width */
     private static final int PAGE_WIDTH = 400;
     /** Mission */
@@ -56,9 +55,31 @@ public class ChallengeSuccessMessagePanel extends JPanel {
         setPreferredSize(new Dimension(PAGE_WIDTH, 515));
         add(buildPreferences(), BorderLayout.NORTH);
         if (mission.getChallenge().isPaymentAvailable()) {
-            add(new Panel(mission.getChallenge().getPuzzle(), mission.getChallenge().getPaymentBuffered()));
+            add(buildPayment());
         }
         add(buildButtons(), BorderLayout.SOUTH);
+    }
+
+    /**
+     * Builds the payment
+     * 
+     * @return JComponent
+     */
+    private JComponent buildPayment() {
+        BufferedImage image = ImageScale.scale(
+                mission.getChallenge().getPaymentBuffered(),
+                IMAGE_WIDTH
+        );
+        int left = (PAGE_WIDTH - image.getWidth() - 5) / 2;
+        JComponent component = new JPanel();
+        component.setLayout(new BorderLayout());
+        component.setBorder(BorderFactory.createEmptyBorder(10, left, 0, 0));
+        component.add(new ChallengePuzzleImagePane(
+                mission.getChallenge().getPuzzle(),
+                image,
+                mission.getLevel()
+        ));
+        return component;
     }
 
     /**
@@ -95,59 +116,13 @@ public class ChallengeSuccessMessagePanel extends JPanel {
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         JPanel text = new JPanel();
         text.setLayout(new GridLayout(2, 1));
-        text.add(new JLabel("Parabens! Missão realizada com sucesso!", SwingConstants.CENTER));
-        text.add(new JLabel("Abaixo está sua recompensa por finalizar esta missão!", SwingConstants.CENTER));
+        text.add(new JLabel("Parabens! Desafio concluido!", SwingConstants.CENTER));
+        text.add(new JLabel("Abaixo está sua recompensa por finalizar este desafio!", SwingConstants.CENTER));
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(icon, BorderLayout.NORTH);
         panel.add(text);
         return panel;
-    }
-
-    /**
-     * Puzzle panel
-     */
-    public class Panel extends JPanel {
-
-        /** Puzzle */
-        private final ChallengePuzzle puzzle;
-        /** Image */
-        private final BufferedImage buff;
-
-        public Panel(ChallengePuzzle puzzle, BufferedImage buff) {
-            this.puzzle = puzzle;
-            this.buff = buff;
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
-            int posX;
-            int posY = 30;
-            for (int y = 0; y < puzzle.getPieces()[0].length; y++) {
-                posX = 0;
-                int height = 0;
-                for (int x = 0; x < puzzle.getPieces().length; x++) {
-                    ChallengePuzzlePiece piece = puzzle.getPieces()[x][y];
-                    if (piece == null) {
-                        continue;
-                    }
-                    int width = (int) Math.floor(piece.getWidth() * buff.getWidth());
-                    height = (int) Math.floor(piece.getHeight() * buff.getHeight());
-                    if (piece.getLabel() == mission.getLevel()) {
-                        int center = (PAGE_WIDTH / 2) - (width / 2);
-                        Polygon p = ChallengePuzzleFactory.createPolygon(piece, width, height, center, 30);
-                        g2d.setClip(p);
-                        g2d.drawImage(buff, -posX, -posY, this);
-                        return;
-                    }
-                    posX += width;
-                }
-                posY += height;
-            }
-
-        }
-
     }
 
 }

@@ -8,9 +8,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,6 +23,7 @@ import javax.swing.SwingUtilities;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import visnode.application.ExceptionHandler;
 import visnode.application.Messages;
+import visnode.commons.ImageScale;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.commons.swing.WindowFactory;
 import visnode.commons.swing.components.CodeEditor;
@@ -42,6 +40,8 @@ import visnode.user.Base64Image;
  */
 public class ChallengeFormPanel extends JPanel {
 
+    /** Image size */
+    private static final int WIDTH = 500;
     /** Name */
     private JTextField name;
     /** Description */
@@ -120,8 +120,14 @@ public class ChallengeFormPanel extends JPanel {
         });
         paymentButton.addActionListener((ev) -> {
             FileChooserFactory.openImage().accept((file) -> {
-                Base64Image base64Image = new Base64Image();
-                challenge.setPayment(base64Image.toBase64(file));
+                try {
+                    Base64Image base64Image = new Base64Image();
+                    challenge.setPayment(base64Image.
+                            toBase64(ImageIO.read(file), WIDTH)
+                    );
+                } catch (Exception e) {
+                    ExceptionHandler.get().handle(e);
+                }
             });
         });
     }
@@ -227,7 +233,7 @@ public class ChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildProblem() {
-        problemButton = new JButton("Problema");
+        problemButton = new JButton("Narrativa");
         problemButton.setIcon(IconFactory.get().create("fa:font"));
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -256,11 +262,8 @@ public class ChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildBoxChallenges() {
-        JLabel label = new JLabel();
+        JLabel label = new JLabel("Missões");
         label.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        Messages.get().message("challenge.title").subscribe((msg) -> {
-            label.setText(msg);
-        });
         JComponent component = new JPanel();
         component.setLayout(new BorderLayout());
         component.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));

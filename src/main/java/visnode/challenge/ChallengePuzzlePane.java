@@ -1,11 +1,7 @@
 package visnode.challenge;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -91,55 +87,8 @@ public class ChallengePuzzlePane extends JPanel {
             return new JPanel();
         }
         BufferedImage image = challenge.getPaymentBuffered();
-        setPreferredSize(new Dimension(image.getWidth(), image.getHeight() + 45));
-        return new Panel(challenge.getPuzzle(), image);
+        setPreferredSize(new Dimension(image.getWidth() + 5, image.getHeight() + 45));
+        return new ChallengePuzzleImagePane(challenge.getPuzzle(), image, missionCompleted);
     }
-
-    /**
-     * Puzzle panel
-     */
-    public class Panel extends JPanel {
-        
-        /** Puzzle */
-        private final ChallengePuzzle puzzle;
-        /** Image */
-        private final BufferedImage buff;
-
-        public Panel(ChallengePuzzle puzzle, BufferedImage buff) {
-            this.puzzle = puzzle;
-            this.buff = buff;
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(buff, 0, 0, this);
-            int posX;
-            int posY = 0;
-            for (int y = 0; y < puzzle.getPieces()[0].length; y++) {
-                posX = 0;
-                int height = 0;
-                for (int x = 0; x < puzzle.getPieces().length; x++) {
-                    ChallengePuzzlePiece piece = puzzle.getPieces()[x][y];
-                    if (piece == null) {
-                        continue;
-                    }
-                    int width = (int) Math.floor(piece.getWidth() * buff.getWidth());
-                    height = (int) Math.floor(piece.getHeight() * buff.getHeight());
-                    Polygon p = ChallengePuzzleFactory.createPolygon(piece, width, height, posX, posY);
-                    if (piece.getLabel() > missionCompleted) {
-                        g2d.setColor(Color.WHITE);
-                        g2d.fillPolygon(p);
-                    }
-                    g2d.setColor(Color.GRAY);
-                    g2d.drawPolygon(p);
-                    posX += width;
-                }
-                posY += height;
-            }
-
-        }
-
-    }
-
+   
 }

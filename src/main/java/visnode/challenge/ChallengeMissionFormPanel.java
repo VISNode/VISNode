@@ -198,7 +198,7 @@ public class ChallengeMissionFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildProblem() {
-        problemButton = new JButton("Problema");
+        problemButton = new JButton("Narrativa");
         problemButton.setIcon(IconFactory.get().create("fa:font"));
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());

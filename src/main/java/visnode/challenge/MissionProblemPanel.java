@@ -73,7 +73,6 @@ public class MissionProblemPanel extends JPanel {
         if (ChallengeController.get().getMission().isProblemUrl()) {
             viewer.loadUrl(ChallengeController.get().getMission().getProblem());
         } else {
-            System.out.println(ChallengeController.get().getMission().getProblem());
             viewer.load(ChallengeController.get().getMission().getProblem());
         }
         return viewer;

@@ -31,7 +31,7 @@ public class ChallengeListPanel extends JPanel {
     private JComponent containerItems;
     /** Items panel */
     private JComponent panelItems;
-    
+
     /**
      * Creates a new mission list panel
      */
@@ -60,7 +60,7 @@ public class ChallengeListPanel extends JPanel {
         setPreferredSize(new Dimension(800, 500));
         add(buildList());
     }
-        
+
     /**
      * Reload the items
      */
@@ -80,7 +80,9 @@ public class ChallengeListPanel extends JPanel {
     private JComponent buildList() {
         containerItems = new JPanel();
         containerItems.setLayout(new BorderLayout());
-        containerItems.add(buildButtons(), BorderLayout.NORTH);
+        if (UserController.get().getUser().isUserEditor()) {
+            containerItems.add(buildButtons(), BorderLayout.NORTH);
+        }
         containerItems.add(buildListComponent());
         return ScrollFactory.pane(containerItems).create();
     }
@@ -199,7 +201,9 @@ public class ChallengeListPanel extends JPanel {
         actions.add(update, BorderLayout.NORTH);
         JPanel rightComponent = new JPanel();
         rightComponent.setLayout(new BorderLayout());
-        rightComponent.add(actions, BorderLayout.WEST);
+        if (UserController.get().getUser().isUserEditor()) {
+            rightComponent.add(actions, BorderLayout.WEST);
+        }
         rightComponent.add(buttonsPanel, BorderLayout.EAST);
         // Builds the component
         JPanel component = new JPanel();

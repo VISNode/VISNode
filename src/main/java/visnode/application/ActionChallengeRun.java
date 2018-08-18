@@ -7,8 +7,9 @@ import static javax.swing.Action.SMALL_ICON;
 import javax.swing.SwingUtilities;
 import visnode.challenge.Mission;
 import visnode.challenge.ChallengeController;
-import visnode.challenge.ChallengeErrorMessagePanel;
 import visnode.challenge.ChallengeSuccessMessagePanel;
+import visnode.challenge.MissionErrorMessagePanel;
+import visnode.challenge.MissionSuccessMessagePanel;
 import visnode.challenge.MissionsPanel;
 import visnode.commons.DynamicValue;
 import visnode.gui.IconFactory;
@@ -42,14 +43,18 @@ public class ActionChallengeRun extends AbstractAction {
             SwingUtilities.invokeLater(() -> {
                 if (accepted) {
                     Mission mission = ChallengeController.get().getMission();
-                    ChallengeSuccessMessagePanel.showDialog(mission);
+                    if (mission.getChallenge().getLevel() == mission.getLevel()) {
+                        ChallengeSuccessMessagePanel.showDialog(mission);
+                    } else {
+                        MissionSuccessMessagePanel.showDialog(mission);
+                    }
                     ChallengeController.get().end();                   
                     VISNode.get().getController().createNew();
                     if (mission.getChallenge().getLevel() > mission.getLevel()) {
                         MissionsPanel.showDialog(mission.getChallenge());
                     }
                 } else {
-                    ChallengeErrorMessagePanel.showDialog();
+                    MissionErrorMessagePanel.showDialog();
                 }
             });
         });

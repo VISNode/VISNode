@@ -36,6 +36,7 @@ public class MarkdownViewer extends JPanel {
     private void initGui() {
         JFXPanel jfxPanel = new JFXPanel();
         jfxPanel.setPreferredSize(new Dimension(800, 600));
+        Platform.setImplicitExit(false);
         Platform.runLater(() -> {
             webView = new WebView();
             String style = MarkdownViewer.class.
@@ -48,45 +49,44 @@ public class MarkdownViewer extends JPanel {
         setLayout(new BorderLayout());
         add(jfxPanel);
     }
-    
+
     /**
      * Loads a markdown from a URL
-     * 
-     * @param url 
+     *
+     * @param url
      */
     public void loadUrl(String url) {
         new Http().get(url).thenAccept((result) -> {
             load(result.asString());
         });
     }
-    
+
     /**
      * Loads a markdown from a URL
-     * 
-     * @param url 
+     *
+     * @param url
      */
     public void loadUrl(URL url) {
         new Http().get(url).thenAccept((result) -> {
             load(result.asString());
         });
     }
-    
+
     /**
      * Loads the markdown from a buffer
-     * 
-     * @param buffer 
+     *
+     * @param buffer
      */
     public void load(String buffer) {
         String asHtml = markdownToHtml(buffer);
         Platform.runLater(() -> {
-            System.out.println(asHtml);
             webView.getEngine().loadContent(asHtml);
         });
     }
 
     /**
      * Converts a markdown buffer to a Html buffer
-     * 
+     *
      * @param buffer
      * @return String
      */

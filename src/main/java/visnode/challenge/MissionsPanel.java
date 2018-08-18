@@ -59,10 +59,11 @@ public class MissionsPanel extends JPanel {
             return;
         }
         Mission mission = challenge.getMissions().get(0);
-        if (!solved(mission)) {
+        boolean solved = solved(mission);
+        if (!solved) {
             openChallenge(challenge);
         }
-        if (challenge.getMissions().size() == 1) {
+        if (challenge.getMissions().size() == 1 && !solved) {
             start(mission);
             return;
         }
@@ -91,6 +92,7 @@ public class MissionsPanel extends JPanel {
         setPreferredSize(new Dimension(800, 500));
         add(buildToolbar(), BorderLayout.NORTH);
         add(buildList());
+        add(buildButtons(), BorderLayout.SOUTH);
     }
 
     /**
@@ -100,8 +102,8 @@ public class MissionsPanel extends JPanel {
      */
     private JComponent buildToolbar() {
         JToolBar toolbar = new JToolBar();
-        toolbar.add(new ActionOpenChallenge());
-        toolbar.add(new ActionOpenPayments());
+        toolbar.add(new JButton(new ActionOpenChallenge()));
+        toolbar.add(new JButton(new ActionOpenPayments()));
         return toolbar;
     }
 
@@ -122,6 +124,23 @@ public class MissionsPanel extends JPanel {
         return ScrollFactory.pane(container).create();
     }
 
+    /**
+     * Build the buttons
+     * 
+     * @return JComponent
+     */
+    private JComponent buildButtons() {
+        JButton button = new JButton("Prosseguir", IconFactory.get().create("fa:check"));
+        button.addActionListener((evt) -> {
+            SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
+        });
+        JComponent panel = new JPanel();
+        panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        panel.setLayout(new BorderLayout());
+        panel.add(button, BorderLayout.EAST);
+        return panel;
+    }
+    
     /**
      * Creates the challenge list item
      *
@@ -145,6 +164,7 @@ public class MissionsPanel extends JPanel {
         JButton solve = new JButton();
         Messages.get().message("challenge.solve").subscribe((msg) -> {
             solve.setText(msg);
+            solve.setIcon(IconFactory.get().create("fa:play"));
         });
         solve.addActionListener((ev) -> {
             SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
@@ -225,7 +245,7 @@ public class MissionsPanel extends JPanel {
     private class ActionOpenChallenge extends AbstractAction {
 
         public ActionOpenChallenge() {
-            super("Challenge", IconFactory.get().create("fa:question"));
+            super("Desafio", IconFactory.get().create("fa:question"));
         }
 
         @Override
@@ -241,7 +261,7 @@ public class MissionsPanel extends JPanel {
     private class ActionOpenPayments extends AbstractAction {
 
         public ActionOpenPayments() {
-            super("Paymant", IconFactory.get().create("fa:dollar"));
+            super("Recompensa", IconFactory.get().create("fa:dollar"));
         }
 
         @Override

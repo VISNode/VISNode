@@ -16,12 +16,12 @@ import visnode.gui.IconFactory;
 /**
  * Challenge error message
  */
-public class ChallengeErrorMessagePanel extends JPanel {
+public class MissionErrorMessagePanel extends JPanel {
 
     /**
      * Creates a challenge
      */
-    private ChallengeErrorMessagePanel() {
+    private MissionErrorMessagePanel() {
         initGui();
         initEvents();
     }
@@ -31,7 +31,7 @@ public class ChallengeErrorMessagePanel extends JPanel {
      */
     public static void showDialog() {
         WindowFactory.modal().title("Mensagem").create((container) -> {
-            container.add(new ChallengeErrorMessagePanel());
+            container.add(new MissionErrorMessagePanel());
         }).setVisible(true);
     }
 
@@ -59,7 +59,7 @@ public class ChallengeErrorMessagePanel extends JPanel {
     private JComponent buildButtons() {
         JButton button = new JButton("Ir para a missão", IconFactory.get().create("fa:forward"));
         button.addActionListener((evt) -> {
-            SwingUtilities.getWindowAncestor(ChallengeErrorMessagePanel.this).dispose();
+            SwingUtilities.getWindowAncestor(MissionErrorMessagePanel.this).dispose();
         });
         JComponent panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
