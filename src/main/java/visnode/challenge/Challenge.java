@@ -1,99 +1,65 @@
 package visnode.challenge;
 
+import com.google.gson.Gson;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import visnode.user.User;
+import visnode.user.Base64Image;
 
 /**
- * The challenge information
+ * Challenge
  */
 public class Challenge {
 
-    /** Owner */
-    private User owner;
+    /** Gson */
+    private final transient Gson gson;
     /** Id */
-    private long id;
-    /** Mission */
-    private Mission mission;
+    private int id;
     /** Name */
     private String name;
     /** Description */
     private String description;
-    /** Difficulty */
-    private ChallengeDifficulty difficulty;
-    /** Input */
-    private final List<String> input;
-    /** Output */
-    private final List<ChallengeValue> output;
     /** Problem */
     private String problem;
     /** Point */
     private int xp;
     /** Level */
     private int level;
+    /** Payment */
+    private String payment;
+    /** Puzzle */
+    private String puzzle; 
+    /** Base64 to image */
+    private Base64Image base64Image;
+    /** Missions */
+    private List<Mission> missions;
 
     public Challenge() {
-        this.input = new ArrayList<>();
-        this.output = new ArrayList<>();
+        this.missions = new ArrayList<>();
+        this.gson = new Gson();
     }
 
     /**
-     * Returns the owner
+     * Returns the id
      *
-     * @return User
+     * @return int
      */
-    public User getOwner() {
-        return owner;
-    }
-
-    /**
-     * Sets the owner
-     *
-     * @param owner
-     */
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    /**
-     * Returns the challenge id
-     *
-     * @return long
-     */
-    public long getId() {
+    public int getId() {
         return id;
     }
 
     /**
-     * Sets the challenge id
+     * Sets the id
      *
      * @param id
      */
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
     /**
-     * Returns the mission id
-     *
-     * @return Mission
-     */
-    public Mission getMission() {
-        return mission;
-    }
-
-    /**
-     * Sets the mission
-     *
-     * @param mission
-     */
-    public void setMission(Mission mission) {
-        this.mission = mission;
-    }
-
-    /**
-     * Returns the challenge name
+     * Returns the name
      *
      * @return String
      */
@@ -102,7 +68,7 @@ public class Challenge {
     }
 
     /**
-     * Sets the challenge name
+     * Sets the name
      *
      * @param name
      */
@@ -111,7 +77,7 @@ public class Challenge {
     }
 
     /**
-     * Returns the challenge description
+     * Returns the description
      *
      * @return String
      */
@@ -120,7 +86,7 @@ public class Challenge {
     }
 
     /**
-     * Sets the challenge description
+     * Sets the description
      *
      * @param description
      */
@@ -129,61 +95,7 @@ public class Challenge {
     }
 
     /**
-     * Returns the challenge difficulty
-     *
-     * @return ChallengeDifficulty
-     */
-    public ChallengeDifficulty getDifficulty() {
-        return difficulty;
-    }
-
-    /**
-     * Sets the challenge difficulty
-     *
-     * @param difficulty
-     */
-    public void setDifficulty(ChallengeDifficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    /**
-     * Returns the challenge input
-     *
-     * @return {@code List<String>}
-     */
-    public List<String> getInput() {
-        return Collections.unmodifiableList(input);
-    }
-
-    /**
-     * Adds the challenge input
-     *
-     * @param input
-     */
-    public void addInput(String input) {
-        this.input.add(input);
-    }
-
-    /**
-     * Returns the challenge output
-     *
-     * @return {@code List<ChallengeValue>}
-     */
-    public List<ChallengeValue> getOutput() {
-        return Collections.unmodifiableList(output);
-    }
-
-    /**
-     * Adds a new challenge output
-     *
-     * @param output
-     */
-    public void addOutput(ChallengeValue output) {
-        this.output.add(output);
-    }
-
-    /**
-     * Returns the problem md file
+     * Returns the problem
      *
      * @return String
      */
@@ -192,7 +104,7 @@ public class Challenge {
     }
 
     /**
-     * Sets the problem md file
+     * Sets the problem
      *
      * @param problem
      */
@@ -201,7 +113,7 @@ public class Challenge {
     }
 
     /**
-     * Returns the points
+     * Returns the experience
      *
      * @return int
      */
@@ -210,7 +122,7 @@ public class Challenge {
     }
 
     /**
-     * Sets the points
+     * Sets the experience
      *
      * @param xp
      */
@@ -219,7 +131,7 @@ public class Challenge {
     }
 
     /**
-     * Returns the level
+     * Returns the mission level
      *
      * @return int
      */
@@ -228,16 +140,7 @@ public class Challenge {
     }
 
     /**
-     * Returns true if is the first level
-     *
-     * @return boolean
-     */
-    public boolean isFirtLevel() {
-        return level == 1;
-    }
-
-    /**
-     * Sets the level
+     * Sets the mission level
      *
      * @param level
      */
@@ -245,4 +148,117 @@ public class Challenge {
         this.level = level;
     }
 
+    /**
+     * Returns the missions
+     *
+     * @return {@code List<Mission>}
+     */
+    public List<Mission> getMissions() {
+        return Collections.unmodifiableList(missions);
+    }
+
+    /**
+     * Adds a new mission
+     *
+     * @param mission
+     */
+    public void addMission(Mission mission) {
+        mission.setChallenge(this);
+        this.missions.add(mission);
+        this.xp += mission.getXp();
+        this.level++;
+    }
+
+    /**
+     * Removes the mission
+     *
+     * @param mission
+     */
+    public void removeMission(Mission mission) {
+        missions.remove(mission);
+        int l = 1;
+        for (Mission it : missions) {
+            it.setLevel(l++);
+        }
+        this.level = missions.size();
+    }
+
+    /**
+     * Sets the missions
+     *
+     * @param missions
+     */
+    public void setMissions(List<Mission> missions) {
+        this.missions = missions;
+    }
+
+    /**
+     * Returns number of missions
+     *
+     * @return int
+     */
+    public int size() {
+        return missions.size();
+    }
+    
+    /**
+     * Returns the payment
+     * 
+     * @return String
+     */
+    public String getPayment() {
+        return payment;
+    }
+    
+    /**
+     * Returns true if the payment is available
+     * 
+     * @return boolean
+     */
+    public boolean isPaymentAvailable() {
+        return payment != null && !payment.isEmpty();
+    }
+    
+    /**
+     * Returns the payment image
+     * 
+     * @return 
+     */
+    public BufferedImage getPaymentBuffered() {
+        return getBase64Image().fromBase64(getPayment());
+    }
+    
+    /**
+     * Sets the payment
+     * 
+     * @param payment 
+     */
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
+
+    /**
+     * Returns the challenge puzzle
+     * 
+     * @return ChallengePuzzle
+     */
+    public ChallengePuzzle getPuzzle() {
+        return gson.fromJson(puzzle, ChallengePuzzle.class);
+    }
+
+    /**
+     * Sets the challenge puzzle
+     * 
+     * @param puzzle 
+     */
+    public void setPuzzle(ChallengePuzzle puzzle) {
+        this.puzzle = gson.toJson(puzzle);
+    }
+    
+    private Base64Image getBase64Image() {
+        if (base64Image == null) {
+            base64Image = new Base64Image();
+        }
+        return base64Image;
+    }
 }

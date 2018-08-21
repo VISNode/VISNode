@@ -158,14 +158,9 @@ public class UpdateUserPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 FileChooserFactory.openImage().accept((file) -> {
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    try {
-                        ImageIO.write(ImageIO.read(file), "JPG", os);
-                        model.setImage(Base64.getEncoder().encodeToString(os.toByteArray()));
-                        label.setIcon(getIcon());
-                    } catch (IOException ioe) {
-                        ExceptionHandler.get().handle(ioe);
-                    }
+                    Base64Image base64Image = new Base64Image();
+                    model.setImage(base64Image.toBase64(file));
+                    label.setIcon(getIcon());
                 });
             }
         }

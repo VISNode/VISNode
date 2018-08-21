@@ -17,14 +17,15 @@ public class ResizeProcess implements visnode.pdi.Process {
      * Creates a new resize process
      * 
      * @param image 
-     * @param size 
+     * @param sizeX 
+     * @param sizeY 
      */
-    public ResizeProcess(@Input("image") Image image, @Input("size") Double size) {
+    public ResizeProcess(@Input("image") Image image, @Input("sizeX") Double sizeX, @Input("sizeY") Double sizeY) {
         Image resultImage = image;
         if (image == null) {
             resultImage = ImageFactory.buildEmptyImage();
         }
-        this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), size);
+        this.process = new org.paim.pdi.ResizeProcess(new Image(resultImage), sizeX, sizeY);
         
     }
 

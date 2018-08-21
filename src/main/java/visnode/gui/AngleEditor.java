@@ -1,14 +1,13 @@
 package visnode.gui;
 
+import com.github.rxsling.RangedIntegerInput;
 import javax.swing.JComponent;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
 import visnode.commons.Angle;
 
 /**
  * Angle editor
  */
-public class AngleEditor extends JSlider implements ParameterComponent<Angle> {
+public class AngleEditor extends RangedIntegerInput implements ParameterComponent<Angle> {
 
     /** Value */
     private Angle value;
@@ -17,11 +16,11 @@ public class AngleEditor extends JSlider implements ParameterComponent<Angle> {
      * Creates a new angle editor
      */
     public AngleEditor() {
-        super(0, 360);
+         super();
+        lowerLimit(0).upperLimit(360);
+        id("thresholdSelector");
+        styleSheet(AngleEditor.class.getResourceAsStream("/styles/visnode.css"));
         value = new Angle(0);
-        setValue(value);
-        setFocusable(false);
-        setOpaque(false);
     }
 
     @Override
@@ -36,13 +35,13 @@ public class AngleEditor extends JSlider implements ParameterComponent<Angle> {
         } else {
             this.value = new Angle(0);
         }
-        super.setValue(this.value.intValue());
+         super.value(this.value.intValue());
     }
 
     @Override
     public void addValueListener(ValueListener valueListener) {
-        addChangeListener((ChangeEvent e) -> {
-            valueListener.valueChanged(0, new Angle(getValue()));
+        valueObservable().subscribe((v) -> {
+            valueListener.valueChanged(0, new Angle(v));
         });
     }
     

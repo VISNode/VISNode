@@ -1,13 +1,11 @@
 package visnode.challenge;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import org.paim.commons.Image;
-import visnode.application.ExceptionHandler;
-import visnode.application.InputReader;
+import org.paim.commons.ImageFactory;
 import visnode.application.NodeNetwork;
 import visnode.application.parser.NodeNetworkParser;
 import visnode.commons.DynamicValue;
@@ -19,6 +17,8 @@ import visnode.executor.OutputNode;
  */
 public class ChallengeComparator {
 
+    /** Max image error */
+    private static final int MAX_ERROR = 1;
     /** Node network parser */
     private final NodeNetworkParser parser;
 
@@ -33,19 +33,19 @@ public class ChallengeComparator {
      * @param challengeUser
      * @return boolean
      */
-    public CompletableFuture<Boolean> comparate(Challenge challenge, ChallengeUser challengeUser) {
+    public CompletableFuture<Boolean> comparate(Mission challenge, MissionUser challengeUser) {
         CompletableFuture<Boolean> future = new CompletableFuture();
-        File[] files = challenge.getInput().stream().map((file) -> {
-            return new File(file);
+        File[] files = challenge.getInputFiles().stream().map((file) -> {
+            return file;
         }).toArray(File[]::new);
         List<CompletableFuture<Boolean>> stream = challenge.
                 getOutput().
                 stream().
                 map((value) -> comparate(
-                        files[challenge.getOutput().indexOf(value)], 
-                        value, 
-                        challengeUser
-                )).
+                files[challenge.getOutput().indexOf(value)],
+                value,
+                challengeUser
+        )).
                 collect(Collectors.toList());
         CompletableFuture.allOf(
                 stream.stream().toArray(CompletableFuture[]::new)
@@ -65,7 +65,7 @@ public class ChallengeComparator {
      * @param challengeUser
      * @return boolean
      */
-    private CompletableFuture<Boolean> comparate(File input, ChallengeValue challengeValue, ChallengeUser challengeUser) {
+    private CompletableFuture<Boolean> comparate(File input, MissionValue challengeValue, MissionUser challengeUser) {
         CompletableFuture<Boolean> future = new CompletableFuture();
         NodeNetwork nodeNetwork = parser.fromJson(challengeUser.getSubmission());
         nodeNetwork.getInputNode().getOutput("image").subscribe((it) -> {
@@ -94,28 +94,27 @@ public class ChallengeComparator {
      * @param output
      * @return boolean
      */
-    public boolean comparateImage(ChallengeValue challengeValue, DynamicValue<Object> output) {
+    public boolean comparateImage(MissionValue challengeValue, DynamicValue<Object> output) {
         if (!output.isImage()) {
             return false;
         }
-        try {
-            Image base = new InputReader().read(new File(challengeValue.getValue()));
-            int[][][] expected = base.getData();
-            int[][][] result = output.get(Image.class).getData();
-            for (int channel = 0; channel < expected.length; channel++) {
-                for (int x = 0; x < expected[channel].length; x++) {
-                    for (int y = 0; y < expected[channel][x].length; y++) {
-                        if (expected[channel][x][y] != result[channel][x][y]) {
-                            return false;
-                        }
+        Image base = ImageFactory.buildRGBImage(challengeValue.getValueBufferedImage());
+        int[][][] expected = base.getData();
+        int[][][] result = output.get(Image.class).getData();
+        int error = 0;
+        for (int channel = 0; channel < expected.length; channel++) {
+            for (int x = 0; x < expected[channel].length; x++) {
+                for (int y = 0; y < expected[channel][x].length; y++) {
+                    if (Math.abs(expected[channel][x][y] - result[channel][x][y]) > 30) {
+                        error++;
                     }
                 }
             }
-            return true;
-        } catch (IOException ex) {
-            ExceptionHandler.get().handle(ex);
         }
-        return false;
+        if (error > MAX_ERROR) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -125,7 +124,7 @@ public class ChallengeComparator {
      * @param output
      * @return boolean
      */
-    private boolean comprateObject(ChallengeValue challangeValue, DynamicValue output) {
+    private boolean comprateObject(MissionValue challangeValue, DynamicValue output) {
         return challangeValue.getValue().equals(String.valueOf(output.get()));
     }
 

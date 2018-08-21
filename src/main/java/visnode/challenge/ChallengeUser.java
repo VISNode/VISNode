@@ -10,26 +10,19 @@ import visnode.user.User;
 public class ChallengeUser {
 
     public static transient final int STATUS_SUCESS = 1;
-    public static transient final int STATUS_ERROR = 2;
 
     /** User */
     private User user;
-    /** Challenge */
-    private long idChallenge;
     /** Mission */
-    private long idMission;
+    private int idChallenge;
     /** Submission */
     private String submission;
     /** Points */
     private int xp;
-    /** Date initial */
-    private Date dateInitial;
     /** Date final */
     private Date dateFinal;
     /** Status */
     private int status;
-    /** Level */
-    private int level;
 
     /**
      * Returns the user
@@ -50,39 +43,21 @@ public class ChallengeUser {
     }
 
     /**
-     * Returns the challenge
-     *
-     * @return long
-     */
-    public long getChallenge() {
-        return idChallenge;
-    }
-
-    /**
-     * Sets the challenge
-     *
-     * @param challenge
-     */
-    public void setChallenge(long challenge) {
-        this.idChallenge = challenge;
-    }
-
-    /**
      * Returns the mission id
      *
-     * @return long
+     * @return int
      */
-    public long getIdMission() {
-        return idMission;
+    public int getIdChallenge() {
+        return idChallenge;
     }
 
     /**
      * Sets the mission id
      *
-     * @param idMission
+     * @param idChallenge
      */
-    public void setIdMission(long idMission) {
-        this.idMission = idMission;
+    public void setIdChallenge(int idChallenge) {
+        this.idChallenge = idChallenge;
     }
 
     /**
@@ -119,24 +94,6 @@ public class ChallengeUser {
      */
     public void setXp(int xp) {
         this.xp = xp;
-    }
-
-    /**
-     * Returns the initial date
-     *
-     * @return Date
-     */
-    public Date getDateInitial() {
-        return dateInitial;
-    }
-
-    /**
-     * Sets the initial date
-     *
-     * @param dateInitial
-     */
-    public void setDateInitial(Date dateInitial) {
-        this.dateInitial = dateInitial;
     }
 
     /**
@@ -177,20 +134,6 @@ public class ChallengeUser {
     }
 
     /**
-     * Sets the status error
-     */
-    public void setStatusError() {
-        this.status = STATUS_ERROR;
-    }
-
-    /**
-     * Sets the status success
-     */
-    public void setStatusSuccess() {
-        this.status = STATUS_SUCESS;
-    }
-
-    /**
      * Returns true if the status is success
      *
      * @return boolean
@@ -199,21 +142,4 @@ public class ChallengeUser {
         return this.status == STATUS_SUCESS;
     }
 
-    /**
-     * Returns the level
-     *
-     * @return int
-     */
-    public int getLevel() {
-        return level;
-    }
-
-    /**
-     * Sets the level
-     *
-     * @param level
-     */
-    public void setLevel(int level) {
-        this.level = level;
-    }
 }

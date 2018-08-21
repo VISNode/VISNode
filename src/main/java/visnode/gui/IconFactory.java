@@ -56,8 +56,19 @@ public class IconFactory {
      * @return Icon
      */
     public Icon create(String iconKey) {
+        return create(iconKey, DEFAULT_SIZE);
+    }
+  
+    /**
+     * Builds an Icon from the key
+     * 
+     * @param iconKey
+     * @param size
+     * @return Icon
+     */
+    public Icon create(String iconKey, int size) {
         Icon icon = null;
-        if ((icon = processFontAwesome(iconKey)) != null) {
+        if ((icon = processFontAwesome(iconKey, size)) != null) {
             return icon;
         }
         throw new IllegalArgumentException("Unable to load icon " + iconKey);
@@ -69,13 +80,13 @@ public class IconFactory {
      * @param iconKey
      * @return Icon
      */
-    private Icon processFontAwesome(String iconKey) {
+    private Icon processFontAwesome(String iconKey, int size) {
         Matcher matcher = PATTERN_FONT_AWESOME.matcher(iconKey);
         if (!matcher.matches()) {
             return null;
         }
         String name = matcher.group(1);
-        return new VectorIcon(fontAwesome, UIHelper.getColor("Icon"), DEFAULT_SIZE, mapping.get(name));
+        return new VectorIcon(fontAwesome, UIHelper.getColor("Icon"), size, mapping.get(name));
         
     }
 
