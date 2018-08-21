@@ -170,7 +170,7 @@ public class Mission {
         int index = 0;
         try {
             for (MissionValue value : input) {
-                File file = new File(System.getProperty("user.home") + "/.visnode/" + getId() + "_" + index++ + ".jpg");
+                File file = new File(System.getProperty("user.home") + "/.visnode/" + System.getProperty("user.name") + "_" + getId() + "_" + index++ + ".jpg");
                 ImageExporter.exportBufferedImage(ImageFactory.buildRGBImage(value.getValueBufferedImage()), file);
                 list.add(file);
             }

@@ -156,7 +156,6 @@ public class ChallengeConquestPanel extends JPanel {
         JLabel description = new JLabel(challenge.getDescription());
         description.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));
         description.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-
         // Challenges
         JLabel challenges = new JLabel(missionCompleted + "/" + challenge.getLevel());
         challenges.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 3));

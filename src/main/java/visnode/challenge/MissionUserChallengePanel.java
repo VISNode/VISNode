@@ -211,7 +211,7 @@ public class MissionUserChallengePanel extends JPanel {
         });
         open.addActionListener((ev) -> {
             SwingUtilities.getWindowAncestor(MissionUserChallengePanel.this).dispose();
-            VISNode.get().getController().open(missionUser.getSubmission());
+            ChallengeController.get().openProject(missionUser.getSubmission(), mission);
         });
         // Buttons
         JPanel buttonsPanel = new JPanel();

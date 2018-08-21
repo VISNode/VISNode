@@ -45,7 +45,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         this.listeners = new ArrayList<>();
         initGui();
     }
-    
+
     /**
      * Initializes the interface
      */
@@ -65,7 +65,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         add(panelTypes, BorderLayout.NORTH);
         buildSpecificFields();
     }
-    
+
     /**
      * Builds the specific fields for the selected input method
      */
@@ -89,10 +89,10 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
             revalidate();
         });
     }
-    
+
     /**
      * Creates the editor for the MultiFile input
-     * 
+     *
      * @return Component
      */
     private Component buildMultiFile() {
@@ -105,6 +105,9 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         psup.put(Buttons.create().focusable(false).icon(IconFactory.get().create("fa:folder-open")).onClick((evt) -> {
             FileChooserFactory.openImages().accept((filesSelected) -> {
                 input = new MultiFileInput(filesSelected, 0);
+                for (File file : filesSelected) {
+                    VISNode.get().getModel().getUserPreferences().addRecentInput(file);
+                }
                 fireValueChanged();
             });
         }));
@@ -114,6 +117,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
                 JMenuItem item = new JMenuItem(file.getAbsolutePath());
                 item.addActionListener((e) -> {
                     input = new MultiFileInput(file);
+                    VISNode.get().getModel().getUserPreferences().addRecentInput(file);
                     fireValueChanged();
                 });
                 menu.add(item);
@@ -125,10 +129,10 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         SwingUtilities.invokeLater(() -> updateMultifileFields((MultiFileInput) input));
         return panel;
     }
-    
+
     /**
      * Creates the image slider component
-     * 
+     *
      * @return JComponent
      */
     private JComponent buidSlider() {
@@ -148,7 +152,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         });
         return slider;
     }
-    
+
     /**
      * Update the value of the fields
      */
@@ -157,11 +161,11 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
             updateMultifileFields((MultiFileInput) input);
         }
     }
-    
+
     /**
      * Update the value for the MultiFile fields
-     * 
-     * @param multiFile 
+     *
+     * @param multiFile
      */
     private void updateMultifileFields(MultiFileInput multiFile) {
         if (slider == null || findId("multiFileName") == null) {
@@ -202,18 +206,12 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         }
         fireValueChanged();
     }
-    
+
     /**
      * Fires a value change event
      */
     private void fireValueChanged() {
         updateFields();
-        if (input instanceof MultiFileInput) {
-            MultiFileInput files = (MultiFileInput) input;
-            for (File file : files.getFiles()) {
-                VISNode.get().getModel().getUserPreferences().addRecentInput(file);
-            }
-        }
         for (ValueListener listener : listeners) {
             listener.valueChanged(null, input);
         }

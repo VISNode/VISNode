@@ -234,10 +234,9 @@ public class MissionsPanel extends JPanel {
                             mission.getChallenge(),
                             mission.getLevel());
             if (!missionUser.isEmpty()) {
-                VISNode.get().getController().open(missionUser.
+                ChallengeController.get().openProject(missionUser.
                         get(missionUser.size() - 1).
-                        getSubmission()
-                );
+                        getSubmission(), mission);
             }
 
         } catch (RepositoryException ex) {

@@ -3,11 +3,13 @@ package visnode.challenge;
 import visnode.repository.MissionUserRepository;
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
+import java.io.File;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import visnode.application.VISNode;
+import visnode.commons.MultiFileInput;
 import visnode.repository.RepositoryException;
 import visnode.user.UserController;
 
@@ -85,6 +87,18 @@ public class ChallengeController {
             }
         });
         return future;
+    }
+
+    /**
+     * Open the project
+     *
+     * @param submission
+     * @param mission
+     */
+    public void openProject(String submission, Mission mission) {
+        VISNode.get().getController().open(submission);
+        VISNode.get().getModel().getNetwork().
+                setInput(new MultiFileInput(mission.getInputFiles().toArray(new File[]{})));
     }
 
     /**

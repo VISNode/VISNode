@@ -87,8 +87,8 @@ public class ChallengeSolvedListPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 SwingUtilities.getWindowAncestor(ChallengeSolvedListPanel.this).dispose();
-                MissionUser mission = list.getSelectedValue();
-                VISNode.get().getController().open(mission.getSubmission());
+                MissionUser missionUser = list.getSelectedValue();              
+                ChallengeController.get().openProject(missionUser.getSubmission(), mission);
             }
 
         });
