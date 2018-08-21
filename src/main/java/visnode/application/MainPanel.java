@@ -1,6 +1,7 @@
 package visnode.application;
 
 import java.awt.BorderLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;

@@ -22,12 +22,12 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingUtilities;
 import visnode.application.Messages;
-import visnode.application.VISNode;
 import visnode.commons.ImageScale;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
+import visnode.gui.UIHelper;
 import visnode.repository.MissionUserRepository;
 import visnode.repository.RepositoryException;
 
@@ -59,10 +59,12 @@ public class ChallengeSolvedListPanel extends JPanel {
      * @param mission
      */
     public static void showDialog(Mission mission) {
-        WindowFactory.modal().title("Soluções").create((container) -> {
-            container.setBorder(null);
-            container.add(new ChallengeSolvedListPanel(mission));
-        }).setVisible(true);
+        Messages.get().message("challenge.solutions").subscribe((msg) -> {
+            WindowFactory.modal().title(msg).create((container) -> {
+                container.setBorder(null);
+                container.add(new ChallengeSolvedListPanel(mission));
+            }).setVisible(true);
+        }).dispose();
     }
 
     /**
@@ -136,7 +138,9 @@ public class ChallengeSolvedListPanel extends JPanel {
         public Component getListCellRendererComponent(JList<? extends MissionUser> list, MissionUser value, int index, boolean isSelected, boolean cellHasFocus) {
             JPanel imagePanel = new JPanel();
             BufferedImage image = ImageScale.scale(value.getUser().getImageBuffered(), THUMBNAIL_SIZE);
-            imagePanel.add(new JLabel(new ImageIcon(image)));
+            JLabel icon = new JLabel(new ImageIcon(image));
+            icon.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
+            imagePanel.add(icon);
             // Title label
             JPanel info = new JPanel();
             info.setLayout(new GridLayout(0, 1));

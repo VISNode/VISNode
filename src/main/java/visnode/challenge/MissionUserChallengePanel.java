@@ -130,7 +130,9 @@ public class MissionUserChallengePanel extends JPanel {
             if (missions.isEmpty()) {
                 JPanel panelMessage = new JPanel();
                 panelMessage.setBorder(BorderFactory.createEmptyBorder(100, 0, 0, 30));
-                panelMessage.add(new JLabel("Usuário não possui nenhuma missão finalizada", SwingConstants.CENTER));
+                Messages.get().message("challenge.userWithoutMission").subscribe((msg) -> {
+                    panelMessage.add(new JLabel(msg, SwingConstants.CENTER));
+                }).dispose();
                 list.add(panelMessage);
                 setPreferredSize(new Dimension(800, 250));
             }

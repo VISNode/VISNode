@@ -61,6 +61,7 @@ public class ActionUser extends JButton {
             User user = UserController.get().getUser();
             BufferedImage image = ImageScale.scale(user.getImageBuffered(), THUMBNAIL_SIZE);
             JLabel label = new JLabel(new ImageIcon(image));
+            label.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
             label.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {

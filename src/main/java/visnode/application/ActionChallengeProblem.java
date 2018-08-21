@@ -17,7 +17,7 @@ public class ActionChallengeProblem extends AbstractAction {
     public ActionChallengeProblem() {
         super();
         putValue(SMALL_ICON, IconFactory.get().create("fa:question"));
-        Messages.get().message("challenge.problem").subscribe((msg) -> {
+        Messages.get().message("challenge").subscribe((msg) -> {
             putValue(NAME, msg);
         });
         ChallengeController.get().hasMission().subscribe((has) -> {

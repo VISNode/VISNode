@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 
@@ -44,9 +45,11 @@ public class MissionSuccessMessagePanel extends JPanel {
      * @param mission
      */
     public static void showDialog(Mission mission) {
-        WindowFactory.modal().title("Mensagem").create((container) -> {
-            container.add(new MissionSuccessMessagePanel(mission));
-        }).setVisible(true);
+        Messages.get().message("challenge.message").subscribe((msg) -> {
+            WindowFactory.modal().title("Mensagem").create((container) -> {
+                container.add(new MissionSuccessMessagePanel(mission));
+            }).setVisible(true);
+        }).dispose();
     }
 
     /**
@@ -75,7 +78,11 @@ public class MissionSuccessMessagePanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildButtons() {
-        JButton button = new JButton("Voltar para o desafio", IconFactory.get().create("fa:forward"));
+        JButton button = new JButton();
+        Messages.get().message("challenge.gobackChallenge").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:forward"));
+        }).dispose();
         button.addActionListener((evt) -> {
             SwingUtilities.getWindowAncestor(MissionSuccessMessagePanel.this).dispose();
         });
@@ -96,10 +103,18 @@ public class MissionSuccessMessagePanel extends JPanel {
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         JPanel text = new JPanel();
         text.setLayout(new GridLayout(4, 1));
-        text.add(new JLabel("Parabens! Missão realizada com sucesso!", SwingConstants.CENTER));
-        text.add(new JLabel("Abaixo está sua recompensa por finalizar esta missão!", SwingConstants.CENTER));
-        text.add(new JLabel("Continue completando missões para receber", SwingConstants.CENTER));
-        text.add(new JLabel("a recompensa completa!", SwingConstants.CENTER));
+        Messages.get().message("challenge.missionSuccess1").subscribe((msg) -> {
+            text.add(new JLabel(msg, SwingConstants.CENTER));
+        }).dispose();
+        Messages.get().message("challenge.missionSuccess2").subscribe((msg) -> {
+            text.add(new JLabel(msg, SwingConstants.CENTER));
+        }).dispose();
+        Messages.get().message("challenge.missionSuccess3").subscribe((msg) -> {
+            text.add(new JLabel(msg, SwingConstants.CENTER));
+        }).dispose();
+        Messages.get().message("challenge.missionSuccess4").subscribe((msg) -> {
+            text.add(new JLabel(msg, SwingConstants.CENTER));
+        }).dispose();
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(icon, BorderLayout.NORTH);

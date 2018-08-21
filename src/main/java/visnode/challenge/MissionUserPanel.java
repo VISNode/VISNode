@@ -21,6 +21,7 @@ import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
+import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
 import visnode.repository.UserRepository;
 import visnode.user.User;
@@ -62,7 +63,7 @@ public class MissionUserPanel extends JPanel {
         add(buildList());
         add(buildButtons(), BorderLayout.SOUTH);
     }
-    
+
     /**
      * Build the buttons
      *
@@ -82,8 +83,8 @@ public class MissionUserPanel extends JPanel {
         panel.setLayout(new BorderLayout());
         panel.add(button, BorderLayout.EAST);
         return panel;
-    }  
-    
+    }
+
     /**
      * Creates the mission list
      *
@@ -158,8 +159,10 @@ public class MissionUserPanel extends JPanel {
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 5));
         // Image
         BufferedImage image = ImageScale.scale(user.getImageBuffered(), THUMBNAIL_SIZE);
+        JLabel icon = new JLabel(new ImageIcon(image));
+        icon.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
         JPanel imagePanel = new JPanel();
-        imagePanel.add(new JLabel(new ImageIcon(image)));
+        imagePanel.add(icon);
         // Name
         JLabel name = new JLabel();
         name.setText(user.getName());

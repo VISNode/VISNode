@@ -60,7 +60,11 @@ public class ChallengeProblemPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildButtons() {
-        JButton button = new JButton("Ir para o desafio", IconFactory.get().create("fa:forward"));
+        JButton button = new JButton();
+        Messages.get().message("challenge.goChallenge").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:forward"));
+        }).dispose();
         button.addActionListener((evt) -> {
             SwingUtilities.getWindowAncestor(ChallengeProblemPanel.this).dispose();
         });

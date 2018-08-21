@@ -1,6 +1,7 @@
 package visnode.challenge;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -26,6 +27,7 @@ import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
+import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
 import visnode.repository.UserRepository;
 import visnode.user.User;
@@ -134,8 +136,10 @@ public class ChallengeRankingPane extends JPanel {
         @Override
         public Component getListCellRendererComponent(JList<? extends User> list, User value, int index, boolean isSelected, boolean cellHasFocus) {
             BufferedImage image = ImageScale.scale(value.getImageBuffered(), THUMBNAIL_SIZE);
+            JLabel icon = new JLabel(new ImageIcon(image));
+            icon.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
             JPanel imagePanel = new JPanel();
-            imagePanel.add(new JLabel(new ImageIcon(image))); 
+            imagePanel.add(icon); 
             // Position
             JLabel position = new JLabel();
             position.setText(String.format("%sº", index + 1));
@@ -157,7 +161,7 @@ public class ChallengeRankingPane extends JPanel {
             container.setLayout(new GridLayout(2, 1));
             container.add(header);
             container.add(xp);
-            // Builds the component
+            // Builds the component4
             JPanel component = new JPanel();
             component.setLayout(new FlowLayout());
             component.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));

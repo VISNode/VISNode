@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 
@@ -30,9 +31,11 @@ public class MissionErrorMessagePanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
-        WindowFactory.modal().title("Mensagem").create((container) -> {
-            container.add(new MissionErrorMessagePanel());
-        }).setVisible(true);
+        Messages.get().message("challenge.message").subscribe((msg) -> {
+            WindowFactory.modal().title(msg).create((container) -> {
+                container.add(new MissionErrorMessagePanel());
+            }).setVisible(true);
+        }).dispose();
     }
 
     /**
@@ -42,6 +45,7 @@ public class MissionErrorMessagePanel extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(400, 200));
         add(buildPreferences());
+        add(buildButtons(), BorderLayout.SOUTH);
     }
 
     /**
@@ -57,7 +61,11 @@ public class MissionErrorMessagePanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildButtons() {
-        JButton button = new JButton("Ir para a missão", IconFactory.get().create("fa:forward"));
+        JButton button = new JButton();
+        Messages.get().message("challenge.goMission").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:forward"));
+        }).dispose();
         button.addActionListener((evt) -> {
             SwingUtilities.getWindowAncestor(MissionErrorMessagePanel.this).dispose();
         });
@@ -78,8 +86,12 @@ public class MissionErrorMessagePanel extends JPanel {
         icon.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         JPanel text = new JPanel();
         text.setLayout(new GridLayout(2, 1));
-        text.add(new JLabel("O resultado obtido não é igual ao esperado!", SwingConstants.CENTER));
-        text.add(new JLabel("Tente novamente!", SwingConstants.CENTER));
+        Messages.get().message("challenge.missionError1").subscribe((msg) -> {
+            text.add(new JLabel(msg, SwingConstants.CENTER));
+        }).dispose();
+        Messages.get().message("challenge.missionError2").subscribe((msg) -> {
+            text.add(new JLabel(msg, SwingConstants.CENTER));
+        }).dispose();
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(icon, BorderLayout.NORTH);

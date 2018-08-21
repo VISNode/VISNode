@@ -75,9 +75,11 @@ public class ChallengeMissionFormPanel extends JPanel {
      */
     public static Mission showDialog(Mission mission) {
         ChallengeMissionFormPanel panel = new ChallengeMissionFormPanel(mission);
-        WindowFactory.modal().title("New mission").create((container) -> {
-            container.add(panel);
-        }).setVisible(true);
+        Messages.get().message("challenge.newMission").subscribe((msg) -> {
+            WindowFactory.modal().title(msg).create((container) -> {
+                container.add(panel);
+            }).setVisible(true);
+        }).dispose();
         return panel.missionOutput;
     }
 
@@ -96,17 +98,21 @@ public class ChallengeMissionFormPanel extends JPanel {
      */
     private void initEvents() {
         parameterButton.addActionListener((ev) -> {
-            WindowFactory.modal().title("Parâmetros").create((container) -> {
-                container.add(new MissionParameterPanel());
-            }).setVisible(true);
-            reloadItems();
+            Messages.get().message("challenge.parameters").subscribe((msg) -> {
+                WindowFactory.modal().title(msg).create((container) -> {
+                    container.add(new MissionParameterPanel());
+                }).setVisible(true);
+                reloadItems();
+            }).dispose();
         });
         problemButton.addActionListener((ev) -> {
-            MissionProblemPanel panel = new MissionProblemPanel();
-            WindowFactory.modal().title("Problemas").create((container) -> {
-                container.add(panel);
-            }).setVisible(true);
-            challenge.setProblem(panel.getCode());
+            Messages.get().message("challenge.problems").subscribe((msg) -> {
+                MissionProblemPanel panel = new MissionProblemPanel();
+                WindowFactory.modal().title(msg).create((container) -> {
+                    container.add(panel);
+                }).setVisible(true);
+                challenge.setProblem(panel.getCode());
+            }).dispose();
         });
     }
 
@@ -171,7 +177,9 @@ public class ChallengeMissionFormPanel extends JPanel {
         container.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         container.setLayout(new BorderLayout());
         container.add(panel, BorderLayout.NORTH);
-        container.add(buildBoxChallenges("Parâmetros"));
+        Messages.get().message("challenge.parameters").subscribe((msg) -> {
+            container.add(buildBoxChallenges(msg));
+        }).dispose();
         boxComponent = container;
         return ScrollFactory.pane(container).create();
     }
@@ -198,8 +206,11 @@ public class ChallengeMissionFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildProblem() {
-        problemButton = new JButton("Narrativa");
+        problemButton = new JButton();
         problemButton.setIcon(IconFactory.get().create("fa:font"));
+        Messages.get().message("challenge.narrative").subscribe((msg) -> {
+            problemButton.setText(msg);
+        }).dispose();
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(problemButton, BorderLayout.WEST);

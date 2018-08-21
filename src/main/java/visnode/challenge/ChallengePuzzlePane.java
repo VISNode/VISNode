@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
 import visnode.gui.IconFactory;
 
@@ -38,9 +39,11 @@ public class ChallengePuzzlePane extends JPanel {
      * @param missionCompleted
      */
     public static void showDialog(Challenge challenge, int missionCompleted) {
-        WindowFactory.modal().title("Recompensas").create((container) -> {
-            container.add(new ChallengePuzzlePane(challenge, missionCompleted));
-        }).setVisible(true);
+        Messages.get().message("challenge.payment").subscribe((msg) -> {
+            WindowFactory.modal().title(msg).create((container) -> {
+                container.add(new ChallengePuzzlePane(challenge, missionCompleted));
+            }).setVisible(true);
+        }).dispose();
     }
 
     /**
@@ -66,7 +69,11 @@ public class ChallengePuzzlePane extends JPanel {
      * @return JComponent
      */
     private JComponent buildButtons() {
-        JButton button = new JButton("Ir para o desafio", IconFactory.get().create("fa:forward"));
+        JButton button = new JButton();
+        Messages.get().message("challenge.goChallenge").subscribe((msg) -> {
+            button.setText(msg);
+            button.setIcon(IconFactory.get().create("fa:forward"));
+        }).dispose();
         button.addActionListener((evt) -> {
             SwingUtilities.getWindowAncestor(ChallengePuzzlePane.this).dispose();
         });

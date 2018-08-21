@@ -113,10 +113,12 @@ public class ChallengeFormPanel extends JPanel {
         });
         problemButton.addActionListener((ev) -> {
             ChallengeProblemPanel panel = new ChallengeProblemPanel();
-            WindowFactory.modal().title("Problemas").create((container) -> {
-                container.add(panel);
-            }).setVisible(true);
-            challenge.setProblem(panel.getCode());
+            Messages.get().message("challenge.problem").subscribe((msg) -> {
+                WindowFactory.modal().title(msg).create((container) -> {
+                    container.add(panel);
+                }).setVisible(true);
+                challenge.setProblem(panel.getCode());
+            }).dispose();
         });
         paymentButton.addActionListener((ev) -> {
             FileChooserFactory.openImage().accept((file) -> {
@@ -233,8 +235,11 @@ public class ChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildProblem() {
-        problemButton = new JButton("Narrativa");
+        problemButton = new JButton();
         problemButton.setIcon(IconFactory.get().create("fa:font"));
+        Messages.get().message("challenge.narrative").subscribe((msg) -> {
+            problemButton.setText(msg);
+        });
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.add(problemButton, BorderLayout.WEST);
@@ -247,7 +252,10 @@ public class ChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildPaymentButton() {
-        paymentButton = new JButton("Recompensa");
+        paymentButton = new JButton();
+        Messages.get().message("challenge.payment").subscribe((msg) -> {
+            paymentButton.setText(msg);
+        });
         paymentButton.setIcon(IconFactory.get().create("fa:dollar"));
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -262,7 +270,10 @@ public class ChallengeFormPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildBoxChallenges() {
-        JLabel label = new JLabel("Missões");
+        JLabel label = new JLabel();
+        Messages.get().message("challenge.mission").subscribe((msg) -> {
+            label.setText(msg);
+        });
         label.setFont(new Font("Segoe UI", Font.BOLD, 18));
         JComponent component = new JPanel();
         component.setLayout(new BorderLayout());
