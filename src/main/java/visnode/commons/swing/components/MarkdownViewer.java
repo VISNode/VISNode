@@ -2,7 +2,10 @@ package visnode.commons.swing.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;

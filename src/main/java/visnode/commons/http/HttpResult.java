@@ -29,7 +29,7 @@ public class HttpResult {
      * @return String
      */
     public String asString() {
-        return new String(body, Charset.defaultCharset());
+        return new String(body, Charset.forName("UTF-8"));
     }
 
     /**

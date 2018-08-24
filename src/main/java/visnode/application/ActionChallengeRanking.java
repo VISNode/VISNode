@@ -25,7 +25,6 @@ public class ActionChallengeRanking extends AbstractAction {
     @Override
     public void actionPerformed(ActionEvent e) {
         ChallengeRankingPane.showDialog();
-
     }
 
 }
