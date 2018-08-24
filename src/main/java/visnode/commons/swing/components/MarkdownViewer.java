@@ -2,7 +2,10 @@ package visnode.commons.swing.components;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -91,7 +94,11 @@ public class MarkdownViewer extends JPanel {
      */
     private String markdownToHtml(String buffer) {
         Parser parser = Parser.builder().build();
-        Node document = parser.parse(buffer);
+        Node document = null;
+        try {
+            document = parser.parse(new String(buffer.getBytes(), "UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+        }
         HtmlRenderer renderer = HtmlRenderer.builder().build();
         String asHtml = renderer.render(document);
         return asHtml;
