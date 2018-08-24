@@ -1,53 +1,104 @@
 package visnode.challenge;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.paim.commons.ImageExporter;
+import org.paim.commons.ImageFactory;
+import visnode.application.ExceptionHandler;
+import visnode.user.User;
 
 /**
- * Challenge mission
+ * The mission information
  */
 public class Mission {
 
+    /** Owner */
+    private User owner;
     /** Id */
-    private int id;
+    private long id;
+    /** Challenge */
+    private transient Challenge challenge;
     /** Name */
     private String name;
     /** Description */
     private String description;
+    /** Difficulty */
+    private ChallengeDifficulty difficulty;
+    /** Input */
+    private final List<MissionValue> input;
+    /** Output */
+    private final List<MissionValue> output;
     /** Problem */
     private String problem;
     /** Point */
     private int xp;
     /** Level */
     private int level;
-    /** Challenges */
-    private List<Challenge> challenges;
 
     public Mission() {
-        this.challenges = new ArrayList<>();
+        this.input = new ArrayList<>();
+        this.output = new ArrayList<>();
     }
 
     /**
-     * Returns the id
+     * Returns the owner
      *
-     * @return int
+     * @return User
      */
-    public int getId() {
+    public User getOwner() {
+        return owner;
+    }
+
+    /**
+     * Sets the owner
+     *
+     * @param owner
+     */
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    /**
+     * Returns the challenge id
+     *
+     * @return long
+     */
+    public long getId() {
         return id;
     }
 
     /**
-     * Sets the id
+     * Sets the challenge id
      *
      * @param id
      */
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     /**
-     * Returns the name
+     * Returns the challenge id
+     *
+     * @return Challenge
+     */
+    public Challenge getChallenge() {
+        return challenge;
+    }
+
+    /**
+     * Sets the challenge
+     *
+     * @param challenge
+     */
+    public void setChallenge(Challenge challenge) {
+        this.challenge = challenge;
+    }
+
+    /**
+     * Returns the challenge name
      *
      * @return String
      */
@@ -56,7 +107,7 @@ public class Mission {
     }
 
     /**
-     * Sets the name
+     * Sets the challenge name
      *
      * @param name
      */
@@ -65,7 +116,7 @@ public class Mission {
     }
 
     /**
-     * Returns the description
+     * Returns the challenge description
      *
      * @return String
      */
@@ -74,12 +125,104 @@ public class Mission {
     }
 
     /**
-     * Sets the description
+     * Sets the challenge description
      *
      * @param description
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * Returns the challenge difficulty
+     *
+     * @return ChallengeDifficulty
+     */
+    public ChallengeDifficulty getDifficulty() {
+        return difficulty;
+    }
+
+    /**
+     * Sets the challenge difficulty
+     *
+     * @param difficulty
+     */
+    public void setDifficulty(ChallengeDifficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    /**
+     * Returns the challenge input
+     *
+     * @return {@code List<MissionValue>}
+     */
+    public List<MissionValue> getInput() {
+        return Collections.unmodifiableList(input);
+    }
+
+    /**
+     * Returns the challenge input files
+     *
+     * @return {@code List<File>}
+     */
+    public List<File> getInputFiles() {
+        List<File> list = new ArrayList<>();
+        int index = 0;
+        try {
+            for (MissionValue value : input) {
+                File file = new File(System.getProperty("user.home") + "/.visnode/" + System.getProperty("user.name") + "_" + getId() + "_" + index++ + ".jpg");
+                ImageExporter.exportBufferedImage(ImageFactory.buildRGBImage(value.getValueBufferedImage()), file);
+                list.add(file);
+            }
+        } catch (IOException ex) {
+            ExceptionHandler.get().handle(ex);
+        }
+        return list;
+    }
+
+    /**
+     * Removes the input
+     *
+     * @param value
+     */
+    public void removeInput(MissionValue value) {
+        input.remove(value);
+    }
+
+    /**
+     * Adds the challenge input
+     *
+     * @param input
+     */
+    public void addInput(MissionValue input) {
+        this.input.add(input);
+    }
+
+    /**
+     * Returns the challenge output
+     *
+     * @return {@code List<MissionValue>}
+     */
+    public List<MissionValue> getOutput() {
+        return Collections.unmodifiableList(output);
+    }
+
+    /**
+     * Removes the output
+     *
+     * @param value
+     */
+    public void removeOutput(MissionValue value) {
+        output.remove(value);
+    }
+
+    /**
+     * Adds a new challenge output
+     *
+     * @param output
+     */
+    public void addOutput(MissionValue output) {
+        this.output.add(output);
     }
 
     /**
@@ -101,7 +244,16 @@ public class Mission {
     }
 
     /**
-     * Returns the experience
+     * Returns true if the problem is a url
+     *
+     * @return boolean
+     */
+    public boolean isProblemUrl() {
+        return problem != null && problem.startsWith("http");
+    }
+
+    /**
+     * Returns the points
      *
      * @return int
      */
@@ -110,7 +262,7 @@ public class Mission {
     }
 
     /**
-     * Sets the experience
+     * Sets the points
      *
      * @param xp
      */
@@ -119,8 +271,8 @@ public class Mission {
     }
 
     /**
-     * Returns the mission level
-     * 
+     * Returns the level
+     *
      * @return int
      */
     public int getLevel() {
@@ -128,47 +280,50 @@ public class Mission {
     }
 
     /**
-     * Sets the mission level
-     * 
-     * @param level 
+     * Returns true if is the first level
+     *
+     * @return boolean
+     */
+    public boolean isFirtLevel() {
+        return level == 1;
+    }
+
+    /**
+     * Sets the level
+     *
+     * @param level
      */
     public void setLevel(int level) {
         this.level = level;
     }
-    
-    /**
-     * Returns the challenges
-     *
-     * @return {@code List<Challenge>}
-     */
-    public List<Challenge> getChallenges() {
-        return Collections.unmodifiableList(challenges);
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + (int) (this.id ^ (this.id >>> 32));
+        hash = 37 * hash + this.level;
+        return hash;
     }
 
-    /**
-     * Adds a new challenge
-     *
-     * @param challenge
-     */
-    public void addChallange(Challenge challenge) {
-        this.challenges.add(challenge);
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Mission other = (Mission) obj;
+        if (this.id != other.id) {
+            return false;
+        }
+        if (this.level != other.level) {
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * Sets the challenges
-     *
-     * @param challenges
-     */
-    public void setChallenges(List<Challenge> challenges) {
-        this.challenges = challenges;
-    }
-
-    /**
-     * Returns number of challenges
-     *
-     * @return int
-     */
-    public int size() {
-        return challenges.size();
-    }
 }

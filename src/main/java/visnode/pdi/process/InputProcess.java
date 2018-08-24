@@ -15,13 +15,13 @@ public class InputProcess implements visnode.pdi.Process {
     /** Extra image */
     private Observable<Image> image;
 
-    public InputProcess(@Input("file") ImageInput file) {
-        if (file == null) {
+    public InputProcess(@Input("file") ImageInput input) {
+        if (input == null) {
             this.image = BehaviorSubject.createDefault(ImageFactory.buildEmptyImage());
             return;
         } 
         try {
-            this.image = file.getImageObservable();
+            this.image = input.getImageObservable();
         } catch(Throwable e) {
             e.printStackTrace();
         }

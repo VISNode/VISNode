@@ -11,10 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -23,11 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import visnode.application.ExceptionHandler;
 import visnode.application.Messages;
 import visnode.commons.ImageScale;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
 import visnode.repository.UserRepository;
 
@@ -151,6 +148,7 @@ public class UpdateUserPanel extends JPanel {
      */
     private JComponent buildImage() {
         JLabel label = new JLabel(getIcon());
+        label.setBorder(BorderFactory.createLineBorder(UIHelper.getColor("Node.border")));
         label.setCursor(new Cursor(Cursor.HAND_CURSOR));
         JPanel panel = new JPanel();
         panel.add(label);
@@ -158,14 +156,9 @@ public class UpdateUserPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 FileChooserFactory.openImage().accept((file) -> {
-                    ByteArrayOutputStream os = new ByteArrayOutputStream();
-                    try {
-                        ImageIO.write(ImageIO.read(file), "JPG", os);
-                        model.setImage(Base64.getEncoder().encodeToString(os.toByteArray()));
-                        label.setIcon(getIcon());
-                    } catch (IOException ioe) {
-                        ExceptionHandler.get().handle(ioe);
-                    }
+                    Base64Image base64Image = new Base64Image();
+                    model.setImage(base64Image.toBase64(file));
+                    label.setIcon(getIcon());
                 });
             }
         }

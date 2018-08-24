@@ -1,112 +1,157 @@
 package visnode.repository;
 
-import java.util.ArrayList;
-import java.util.List;
 import visnode.challenge.Mission;
+import visnode.challenge.ChallengeDifficulty;
+import visnode.challenge.MissionValue;
+import visnode.challenge.MissionValueType;
+import visnode.challenge.Challenge;
 
 /**
- * Mission repository
+ * The challenge repository
  */
 public class MissionRepository {
 
-    /** Instance */
-    private static MissionRepository instance;
-    private final ChallengeRepository challengeRepository = new ChallengeRepository();
-
-    /**
-     * Returns all missions
+     /**
+     * Returns a challenge
      *
-     * @return {@code List<Mission>}
-     * @throws RepositoryException
-     */
-    public List<Mission> getAll() throws RepositoryException {
-        List<Mission> list = new ArrayList<>();
-        list.add(getObjectsSegmentation());
-        list.add(getDayOrNight());
-        list.add(getCoin());
-        list.add(getFungusPlant());
-        return list;
-    }
-
-    /**
-     * Returns a mission
-     *
+     * @param mission
      * @return Mission
      */
-    private Mission getObjectsSegmentation() {
-        Mission mission = new Mission();
-        mission.setId(1);
-        mission.setName("Segmentação de objetos");
-        mission.setDescription("Execute a segmentação de objetos de uma imagem");
-        mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
-        mission.setXp(50);
-        mission.setLevel(1);
-        mission.addChallange(challengeRepository.getObjectsSegmentation(mission));
-        return mission;
+    public Mission getObjectsSegmentation(Challenge mission) {
+        Mission challenge = new Mission();
+        challenge.setId(1);
+        challenge.setChallenge(mission);
+        challenge.setName("Segmentação de objetos");
+        challenge.setDescription("Execute a segmentação de objetos de uma imagem");
+        challenge.setDifficulty(ChallengeDifficulty.EASY);
+        challenge.addInput(valueImage(getFile("/challenges/objectsSegmentation/input.png")));
+        challenge.addOutput(valueImage(getFile("/challenges/objectsSegmentation/output.png")));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/objectsSegmentation/problem.md");
+        challenge.setXp(50);
+        challenge.setLevel(1);
+        return challenge;
     }
-
+  
     /**
-     * Returns a mission
+     * Returns a challenge
      *
+     * @param mission
      * @return Mission
      */
-    private Mission getDayOrNight() {
-        Mission mission = new Mission();
-        mission.setId(2);
-        mission.setName("Dia ou noite");
-        mission.setDescription("Duscubra se é dia ou noite");
-        mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
-        mission.setXp(75);
-        mission.setLevel(1);
-        mission.addChallange(challengeRepository.getDayOrNight(mission));
-        return mission;
+    public Mission getDayOrNight(Challenge mission) {
+        Mission challenge = new Mission();
+        challenge.setId(2);
+        challenge.setChallenge(mission);
+        challenge.setName("Dia ou noite");
+        challenge.setDescription("Duscubra se é dia ou noite");
+        challenge.setDifficulty(ChallengeDifficulty.EASY);
+        challenge.addInput(valueImage(getFile("/challenges/dayOrNight/input.jpg")));
+        challenge.addInput(valueImage(getFile("/challenges/dayOrNight/night.jpg")));
+        challenge.addOutput(value("1"));
+        challenge.addOutput(value("2"));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/dayOrNight/problem.md");
+        challenge.setXp(75);
+        challenge.setLevel(1);
+        return challenge;
     }
 
     /**
-     * Returns a mission
+     * Returns a challenge
      *
+     * @param mission
      * @return Mission
      */
-    private Mission getCoin() {
-        Mission mission = new Mission();
-        mission.setId(3);
-        mission.setName("Valor monetário");
-        mission.setDescription("Cálcule o valor das moedas");
-        mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
-        mission.setXp(100);
-        mission.setLevel(1);
-        mission.addChallange(challengeRepository.getCoin(mission));
-        return mission;
+    public Mission getCoin(Challenge mission) {
+        Mission challenge = new Mission();
+        challenge.setId(3);
+        challenge.setChallenge(mission);
+        challenge.setName("Valor monetário");
+        challenge.setDescription("Cálcule o valor das moedas");
+        challenge.setDifficulty(ChallengeDifficulty.HARD);
+        challenge.addInput(valueImage(getFile("/challenges/coin/input.jpg")));
+        challenge.addOutput(value("R$ 2,90"));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/coin/problem.md");
+        challenge.setXp(100);
+        challenge.setLevel(1);
+        return challenge;
     }
-
+  
     /**
-     * Returns a mission
+     * Returns a challenge
      *
+     * @param mission
      * @return Mission
      */
-    private Mission getFungusPlant() {
-        Mission mission = new Mission();
-        mission.setId(4);
-        mission.setName("Detecção de tratamento para fungos em plantas");
-        mission.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
-        mission.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
-        mission.setXp(100);
-        mission.setLevel(2);
-        mission.addChallange(challengeRepository.getFungusPlant1(mission));
-        mission.addChallange(challengeRepository.getFungusPlant2(mission));
-        return mission;
+    public Mission getFungusPlant1(Challenge mission) {
+        Mission challenge = new Mission();
+        challenge.setId(4);
+        challenge.setChallenge(mission);
+        challenge.setName("Detecção de tratamento para fungos em plantas");
+        challenge.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
+        challenge.setDifficulty(ChallengeDifficulty.HARD);
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft1.png")));
+        challenge.addOutput(value("MEDIA"));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
+        challenge.setXp(75);
+        challenge.setLevel(1);
+        return challenge;
+    }
+    
+    /**
+     * Returns a challenge
+     *
+     * @param mission
+     * @return Mission
+     */
+    public Mission getFungusPlant2(Challenge mission) {
+        Mission challenge = new Mission();
+        challenge.setId(5);
+        challenge.setChallenge(mission);
+        challenge.setName("Detecção de tratamento para fungos em plantas");
+        challenge.setDescription("Identifique o tratamento ideal para plantas de acordo com o nível de contaminação");
+        challenge.setDifficulty(ChallengeDifficulty.HARD);
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft1.png")));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft2.png")));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft3.png")));
+        challenge.addInput(valueImage(getFile("/challenges/fungusPlant/ft4.png")));
+        challenge.addOutput(value("MEDIA"));
+        challenge.addOutput(value("MEDIA"));
+        challenge.addOutput(value("INICIAL"));
+        challenge.addOutput(value("GRAVE"));
+        challenge.setProblem("https://raw.githubusercontent.com/VISNode/VISNode/master/src/main/resources/challenges/fungusPlant/problem.md");
+        challenge.setXp(25);
+        challenge.setLevel(2);
+        return challenge;
     }
 
     /**
-     * Returns the mission repository instance
+     * Create a challenge value
      *
-     * @return ChallengeUserRepository
+     * @param value
+     * @return MissionValue
      */
-    public static MissionRepository get() {
-        if (instance == null) {
-            instance = new MissionRepository();
-        }
-        return instance;
+    private MissionValue valueImage(String value) {
+        return new MissionValue(MissionValueType.IMAGE, value);
+    }
+
+    /**
+     * Create a challenge value
+     *
+     * @param value
+     * @return MissionValue
+     */
+    private MissionValue value(String value) {
+        return new MissionValue(MissionValueType.TEXT, value);
+    }
+
+    /**
+     * Returns the resource file nae
+     *
+     * @param file
+     * @return String
+     */
+    private String getFile(String file) {
+        return getClass().getResource(file).getFile();
     }
 
 }

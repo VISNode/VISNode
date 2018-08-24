@@ -3,7 +3,7 @@ package visnode.application;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
-import visnode.challenge.MissionListPanel;
+import visnode.challenge.ChallengeListPanel;
 import visnode.user.LoginPanel;
 import visnode.user.UserController;
 
@@ -26,13 +26,13 @@ public class ActionChallenge extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         UserController.get().isLogged().first(false).subscribe((has) -> {
             if (has) {
-                MissionListPanel.showDialog();
+                ChallengeListPanel.showDialog();
                 return;
             }
             LoginPanel.showDialog();
             UserController.get().isLogged().subscribe((logged) -> {
                 if (logged) {
-                    MissionListPanel.showDialog();
+                    ChallengeListPanel.showDialog();
                 }
             }).dispose();
         });

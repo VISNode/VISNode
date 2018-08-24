@@ -7,4 +7,4 @@ for i in $(ls -d lib/*.jar); do
     commandCp="$commandCp${i%%/}"; 
 done
 
-java -cp "$commandCp" visnode.application.VISNode
+java -cp "$commandCp" visnode.application.VISNode $@

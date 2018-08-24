@@ -115,6 +115,9 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
         psup.put(Buttons.create().focusable(false).icon(IconFactory.get().create("fa:folder-open")).onClick((evt) -> {
             FileChooserFactory.openImages().accept((filesSelected) -> {
                 input = new MultiFileInput(filesSelected, 0);
+                for (File file : filesSelected) {
+                    VISNode.get().getModel().getUserPreferences().addRecentInput(file);
+                }
                 fireValueChanged();
             });
         }));
@@ -124,6 +127,7 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
                 JMenuItem item = new JMenuItem(file.getAbsolutePath());
                 item.addActionListener((e) -> {
                     input = new MultiFileInput(file);
+                    VISNode.get().getModel().getUserPreferences().addRecentInput(file);
                     fireValueChanged();
                 });
                 menu.add(item);
@@ -218,12 +222,6 @@ public class InputEditor extends Panel implements ParameterComponent<ImageInput>
      */
     private void fireValueChanged() {
         updateFields();
-        if (input instanceof MultiFileInput) {
-            MultiFileInput files = (MultiFileInput) input;
-            for (File file : files.getFiles()) {
-                VISNode.get().getModel().getUserPreferences().addRecentInput(file);
-            }
-        }
         for (ValueListener listener : listeners) {
             listener.valueChanged(null, input);
         }

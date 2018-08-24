@@ -1,6 +1,7 @@
 package visnode.application;
 
 import java.awt.BorderLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
@@ -38,6 +39,11 @@ public class MainPanel extends JPanel {
         toolbar.add(new ActionNew());
         toolbar.add(new ActionOpen());
         toolbar.add(new ActionSave());
+        toolbar.addSeparator();
+        toolbar.add(new ActionChallengeRun());
+        toolbar.add(new ActionChallengeProblem());
+        toolbar.addSeparator();
+        toolbar.add(new ActionUser());
         add(toolbar, BorderLayout.NORTH);
         add(buildDummyInterface());
     }    
