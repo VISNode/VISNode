@@ -2,6 +2,7 @@ package visnode.ws;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import java.nio.charset.Charset;
 import visnode.commons.http.HttpResult;
 
 /**

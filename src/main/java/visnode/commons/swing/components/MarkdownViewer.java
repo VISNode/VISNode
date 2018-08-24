@@ -95,11 +95,7 @@ public class MarkdownViewer extends JPanel {
      */
     private String markdownToHtml(String buffer) {
         Parser parser = Parser.builder().build();
-        Node document = null;
-        try {
-            document = parser.parse(new String(buffer.getBytes(), "UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-        }
+        Node document = parser.parse(buffer);
         HtmlRenderer renderer = HtmlRenderer.builder().build();
         String asHtml = renderer.render(document);
         return asHtml;

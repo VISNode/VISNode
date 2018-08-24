@@ -7,6 +7,7 @@ import static javax.swing.Action.SMALL_ICON;
 import visnode.challenge.ChallengeConquestPanel;
 import visnode.challenge.MissionUserPanel;
 import visnode.gui.IconFactory;
+import visnode.user.UserController;
 
 /**
  * The challenge user conquests action
@@ -22,6 +23,9 @@ public class ActionChallengeConquest extends AbstractAction {
         Messages.get().message("challenge.conquest").subscribe((msg) -> {
             putValue(NAME, msg);
         });
+        UserController.get().isLogged().subscribe((has) -> {
+            setEnabled(has);
+        });        
     }
 
     @Override
