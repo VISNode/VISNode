@@ -83,6 +83,9 @@ public class UserController {
      * @return User
      */
     public User getUser() {
+        if (userName == null) {
+            return new User();
+        }
         if (user == null) {
             try {
                 user = UserRepository.get().get(userName);

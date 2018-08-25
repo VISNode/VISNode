@@ -15,7 +15,7 @@ import visnode.commons.http.Http;
 public class WebService {
 
     /** Host name */
-    public static final String HOSTNAME = "http://ceted.feevale.br:8080/VISNodeWS/v1/";
+    public static final String HOSTNAME = "http://localhost:8180/VISNodeWS/v1/";
     /** Token */
     public static final String TOKEN = "visnode-token";
 

@@ -6,11 +6,16 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
@@ -22,6 +27,7 @@ import visnode.gui.IconFactory;
 import visnode.gui.ListItemComponent;
 import visnode.gui.ScrollFactory;
 import visnode.gui.UIHelper;
+import visnode.repository.GroupRepository;
 import visnode.repository.RepositoryException;
 import visnode.repository.UserRepository;
 import visnode.user.User;
@@ -33,13 +39,29 @@ public class MissionUserPanel extends JPanel {
 
     /** Thumbnail size */
     private static final int THUMBNAIL_SIZE = 64;
+    /** Group */
+    private JComboBox<Group> groups;
+    /** Button filter */
+    private JButton buttonFilter;
+    /** Button update */
+    private JButton buttonUpdate;
+    /** Button new group */
+    private JButton buttonNewGroup;
+    /** Items list */
+    private JPanel items;
+    /** Container */
+    private JPanel container;
+    /** Users */
+    private List<User> users;
 
     /**
      * Creates a new mission list panel
      */
     private MissionUserPanel() {
         super();
+        loadUsers();
         initGui();
+        initEvents();
     }
 
     /**
@@ -60,8 +82,112 @@ public class MissionUserPanel extends JPanel {
     private void initGui() {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(800, 500));
+        add(buildGroup(), BorderLayout.NORTH);
         add(buildList());
         add(buildButtons(), BorderLayout.SOUTH);
+        loadGroups();
+        loadUsersList();
+    }
+
+    /**
+     * Load users
+     */
+    private void loadUsers() {
+        this.users = new ArrayList<>();
+        try {
+            this.users = UserRepository.get().getAll();
+        } catch (RepositoryException ex) {
+            ExceptionHandler.get().handle(ex);
+        }
+    }
+
+    /**
+     * Load groups
+     */
+    private void loadGroups() {
+        Object selected = groups.getSelectedItem();
+        groups.removeAllItems();
+        groups.addItem(new Group("All"));
+        try {
+            GroupRepository.get().getAll().forEach((it) -> {
+                groups.addItem(it);
+            });
+            if (selected == null) {
+                groups.setSelectedIndex(0);
+            } else {
+                groups.setSelectedItem(selected);
+            }
+        } catch (RepositoryException ex) {
+            ExceptionHandler.get().handle(ex);
+        }
+    }
+
+    /**
+     * Load user list
+     */
+    private void loadUsersList() {
+        if (items != null) {
+            container.remove(items);
+        }
+        container.add(buildListComponent());
+        container.revalidate();
+        repaint();
+    }
+
+    /**
+     * Initializes the events
+     */
+    private void initEvents() {
+        buttonNewGroup.addActionListener((evt) -> {
+            GroupFormPanel.showDialog();
+            loadGroups();
+        });
+        buttonUpdate.addActionListener((evt) -> {
+            Group group = (Group) groups.getSelectedItem();
+            if (group == null || group.getId() == 0) {
+                JOptionPane.showMessageDialog(null, "No group selected");
+                return;
+            }
+            GroupFormPanel.showDialog(group);
+            loadUsersList();
+        });
+        buttonFilter.addActionListener((evt) -> {
+            loadUsersList();
+        });
+    }
+
+    /**
+     * Builds the group box
+     *
+     * @return JComponent
+     */
+    private JComponent buildGroup() {
+        // Builds the label
+        JLabel label = new JLabel();
+        Messages.get().message("challenge.group").subscribe((msg) -> {
+            label.setText(msg);
+        }).dispose();
+        // Build de group combo-box
+        groups = new JComboBox();
+        // Action filter
+        buttonFilter = new JButton(IconFactory.get().create("fa:search"));
+        // Action update
+        buttonUpdate = new JButton(IconFactory.get().create("fa:pencil"));
+        // Action new group
+        buttonNewGroup = new JButton();
+        Messages.get().message("challenge.newGroup").subscribe((msg) -> {
+            buttonNewGroup.setText(msg);
+            buttonNewGroup.setIcon(IconFactory.get().create("fa:plus"));
+        });
+        // Builds the box
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        panel.add(label);
+        panel.add(groups);
+        panel.add(buttonFilter);
+        panel.add(buttonUpdate);
+        panel.add(buttonNewGroup);
+        return panel;
     }
 
     /**
@@ -91,10 +217,9 @@ public class MissionUserPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildList() {
-        JComponent containerItems = new JPanel();
-        containerItems.setLayout(new BorderLayout());
-        containerItems.add(buildListComponent());
-        JScrollPane scrollPane = ScrollFactory.pane(containerItems).create();
+        container = new JPanel();
+        container.setLayout(new BorderLayout());
+        JScrollPane scrollPane = ScrollFactory.pane(container).create();
         scrollPane.setBorder(null);
         return scrollPane;
     }
@@ -105,20 +230,24 @@ public class MissionUserPanel extends JPanel {
      * @return JComponent
      */
     private JComponent buildListComponent() {
-        try {
-            JPanel list = new JPanel();
-            list.setLayout(new GridLayout(0, 1));
-            UserRepository.get().getAll().forEach((user) -> {
-                list.add(buildListItem(user));
-            });
-            JPanel panelItems = new JPanel();
-            panelItems.setLayout(new BorderLayout());
-            panelItems.add(list, BorderLayout.NORTH);
-            return panelItems;
-        } catch (RepositoryException ex) {
-            ExceptionHandler.get().handle(ex);
+        JPanel list = new JPanel();
+        list.setLayout(new GridLayout(0, 1));
+        List<User> userList = users;
+        Group group = (Group) groups.getSelectedItem();
+        if (group != null && group.getId() > 0) {
+            userList = users.stream().filter((user) -> {
+                return group.getUsers().stream()
+                        .filter((it) -> it.getUser().getId() == user.getId())
+                        .findFirst().isPresent();
+            }).collect(Collectors.toList());
         }
-        return new JPanel();
+        userList.forEach((user) -> {
+            list.add(buildListItem(user));
+        });
+        items = new JPanel();
+        items.setLayout(new BorderLayout());
+        items.add(list, BorderLayout.NORTH);
+        return items;
     }
 
     /**

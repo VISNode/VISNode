@@ -5,7 +5,6 @@ import javax.swing.AbstractAction;
 import static javax.swing.Action.NAME;
 import static javax.swing.Action.SMALL_ICON;
 import visnode.challenge.ChallengeConquestPanel;
-import visnode.challenge.MissionUserPanel;
 import visnode.gui.IconFactory;
 import visnode.user.UserController;
 
