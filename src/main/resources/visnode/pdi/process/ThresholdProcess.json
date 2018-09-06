@@ -8,5 +8,7 @@
         "threshold": "128"
     },
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ThresholdProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/ThresholdProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/ThresholdProcess.java",
+    "scriptUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ThresholdProcess.js",
+    "projectUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ThresholdProcess.vnp"    
 }

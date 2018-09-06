@@ -5,5 +5,7 @@
     "description_pt_BR": "Converte a imagem para tons de cinza",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GrayscaleProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/GrayscaleProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/GrayscaleProcess.java",
+    "scriptUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GrayscaleProcess.js",
+    "projectUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/GrayscaleProcess.vnp"
 }
