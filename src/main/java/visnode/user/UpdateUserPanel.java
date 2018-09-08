@@ -24,6 +24,7 @@ import visnode.application.Messages;
 import visnode.commons.ImageScale;
 import visnode.commons.swing.FileChooserFactory;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
 import visnode.gui.UIHelper;
 import visnode.repository.RepositoryException;
 import visnode.repository.UserRepository;
@@ -77,16 +78,18 @@ public class UpdateUserPanel extends JPanel {
     private JComponent buildButtons() {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        panel.add(Buttons.create("Update").onClick((ev) -> {
-            try {
-                model.setInstitution(institution.getText());
-                model.setPassword(new String(password.getPassword()));
-                UserRepository.get().update(model);
-                SwingUtilities.getWindowAncestor(this).dispose();
-            } catch (RepositoryException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage());
-            }
-        }));
+        panel.add(Buttons.create("Update")
+                .icon(IconFactory.get().create("fa:check"))
+                .onClick((ev) -> {
+                    try {
+                        model.setInstitution(institution.getText());
+                        model.setPassword(new String(password.getPassword()));
+                        UserRepository.get().update(model);
+                        SwingUtilities.getWindowAncestor(this).dispose();
+                    } catch (RepositoryException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                }));
         return panel;
     }
 

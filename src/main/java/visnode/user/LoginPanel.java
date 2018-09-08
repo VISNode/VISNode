@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import visnode.application.Messages;
 import visnode.commons.swing.WindowFactory;
+import visnode.gui.IconFactory;
+import visnode.gui.UIHelper;
 
 /**
  * Login panel
@@ -60,21 +62,25 @@ public class LoginPanel extends JPanel {
     private JComponent buildButtons() {
         Panel panel = new Panel();
         panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        panel.add(Buttons.create("Create").onClick((ev) -> {
-            NewUserPanel.showDialog();
-            UserController.get().isLogged().subscribe((logged) -> {
-                SwingUtilities.getWindowAncestor(this).dispose();
-            }).dispose();
-        }));
-        panel.add(Buttons.create("Login").onClick((ev) -> {
-            String us = user.getText();
-            String pw = new String(password.getPassword());
-            if (UserController.get().login(us, pw)) {
-                SwingUtilities.getWindowAncestor(this).dispose();
-            } else {
-                JOptionPane.showMessageDialog(null, "Login incorreto!");
-            }
-        }));
+        panel.add(Buttons.create("Create acount")
+                .icon(IconFactory.get().create("fa:user-secret"))
+                .onClick((ev) -> {
+                    NewUserPanel.showDialog();
+                    UserController.get().isLogged().subscribe((logged) -> {
+                        SwingUtilities.getWindowAncestor(this).dispose();
+                    }).dispose();
+                }));
+        panel.add(Buttons.create("Login")
+                .icon(IconFactory.get().create("fa:sign-in"))
+                .onClick((ev) -> {
+                    String us = user.getText();
+                    String pw = new String(password.getPassword());
+                    if (UserController.get().login(us, pw)) {
+                        SwingUtilities.getWindowAncestor(this).dispose();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Login incorreto!");
+                    }
+                }));
         return panel;
     }
 

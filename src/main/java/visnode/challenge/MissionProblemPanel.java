@@ -17,10 +17,14 @@ import visnode.gui.IconFactory;
  */
 public class MissionProblemPanel extends JPanel {
 
+    /** Mission */
+    private final Mission mission;
+    
     /**
      * Creates a new problem panel
      */
-    private MissionProblemPanel() {
+    private MissionProblemPanel(Mission mission) {
+        this.mission = mission;
         initGui();
     }
 
@@ -28,10 +32,19 @@ public class MissionProblemPanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
-        Messages.get().message("challenge").subscribe((msg) -> {
+        showDialog(ChallengeController.get().getMission());
+    }
+    
+    /**
+     * Shows the dialog
+     * 
+     * @param mission
+     */
+    public static void showDialog(Mission mission) {
+        Messages.get().message("challenge.mission").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
-                container.add(new MissionProblemPanel());
+                container.add(new MissionProblemPanel(mission));
             }).setVisible(true);
         });
     }
@@ -74,10 +87,10 @@ public class MissionProblemPanel extends JPanel {
      */
     private JComponent buildContainer() {
         MarkdownViewer viewer = new MarkdownViewer();
-        if (ChallengeController.get().getMission().isProblemUrl()) {
-            viewer.loadUrl(ChallengeController.get().getMission().getProblem());
+        if (mission.isProblemUrl()) {
+            viewer.loadUrl(mission.getProblem());
         } else {
-            viewer.load(ChallengeController.get().getMission().getProblem());
+            viewer.load(mission.getProblem());
         }
         return viewer;
     }

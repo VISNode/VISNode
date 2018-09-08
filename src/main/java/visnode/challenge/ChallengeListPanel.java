@@ -44,7 +44,7 @@ public class ChallengeListPanel extends JPanel {
      * Shows the dialog
      */
     public static void showDialog() {
-        Messages.get().message("challenge.mission").subscribe((msg) -> {
+        Messages.get().message("challenge").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
                 container.add(new ChallengeListPanel());

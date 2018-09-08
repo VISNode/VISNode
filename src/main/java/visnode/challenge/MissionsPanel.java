@@ -69,7 +69,7 @@ public class MissionsPanel extends JPanel {
             start(mission);
             return;
         }
-        Messages.get().message("challenge").subscribe((msg) -> {
+        Messages.get().message("challenge.mission").subscribe((msg) -> {
             WindowFactory.modal().title(msg).create((container) -> {
                 container.setBorder(null);
                 container.add(new MissionsPanel(challenge));
@@ -191,6 +191,14 @@ public class MissionsPanel extends JPanel {
             SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
             ChallengeSolvedListPanel.showDialog(mission);
         });
+        JButton narrative = new JButton();
+        Messages.get().message("challenge.problem").subscribe((msg) -> {
+            narrative.setIcon(IconFactory.get().create("fa:question"));
+            narrative.setText(msg);
+        });
+        narrative.addActionListener((ev) -> {
+            MissionProblemPanel.showDialog(mission);
+        });
         if (mission.getLevel() > missionCompleted + 1) {
             solve.setEnabled(false);
         }
@@ -203,6 +211,7 @@ public class MissionsPanel extends JPanel {
             actions.add(solve);
         }
         if (missionSolved) {
+            actions.add(narrative);
             actions.add(solutions);
         }
         // Buttons
