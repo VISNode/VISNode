@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import org.paim.commons.BinaryImage;
 import org.paim.commons.Image;
 import org.paim.commons.ImageFactory;
 import visnode.application.NodeNetwork;
@@ -102,10 +103,15 @@ public class ChallengeComparator {
         int[][][] expected = base.getData();
         int[][][] result = output.get(Image.class).getData();
         int error = 0;
-        for (int channel = 0; channel < expected.length; channel++) {
+        int chennels = Math.min(expected.length, result.length);
+        for (int channel = 0; channel < chennels; channel++) {
             for (int x = 0; x < expected[channel].length; x++) {
                 for (int y = 0; y < expected[channel][x].length; y++) {
-                    if (Math.abs(expected[channel][x][y] - result[channel][x][y]) > 30) {
+                    int resultValue = result[channel][x][y];
+                    if (output.is(BinaryImage.class) && resultValue == 1) {
+                        resultValue = 255;
+                    }
+                    if (Math.abs(expected[channel][x][y] - resultValue) > 30) {
                         error++;
                     }
                 }

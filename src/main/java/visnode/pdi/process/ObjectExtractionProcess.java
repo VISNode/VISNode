@@ -83,6 +83,15 @@ public class ObjectExtractionProcess implements Process {
                 result = extractedObject.getMatrix().union(result);
             }
         }
+        if (list.size() == 1) {
+            BinaryImage result1 = ImageFactory.buildBinaryImage(result.getWidth(), result.getHeight());
+            for (int x = 0; x < result1.getWidth(); x++) {
+                for (int y = 0; y < result1.getHeight(); y++) {
+                    result1.set(x, y, result.get(x, y));
+                }
+            }
+            return result1;
+        }
         return result;
     }
 
