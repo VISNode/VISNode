@@ -90,8 +90,10 @@ public class UserController {
             try {
                 user = UserRepository.get().get(userName);
             } catch (RepositoryException ex) {
-                ExceptionHandler.get().handle(ex);
             }
+        }
+        if (user == null) {
+            return new User();
         }
         return user;
     }
