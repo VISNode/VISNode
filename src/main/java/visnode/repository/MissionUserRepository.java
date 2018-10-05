@@ -80,6 +80,27 @@ public class MissionUserRepository {
             throw new RepositoryException("Não foi possível gravar registro!", ex);
         }
     }
+    
+    /**
+     * Returns the challenge
+     *
+     * @param mission
+     * @return {@code List<MissionUser>}
+     * @throws RepositoryException
+     */
+    public List<MissionUser> getAll(long mission) throws RepositoryException {
+        try {
+            return WebService.get().
+                    get("missionuser",
+                            WebServiceQuery.create().
+                                    put("idMission", mission)
+                    ).
+                    get(new TypeToken<List<MissionUser>>() {
+                    });
+        } catch (WebServiceException ex) {
+            throw new RepositoryException("Não foi possível gravar registro!", ex);
+        }
+    }
   
     /**
      * Returns the challenge

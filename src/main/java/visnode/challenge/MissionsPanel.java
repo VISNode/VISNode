@@ -14,7 +14,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -199,14 +198,27 @@ public class MissionsPanel extends JPanel {
         narrative.addActionListener((ev) -> {
             MissionProblemPanel.showDialog(mission);
         });
+        JButton submissions = new JButton();
+        Messages.get().message("challenge.submissions").subscribe((msg) -> {
+            submissions.setIcon(IconFactory.get().create("fa:database"));
+            submissions.setText(msg);
+        });
+        submissions.addActionListener((ev) -> {
+            SwingUtilities.getWindowAncestor(MissionsPanel.this).dispose();
+            ChallengeSubmissionListPanel.showDialog(mission);
+        });
         if (mission.getLevel() > missionCompleted + 1) {
             solve.setEnabled(false);
         }
         // Actions
-        GridLayout actionsLayout = new GridLayout(2, 1);
+        GridLayout actionsLayout = new GridLayout(2, 2);
         actionsLayout.setVgap(5);
+        actionsLayout.setHgap(5);
         JPanel actions = new JPanel();
         actions.setLayout(actionsLayout);
+        if (UserController.get().getUser().isUserEditor()) {
+            actions.add(submissions);
+        }
         if (!missionSolved) {
             actions.add(solve);
         }

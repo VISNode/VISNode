@@ -7,6 +7,7 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import visnode.pdi.Process;
 
 /**
@@ -40,7 +41,7 @@ public class ProcessMetadata {
     private final Map<String, String> defaults;
     /** Snippet */
     private String snippet;
-    
+
     public ProcessMetadata() {
         name = "";
         name_en_US = "";
@@ -92,10 +93,10 @@ public class ProcessMetadata {
             return metadata;
         }
     }
-    
+
     /**
      * Returns the process class
-     * 
+     *
      * @return Class
      */
     public Class getProcess() {
@@ -118,8 +119,9 @@ public class ProcessMetadata {
      * @return boolean
      */
     public boolean containsName(String filter) {
-        return name_pt_BR.toLowerCase().contains(filter)
-                || name_en_US.toLowerCase().contains(filter);
+        String clearFilter = StringUtils.stripAccents(filter.toLowerCase());
+        return StringUtils.stripAccents(name_pt_BR).toLowerCase().contains(clearFilter)
+                || StringUtils.stripAccents(name_en_US).toLowerCase().contains(clearFilter);
     }
 
     /**
@@ -138,8 +140,9 @@ public class ProcessMetadata {
      * @return boolean
      */
     public boolean containsDescription(String filter) {
-        return description_pt_BR.toLowerCase().contains(filter)
-                || description_pt_BR.toLowerCase().contains(filter);
+        String clearFilter = StringUtils.stripAccents(filter.toLowerCase());
+        return StringUtils.stripAccents(description_pt_BR).toLowerCase().contains(clearFilter)
+                || StringUtils.stripAccents(description_pt_BR).toLowerCase().contains(clearFilter);
     }
 
     /**
@@ -180,7 +183,7 @@ public class ProcessMetadata {
 
     /**
      * Returns the defaults parameters
-     * 
+     *
      * @param key
      * @return String
      */
@@ -190,7 +193,7 @@ public class ProcessMetadata {
 
     /**
      * Returns the snippet
-     * 
+     *
      * @return String
      */
     public String getSnippet() {

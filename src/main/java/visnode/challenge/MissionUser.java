@@ -177,6 +177,18 @@ public class MissionUser {
     }
 
     /**
+     * Returns the status formated
+     * 
+     * @return String
+     */
+    public String getStatusFormat() {
+        if (status == STATUS_SUCESS) {
+            return "success";
+        } 
+        return "error";
+    }
+    
+    /**
      * Sets the status error
      */
     public void setStatusError() {
