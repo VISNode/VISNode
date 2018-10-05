@@ -1,7 +1,9 @@
 package visnode.gui;
 
 import java.awt.BorderLayout;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -9,6 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.paim.commons.ImageExporter;
+import org.paim.commons.ImageFactory;
+import visnode.application.ExceptionHandler;
 import visnode.application.ProcessMetadata;
 import visnode.application.VISNode;
 import visnode.commons.MultiFileInput;
@@ -58,10 +63,15 @@ public class ProcessInformationPane extends JPanel {
         openProject.addActionListener((evt) -> {
             new Http().get(metadata.getProjectUrl()).thenAccept((result) -> {
                 VISNode.get().getController().open(result.asString());
-                File file = new File(getClass().
-                        getResource("/visnode/pdi/process/image/Lenna.png").getFile());
-                VISNode.get().getModel().getNetwork().
-                        setInput(new MultiFileInput(new File[]{file}));
+                try {
+                    BufferedImage image = ImageIO.read(getClass().getResourceAsStream("/visnode/pdi/process/image/Lenna.png"));
+                    File file = new File(System.getProperty("user.home") + "/.visnode/" + System.getProperty("user.name") + "Lenna.png");
+                    ImageExporter.exportBufferedImage(ImageFactory.buildRGBImage(image), file);
+                    VISNode.get().getModel().getNetwork().
+                            setInput(new MultiFileInput(new File[]{file}));
+                } catch (Exception e) {
+                    ExceptionHandler.get().handle(e);
+                }
                 SwingUtilities.getWindowAncestor(ProcessInformationPane.this).dispose();
             });
         });
