@@ -5,5 +5,7 @@
     "description_pt_BR": "Stentiford esqueletização",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/StentifordProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/StentifordProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/StentifordProcess.java",
+    "scriptUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/StentifordProcess.js",
+    "projectUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/StentifordProcess.vnp"            
 }

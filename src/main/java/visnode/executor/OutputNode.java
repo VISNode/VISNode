@@ -129,6 +129,10 @@ public class OutputNode implements Node, AttacherNode {
     public CompletableFuture<DynamicValue> execute() {
         CompletableFuture future = new CompletableFuture();
         NodeConnection nodeConnection = getConnector().getConnection("value");
+        if (nodeConnection == null) {
+            future.complete(null);
+            return future;
+        }
         ProcessNode node = (ProcessNode) nodeConnection.getLeftNode();
         process(node).thenAcceptAsync((i) -> {
             node.getOutput(nodeConnection.getLeftAttribute()).subscribe((it) -> {

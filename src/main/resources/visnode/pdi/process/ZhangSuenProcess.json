@@ -5,5 +5,7 @@
     "description_pt_BR": "Zhang Suen esqueletização",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ZhangSuenProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/ZhangSuenProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/ZhangSuenProcess.java",
+    "scriptUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ZhangSuenProcess.js",
+    "projectUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/ZhangSuenProcess.vnp"                
 }

@@ -233,13 +233,13 @@ public class VISNodeController {
 
     /**
      * Rendering options listener
-     * 
-     * @param listener 
+     *
+     * @param listener
      */
     public void removeRenderingOptionsListener(Runnable listener) {
         renderingOptionsListeners.remove(listener);
     }
-    
+
     /**
      * Repaint the image previews
      */
@@ -259,9 +259,9 @@ public class VISNodeController {
                 .filter(view -> view.getModel().getDecorated() instanceof ProcessNode)
                 .map(view -> view.getModel())
                 .map(node -> new NodeCloner(node).
-                        cloneProcess().
-                        cloneInputs().
-                        createEditNode())
+                cloneProcess().
+                cloneInputs().
+                createEditNode())
                 .collect(Collectors.toList()));
     }
 

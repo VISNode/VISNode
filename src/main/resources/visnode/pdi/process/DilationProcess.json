@@ -5,5 +5,7 @@
     "description_pt_BR": "Morfologia matemática - Dilatação",
     "author": "VISNode team",
     "helpUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DilationProcess.md",
-    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/DilationProcess.java"
+    "codeUrl": "https://raw.githubusercontent.com/GrupoTorax/PDI/master/src/main/java/org/paim/pdi/DilationProcess.java",
+    "scriptUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DilationProcess.js",
+    "projectUrl": "https://raw.githubusercontent.com/Jouwee/VISNode/master/src/main/resources/visnode/pdi/process/DilationProcess.vnp"    
 }
