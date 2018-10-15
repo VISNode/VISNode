@@ -100,15 +100,16 @@ public class ChallengeComparator {
             return false;
         }
         Image base = ImageFactory.buildRGBImage(challengeValue.getValueBufferedImage());
+        Image outputImage = output.get(Image.class);
         int[][][] expected = base.getData();
-        int[][][] result = output.get(Image.class).getData();
+        int[][][] result = outputImage.getData();
         int error = 0;
         int chennels = Math.min(expected.length, result.length);
         for (int channel = 0; channel < chennels; channel++) {
             for (int x = 0; x < expected[channel].length; x++) {
                 for (int y = 0; y < expected[channel][x].length; y++) {
                     int resultValue = result[channel][x][y];
-                    if (output.is(BinaryImage.class) && resultValue == 1) {
+                    if ((output.is(BinaryImage.class) || outputImage.getPixelValueRange().isBinary()) && resultValue == 1) {
                         resultValue = 255;
                     }
                     if (Math.abs(expected[channel][x][y] - resultValue) > 30) {
