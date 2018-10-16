@@ -160,7 +160,7 @@ public class MissionsPanel extends JPanel {
         }
         // Title label
         JLabel label = new JLabel();
-        label.setText("Level: " + mission.getLevel());
+        label.setText("Missão: " + mission.getLevel());
         label.setFont(new Font("Segoe UI", Font.BOLD, 18));
         // MaxScore
         JLabel maxScore = new JLabel("Max Score: " + mission.getXp());
