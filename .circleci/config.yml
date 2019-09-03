@@ -38,7 +38,7 @@ jobs:
 
       - run: mvn -f ../ExamsIO/pom.xml install
       
-      - run: mvn -f ../PDI/pom.xml install    
+      - run: mvn -f ../PDI/pom.xml install -DskipTests   
       
       - run: mvn -f ../RxSling/pom.xml install    
     
