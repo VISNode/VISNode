@@ -7,7 +7,7 @@ jobs:
   build:
     docker:
       # specify the version you desire here
-      - image: openjdk:12-jdk
+      - image: circleci/11-jdk
       
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -22,6 +22,8 @@ jobs:
     
     steps:
     
+      - run: sudo apt-get install openjfx
+        
       - run: git clone https://github.com/GrupoTorax/Commons.git ../Commons
       
       - run: git clone https://github.com/GrupoTorax/ExamsIO.git ../ExamsIO
