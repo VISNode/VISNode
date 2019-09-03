@@ -26,7 +26,7 @@ public class ProcessLoader {
      * @return {@code Set<Class<? extends Process>>}
      */
     private Set<Class<? extends Process>> loadProcesses() {
-        Reflections reflections = new Reflections();
+        Reflections reflections = new Reflections("visnode.pdi.process");
         Set<Class<? extends Process>> classes = reflections.
                 getSubTypesOf(Process.class).stream().
                 collect(Collectors.toSet());

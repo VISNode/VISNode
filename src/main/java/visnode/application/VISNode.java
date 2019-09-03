@@ -8,6 +8,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.pushingpixels.substance.api.SubstanceLookAndFeel;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.skin.SubstanceGraphiteLookAndFeel;
 import visnode.application.fw.Actions;
 import visnode.commons.swing.WindowFactory;
 
@@ -84,18 +85,20 @@ public class VISNode {
      * Sets up the LookAndFeel
      */
     private void setupLookAndFeel() {
-        model.getUserPreferences().getThemeSubject().subscribe((skin) -> {
-            try {
-                UIManager.setLookAndFeel(new SubstanceLookAndFeel(
-                        (SubstanceSkin) skin.getTheme().newInstance()
-                ) {
-                });
-                if (frame != null) {
-                    frame.repaint();
+        SwingUtilities.invokeLater(() -> {
+            model.getUserPreferences().getThemeSubject().subscribe((skin) -> {
+                try {
+                    UIManager.setLookAndFeel(new SubstanceLookAndFeel(
+                            (SubstanceSkin) skin.getTheme().newInstance()
+                    ) {
+                    });
+                    if (frame != null) {
+                        frame.repaint();
+                    }
+                } catch (UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
+                    ExceptionHandler.get().handle(e);
                 }
-            } catch (UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
-                ExceptionHandler.get().handle(e);
-            }
+            });
         });
     }
 

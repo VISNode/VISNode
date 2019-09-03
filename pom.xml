@@ -24,10 +24,9 @@
             <version>3.6.1</version>
         </dependency>
         <dependency>
-            <groupId>com.github.insubstantial</groupId>
-            <artifactId>substance</artifactId>
-            <version>7.3</version>
-            <classifier>lite</classifier>
+            <groupId>org.pushing-pixels</groupId>
+            <artifactId>radiance-substance</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -98,6 +97,36 @@
             <groupId>net.sf.flexjson</groupId>
             <artifactId>flexjson</artifactId>
             <version>3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>12</version>
         </dependency>
     </dependencies>
     <properties>

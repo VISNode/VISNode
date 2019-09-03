@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JPanel;
 import org.pushingpixels.substance.api.ComponentState;
-import org.pushingpixels.substance.api.SubstanceColorScheme;
 import org.pushingpixels.substance.api.SubstanceSkin;
+import org.pushingpixels.substance.api.colorscheme.SubstanceColorScheme;
 
 /**
  * UI Helper Skin Black Steel
