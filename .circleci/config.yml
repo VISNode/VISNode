@@ -22,8 +22,6 @@ jobs:
     
     steps:
     
-      - run: sudo apt-get install openjfx
-        
       - run: git clone https://github.com/GrupoTorax/Commons.git ../Commons
       
       - run: git clone https://github.com/GrupoTorax/ExamsIO.git ../ExamsIO
